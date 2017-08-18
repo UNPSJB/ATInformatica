@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^app/', include('app.urls')),
     url(r'^', include('app.urls')),
 
+
 ]
