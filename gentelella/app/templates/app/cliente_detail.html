@@ -28,15 +28,21 @@
             </div>
             <div class="x_content">
               <br />
-              <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+              <form id="am-cliente" data-parsley-validate class="form-horizontal form-label-left">
+                
+                <!-- Comienzo del formulario - csrf_token para aceptar data POST en django -->
+                {% csrf_token %}
 
+                <!-- Campo de texto Nombre -->
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Nombre <span class="required">*</span>
                   </label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12">
+                    <input type="text" id="first-name" name="first-name" required="required" class="form-control col-md-7 col-xs-12">
                   </div>
                 </div>
+
+                <!--  Campo numérico DNI/CUIT/CUIL -->
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">DNI/CUIT/CUIL <span class="required">*</span>
                   </label>
@@ -44,32 +50,42 @@
                     <input type="text" id="last-name" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
                   </div>
                 </div>
+
+                <!-- Campo de texto Domicilio -->
                 <div class="form-group">
                   <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Domicilio facturación</label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
+                    <input type="text" id="middle-name" name="middle-name" class="form-control col-md-7 col-xs-12">
                   </div>
                 </div>
+
+                <!-- Campo de texto Teléfono -->
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Teléfono <span class="required">*</span>
                   </label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input id="birthday" class="form-control col-md-7 col-xs-12" required="required" type="text">
+                    <input type="text" id="telefono" name="telefono" class="form-control col-md-7 col-xs-12" required="required">
                   </div>
                 </div>
+                
+                <!-- Campo de e-mail -->
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-12">e-mail<span class="required">*</span>
                   </label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input id="correo" class="form-control col-md-7 col-xs-12" required="required" type="email">
+                    <input type="email" id="correo" name ="correo" class="form-control col-md-7 col-xs-12" required="required">
                   </div>
                 </div>
+                
                 <div class="ln_solid"></div>
+                
+                <!-- (^) separador - grupo de botones (v) -->
+                
                 <div class="form-group">
                   <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                     <button class="btn btn-primary" type="button">Cancel</button>
   		            <button class="btn btn-primary" type="reset">Reset</button>
-                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="submit" formmethod="POST" class="btn btn-success">Submit</button>
                   </div>
                 </div>
               </form>
