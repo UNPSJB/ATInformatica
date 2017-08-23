@@ -4,18 +4,21 @@ from django.http import HttpResponse
 
 # Create your views here.
 
-def producto_html(request):
-    context = {}
-    # The template to be loaded as per gentelella.
-    # All resource paths for gentelella end in .html.
-    print(">> REQUEST HTTP: " + str(request.method))
-    if request.method == 'GET':
-        print(request.GET)
-    if request.method == 'POST':
-        print(request.POST)
 
+def producto(request):
+    context = {}
+    # Ver el tema de si es modificación o creación
+    
     # Pick out the html file name from the url. And load that template.
-    load_template = request.path.split('/')[-1]
-    print(load_template)
+    load_template = request.path.split('/')[-1] + '.html'
+    
+    template = loader.get_template('producto/' + load_template)
+    return HttpResponse(template.render(context, request))
+
+def producto_detail(request):
+    context = {}
+    # Pick out the html file name from the url. And load that template.
+    load_template = request.path.split('/')[-1] 
+    
     template = loader.get_template('producto/' + load_template)
     return HttpResponse(template.render(context, request))
