@@ -2600,8 +2600,28 @@ function init_DataTables() {
 
     $('#datatable').dataTable();
 
-    $('#datatable-keytable').DataTable({
+    /*
+    * Constructor de DataTable para clientes
+    */
+    var tablaClientes = $('#datatable-clientes').DataTable({
         keys: true
+        // TODO: AddRow para disparar un alta
+        // TODO: botón Edit y Eliminar
+    });
+
+    $('#datatable-clientes tbody').on('click', 'tr', function() {
+        var datosFila = tablaClientes.row( this ).data();
+        alert(datosFila);
+    });
+
+
+    var tabla = $('#datatable-keytable').DataTable({
+        keys: true
+    });
+
+    $('#datatable-keytable tbody').on('click', 'tr', function() {
+        var datosFila = tabla.row( this ).data();
+        alert('Data: ' + datosFila);
     });
 
     $('#datatable-responsive').DataTable();
