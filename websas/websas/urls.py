@@ -20,7 +20,8 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     # app/ -> Genetelella UI and resources
-    url(r'^', include('app.urls')),
+    url(r'^', include('sas.urls')),
+    url(r'^develop/', include('lela.urls')),
     url(r'^producto/', include('producto.urls')),
 
 
