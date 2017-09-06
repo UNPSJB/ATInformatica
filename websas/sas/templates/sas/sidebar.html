@@ -26,7 +26,7 @@
       <ul class="nav side-menu">
         <li><a><i class="fa fa-home"></i>Clientes<span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-            <li><a href="{% url 'cliente_detail' %}">Altas - Modificación</a></li>
+            <li><a href="#">Altas - Modificación</a></li>
             <li><a href="/clientes.html">Listados - Bajas</a></li>
           </ul>
         </li>
@@ -40,8 +40,10 @@
 
             <!-- Si ponemos 'producto' asi solo, funciona porque le pega a la url
             cuyo name='producto'. Lo mismo con el detail-->
-            <li><a href= "{% url 'producto' %}">Altas - Modificación</a></li>
-            <li><a href="{% url 'producto_detail' %}">Listados - Bajas</a></li></ul>
+            <li><a href= "{% url 'producto_detail' %}">Altas - Modificación</a></li>
+            <li><a href="{% url 'producto' %}">Listados - Bajas</a></li>
+            <li><a href="{% url 'stock' %}">Stock</a></li>
+          </ul>
             
         </li>
         <li><a><i class="fa fa-table"></i>Tipos de tareas<span class="fa fa-chevron-down"></span></a>
