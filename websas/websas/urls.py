@@ -23,6 +23,10 @@ urlpatterns = [
     url(r'^', include('sas.urls')),
     url(r'^develop/', include('lela.urls')),
     url(r'^producto/', include('producto.urls')),
+    url(r'^persona/', include('persona.urls')),
+    url(r'^rubro/', include('rubro.urls')),
+    url(r'^servicio/', include('servicio.urls')),
+    url(r'^usuario/', include('usuario.urls')),
 
 
 ]

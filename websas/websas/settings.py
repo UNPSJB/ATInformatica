@@ -40,6 +40,10 @@ INSTALLED_APPS = [
     'sas',
     'lela',
     'producto',
+    'persona',
+    'rubro',
+    'servicio',
+    'usuario',
 ]
 
 MIDDLEWARE = [
