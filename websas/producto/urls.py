@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from producto import views
+from . import views
 
 urlpatterns = [
     # Matches any html file - to be used for gentella
