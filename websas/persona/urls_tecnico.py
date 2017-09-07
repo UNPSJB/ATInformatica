@@ -7,5 +7,6 @@ urlpatterns = [
     # Or create a separate django app.
 
     # The home page
-    url(r'^$', views.persona, name='persona')
+    url(r'^$', views.tecnico, name='tecnico'),
+    url(r'^(?P<pk>\d+)$', views.tecnico_detail, name='tecnico_detail')
 ]
