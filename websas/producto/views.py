@@ -7,13 +7,19 @@ from django.http import HttpResponse
 
 def producto(request):
     context = {}
-    # Ver el tema de si es modificación o creación
+
+    # SUGIERO QUE AQUÍ NOS FIJEMOS DE QUÉ MÉTODO ES
+    # LA REQUEST Y DECIDIR SI MOSTRAR EL LISTADO O 
+    # CREAR UNO NUEVO
     
     # Pick out the html file name from the url. And load that template.
     template = loader.get_template('producto/productos.html')
     return HttpResponse(template.render(context, request))
 
-def producto_detail(request):
+def producto_detail(request,id_producto):
+
+    # Este señor de aquí nos devuelve un producto con clave 'id_producto'
+
     context = {}
     # Pick out the html file name from the url. And load that template.
     

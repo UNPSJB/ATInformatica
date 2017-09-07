@@ -40,7 +40,7 @@
 
             <!-- Si ponemos 'producto' asi solo, funciona porque le pega a la url
             cuyo name='producto'. Lo mismo con el detail-->
-            <li><a href= "{% url 'producto_detail' %}">Altas - Modificación</a></li>
+            <li><a href= "{% url 'producto_detail' id_producto=5%}">Altas - Modificación</a></li>
             <li><a href="{% url 'producto' %}">Listados - Bajas</a></li>
             <li><a href="{% url 'stock' %}">Stock</a></li>
           </ul>
