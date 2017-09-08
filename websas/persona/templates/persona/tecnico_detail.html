@@ -28,41 +28,48 @@
             </div>
             <div class="x_content">
               <br />
-              <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
-
+              <form method="post" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                {% csrf_token %}
                 <div class="form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre">Nombre <span class="required">*</span>
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.nombre.label }}">{{ form.nombre.label }}
                   </label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input type="text" id="nombre_input" name="nombre" required="required" class="form-control col-md-7 col-xs-12">
+                    {{ form.nombre }}
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="dnicuitcuil">DNI/CUIT/CUIL <span class="required">*</span>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.apellido.label }}">{{ form.apellido.label }}
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      {{ form.apellido }}
+                    </div>
+                  </div>
+                <div class="form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.doc.label }}">{{ form.doc.label }} 
                   </label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input type="text" id="dnicuitcuil_input" name="dnicuitcuil" required="required" class="form-control col-md-7 col-xs-12">
+                    {{ form.doc }}
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="domicilio">Domicilio <span class="required">*</span></span>
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.domicilio.label }}"> {{ form.domicilio.label }}
                   </label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input type="text" id="domicilio_input" name="domicilio" required="required" class="form-control col-md-7 col-xs-12">
+                    {{ form.domicilio }}
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Teléfono </label>
+                  <label for="{{ form.telefono.label }}" class="control-label col-md-3 col-sm-3 col-xs-12">{{ form.telefono.label }}</label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input id="telefono_input" class="form-control col-md-7 col-xs-12" type="text" name="telefono">
+                      {{ form.telefono }}
                   </div>
                 </div>
                 
                 <div class="form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">e-mail <span class="required">*</span></span>
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.email.label }}">{{ form.email.label }}</span>
                   </label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input id="email" class="date-picker form-control col-md-7 col-xs-12" required="required" name="email" type="text">
+                      {{ form.email }}
                   </div>
                 </div>
                 <div class="ln_solid"></div>

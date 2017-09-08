@@ -16,16 +16,21 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from usuario import views as uviews
+from persona import views as cviews
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-
     # app/ -> Genetelella UI and resources
     url(r'^', include('sas.urls')),
     url(r'^develop/', include('lela.urls')),
     url(r'^producto/', include('producto.urls')),
-    url(r'^tecnico/', include('persona.urls_tecnico')),
+    
+    url(r'^tecnico/', include('persona.urls_tecnico', namespace="tecnico")),
+    #url(r'^tecnicos/', cviews.tecnicos, name="tecnicos"),
+    
     url(r'^cliente/', include('persona.urls_cliente')),
+    url(r'^clientes/', cviews.clientes, name="clientes"),
+
     url(r'^rubro/', include('rubro.urls')),
     url(r'^servicio/', include('servicio.urls')),
     url(r'^usuario/', include('usuario.urls')),

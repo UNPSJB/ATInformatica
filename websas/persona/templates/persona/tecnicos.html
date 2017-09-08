@@ -8,7 +8,7 @@
 <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
             <div class="x_title">
-              <h2>Button Example <small>Users</small></h2>
+              <h2>Gestión de técnicos<small>Técnicos</small></h2>
               <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                 </li>
@@ -34,6 +34,7 @@
                 <thead>
                   <tr>
                     <th>Nombre</th>
+                    <th>Apellido</th>
                     <th>DNI/CUIT/CUIL</th>
                     <th>Domicilio</th>
                     <th>Teléfono</th>
@@ -41,16 +42,59 @@
                   </tr>
                 </thead>
 
-
                 <tbody>
+                  {% if object_list %}
+                  {% for tecnico in object_list %}
                   <tr>
-                    <td>Tiger Nixon</td>
-                    <td>System Architect</td>
-                    <td>Edinburgh</td>
-                    <td>61</td>
-                    <td>2011/04/25</td>
+                    <td>{{ tecnico.nombre }}</td>
+                    <td>{{ tecnico.apellido }}</td>
+                    <td>{{ tecnico.doc }}</td>
+                    <td>{{ tecnico.domicilio }}</td>
+                    <td>{{ tecnico.telefono }}</td>
+                    <td>{{ tecnico.email }}</td>
+                    <td>
+                      <a href="{% url 'tecnico:tecnico_editar' tecnico.id %}"><i class="fa fa-edit"></i></a>
+                    </td>
+                    <td>
+                      <a href="{% url 'tecnico:tecnico_eliminar' tecnico.id %}"><i class="fa fa-trash"></i></a>
+                    </td>
                   </tr>
-                  <tr>
+                  {% endfor %}
+                  {% else %}
+                  <h1>No hay técnicos registrados</h1>
+                  {% endif %}
+
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+</div>
+{% endblock content %}
+{% block javascripts %}
+  {{ block.super }}
+  <!-- Datatables -->
+  <script src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+  <script src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+  <script src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+  <script src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+  <script src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+  <script src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+  <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
+  <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
+  <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+{% endblock javascripts %}
+
+<!--
+
+                    <tr>
                     <td>Garrett Winters</td>
                     <td>Accountant</td>
                     <td>Tokyo</td>
@@ -170,29 +214,4 @@
                     <td>2009/04/10</td>
                   </tr>
 
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-</div>
-{% endblock content %}
-{% block javascripts %}
-  {{ block.super }}
-  <!-- Datatables -->
-  <script src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-  <script src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-  <script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-  <script src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
-  <script src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
-  <script src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
-  <script src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
-  <script src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-  <script src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-  <script src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-  <script src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-  <script src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-  <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
-  <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
-  <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
-{% endblock javascripts %}
+-->
