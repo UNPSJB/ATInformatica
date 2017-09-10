@@ -2564,6 +2564,7 @@ function init_DataTables() {
     }
     console.log('init_DataTables');
 
+    /*
     var handleDataTableButtons = function() {
         if ($("#datatable-buttons").length) {
             $("#datatable-buttons").DataTable({
@@ -2597,6 +2598,28 @@ function init_DataTables() {
             }
         };
     }();
+    */
+
+    $("#datatable-tecnicos").DataTable({
+        responsive: true,
+        dom: "Bfrtip",
+        buttons: [{
+            extend: "copy",
+            className: "btn-sm"
+        }, {
+            extend: "csv",
+            className: "btn-sm"
+        }, {
+            extend: "excel",
+            className: "btn-sm"
+        }, {
+            extend: "pdfHtml5",
+            className: "btn-sm"
+        }, {
+            extend: "print",
+            className: "btn-sm"
+        }, ],
+    });
 
     $('#datatable').dataTable();
 
@@ -2654,7 +2677,7 @@ function init_DataTables() {
         });
     });
 
-    TableManageButtons.init();
+    // TableManageButtons.init();
 
 };
 

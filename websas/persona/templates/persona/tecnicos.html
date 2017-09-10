@@ -2,7 +2,6 @@
 
 {% block title %} Tecnicos {% endblock title %}
 
-
 {% block content %}
 <div class="right_col">
 <div class="col-md-12 col-sm-12 col-xs-12">
@@ -21,16 +20,18 @@
                     </li>
                   </ul>
                 </li>
-                <li><a class="close-link"><i class="fa fa-close"></i></a>
-                </li>
               </ul>
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-              <p class="text-muted font-13 m-b-30">
+              <!-- párrafo para mostrar info adicional antes de la tabla
+              
+                <p class="text-muted font-13 m-b-30">
                 The Buttons extension for DataTables provides a common set of options, API methods and styling to display buttons on a page that will interact with a DataTable. The core library provides the based framework upon which plug-ins can built.
-              </p>
-              <table id="datatable-buttons" class="table table-striped table-bordered">
+                </p>
+              
+              -->
+              <table id="datatable-tecnicos" class="table table-striped table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
                 <thead>
                   <tr>
                     <th>Nombre</th>
@@ -39,6 +40,8 @@
                     <th>Domicilio</th>
                     <th>Teléfono</th>
                     <th>e-mail</th>
+                    <th></th>
+                    <th></th>
                   </tr>
                 </thead>
 
@@ -61,10 +64,11 @@
                   </tr>
                   {% endfor %}
                   {% else %}
+
                   <h1>No hay técnicos registrados</h1>
+                  <!-- no importa si hay un <h1> en el body, DataTables lo saca de la tabla -->
+
                   {% endif %}
-
-
                 </tbody>
               </table>
             </div>
@@ -72,6 +76,7 @@
         </div>
 </div>
 {% endblock content %}
+
 {% block javascripts %}
   {{ block.super }}
   <!-- Datatables -->
