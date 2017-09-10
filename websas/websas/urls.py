@@ -28,8 +28,8 @@ urlpatterns = [
     url(r'^tecnico/', include('persona.urls_tecnico', namespace="tecnico")),
     #url(r'^tecnicos/', cviews.tecnicos, name="tecnicos"),
     
-    url(r'^cliente/', include('persona.urls_cliente')),
-    url(r'^clientes/', cviews.clientes, name="clientes"),
+    url(r'^cliente/', include('persona.urls_cliente', namespace="cliente")),
+    #url(r'^clientes/', cviews.clientes, name="clientes"),
 
     url(r'^rubro/', include('rubro.urls')),
     url(r'^servicio/', include('servicio.urls')),

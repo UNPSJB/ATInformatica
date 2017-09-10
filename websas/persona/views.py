@@ -4,8 +4,8 @@ from django.core.urlresolvers import reverse_lazy
 from django.template import loader
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 
-from .models import Tecnico
-from .forms import TecnicoForm
+from .models import Tecnico, Cliente
+from .forms import TecnicoForm, ClienteForm
 
 # Create your views here.
 class TecnicoList(ListView):
@@ -28,6 +28,29 @@ class TecnicoDelete(DeleteView):
     model = Tecnico
     template_name = 'persona/tecnico_delete.html'
     success_url = reverse_lazy('tecnico:tecnico_listar')
+
+
+class ClienteList(ListView):
+    model = Cliente
+    template_name = 'persona/clientes.html'
+
+class ClienteCreate(CreateView):
+    model = Cliente
+    template_name = 'persona/cliente_detail.html'
+    form_class = ClienteForm
+    success_url = reverse_lazy('cliente:cliente_listar')
+
+class ClienteUpdate(UpdateView):
+    model = Cliente
+    template_name = 'persona/cliente_detail.html'
+    form_class = ClienteForm
+    success_url = reverse_lazy('cliente:cliente_listar')
+
+class ClienteDelete(DeleteView):
+    model = Cliente
+    template_name = 'persona/cliente_delete.html'
+    success_url = reverse_lazy('cliente:cliente_listar')
+
 """
 def tecnicos(request):
     context = {}

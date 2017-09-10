@@ -28,67 +28,59 @@
             </div>
             <div class="x_content">
               <br />
-              <form id="am-cliente" data-parsley-validate class="form-horizontal form-label-left">
-                
-                <!-- Comienzo del formulario - csrf_token para aceptar data POST en django -->
-                {% csrf_token %}
-
-                <!-- Campo de texto Nombre -->
-                <div class="form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Nombre <span class="required">*</span>
-                  </label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input type="text" id="first-name" name="first-name" required="required" class="form-control col-md-7 col-xs-12">
+              <form method="post" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.nombre.label }}">{{ form.nombre.label }}
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      {{ form.nombre }}
+                    </div>
                   </div>
-                </div>
-
-                <!--  Campo numérico DNI/CUIT/CUIL -->
-                <div class="form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">DNI/CUIT/CUIL <span class="required">*</span>
-                  </label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input type="text" id="last-name" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
+                  <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.apellido.label }}">{{ form.apellido.label }}
+                      </label>
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                        {{ form.apellido }}
+                      </div>
+                    </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.doc.label }}">{{ form.doc.label }} 
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      {{ form.doc }}
+                    </div>
                   </div>
-                </div>
-
-                <!-- Campo de texto Domicilio -->
-                <div class="form-group">
-                  <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Domicilio facturación</label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input type="text" id="middle-name" name="middle-name" class="form-control col-md-7 col-xs-12">
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.domicilio.label }}"> {{ form.domicilio.label }}
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      {{ form.domicilio }}
+                    </div>
                   </div>
-                </div>
-
-                <!-- Campo de texto Teléfono -->
-                <div class="form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Teléfono <span class="required">*</span>
-                  </label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input type="text" id="telefono" name="telefono" class="form-control col-md-7 col-xs-12" required="required">
+                  <div class="form-group">
+                    <label for="{{ form.telefono.label }}" class="control-label col-md-3 col-sm-3 col-xs-12">{{ form.telefono.label }}</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        {{ form.telefono }}
+                    </div>
                   </div>
-                </div>
-                
-                <!-- Campo de e-mail -->
-                <div class="form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12">e-mail<span class="required">*</span>
-                  </label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input type="email" id="correo" name ="correo" class="form-control col-md-7 col-xs-12" required="required">
+                  
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.email.label }}">{{ form.email.label }}</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        {{ form.email }}
+                    </div>
                   </div>
-                </div>
-                
-                <div class="ln_solid"></div>
-                
-                <!-- (^) separador - grupo de botones (v) -->
-                
-                <div class="form-group">
-                  <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                    <button class="btn btn-primary" type="button">Cancel</button>
-  		            <button class="btn btn-primary" type="reset">Reset</button>
-                    <button type="submit" formmethod="POST" class="btn btn-success">Submit</button>
+                  <div class="ln_solid"></div>
+                  <div class="form-group">
+                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                      <button class="btn btn-primary" type="button">Cancel</button>
+                    <button class="btn btn-primary" type="reset">Reset</button>
+                      <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
                   </div>
-                </div>
-              </form>
+                </form>  
             </div>
           </div>
         </div>
