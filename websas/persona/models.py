@@ -15,6 +15,9 @@ class Persona(models.Model):
     email = models.EmailField()
     telefono = models.CharField(max_length=15)
 
+    def __str__(self):
+        return "{} {}".format(self.nombre, self.apellido)
+
 class Rol(models.Model):
     persona = models.ForeignKey(
         Persona,
