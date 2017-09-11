@@ -1,10 +1,10 @@
 from django import forms
-from .models import Tecnico, Cliente
+from .models import Tecnico, Cliente, Persona
 
 class TecnicoForm (forms.ModelForm):
 
     class Meta:
-        model = Tecnico
+        model = Persona
         fields = [
             'nombre',
             'apellido',
@@ -33,7 +33,7 @@ class TecnicoForm (forms.ModelForm):
 class ClienteForm (forms.ModelForm):
 
     class Meta:
-        model = Cliente
+        model = Persona
         fields = [
             'nombre',
             'apellido',

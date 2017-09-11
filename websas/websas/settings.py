@@ -85,7 +85,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'websas',
         'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'PASSWORD': 'master',
         'HOST': 'localhost',
         'PORT': '5432'
     }
@@ -123,6 +123,7 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+AUTH_USER_MODEL = 'usuario.Usuario'
 
 
 # Static files (CSS, JavaScript, Images)

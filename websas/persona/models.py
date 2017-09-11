@@ -15,12 +15,20 @@ class Persona(models.Model):
     email = models.EmailField()
     telefono = models.CharField(max_length=15)
 
-    class Meta:
-        abstract = True
+class Rol(models.Model):
+    persona = models.ForeignKey(
+        Persona,
+        on_delete=models.CASCADE,
+        null=True
+    )
 
-class Tecnico(Persona):
-    pass    
+class Tecnico(Rol):
+
+    class Meta:
+        permissions = (
+            ('p1','Permiso Tecnico'),
+        )
     
 
-class Cliente(Persona):
+class Cliente(Rol):
     pass
