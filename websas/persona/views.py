@@ -5,6 +5,7 @@ from django.template import loader
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 
 from usuario.models import Usuario
+from persona.models import Rol
 
 from .models import Tecnico, Cliente,Persona
 from .forms import TecnicoForm, ClienteForm
@@ -14,9 +15,14 @@ class TecnicoList(ListView):
     model = Persona
     template_name = 'persona/tecnicos.html'
 
+
     def dispatch(self, request, *args, **kwargs):
-        usuario = Usuario.objects.filter(username=request.user)
-        print(usuario[0].tiene_permiso('persona.p1'))
+        roles_de_usuario = Rol.objects.filter(persona=request.user.persona).all()
+        print([request.user.get_perms(r) for r in roles_de_usuario])
+        # if(usuario.has_perm('persona.p1')):
+        #     print('tengo permiso')
+        # else:
+        #     print('No tengo')
         return super(TecnicoList,self).dispatch(request, *args, **kwargs)
 
 class TecnicoCreate(CreateView):
