@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from persona.models import Rol
 
+from django.contrib.auth.models import UserManager
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm
 
@@ -14,6 +15,8 @@ class Usuario(Rol,AbstractUser):
         print([r for r in roles_de_usuario])
         print([self.has_perm(permiso) for r in roles_de_usuario])
         return any([self.has_perm(permiso, r) for r in roles_de_usuario])
+
+    objects = UserManager()
 
 class MyUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
