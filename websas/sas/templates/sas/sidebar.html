@@ -54,8 +54,8 @@
         </li> -->
         <li><a><i class="fa fa-wrench"></i>Tipos de Servicio<span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-            <li><a href="/tServicio_detail.html">Altas - Modificación</a></li>
-            <li><a href="/tServicio.html">Listados - Bajas</a></li>
+            <li><a href="{% url 'servicio:servicio_crear' %}">Altas - Modificación</a></li>
+            <li><a href="{% url 'servicio:servicio_listar' %}">Listados - Bajas</a></li>
           </ul>
         </li>
         <li><a><i class="fa fa-bar-chart-o"></i> Ordenes de trabajo <span class="fa fa-chevron-down"></span></a>
