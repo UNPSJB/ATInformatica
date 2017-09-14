@@ -16,7 +16,6 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from usuario import views as uviews
-from persona import views as cviews
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -33,7 +32,5 @@ urlpatterns = [
 
     url(r'^rubro/', include('rubro.urls')),
     url(r'^servicio/', include('servicio.urls')),
-    url(r'^usuario/', include('usuario.urls')),
-    url(r'^login/', uviews.login_user, name="login"),
-    url(r'^logout/', uviews.logout_user, name="logout"),
+    url(r'^usuario/', include('usuario.urls', namespace="usuario")),
 ]

@@ -15,7 +15,7 @@ def login_user(request):
         return render(request, 'login.html')
 
 
-@login_required(login_url='login')
+@login_required(login_url='usuario:login')
 def logout_user(request):
     logout(request)
     return redirect('/')
