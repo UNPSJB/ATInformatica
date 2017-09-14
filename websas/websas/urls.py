@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from usuario import views as uviews
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -25,12 +24,10 @@ urlpatterns = [
     url(r'^producto/', include('producto.urls')),
     
     url(r'^tecnico/', include('persona.urls_tecnico', namespace="tecnico")),
-    #url(r'^tecnicos/', cviews.tecnicos, name="tecnicos"),
     
     url(r'^cliente/', include('persona.urls_cliente', namespace="cliente")),
-    #url(r'^clientes/', cviews.clientes, name="clientes"),
 
-    url(r'^rubro/', include('rubro.urls')),
+    url(r'^rubro/', include('rubro.urls', namespace="rubro")),
     url(r'^servicio/', include('servicio.urls')),
     url(r'^usuario/', include('usuario.urls', namespace="usuario")),
 ]
