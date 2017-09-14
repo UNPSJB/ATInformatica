@@ -26,34 +26,35 @@
       <ul class="nav side-menu">
         <li><a><i class="fa fa-home"></i>Clientes<span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-            <li><a href="/cliente/crear">Altas - Modificación</a></li>
-            <li><a href="/cliente/listar">Listados - Bajas</a></li>
+            <li><a href="/cliente/crear">Altas </a></li>
+            <li><a href="/cliente/listar">Listados</a></li>
           </ul>
         </li>
         <li><a><i class="fa fa-edit"></i>Técnicos<span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-            <li><a href="/tecnico/crear">Altas - Modificación</a></li>
-            <li><a href="/tecnico/listar">Listados - Bajas</a></li>          </ul>
+            <li><a href="/tecnico/crear">Altas </a></li>
+            <li><a href="/tecnico/listar">Listados</a></li>          </ul>
         </li>
         <li><a><i class="fa fa-desktop"></i>Productos<span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
 
             <!-- Si ponemos 'producto' asi solo, funciona porque le pega a la url
             cuyo name='producto'. Lo mismo con el detail-->
-            <li><a href= "{% url 'producto:producto_crear' %}">Altas - Modificación</a></li>
+            <li><a href= "{% url 'producto:producto_crear' %}">Altas </a></li>
+            <li><a href= "{% url 'producto:producto_listar' %}">Listados</a></li>
           </ul>
             
         </li>
         <!-- <li><a><i class="fa fa-table"></i>Tipos de tareas<span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-            <li><a href="/tTarea_detail.html">Altas - Modificación</a></li>
-            <li><a href="/tTareas.html">Listados - Bajas</a></li>          
+            <li><a href="/tTarea_detail.html">Altas </a></li>
+            <li><a href="/tTareas.html">Listados</a></li>          
           </ul>
         </li> -->
         <li><a><i class="fa fa-wrench"></i>Tipos de Servicio<span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-            <li><a href="{% url 'servicio:servicio_crear' %}">Altas - Modificación</a></li>
-            <li><a href="{% url 'servicio:servicio_listar' %}">Listados - Bajas</a></li>
+            <li><a href="{% url 'servicio:servicio_crear' %}">Altas </a></li>
+            <li><a href="{% url 'servicio:servicio_listar' %}">Listados</a></li>
           </ul>
         </li>
         <li><a><i class="fa fa-bar-chart-o"></i> Ordenes de trabajo <span class="fa fa-chevron-down"></span></a>
@@ -62,8 +63,8 @@
         </li>
         <li><a><i class="fa fa-clone"></i>Rubros<span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-            <li><a href="{% url 'rubro:rubro_crear'%}">Altas - Modificación</a></li>
-            <li><a href="{% url 'rubro:rubro_listar'%}">Listados - Bajas</a></li>          
+            <li><a href="{% url 'rubro:rubro_crear'%}">Altas </a></li>
+            <li><a href="{% url 'rubro:rubro_listar'%}">Listados</a></li>          
           </ul>
         </li>
       </ul>
