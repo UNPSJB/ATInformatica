@@ -56,10 +56,10 @@
                     <td>{{ producto.stock }}</td>
                     <td>{{ producto.precio }}</td>
                     <td>
-                        <a href="{% url 'producto:producto_crear'%}"><i class="fa fa-edit"></i></a>
+                        <a href="{% url 'producto:producto_editar' producto.id %}"><i class="fa fa-edit"></i></a>
                     </td>
                     <td>
-                        <a href="{% url 'producto:producto_crear'%}"><i class="fa fa-trash"></i></a>
+                        <a href="{% url 'producto:producto_eliminar' producto.id %}"><i class="fa fa-trash"></i></a>
                     </td>
                     </tr>
                   
