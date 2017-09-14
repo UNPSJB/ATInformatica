@@ -19,6 +19,7 @@ class Persona(models.Model):
         return "{} {}".format(self.nombre, self.apellido)
 
 class Rol(models.Model):
+    rolname = models.CharField(max_length=20, null=True, blank=True)
     persona = models.ForeignKey(
         Persona,
         on_delete=models.CASCADE,
@@ -26,12 +27,26 @@ class Rol(models.Model):
     )
 
 class Tecnico(Rol):
-
-    class Meta:
-        permissions = (
-            ('p1','Permiso Tecnico'),
-        )
+    
+    def __init__(self, *args, **kwargs):
+        super(self.__class__, self).__init__(*args, **kwargs)
+        self.rolname = "Tecnico" 
     
 
 class Cliente(Rol):
-    pass
+
+    def __init__(self, *args, **kwargs):
+        super(self.__class__, self).__init__(*args, **kwargs)
+        self.rolname = "Cliente"
+
+class JefeTaller(Rol):
+
+    def __init__(self, *args, **kwargs):
+        super(self.__class__, self).__init__(*args, **kwargs)
+        self.rolname = "Jefe de Taller"
+
+class Gerente(Rol):
+
+    def __init__(self, *args, **kwargs):
+        super(self.__class__, self).__init__(*args, **kwargs)
+        self.rolname = "Gerente"

@@ -8,5 +8,6 @@ from django.contrib.auth.models import UserManager
 
 class Usuario(Rol,AbstractUser):
 
+    primer_login = models.BooleanField(default=True)
     objects = UserManager()
 

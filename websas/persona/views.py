@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse,request
+from django.http import HttpResponse,HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
 from django.template import loader
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
@@ -7,37 +7,38 @@ from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from usuario.models import Usuario
 from persona.models import Rol
 
-from .models import Tecnico, Cliente,Persona
-from .forms import TecnicoForm, ClienteForm
+from .models import Tecnico, Cliente, Persona
+from .forms import PersonaForm
 
 # Create your views here.
 class TecnicoList(ListView):
     model = Persona
     template_name = 'persona/tecnicos.html'
 
-
-    def dispatch(self, request, *args, **kwargs):
-        if(request.user.has_perm('persona.p1')):
-            print('tengo permiso')
-        else:
-            print('No tengo')
-        return super(TecnicoList,self).dispatch(request, *args, **kwargs)
+    def get_queryset(self):
+        return Persona.objects.filter(pk__in=Tecnico.objects.all().values('persona'))
 
 class TecnicoCreate(CreateView):
     model = Persona
     template_name = 'persona/tecnico_detail.html'
-    form_class = TecnicoForm
+    form_class = PersonaForm
     success_url = reverse_lazy('tecnico:tecnico_listar')
 
     def post(self, request, *args, **kwargs):
-        
-        print('Holuuuuu')
-        return super(TecnicoCreate, self).post(request, *args, **kwargs)
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            persona = form.save()
+            tecnico = Tecnico(persona=persona)
+            tecnico.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
 
 class TecnicoUpdate(UpdateView):
     model = Persona
     template_name = 'persona/tecnico_detail.html'
-    form_class = TecnicoForm
+    form_class = PersonaForm
     success_url = reverse_lazy('tecnico:tecnico_listar')
 
 class TecnicoDelete(DeleteView):
@@ -47,53 +48,36 @@ class TecnicoDelete(DeleteView):
 
 
 class ClienteList(ListView):
-    model = Persona
+    model = Cliente
     template_name = 'persona/clientes.html'
+
+    def get_queryset(self):
+        return Persona.objects.filter(pk__in=Cliente.objects.all().values('persona'))
 
 class ClienteCreate(CreateView):
     model = Persona
     template_name = 'persona/cliente_detail.html'
-    form_class = ClienteForm
+    form_class = PersonaForm
     success_url = reverse_lazy('cliente:cliente_listar')
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            persona = form.save()
+            cliente = Cliente(persona=persona)
+            cliente.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
 
 class ClienteUpdate(UpdateView):
     model = Persona
     template_name = 'persona/cliente_detail.html'
-    form_class = ClienteForm
+    form_class = PersonaForm
     success_url = reverse_lazy('cliente:cliente_listar')
 
 class ClienteDelete(DeleteView):
     model = Persona
     template_name = 'persona/cliente_delete.html'
     success_url = reverse_lazy('cliente:cliente_listar')
-
-"""
-def tecnicos(request):
-    context = {}
-    template = loader.get_template('persona/tecnicos.html')
-    return HttpResponse(template.render(context, request))
-
-def tecnico(request):
-    if request.method == 'GET':
-        context = {}
-        template = loader.get_template('persona/tecnico_detail.html')
-        return HttpResponse(template.render(context, request))
-"""
-
-
-# Create your views here.
-def clientes(request):
-    context = {}
-    template = loader.get_template('persona/clientes.html')
-    return HttpResponse(template.render(context, request))
-
-def cliente(request):
-    if request.method == 'GET':
-        context = {}
-        template = loader.get_template('persona/cliente_detail.html')
-        return HttpResponse(template.render(context, request))
-
-def cliente_detail(request, pk):
-    context = {}
-    template = loader.get_template('persona/cliente_detail.html')
-    return HttpResponse(template.render(context, request))
