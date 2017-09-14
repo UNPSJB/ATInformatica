@@ -17,12 +17,10 @@ class TecnicoList(ListView):
 
 
     def dispatch(self, request, *args, **kwargs):
-        roles_de_usuario = Rol.objects.filter(persona=request.user.persona).all()
-        print([request.user.get_perms(r) for r in roles_de_usuario])
-        # if(usuario.has_perm('persona.p1')):
-        #     print('tengo permiso')
-        # else:
-        #     print('No tengo')
+        if(request.user.has_perm('persona.p1')):
+            print('tengo permiso')
+        else:
+            print('No tengo')
         return super(TecnicoList,self).dispatch(request, *args, **kwargs)
 
 class TecnicoCreate(CreateView):
@@ -30,6 +28,11 @@ class TecnicoCreate(CreateView):
     template_name = 'persona/tecnico_detail.html'
     form_class = TecnicoForm
     success_url = reverse_lazy('tecnico:tecnico_listar')
+
+    def post(self, request, *args, **kwargs):
+        
+        print('Holuuuuu')
+        return super(TecnicoCreate, self).post(request, *args, **kwargs)
 
 class TecnicoUpdate(UpdateView):
     model = Persona
