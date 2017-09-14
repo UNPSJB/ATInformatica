@@ -18,15 +18,11 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    # app/ -> Genetelella UI and resources
     url(r'^', include('sas.urls')),
     url(r'^develop/', include('lela.urls')),
     url(r'^producto/', include('producto.urls')),
-    
     url(r'^tecnico/', include('persona.urls_tecnico', namespace="tecnico")),
-    
     url(r'^cliente/', include('persona.urls_cliente', namespace="cliente")),
-
     url(r'^rubro/', include('rubro.urls', namespace="rubro")),
     url(r'^servicio/', include('servicio.urls', namespace="servicio")),
     url(r'^usuario/', include('usuario.urls', namespace="usuario")),
