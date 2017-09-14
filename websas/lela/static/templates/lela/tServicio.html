@@ -1,4 +1,4 @@
-{% extends "sas/base.html" %}
+{% extends "lela/base_site.html" %}
 
 {% block title %} Clientes {% endblock title %}
 
@@ -7,7 +7,7 @@
 <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
             <div class="x_title">
-              <h2>Tipos de servicio</h2>
+              <h2>Button Example <small>Users</small></h2>
               <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                 </li>
@@ -26,41 +26,92 @@
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-              <!---
               <p class="text-muted font-13 m-b-30">
                 The Buttons extension for DataTables provides a common set of options, API methods and styling to display buttons on a page that will interact with a DataTable. The core library provides the based framework upon which plug-ins can built.
               </p>
-              -->
-              <table id="datatable-servicio" class="table table-striped table-bordered">
+              <table id="datatable-buttons" class="table table-striped table-bordered">
                 <thead>
                   <tr>
                     <th>Nombre</th>
                     <th>Descripción</th>
-                    <th></th>
-                    <th></th>
                   </tr>
                 </thead>
+
+
                 <tbody>
-                    {% if object_list %}
-                    {% for tipo_servicio in object_list %}
                   <tr>
-                    <td>{{ tipo_servicio.nombre }}</td>
-                    <td>{{ tipo_servicio.descripcion }} </td>
-                    <td>
-                        <a href="{% url 'servicio:servicio_editar' tipo_servicio.id %}"><i class="fa fa-edit"></i></a>
-                      </td>
-                      <td>
-                        <a href="{% url 'servicio:servicio_eliminar' tipo_servicio.id %}"><i class="fa fa-trash"></i></a>
-                      </td>
-                    </tr>
-                  
-                  {% endfor %}
-                  {% else %}
+                    <td>Tiger Nixon</td>
+                    <td>System Architect</td>
+                  </tr>
+                  <tr>
+                    <td>Garrett Winters</td>
+                    <td>Accountant</td>
+                  </tr>
+                  <tr>
+                    <td>Ashton Cox</td>
+                    <td>Junior Technical Author</td>
+                  </tr>
+                  <tr>
+                    <td>Cedric Kelly</td>
+                    <td>Senior Javascript Developer</td>
+                  </tr>
+                  <tr>
+                    <td>Airi Satou</td>
+                    <td>Accountant</td>
+                  </tr>
+                  <tr>
+                    <td>Brielle Williamson</td>
+                    <td>Integration Specialist</td>
+                  </tr>
+                  <tr>
+                    <td>Herrod Chandler</td>
+                    <td>Sales Assistant</td>
+                  </tr>
+                  <tr>
+                    <td>Rhona Davidson</td>
+                    <td>Integration Specialist</td>
+                  </tr>
+                  <tr>
+                    <td>Colleen Hurst</td>
+                    <td>Javascript Developer</td>
+                  </tr>
+                  <tr>
+                    <td>Sonya Frost</td>
+                    <td>Software Engineer</td>
+                  </tr>
+                  <tr>
+                    <td>Jena Gaines</td>
+                    <td>Office Manager</td>
+                  </tr>
+                  <tr>
+                    <td>Quinn Flynn</td>
+                    <td>Support Lead</td>
+                  </tr>
+                  <tr>
+                    <td>Charde Marshall</td>
+                    <td>Regional Director</td>
+                  </tr>
+                  <tr>
+                    <td>Haley Kennedy</td>
+                    <td>Senior Marketing Designer</td>
+                  </tr>
+                  <tr>
+                    <td>Tatyana Fitzpatrick</td>
+                    <td>Regional Director</td>
+                  </tr>
+                  <tr>
+                    <td>Michael Silva</td>
+                    <td>Marketing Designer</td>
+                  </tr>
+                  <tr>
+                    <td>Paul Byrd</td>
+                    <td>Chief Financial Officer (CFO)</td>
+                  </tr>
+                  <tr>
+                    <td>Gloria Little</td>
+                    <td>Systems Administrator</td>
+                  </tr>
 
-                  <h1>No hay tipos de servicio registrados</h1>
-                  <!-- no importa si hay un <h1> en el body, DataTables lo saca de la tabla -->
-
-                  {% endif %}  
                 </tbody>
               </table>
             </div>
@@ -86,32 +137,4 @@
   <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
   <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
   <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
-  <script>
-   $("#datatable-servicio").DataTable({
-        responsive: true,
-        dom: "Bfrtip",
-        buttons: [{
-            text: "<b>Nuevo servicio</b>",
-            action: function() {
-                // TODO: si es necesario generar el form de nuevo técnico
-                // como modal, este botón puede dispararlo
-                // Por ahora sólo pega a crear técnico
-                location.href = "/servicio/crear";
-            },
-            className: "btn-sm btn-info"
-        }, {
-            extend: "copy",
-            text: "Copiar tabla",
-            className: "btn-sm"
-        }, {
-            extend: "csv",
-            text: "Exportar tabla a CSV",
-            className: "btn-sm"
-        }, {
-            extend: "print",
-            text: "Imprimir tabla",
-            className: "btn-sm"
-        }, ],
-    });
-  </script>
 {% endblock javascripts %}
