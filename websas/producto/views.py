@@ -2,33 +2,18 @@ from django.shortcuts import render
 from django.template import loader
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+
+from django.views.generic import CreateView, TemplateView
+from django.core.urlresolvers import reverse_lazy
+from .models import Producto
+from .forms import ProductoForm
 # Create your views here.
 
-@login_required(login_url='usuario:login')
-def producto(request):
-    context = {}
+class ProductoCreate(CreateView):
+    model = Producto
+    template_name = 'producto/producto_detail.html'
+    form_class = ProductoForm
+    success_url = reverse_lazy('producto:producto_listar')
 
-    # SUGIERO QUE AQUÍ NOS FIJEMOS DE QUÉ MÉTODO ES
-    # LA REQUEST Y DECIDIR SI MOSTRAR EL LISTADO O 
-    # CREAR UNO NUEVO
-    
-    # Pick out the html file name from the url. And load that template.
-    template = loader.get_template('producto/productos.html')
-    return HttpResponse(template.render(context, request))
-
-@login_required(login_url='usuario:login')
-def producto_detail(request,id_producto):
-
-    # Este señor de aquí nos devuelve un producto con clave 'id_producto'
-
-    context = {}
-    # Pick out the html file name from the url. And load that template.
-    
-    template = loader.get_template('producto/producto_detail.html')
-    return HttpResponse(template.render(context, request))
-
-def stock(request):
-    context = {}
-
-    template = loader.get_template('producto/stock.html')
-    return HttpResponse(template.render(context,request))
+class ProductoList(TemplateView):
+    template_name = 'producto/productos.html'
