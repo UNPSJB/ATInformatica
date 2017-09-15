@@ -3,50 +3,16 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
 from django.template import loader
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
-
+from django.contrib.contenttypes.models import ContentType
 from usuario.models import Usuario
 from persona.models import Rol
+import abc
+from .models import Tecnico, JefeTaller, Gerente, Cliente, Persona
+from .forms import PersonaForm, EmpleadoForm
 
-from .models import Tecnico, Cliente, Persona
-from .forms import PersonaForm
-
-# Create your views here.
-class TecnicoList(ListView):
-    model = Persona
-    template_name = 'persona/tecnicos.html'
-
-    def get_queryset(self):
-        return Persona.objects.filter(pk__in=Tecnico.objects.all().values('persona'))
-
-class TecnicoCreate(CreateView):
-    model = Persona
-    template_name = 'persona/tecnico_detail.html'
-    form_class = PersonaForm
-    success_url = reverse_lazy('tecnico:tecnico_listar')
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            persona = form.save()
-            tecnico = Tecnico(persona=persona)
-            tecnico.save()
-            return HttpResponseRedirect(self.get_success_url())
-        else:
-            return self.render_to_response(self.get_context_data(form=form))
-
-class TecnicoUpdate(UpdateView):
-    model = Persona
-    template_name = 'persona/tecnico_detail.html'
-    form_class = PersonaForm
-    success_url = reverse_lazy('tecnico:tecnico_listar')
-
-class TecnicoDelete(DeleteView):
-    model = Persona
-    template_name = 'persona/tecnico_delete.html'
-    success_url = reverse_lazy('tecnico:tecnico_listar')
-
-
+"""""""""""""""""""""""""""""""""""""""
+Vistas de clientes
+"""""""""""""""""""""""""""""""""""""""
 class ClienteList(ListView):
     model = Cliente
     template_name = 'persona/clientes.html'
@@ -81,3 +47,66 @@ class ClienteDelete(DeleteView):
     model = Persona
     template_name = 'persona/cliente_delete.html'
     success_url = reverse_lazy('cliente:cliente_listar')
+
+"""""""""""""""""""""""""""""""""""""""
+Vistas genéricas de empleados
+"""""""""""""""""""""""""""""""""""""""
+class EmpleadoCreate(CreateView):
+    model = Persona
+    template_name = 'persona/tecnico_detail.html'
+    form_class = EmpleadoForm
+    success_url = reverse_lazy('tecnico:tecnico_listar')
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            persona = form.save()
+            rol = form.cleaned_data['rol']
+            self.crear_rol(persona, rol)
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+    
+    def crear_rol(self, persona, rol):
+        if rol == 'TC':
+            tecnico = Tecnico(persona=persona)
+            tecnico.save()
+        elif rol == 'JT':
+            jefe_taller = JefeTaller(persona=persona)
+            jefe_taller.save()
+        elif rol == 'G':   
+            gerente = Gerente(persona=persona)
+            gerente.save()
+
+class EmpleadoUpdate(UpdateView):
+    model = Persona
+    template_name = 'persona/tecnico_detail.html'
+    form_class = PersonaForm
+    success_url = reverse_lazy('tecnico:tecnico_listar')
+
+class EmpleadoDelete(DeleteView):
+    model = Persona
+    template_name = 'persona/tecnico_delete.html'
+    success_url = reverse_lazy('tecnico:tecnico_listar')
+
+class TecnicoList(ListView):
+    model = Persona
+    template_name = 'persona/tecnicos.html'
+
+    def get_queryset(self):
+        return Persona.objects.filter(pk__in=Tecnico.objects.all().values('persona'))
+
+class JefeTallerList(ListView):
+    model = Persona
+    template_name = 'persona/tecnicos.html'
+
+    def get_queryset(self):
+        return Persona.objects.filter(pk__in=JefeTaller.objects.all().values('persona'))
+
+class GerenteList(ListView):
+    model = Persona
+    template_name = 'persona/tecnicos.html'
+
+    def get_queryset(self):
+        return Persona.objects.filter(pk__in=Gerente.objects.all().values('persona'))

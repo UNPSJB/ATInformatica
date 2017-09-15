@@ -30,10 +30,13 @@
             <li><a href="/cliente/listar">Listados</a></li>
           </ul>
         </li>
-        <li><a><i class="fa fa-edit"></i>Técnicos<span class="fa fa-chevron-down"></span></a>
+        <li><a><i class="fa fa-edit"></i>Empleados<span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-            <li><a href="/tecnico/crear">Altas </a></li>
-            <li><a href="/tecnico/listar">Listados</a></li>          </ul>
+            <li><a href="{% url 'tecnico:tecnico_crear' %}">Altas </a></li>
+            <li><a href="{% url 'tecnico:tecnico_listar' %}">Listar Tecnicos</a></li>
+            <li><a href="{% url 'tecnico:jefe_listar' %}">Listar Jefes</a></li>
+            <li><a href="{% url 'tecnico:gerente_listar' %}">Listar Gerentes</a></li>          
+          </ul>
         </li>
         <li><a><i class="fa fa-desktop"></i>Productos<span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">

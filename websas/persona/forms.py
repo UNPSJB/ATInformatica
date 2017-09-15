@@ -29,3 +29,32 @@ class PersonaForm (forms.ModelForm):
             'email': forms.EmailInput(attrs={'class':'form-control col-md-7 col-xs-12'}),
             'telefono': forms.TextInput(attrs={'class':'form-control col-md-7 col-xs-12'}),
         }
+
+
+class EmpleadoForm(PersonaForm):
+    ROLES = (
+        ('TC', 'Tecnico'),
+        ('JT', 'Jefe de Taller'),
+        ('G', 'Gerente'),
+    )
+    rol = forms.ChoiceField(choices = ROLES, label="Tipo empleado", 
+                              initial='', widget=forms.Select(), required=True)
+    
+
+    class Meta(PersonaForm.Meta):
+        fields = [
+            'nombre',
+            'apellido',
+            'doc',
+            'domicilio',
+            'email',
+            'telefono',
+            'rol',
+        ]
+
+
+"""
+    def __init__(self, *args, **kwargs):
+        super(EmpleadoForm, self).__init__(*args, **kwargs)
+        self.fields.keyOrder = ['name', 'summary', 'description']
+"""
