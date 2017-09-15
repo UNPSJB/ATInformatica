@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
 from django.template import loader
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 from django.contrib.contenttypes.models import ContentType
 from usuario.models import Usuario
 from persona.models import Rol
@@ -49,7 +49,7 @@ class ClienteDelete(DeleteView):
     success_url = reverse_lazy('cliente:cliente_listar')
 
 """""""""""""""""""""""""""""""""""""""
-Vistas genéricas de empleados
+Vistas de empleados
 """""""""""""""""""""""""""""""""""""""
 class EmpleadoCreate(CreateView):
     model = Persona
@@ -90,23 +90,25 @@ class EmpleadoDelete(DeleteView):
     template_name = 'persona/tecnico_delete.html'
     success_url = reverse_lazy('tecnico:tecnico_listar')
 
-class TecnicoList(ListView):
+class EmpleadoList(ListView):
     model = Persona
     template_name = 'persona/tecnicos.html'
+
+class EmpleadoDetail(DetailView):
+    model = Persona
+    template_name = 'persona/tecnico_ver.html'
+
+class TecnicoList(EmpleadoList):
 
     def get_queryset(self):
         return Persona.objects.filter(pk__in=Tecnico.objects.all().values('persona'))
 
-class JefeTallerList(ListView):
-    model = Persona
-    template_name = 'persona/tecnicos.html'
+class JefeTallerList(EmpleadoList):
 
     def get_queryset(self):
         return Persona.objects.filter(pk__in=JefeTaller.objects.all().values('persona'))
 
-class GerenteList(ListView):
-    model = Persona
-    template_name = 'persona/tecnicos.html'
+class GerenteList(EmpleadoList):
 
     def get_queryset(self):
         return Persona.objects.filter(pk__in=Gerente.objects.all().values('persona'))

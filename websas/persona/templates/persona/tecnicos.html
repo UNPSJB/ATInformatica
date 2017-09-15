@@ -42,6 +42,7 @@
                     <th>e-mail</th>
                     <th></th>
                     <th></th>
+                    <th></th>
                   </tr>
                 </thead>
 
@@ -55,6 +56,9 @@
                     <td>{{ tecnico.domicilio }}</td>
                     <td>{{ tecnico.telefono }}</td>
                     <td>{{ tecnico.email }}</td>
+                    <td>
+                      <a href="{% url 'tecnico:tecnico_ver' tecnico.id %}"><i class="fa fa-eye"></i></a>
+                    </td>
                     <td>
                       <a href="{% url 'tecnico:tecnico_editar' tecnico.id %}"><i class="fa fa-edit"></i></a>
                     </td>
