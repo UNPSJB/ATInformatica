@@ -1,12 +1,12 @@
 from django.shortcuts import render
-from django.http import HttpResponse,HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
 from django.template import loader
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 from django.contrib.contenttypes.models import ContentType
 from usuario.models import Usuario
 from persona.models import Rol
-import abc
+from django.utils.decorators import method_decorator
 from .models import Tecnico, JefeTaller, Gerente, Cliente, Persona
 from .forms import PersonaForm, EmpleadoForm
 
@@ -29,7 +29,7 @@ class ClienteCreate(CreateView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
         form = self.form_class(request.POST)
-        if form.is_valid():
+        if form.is_valid() and request.user.has_perm('persona.add_cliente'):
             persona = form.save()
             cliente = Cliente(persona=persona)
             cliente.save()
@@ -112,3 +112,11 @@ class GerenteList(EmpleadoList):
 
     def get_queryset(self):
         return Persona.objects.filter(pk__in=Gerente.objects.all().values('persona'))
+
+class GerenteCreate(EmpleadoCreate):
+
+    def post(self, request, *args, **kwargs):
+        if request.user.has_perm('persona.add_gerente'):
+            super().post(request, *args, **kwargs)
+        else:
+            print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
