@@ -28,7 +28,12 @@
             </div>
             <div class="x_content">
               <br />
+              <h1>{{ object.id }}</h1>  
               <h1>{{ object.nombre }}</h1>
+              <h1>{{ object.apellido }}</h1>
+              <h1>{{ object.dni }}</h1>
+              <h1>{{ object.email }}</h1>
+                <a class="btn btn-primary" href="{% url 'usuario:usuario_crear' object.id %}">Crear usuario</a>
             </div>
           </div>
         </div>
