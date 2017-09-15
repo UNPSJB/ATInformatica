@@ -4,7 +4,7 @@
 
 #### Cátedra
     * Lic. Diego van Haaster
-    * Lic. Bruno Barros Pazos
+    * Lic. Bruno Pazos
 
 #### Alumnos
     * Krmpotic, Lucas
@@ -12,8 +12,8 @@
     * Soto, Kevin
     * Toledo Margalef, Pablo Adrián
 
-Maquetación del sitio con 
-####[Gentelella Admin Template](https://github.com/puikinsh/gentelella)
+Maquetación del sitio con: 
+#### [Gentelella Admin Template](https://github.com/puikinsh/gentelella)
 
 #### Steps
 [Optional] [Set up a virtualenv and activate](http://python-guide-pt-br.readthedocs.io/en/latest/dev/virtualenvs/) 
