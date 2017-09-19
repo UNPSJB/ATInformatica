@@ -1,13 +1,13 @@
-$("#datatable-tecnicos").DataTable({
+$("#datatable-gerentes").DataTable({
     responsive: true,
     dom: "Bfrtip",
     buttons: [{
-        text: "<b>Nuevo técnico</b>",
+        text: "<b>Nuevo gerente</b>",
         action: function() {
             // TODO: si es necesario generar el form de nuevo técnico
             // como modal, este botón puede dispararlo
             // Por ahora sólo pega a crear técnico
-            location.href = "/empleado/tecnico/crear";
+            location.href = "/empleado/gerente/crear";
         },
         className: "btn-sm btn-info"
     }, {

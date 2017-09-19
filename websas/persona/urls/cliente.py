@@ -1,7 +1,6 @@
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
-from . import views
-from .views import ClienteCreate, ClienteList, ClienteUpdate, ClienteDelete
+from persona.views.cliente import ClienteCreate, ClienteList, ClienteUpdate, ClienteDelete
 
 urlpatterns = [
     # Matches any html file - to be used for gentella

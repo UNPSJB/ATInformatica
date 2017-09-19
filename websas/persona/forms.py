@@ -38,7 +38,7 @@ class EmpleadoForm(PersonaForm):
         ('G', 'Gerente'),
     )
     rol = forms.ChoiceField(choices = ROLES, label="Tipo empleado", 
-                              initial='', widget=forms.Select(), required=True)
+                              initial='', widget=forms.Select(attrs={'class':'form-control col-md-7 col-xs-12'}), required=True)
     
 
     class Meta(PersonaForm.Meta):
@@ -51,10 +51,3 @@ class EmpleadoForm(PersonaForm):
             'telefono',
             'rol',
         ]
-
-
-"""
-    def __init__(self, *args, **kwargs):
-        super(EmpleadoForm, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = ['name', 'summary', 'description']
-"""

@@ -1,6 +1,6 @@
 {% extends "sas/base.html" %}
 
-{% block title %} Tecnicos {% endblock title %}
+{% block title %} gerentes {% endblock title %}
 
 {% block content %}
 <div class="right_col">
@@ -31,7 +31,7 @@
                 </p>
               
               -->
-              <table id="datatable-tecnicos" class="table table-striped table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
+              <table id="datatable-gerentes" class="table table-striped table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
                 <thead>
                   <tr>
                     <th>Nombre</th>
@@ -48,22 +48,22 @@
 
                 <tbody>
                   {% if object_list %}
-                  {% for tecnico in object_list %}
+                  {% for gerente in object_list %}
                   <tr>
-                    <td>{{ tecnico.persona.nombre }}</td>
-                    <td>{{ tecnico.persona.apellido }}</td>
-                    <td>{{ tecnico.persona.doc }}</td>
-                    <td>{{ tecnico.persona.domicilio }}</td>
-                    <td>{{ tecnico.persona.telefono }}</td>
-                    <td>{{ tecnico.persona.email }}</td>
+                    <td>{{ gerente.persona.nombre }}</td>
+                    <td>{{ gerente.persona.apellido }}</td>
+                    <td>{{ gerente.persona.doc }}</td>
+                    <td>{{ gerente.persona.domicilio }}</td>
+                    <td>{{ gerente.persona.telefono }}</td>
+                    <td>{{ gerente.persona.email }}</td>
                     <td>
-                      <a href="{% url 'empleado:tecnico:tecnico_ver' tecnico.persona.id %}"><i class="fa fa-eye"></i></a>
+                      <a href="{% url 'empleado:gerente:gerente_ver' gerente.id %}"><i class="fa fa-eye"></i></a>
                     </td>
                     <td>
-                      <a href="{% url 'empleado:tecnico:tecnico_editar' tecnico.persona.id %}"><i class="fa fa-edit"></i></a>
+                      <a href="{% url 'empleado:gerente:gerente_editar' gerente.id %}"><i class="fa fa-edit"></i></a>
                     </td>
                     <td>
-                      <a href="{% url 'empleado:tecnico:tecnico_eliminar' tecnico.persona.id %}"><i class="fa fa-trash"></i></a>
+                      <a href="{% url 'empleado:gerente:gerente_eliminar' gerente.id %}"><i class="fa fa-trash"></i></a>
                     </td>
                   </tr>
                   {% endfor %}
@@ -99,5 +99,5 @@
   <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
   <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
   <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
-  <script src="/static/persona/js/tecnico.js"></script>
+  <script src="/static/persona/js/gerente.js"></script>
 {% endblock javascripts %}

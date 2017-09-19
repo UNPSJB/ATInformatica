@@ -16,17 +16,7 @@ class RegistrarUsuario(View):
         user = Usuario.objects.create_user(username=persona.doc,password=persona.doc, persona = persona)
         user.save()
         return HttpResponseRedirect('cliente:cliente_listar')
-"""
-def registrarUsuario(request, pk):
-    #import ipdb 
-    #ipdb.set_trace()
-    if request.method == 'GET':
-        user = Usuario.objects.create_user(username='otroPirullo', password='pirulo1234', persona = Persona.objects.get(pk=pk))
-        user.save()
-        return redirect('/')
-    else: 
-        return render(request, 'login.html')
-"""
+
 @csrf_protect
 def login_user(request):
     if request.method == 'POST':

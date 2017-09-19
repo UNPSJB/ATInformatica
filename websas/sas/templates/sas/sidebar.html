@@ -26,16 +26,31 @@
       <ul class="nav side-menu">
         <li><a><i class="fa fa-home"></i>Clientes<span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-            <li><a href="/cliente/crear">Altas </a></li>
-            <li><a href="/cliente/listar">Listados</a></li>
+            <li><a href="{% url 'cliente:cliente_crear' %}">Altas </a></li>
+            <li><a href="{% url 'cliente:cliente_listar' %}">Listados</a></li>
           </ul>
         </li>
         <li><a><i class="fa fa-edit"></i>Empleados<span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-            <li><a href="{% url 'tecnico:tecnico_crear' %}">Altas </a></li>
-            <li><a href="{% url 'tecnico:tecnico_listar' %}">Listar Tecnicos</a></li>
-            <li><a href="{% url 'tecnico:jefe_listar' %}">Listar Jefes</a></li>
-            <li><a href="{% url 'tecnico:gerente_listar' %}">Listar Gerentes</a></li>          
+            <li><a>Tecnicos<span class="fa fa-chevron-down"></span></a>
+              <ul class="nav child_menu">
+                <li><a href="{% url 'empleado:tecnico:tecnico_crear' %}">Altas</a></li>
+                <li><a href="{% url 'empleado:tecnico:tecnico_listar' %}">Listados</a></li>
+              </ul>
+            </li>
+            <li><a>Jefes<span class="fa fa-chevron-down"></span></a>
+              <ul class="nav child_menu">
+                <li><a href="{% url 'empleado:jefe:jefe_crear' %}">Altas</a></li>
+                <li><a href="{% url 'empleado:jefe:jefe_listar' %}">Listados</a></li>
+              </ul>            
+            </li>
+            <li><a>Gerentes<span class="fa fa-chevron-down"></span></a>
+              <ul class="nav child_menu">
+                <li><a href="{% url 'empleado:gerente:gerente_crear' %}">Altas</a></li>
+                <li><a href="{% url 'empleado:gerente:gerente_listar' %}">Listados</a></li>
+              </ul>            
+            </li>
+
           </ul>
         </li>
         <li><a><i class="fa fa-desktop"></i>Productos<span class="fa fa-chevron-down"></span></a>
