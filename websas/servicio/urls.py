@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^listar$', login_required(TipoServicioList.as_view(), login_url='usuario:login'), name="servicio_listar"),
     url(r'^editar/(?P<pk>\d+)$', login_required(TipoServicioUpdate.as_view(), login_url='usuario:login'), name="servicio_editar"),
     url(r'^eliminar/(?P<pk>\d+)$', login_required(TipoServicioDelete.as_view(), login_url='usuario:login'), name="servicio_eliminar"),
+    
 ]
