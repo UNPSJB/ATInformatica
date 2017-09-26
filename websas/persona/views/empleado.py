@@ -15,13 +15,12 @@ Vistas de empleados
 """""""""""""""""""""""""""""""""""""""
 class EmpleadoCreate(CreateView):
     model = Persona
-    template_name = 'persona/tecnico_detail.html'
     form_class = EmpleadoForm
-    success_url = reverse_lazy('empleado:tecnico:tecnico_listar')
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
         form = self.form_class(request.POST)
+        import ipdb; ipdb.set_trace()
         if form.is_valid():
             persona = form.save()
             self.crear_rol(persona)
@@ -34,19 +33,13 @@ class EmpleadoCreate(CreateView):
 
 class EmpleadoUpdate(UpdateView):
     model = Persona
-    template_name = 'persona/tecnico_detail.html'
     form_class = PersonaForm
-    success_url = reverse_lazy('empleado:tecnico:tecnico_listar')
 
 class EmpleadoDelete(DeleteView):
     model = Persona
-    template_name = 'persona/tecnico_delete.html'
-    success_url = reverse_lazy('empleado:tecnico:tecnico_listar')
 
 class EmpleadoList(ListView):
     model = Persona
-    template_name = 'persona/tecnicos.html'
 
 class EmpleadoDetail(DetailView):
     model = Persona
-    template_name = 'persona/tecnico_ver.html'
