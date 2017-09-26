@@ -32,15 +32,7 @@ class PersonaForm (forms.ModelForm):
 
 
 class EmpleadoForm(PersonaForm):
-    ROLES = (
-        ('TC', 'Tecnico'),
-        ('JT', 'Jefe de Taller'),
-        ('G', 'Gerente'),
-    )
-    rol = forms.ChoiceField(choices = ROLES, label="Tipo empleado", 
-                              initial='', widget=forms.Select(attrs={'class':'form-control col-md-7 col-xs-12'}), required=True)
     
-
     class Meta(PersonaForm.Meta):
         fields = [
             'nombre',
@@ -49,5 +41,18 @@ class EmpleadoForm(PersonaForm):
             'domicilio',
             'email',
             'telefono',
-            'rol',
         ]
+
+
+
+"""
+ROLES = (
+        ('TC', 'Tecnico'),
+        ('JT', 'Jefe de Taller'),
+        ('G', 'Gerente'),
+    )
+    rol = forms.ChoiceField(choices = ROLES, label="Tipo empleado", 
+                              initial='', widget=forms.Select(attrs={'class':'form-control col-md-7 col-xs-12'}), required=True)
+    
+
+"""
