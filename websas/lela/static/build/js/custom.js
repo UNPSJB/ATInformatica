@@ -2613,6 +2613,7 @@ function init_DataTables() {
 
     $('#datatable-keytable tbody').on('click', 'tr', function() {
         var datosFila = tabla.row( this ).data();
+        console.log("AHRE")
         alert('Data: ' + datosFila);
     });
 
