@@ -1,8 +1,9 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
-
 from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import permission_required
+
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 from persona.models import Cliente, Persona
 from persona.forms import PersonaForm, EmpleadoForm
 
@@ -19,6 +20,7 @@ class ClienteCreate(CreateView):
     form_class = PersonaForm
     success_url = reverse_lazy('cliente:cliente_listar')
 
+    @method_decorator(permission_required('persona.add_cliente'))        
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
         form = self.form_class(request.POST)
@@ -36,7 +38,15 @@ class ClienteUpdate(UpdateView):
     form_class = PersonaForm
     success_url = reverse_lazy('cliente:cliente_listar')
 
+    @method_decorator(permission_required('persona.change_cliente'))        
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
 class ClienteDelete(DeleteView):
     model = Persona
     template_name = 'persona/cliente_delete.html'
     success_url = reverse_lazy('cliente:cliente_listar')
+
+    @method_decorator(permission_required('persona.delete_cliente'))        
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)

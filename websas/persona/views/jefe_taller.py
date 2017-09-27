@@ -13,7 +13,7 @@ class JefeTallerCreate(EmpleadoCreate):
     template_name = 'persona/jefe_form.html' 
     success_url = reverse_lazy('empleado:jefe:jefe_listar')
     
-    @method_decorator(permission_required('persona.add_Gerente'))
+    @method_decorator(permission_required('persona.add_jefetaller'))
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
 
@@ -33,14 +33,21 @@ class JefeTallerUpdate(EmpleadoUpdate):
     
     template_name = 'persona/jefe_form.html' 
     success_url = reverse_lazy('empleado:jefe:jefe_listar')
+
+    @method_decorator(permission_required('persona.change_jefetaller'))
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
     
 class JefeTallerDelete(EmpleadoDelete):
     
-    template_name = 'persona/jefe_form.html' 
+    template_name = 'persona/jefe_delete.html' 
     success_url = reverse_lazy('empleado:jefe:jefe_listar')
+
+    @method_decorator(permission_required('persona.change_jefetaller'))
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
     
 class JefeTallerDetail(EmpleadoDetail):
     
     template_name = 'persona/jefe_detail.html' 
     success_url = reverse_lazy('empleado:jefe:jefe_listar')
-    
