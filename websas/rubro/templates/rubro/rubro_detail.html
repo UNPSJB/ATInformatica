@@ -8,7 +8,9 @@
         <div class="row">
           <div class="x_panel">
             <div class="x_title">
-              <h2>Form Design <small>different form elements</small></h2>
+
+              <h2>Rubro <small>different form elements</small></h2>
+              
               <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                 </li>
@@ -31,25 +33,99 @@
               <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
 
                 <div class="form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">First Name <span class="required">*</span>
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                    Nombre 
+                  <span class="required">*</span>
                   </label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12">
                   </div>
                 </div>
+
+
                 <div class="form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                    Descripción 
+                  <span class="required">*</span>
+                  </label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12">
+                  </div>
+                </div>
+  
+                <div class="x_content">
+                    <!-- párrafo para mostrar info adicional antes de la tabla
+                    
+                      <p class="text-muted font-13 m-b-30">
+                      The Buttons extension for DataTables provides a common set of options, API methods and styling to display buttons on a page that will interact with a DataTable. The core library provides the based framework upon which plug-ins can built.
+                      </p>
+                    
+                    -->
+                    <table id="datatable-rubros" class="table table-striped table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
+                        <thead>
+                        <tr>
+                          {% comment %} <th>Nombre</th> {% endcomment %}
+                          <th>Tarea</th>
+                          {% if form.tipos_servicios %}
+                          {% for ts in form.tipos_servicios %}
+                            <th> {{ ts }} </th>
+                          {% endfor %}
+                          {% else %}
+                            <th> NO HAY OBJECT_LIST </th>
+                          {% endif%}
+                          {% comment %} <th>Teléfono</th>
+                          <th>e-mail</th>
+                          <th>Saldo</th> {% endcomment %}
+                          <th></th>
+                          <th></th>
+                        </tr>
+                      </thead>
+      
+      
+                      <tbody>
+                          {% if object_list %}
+                          {% for cliente in object_list %}
+                          <tr>
+                            <td>{{ cliente.nombre }}</td>
+                            <td>{{ cliente.apellido }}</td>
+                            <td>{{ cliente.doc }}</td>
+                            <td>{{ cliente.domicilio }}</td>
+                            <td>{{ cliente.telefono }}</td>
+                            <td>{{ cliente.email }}</td>
+                            <td>
+                              <a href="{% url 'cliente:cliente_editar' cliente.id %}"><i class="fa fa-edit"></i></a>
+                            </td>
+                            <td>
+                              <a href="{% url 'cliente:cliente_eliminar' cliente.id %}"><i class="fa fa-trash"></i></a>
+                            </td>
+                          </tr>
+                          {% endfor %}
+                          {% else %}
+        
+                          <h1>No hay clientes registrados</h1>
+                          <!-- no importa si hay un <h1> en el body, DataTables lo saca de la tabla -->
+        
+                          {% endif %}  
+                      </tbody>
+                    </table>
+                  </div>
+      
+
+                <!-- <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Last Name <span class="required">*</span>
                   </label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <input type="text" id="last-name" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
                   </div>
                 </div>
+
                 <div class="form-group">
                   <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Middle Name / Initial</label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
                   </div>
                 </div>
+                
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Gender</label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
@@ -63,13 +139,15 @@
                     </div>
                   </div>
                 </div>
+                
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Date Of Birth <span class="required">*</span>
                   </label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
                     <input id="birthday" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
                   </div>
-                </div>
+                </div> -->
+
                 <div class="ln_solid"></div>
                 <div class="form-group">
                   <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">

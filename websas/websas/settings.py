@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rubro',
     'servicio',
     'usuario',
+    'orden',
 ]
 
 MIDDLEWARE = [
