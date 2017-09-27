@@ -1,4 +1,4 @@
-$("#datatable-clientes").DataTable({
+var tabla = $("#datatable-clientes").DataTable({
     responsive: true,
     dom: "Bfrtip",
     buttons: [{
@@ -24,3 +24,10 @@ $("#datatable-clientes").DataTable({
         className: "btn-sm"
     }, ],
 });
+
+$('#datatable-clientes tbody').on('click', 'tr', function() {
+    var datosFila = tabla.row(this).data();
+    // console.log("AHRE")
+    console.log('Data: ' + datosFila);
+});
+

@@ -39,8 +39,8 @@ class TecnicoDelete(EmpleadoDelete):
     template_name = 'persona/tecnico_delete.html' 
     success_url = reverse_lazy('empleado:tecnico:tecnico_listar')
     
-class TecnicoUpdate(EmpleadoDetail):
+class TecnicoDetail(EmpleadoDetail):
     
     template_name = 'persona/tecnico_detail.html' 
     success_url = reverse_lazy('empleado:tecnico:tecnico_listar')
-    
+

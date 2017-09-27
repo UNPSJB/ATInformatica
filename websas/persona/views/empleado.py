@@ -20,7 +20,6 @@ class EmpleadoCreate(CreateView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
         form = self.form_class(request.POST)
-        import ipdb; ipdb.set_trace()
         if form.is_valid():
             persona = form.save()
             self.crear_rol(persona)
