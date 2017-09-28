@@ -21,9 +21,23 @@ class PersonaForm (forms.ModelForm):
             'email':'Email',
             'telefono':'Telefono',
         }
+        error_messages = {
+            'nombre': {
+                'max_length' : ("This writer's name is too long."),
+                'required' : ("Requeridisimo vieja"),
+            },
+            'doc': {
+                'unique' : ('Ya existe persona con ese doc'),
+            },
+        }
         widgets = {
-            'nombre': forms.TextInput(attrs={'class':'form-control col-md-7 col-xs-12'}),
-            'apellido': forms.TextInput(attrs={'class':'form-control col-md-7 col-xs-12'}),
+            'nombre': forms.TextInput(attrs={
+                'class':'form-control col-md-7 col-xs-12',
+                'required':'required',
+                }), 
+            'apellido': forms.TextInput(attrs={
+                'class':'form-control col-md-7 col-xs-12'
+                }),
             'doc': forms.TextInput(attrs={'class':'form-control col-md-7 col-xs-12'}),
             'domicilio': forms.TextInput(attrs={'class':'form-control col-md-7 col-xs-12'}),
             'email': forms.EmailInput(attrs={'class':'form-control col-md-7 col-xs-12'}),
@@ -44,15 +58,6 @@ class EmpleadoForm(PersonaForm):
         ]
 
 
-
 """
-ROLES = (
-        ('TC', 'Tecnico'),
-        ('JT', 'Jefe de Taller'),
-        ('G', 'Gerente'),
-    )
-    rol = forms.ChoiceField(choices = ROLES, label="Tipo empleado", 
-                              initial='', widget=forms.Select(attrs={'class':'form-control col-md-7 col-xs-12'}), required=True)
-    
 
 """
