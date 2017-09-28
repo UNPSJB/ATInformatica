@@ -8,7 +8,7 @@ from usuario.models import Usuario
 from persona.models import Rol
 from django.utils.decorators import method_decorator
 from persona.models import  Persona
-from persona.forms import PersonaForm, EmpleadoForm
+from persona.forms import PersonaForm, EmpleadoForm, EmpleadoUpdateForm
 
 """""""""""""""""""""""""""""""""""""""
 Vistas de empleados
@@ -32,7 +32,7 @@ class EmpleadoCreate(CreateView):
 
 class EmpleadoUpdate(UpdateView):
     model = Persona
-    form_class = PersonaForm
+    form_class = EmpleadoUpdateForm
 
 class EmpleadoDelete(DeleteView):
     model = Persona
