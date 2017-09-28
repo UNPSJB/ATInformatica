@@ -15,7 +15,7 @@ class RegistrarUsuario(View):
         persona = Persona.objects.get(pk=pk)
         user = Usuario.objects.create_user(username=persona.doc,password=persona.doc, persona = persona)
         user.save()
-        return HttpResponseRedirect('cliente:cliente_listar')
+        return HttpResponseRedirect('empleado:jefe:jefe_listar')
 
 @csrf_protect
 def login_user(request):
