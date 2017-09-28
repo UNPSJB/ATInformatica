@@ -1,0 +1,42 @@
+<table id="datatable-clientes" class="table table-striped table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
+    <thead>
+    <tr>
+    <th>Nombre</th>
+    <th>DNI/CUIT/CUIL</th>
+    <th>Domicilio</th>
+    <th>Teléfono</th>
+    <th>e-mail</th>
+    <th>Saldo</th>
+    <th></th>
+    <th></th>
+    </tr>
+</thead>
+
+
+<tbody>
+    jkj
+    {% if clientes %}
+    {% for cliente in clientes %}
+    <tr>
+        <td>{{ cliente.nombre }}</td>
+        <td>{{ cliente.apellido }}</td>
+        <td>{{ cliente.doc }}</td>
+        <td>{{ cliente.domicilio }}</td>
+        <td>{{ cliente.telefono }}</td>
+        <td>{{ cliente.email }}</td>
+        <td>
+        <a href="{% url 'cliente:cliente_editar' cliente.id %}"><i class="fa fa-edit"></i></a>
+        </td>
+        <td>
+        <a href="{% url 'cliente:cliente_eliminar' cliente.id %}"><i class="fa fa-trash"></i></a>
+        </td>
+    </tr>
+    {% endfor %}
+    {% else %}
+
+    <h1>No hay clientes registrados</h1>
+    <!-- no importa si hay un <h1> en el body, DataTables lo saca de la tabla -->
+
+    {% endif %}  
+</tbody>
+</table>

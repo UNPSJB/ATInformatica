@@ -1,9 +1,25 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_protect
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import permission_required
+
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
+from orden.models import Orden, Equipo
+from persona.models import Cliente, Tecnico, Persona
+from rubro.models import Rubro
+
+from orden.forms import OrdenForm
 # Create your views here.
 
-def orden_create(request):
-    return render(request,'orden/orden_detail.html')
+class OrdenCreate(CreateView):
+    model = Orden
+    template_name = 'orden/orden_detail.html'
+    form_class = OrdenForm
+
+    success_url = reverse_lazy('/')
+
+    def clientes():
+        print(Persona.objects.filter(pk__in=Cliente.objects.all().values('persona')))
+        return Persona.objects.filter(pk__in=Cliente.objects.all().values('persona'))
+
+

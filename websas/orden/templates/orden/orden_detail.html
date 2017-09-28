@@ -50,7 +50,7 @@
                             <h4 class="modal-title" id="myModalLabel">Cliente</h4>
                           </div>
                           <div class="modal-body">
-                            Y acá chantamo una tablita pa elegir
+                            {% include 'orden/cb.html' with clientes=view.clientes %}
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -199,178 +199,6 @@
                 
                 <!-- (^) separador - grupo de botones (v) -->
                 
-              <!-- start accordion -->
-                <div class="accordion" id="accordion1" role="tablist" aria-multiselectable="true">
-                  <div class="panel">
-                    <a class="panel-heading collapsed" role="tab" id="headingOne1" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne1" aria-expanded="true" aria-controls="collapseOne">
-                      <h4 class="panel-title">Cliente</h4>
-                    </a>
-                    <div id="collapseOne1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                      <div class="panel-body">
-                      <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap">
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Username</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="panel">
-                    <a class="panel-heading collapsed" role="tab" id="headingTwo1" data-toggle="collapse" data-parent="#accordion1" href="#collapseTwo1" aria-expanded="true" aria-controls="collapseOne">
-                      <h4 class="panel-title">Rubro</h4>
-                    </a>
-                    <div id="collapseTwo1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                      <div class="panel-body">
-                      <table class="table table-striped">
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Username</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      </div>
-                      
-                    </div>
-                  </div>
-                  <div class="panel">
-                    <a class="panel-heading collapsed" role="tab" id="headingThree1" data-toggle="collapse" data-parent="#accordion1" href="#collapseThree1" aria-expanded="true" aria-controls="collapseOne">
-                      <h4 class="panel-title">Numero de Serie</h4>
-                    </a>
-                    <div id="collapseThree1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                      <div class="panel-body">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="nro-serie" required="required" class="form-control col-md-7 col-xs-12">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="panel">
-                    <a class="panel-heading collapsed" role="tab" id="headingFour1" data-toggle="collapse" data-parent="#accordion1" href="#collapseFour1" aria-expanded="false" aria-controls="collapseTwo">
-                      <h4 class="panel-title">Tipo de Servicio</h4>
-                    </a>
-                    <div id="collapseFour1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
-                      <div class="panel-body">
-                      <table class="table table-striped">
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Username</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="panel">
-                    <a class="panel-heading collapsed" role="tab" id="headingFive1" data-toggle="collapse" data-parent="#accordion1" href="#collapseFive1" aria-expanded="false" aria-controls="collapseThree">
-                      <h4 class="panel-title">Técnico</h4>
-                    </a>
-                    <div id="collapseFive1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
-                      <div class="panel-body">
-                      <table class="table table-striped">
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Username</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
                 <!-- end of accordion -->
                 <div class="form-group">
                   <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
@@ -390,7 +218,6 @@
 {% block javascripts %}
   {{ block.super }}
   <!-- Datatables -->
-
   <script src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
   <script src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
   <script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
@@ -406,4 +233,5 @@
   <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
   <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
   <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+  <script src="/static/persona/js/cliente.js"></script>
 {% endblock javascripts %}
