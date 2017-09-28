@@ -17,16 +17,7 @@ class RubroCreate(CreateView):
     template_name = 'rubro/rubro_detail.html'
     form_class = RubroForm
     success_url = reverse_lazy('rubro:rubros')
+    context_object_name = "contexto_form"
 
-    def get_context_data(self, **kwargs):
-        context = super(self.__class__, self).get_context_data(**kwargs)
-
-        # se esta haciendo el boludo el template
-        context['tipos_servicios'] = "ahre"
-        # context['tipos_servicios'] = TipoServicio.objects.all()
-        return context
-    # def post(self, request, *args, **kwargs):
-        # self.object = self.get_object
-        # form = self.form_class(request.POST)
-        # if form.is_valid():        
-        # return TipoServicio.objets.all()
+    def tipos_servicios(self):
+        return TipoServicio.objects.all()
