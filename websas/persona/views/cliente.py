@@ -20,7 +20,7 @@ class ClienteCreate(CreateView):
     form_class = PersonaForm
     success_url = reverse_lazy('cliente:cliente_listar')
 
-    @method_decorator(permission_required('persona.add_cliente'))        
+    @method_decorator(permission_required('persona.add_cliente', login_url='cliente:cliente_listar'))        
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
         form = self.form_class(request.POST)
@@ -38,7 +38,7 @@ class ClienteUpdate(UpdateView):
     form_class = PersonaForm
     success_url = reverse_lazy('cliente:cliente_listar')
 
-    @method_decorator(permission_required('persona.change_cliente'))        
+    @method_decorator(permission_required('persona.change_cliente', login_url='cliente:cliente_listar'))        
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
 
@@ -47,6 +47,6 @@ class ClienteDelete(DeleteView):
     template_name = 'persona/cliente_delete.html'
     success_url = reverse_lazy('cliente:cliente_listar')
 
-    @method_decorator(permission_required('persona.delete_cliente'))        
+    @method_decorator(permission_required('persona.delete_cliente', login_url='cliente:cliente_listar'))        
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
