@@ -18,8 +18,11 @@ class OrdenCreate(CreateView):
 
     success_url = reverse_lazy('/')
 
-    def clientes():
-        print(Persona.objects.filter(pk__in=Cliente.objects.all().values('persona')))
+    def clientes(self):
         return Persona.objects.filter(pk__in=Cliente.objects.all().values('persona'))
 
+    def rubros(self):
+        return Rubro.objects.all()
 
+    def tecnicos(self):
+        return Persona.objects.filter(pk__in=Tecnico.objects.all().values('persona'))
