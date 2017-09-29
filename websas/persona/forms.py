@@ -23,13 +23,20 @@ class PersonaForm (forms.ModelForm):
         }
         error_messages = {
             'nombre': {
-                'max_length' : ("This writer's name is too long."),
-                'required' : ("Requeridisimo vieja"),
+                'max_length' : ("Nombre demasiado largo. No debe exceder los 50 caracteres."),
+            },
+            'apellido': {
+                'max_length' : ("Apellido demasiado largo. No debe exceder los 50 caracteres.")
             },
             'doc': {
-                'unique' : ('Ya existe persona con ese doc'),
+                'max_length' : ("Documento demasiado largo. No debe exceder los 20 caracteres."),
+                'unique' : ('Ya existe persona con ese documento.'),
             },
+            'telefono': {
+                'max_length' : ("Teléfono demasiado largo. No debe exceder los 15 dígitos."),
+            }
         }
+        
         widgets = {
             'nombre': forms.TextInput(attrs={
                 'class':'form-control col-md-7 col-xs-12',
