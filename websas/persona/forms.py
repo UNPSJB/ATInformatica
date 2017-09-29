@@ -28,6 +28,10 @@ class PersonaForm (forms.ModelForm):
             'apellido': {
                 'max_length' : ("Apellido demasiado largo. No debe exceder los 50 caracteres.")
             },
+            # TODO: tipodoc - quizás debería ser un form Select()
+            # 'tipodoc': {
+            #     'max_length'  ("Codigo de documento invalido."),
+            # }
             'doc': {
                 'max_length' : ("Documento demasiado largo. No debe exceder los 20 caracteres."),
                 'unique' : ('Ya existe persona con ese documento.'),
@@ -45,7 +49,10 @@ class PersonaForm (forms.ModelForm):
             'apellido': forms.TextInput(attrs={
                 'class':'form-control col-md-7 col-xs-12',
                 }),
-            'doc': forms.TextInput(attrs={'class':'form-control col-md-7 col-xs-12', 'pattern':'[0-9]'}),
+            'doc': forms.TextInput(attrs={'class':'form-control col-md-7 col-xs-12',
+            'pattern':'numeric',
+            'data-validate-minmax':'0,'
+            }),
             'domicilio': forms.TextInput(attrs={'class':'form-control col-md-7 col-xs-12'}),
             'email': forms.EmailInput(attrs={'class':'form-control col-md-7 col-xs-12'}),
             'telefono': forms.TextInput(attrs={'class':'form-control col-md-7 col-xs-12', 'type':'tel'}),
@@ -75,8 +82,6 @@ class PersonaUpdateForm(PersonaForm):
                 }),
             'doc': forms.TextInput(attrs={
                 'class':'form-control col-md-7 col-xs-12', 
-                'pattern':'numeric',
-                'required':'required',
                 'readonly':'True',
                 }),
             'domicilio': forms.TextInput(attrs={'class':'form-control col-md-7 col-xs-12'}),
