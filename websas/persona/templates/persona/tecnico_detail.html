@@ -30,7 +30,8 @@
               <h1>{{ tecnico.apellido }}</h1>
               <h1>{{ tecnico.dni }}</h1>
               <h1>{{ tecnico.email }}</h1>
-                <a class="btn btn-info" href="{% url 'empleado:tecnico:tecnico_listar' %}">Volver</a>
+              <a class="btn btn-info" href="{% url 'usuario:usuario_crear' tecnico.id %}">Crear usuario</a>
+              <a class="btn btn-info" href="{% url 'empleado:tecnico:tecnico_listar' %}">Volver</a>
             </div>
           </div>
         </div>
