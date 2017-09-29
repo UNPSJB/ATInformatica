@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from .models import Usuario
 from persona.models import Persona
-from django.views.generic import View
+from django.views.generic import View, TemplateView
 
 class RegistrarUsuario(View):
 
@@ -17,6 +17,9 @@ class RegistrarUsuario(View):
         user = Usuario.objects.create_user(username=persona.doc,password=persona.doc, persona = persona)
         return HttpResponseRedirect(reverse_lazy('cliente:cliente_listar'))
 
+class UserProfile(TemplateView):
+    pass
+
 @csrf_protect
 def login_user(request):
     if request.method == 'POST':
@@ -24,6 +27,8 @@ def login_user(request):
             password = request.POST['password']
             user = authenticate(username=username, password=password)
             login(request, user)
+            if user.primer_login:
+                return HttpResponseRedirect(reverse_lazy('servicio:servicio_listar'))
             return HttpResponseRedirect(reverse_lazy('cliente:cliente_listar'))
     else: 
         return render(request, 'login.html')
