@@ -48,6 +48,6 @@ class JefeTallerDelete(EmpleadoDelete):
         return super().post(request, *args, **kwargs)
     
 class JefeTallerDetail(EmpleadoDetail):
-    
+    context_object_name = 'jefe'
     template_name = 'persona/jefe_detail.html' 
     success_url = reverse_lazy('empleado:jefe:jefe_listar')

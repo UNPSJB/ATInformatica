@@ -50,3 +50,9 @@ class ClienteDelete(DeleteView):
     @method_decorator(permission_required('persona.delete_cliente', login_url='cliente:cliente_listar'))        
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
+
+class ClienteDetail(DetailView):
+    model = Persona
+    context_object_name = 'cliente'
+    template_name = 'persona/cliente_detail.html'
+    success_url = reverse_lazy('cliente:cliente_ver')

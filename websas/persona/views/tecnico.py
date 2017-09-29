@@ -48,7 +48,7 @@ class TecnicoDelete(EmpleadoDelete):
         return super().post(request, *args, **kwargs)
 
 class TecnicoDetail(EmpleadoDetail):
-    
+    context_object_name = 'tecnico'
     template_name = 'persona/tecnico_detail.html' 
     success_url = reverse_lazy('empleado:tecnico:tecnico_listar')
 

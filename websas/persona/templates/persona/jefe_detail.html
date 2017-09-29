@@ -8,7 +8,7 @@
         <div class="row">
           <div class="x_panel">
             <div class="x_title">
-              <h2>Gefes de taller <small>gestión de jefes de taller</small></h2>
+              <h2>Jefe de taller #{{jefe.id}} <small>gestión de jefes de taller</small></h2>
               <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                 </li>
@@ -21,19 +21,16 @@
                     </li>
                   </ul>
                 </li>
-                <li><a class="close-link"><i class="fa fa-close"></i></a>
-                </li>
               </ul>
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
               <br />
-              <h1>{{ object.id }}</h1>  
-              <h1>{{ object.nombre }}</h1>
-              <h1>{{ object.apellido }}</h1>
-              <h1>{{ object.dni }}</h1>
-              <h1>{{ object.email }}</h1>
-                <a class="btn btn-primary" href="{% url 'usuario:usuario_crear' object.id %}">Crear usuario</a>
+              <h1>{{ jefe.nombre }}</h1>
+              <h1>{{ jefe.apellido }}</h1>
+              <h1>{{ jefe.dni }}</h1>
+              <h1>{{ jefe.email }}</h1>
+                <a class="btn btn-info" href="{% url 'persona:jefe:jefe_listar' %}">Volver</a>
             </div>
           </div>
         </div>

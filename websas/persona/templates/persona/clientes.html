@@ -43,6 +43,7 @@
                     <th>Saldo</th>
                     <th></th>
                     <th></th>
+                    <th></th>
                   </tr>
                 </thead>
 
@@ -57,6 +58,9 @@
                       <td>{{ cliente.domicilio }}</td>
                       <td>{{ cliente.telefono }}</td>
                       <td>{{ cliente.email }}</td>
+                      <td>
+                          <a href="{% url 'cliente:cliente_ver' cliente.id %}"><i class="fa fa-eye"></i></a>
+                      </td>
                       <td>
                         <a href="{% url 'cliente:cliente_editar' cliente.id %}"><i class="fa fa-edit"></i></a>
                       </td>
