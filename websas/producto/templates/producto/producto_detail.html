@@ -8,7 +8,7 @@
         <div class="row">
           <div class="x_panel">
             <div class="x_title">
-              <h2>Productos<small>gestión de productos </small></h2>
+              <h2>Producto #{{ producto.id }}<small>gestión de productos </small></h2>
               <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                 </li>
@@ -28,64 +28,14 @@
             </div>
             <div class="x_content">
               <br />
-              
-              <form method="POST" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
-                {% csrf_token %}
-
-                <div class="form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.nombre.label }}"> {{ form.nombre.label}} 
-                  </label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    {{ form.nombre }}
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.descripcion.label }}">{{ form.descripcion.label }}
-                  </label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    {{ form.descripcion }}
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="{{ form.marca.label }}" class="control-label col-md-3 col-sm-3 col-xs-12">{{ form.marca.label }}</label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                      {{ form.marca }}
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label for="{{ form.stock_minimo.label }}" class="control-label col-md-3 col-sm-3 col-xs-12">{{ form.stock_minimo.label }}
-                  </label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                      {{ form.stock_minimo }}
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label for="{{ form.stock.label }}" class="control-label col-md-3 col-sm-3 col-xs-12">{{ form.stock.label }}
-                  </label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        {{ form.stock }}
-                  </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="{{ form.precio.label }}" class="control-label col-md-3 col-sm-3 col-xs-12">{{ form.precio.label }}
-                    </label>
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                          {{ form.precio }}
-                    </div>
-                  </div>
-                <div class="ln_solid"></div>
-                <div class="form-group">
-                  <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                    <button class="btn btn-primary" type="button">Cancel</button>
-  		            <button class="btn btn-primary" type="reset">Reset</button>
-                    <button type="submit" class="btn btn-success">Submit</button>
-                  </div>
-                </div>
-              </form>
-            </div>
+              <h2>{{ producto.nombre }}</h2>
+              <h2>{{ producto.descripcion }}</h2>
+              <h2>{{ producto.marca }}</h2>
+              <h2>{{ producto.stock_minimo }}</h2>
+              <h2>{{ producto.stock }}</h2>
+              <h2>{{ producto.precio }}</h2>
+              <a class="btn btn-info" href="{% url 'producto:producto_listar' %}">Volver</a>
+      </div>
           </div>
         </div>
       </div>
