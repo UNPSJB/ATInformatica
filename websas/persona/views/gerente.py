@@ -13,7 +13,7 @@ class GerenteCreate(EmpleadoCreate):
     success_url = reverse_lazy('empleado:gerente:gerente_listar')
     template_name = 'persona/gerente_form.html'
          
-    @method_decorator(permission_required('persona.add_gerente'))        
+    @method_decorator(permission_required('persona.add_gerente', login_url='empleado:gerente:gerente_listar'))        
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
 
@@ -34,7 +34,7 @@ class GerenteUpdate(EmpleadoUpdate):
     template_name = 'persona/gerente_form.html' 
     success_url = reverse_lazy('empleado:gerente:gerente_listar')
 
-    @method_decorator(permission_required('persona.change_gerente'))        
+    @method_decorator(permission_required('persona.change_gerente', login_url='empleado:gerente:gerente_listar'))        
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
 
@@ -44,7 +44,7 @@ class GerenteDelete(EmpleadoDelete):
     template_name = 'persona/gerente_delete.html' 
     success_url = reverse_lazy('empleado:gerente:gerente_listar')
 
-    @method_decorator(permission_required('persona.delete_gerente'))        
+    @method_decorator(permission_required('persona.delete_gerente', login_url='empleado:gerente:gerente_listar'))        
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
 
