@@ -11,7 +11,7 @@ class RubroForm(forms.ModelForm):
         ]
         labels = {
             'nombre':'Nombre',
-            'descripcion':'Descripción'
+            'descripcion':'Descripcion'
         }
         widgets = {
             'nombre': forms.TextInput(attrs={'class':'form-control col-md-7 col-xs-12'}),

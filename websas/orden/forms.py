@@ -16,7 +16,7 @@ class OrdenForm(forms.ModelForm):
         labels = {
             'cliente':'Cliente',
             'rubro':'Rubro',
-            'equipo':'Número de Serie del Equipo',
+            'equipo':'Numero de Serie del Equipo',
             'tipo_servicio':'Tipo de Servicio',
             'tecnico':'Tecnico',
         }

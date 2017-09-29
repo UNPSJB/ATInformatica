@@ -15,9 +15,9 @@ class ProductoForm(forms.ModelForm):
         ]  
         labels = {
             'nombre':'Nombre',
-            'descripcion':'Descripción',
+            'descripcion':'Descripcion',
             'marca':'Marca',
-            'stock_minimo':'Satock mínimo',
+            'stock_minimo':'Stock minimo',
             'stock':'Stock actual',
             'precio':'Precio',          
         }
