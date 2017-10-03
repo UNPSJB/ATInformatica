@@ -38,7 +38,11 @@
                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Cliente <span class="required">*</span>
                   </label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-cliente-modal-lg">+</button>
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-cliente-modal-lg">
+                          <div id="cliente_seleccionado">
+                          <span class="glyphicon glyphicon-plus"></span>
+                          </div>
+                      </button>
 
                     <div class="modal fade bs-cliente-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
                       <div class="modal-dialog modal-lg">
@@ -54,7 +58,7 @@
                           </div>
 
                           <div class="modal-footer">
-                            <button type="button" class="btn btn-primary">Continuar</button>
+                            <button id="btnCliente" type="button" class="btn btn-primary">Continuar</button>
                           </div>
 
                         </div>
@@ -69,8 +73,12 @@
                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Rubro <span class="required">*</span>
                   </label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-rubro-modal-lg">+</button>
 
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-rubro-modal-lg">
+                          <div id="rubro_seleccionado">
+                          <span class="glyphicon glyphicon-plus"></span>
+                          </div>
+                      </button>
                     <div class="modal fade bs-rubro-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
                       <div class="modal-dialog modal-lg">
                         <div class="modal-content">
@@ -99,7 +107,14 @@
                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Equipo<span class="required">*</span>
                   </label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-equipo-modal-lg">+</button>
+
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-equipo-modal-lg">
+                        {% if equipo_seleccionado %}
+                          {{ equipo_seleccionado }}
+                        {% else %}
+                          <span class="glyphicon glyphicon-plus"></span>
+                        {% endif %}
+                      </button>
 
                     <div class="modal fade bs-equipo-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
                       <div class="modal-dialog modal-lg">
@@ -129,7 +144,13 @@
                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Tipo de Servicio <span class="required">*</span>
                   </label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-tiposervicio-modal-lg">+</button>
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-tiposervicio-modal-lg"> 
+                        {% if tipo_servicio_seleccionado %} 
+                          {{ tipo_servicio_seleccionado }}
+                        {% else %}
+                          <span class="glyphicon glyphicon-plus"></span>
+                        {% endif %}
+                      </button>
 
                     <div class="modal fade bs-tiposervicio-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
                       <div class="modal-dialog modal-lg">
@@ -158,7 +179,14 @@
                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Técnico <span class="required">*</span>
                   </label>
                   <div class="col-md-6 col-sm-6 col-xs-12">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-tecnico-modal-lg">+</button>
+                    
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-tecnico-modal-lg"> 
+                        {% if tecnico_seleccionado %} 
+                          {{ tecnico_seleccionado.persona }}
+                        {% else %}
+                          <span class="glyphicon glyphicon-plus"></span>
+                        {% endif %}
+                      </button>
 
                     <div class="modal fade bs-tecnico-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
                       <div class="modal-dialog modal-lg">
@@ -221,4 +249,17 @@
   <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
   <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
   <script src="/static/persona/js/cliente.js"></script>
+
+  <script>
+      $(document).ready(function(){
+        
+          $("#btnCliente").on('click',function(){
+            console.log($('input:checked[name=cName]')[0].dataset['idcliente'])
+          })
+
+
+
+
+      })
+  </script>
 {% endblock javascripts %}

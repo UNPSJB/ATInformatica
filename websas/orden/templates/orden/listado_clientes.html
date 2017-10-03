@@ -14,16 +14,17 @@
         {% if clientes %}
         {% for cliente in clientes %}
         <tr>
-            <td>
+            <td >
                 <div class="radio">
-                    <input type="radio" class="flat" name="cName">
+                    <input data-idcliente="{{ cliente.id }}" type="radio" class="flat" name="cName">
                 </div>
             </td>
-            <td>{{ cliente.nombre }} {{ cliente.apellido }}</td>
-            <td>{{ cliente.doc }}</td>
-            <td>{{ cliente.domicilio }}</td>
-            <td>{{ cliente.telefono }}</td>
-            <td>{{ cliente.email }}</td>
+            <td>{{ cliente.persona.nombre }} {{ cliente.persona.apellido }}</td>
+            <td>{{ cliente.persona.nombre }} {{ cliente.persona.apellido }}</td>
+            <td>{{ cliente.persona.doc }}</td>
+            <td>{{ cliente.persona.domicilio }}</td>
+            <td>{{ cliente.persona.telefono }}</td>
+            <td>{{ cliente.persona.email }}</td>
             <td>0</td>
         </tr>
 

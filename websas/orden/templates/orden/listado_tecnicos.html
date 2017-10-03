@@ -1,20 +1,22 @@
 <table id="datatable-rubros" class="table table-striped table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
     <thead>
     <tr>
+    <th></th>
     <th>Nombre</th>
+    <th>Apellido</th>
     </tr>
     </thead>
     <tbody>
         {% if tecnicos %}
         {% for tecnico in tecnicos %}
         <tr>
-            <td> <div class="checkbox">
-                    <label>
-                    <input type="checkbox" class="flat"> Unchecked
-                    </label>
+            <td>
+                <div class="radio">
+                    <input type="radio" class="flat" name="tName">
                 </div>
             </td>
-            <td>{{ tecnico.nombre }}</td>
+            <td>{{ tecnico.persona.nombre }}</td>
+            <td>{{ tecnico.persona.apellido }}</td>
         </tr>
         {% endfor %}
         {% else %}
