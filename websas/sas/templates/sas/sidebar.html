@@ -27,6 +27,21 @@
         {% if user.is_superuser %}
         <li><a href="/admin/"><i class="fa fa-cog"></i>Administración</a></li>
         {% endif %}
+        <li><a><i class="fa fa-bar-chart-o"></i> Ordenes de trabajo <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="{% url 'orden:orden_crear' %}">Crear</a></li>
+          </ul>
+        </li>
+        <li><a><i class="fa fa-desktop"></i>Productos<span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+
+            <!-- Si ponemos 'producto' asi solo, funciona porque le pega a la url
+            cuyo name='producto'. Lo mismo con el detail-->
+            <li><a href= "{% url 'producto:producto_crear' %}">Altas </a></li>
+            <li><a href= "{% url 'producto:producto_listar' %}">Listados</a></li>
+          </ul>
+            
+        </li>
         <li><a><i class="fa fa-home"></i>Clientes<span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
             <li><a href="{% url 'cliente:cliente_crear' %}">Altas </a></li>
@@ -56,16 +71,6 @@
 
           </ul>
         </li>
-        <li><a><i class="fa fa-desktop"></i>Productos<span class="fa fa-chevron-down"></span></a>
-          <ul class="nav child_menu">
-
-            <!-- Si ponemos 'producto' asi solo, funciona porque le pega a la url
-            cuyo name='producto'. Lo mismo con el detail-->
-            <li><a href= "{% url 'producto:producto_crear' %}">Altas </a></li>
-            <li><a href= "{% url 'producto:producto_listar' %}">Listados</a></li>
-          </ul>
-            
-        </li>
         <!-- <li><a><i class="fa fa-table"></i>Tipos de tareas<span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
             <li><a href="/tTarea_detail.html">Altas </a></li>
@@ -76,11 +81,6 @@
           <ul class="nav child_menu">
             <li><a href="{% url 'servicio:servicio_crear' %}">Altas </a></li>
             <li><a href="{% url 'servicio:servicio_listar' %}">Listados</a></li>
-          </ul>
-        </li>
-        <li><a><i class="fa fa-bar-chart-o"></i> Ordenes de trabajo <span class="fa fa-chevron-down"></span></a>
-          <ul class="nav child_menu">
-            <li><a href="{% url 'orden:orden_crear' %}">Crear</a></li>
           </ul>
         </li>
         <li><a><i class="fa fa-clone"></i>Rubros<span class="fa fa-chevron-down"></span></a>
