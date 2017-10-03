@@ -12,7 +12,7 @@ class ClienteList(ListView):
     template_name = 'persona/clientes.html'
 
     def get_queryset(self):
-        return Persona.objects.filter(pk__in=Cliente.objects.all().values('persona'))
+        return Cliente.objects.all()
 
 class ClienteCreate(CreateView):
     model = Persona
