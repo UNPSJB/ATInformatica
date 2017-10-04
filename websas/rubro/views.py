@@ -17,8 +17,7 @@ class RubroCreate(CreateView):
     model = Rubro
     template_name = 'rubro/rubro_detail.html'
     form_class = RubroForm
-    success_url = reverse_lazy('rubro:rubros')
-    context_object_name = "contexto_form"
+    success_url = reverse_lazy('rubro:rubro_listar')
 
     @method_decorator(permission_required('rubro.add_rubro', login_url='rubro:rubros'))
     def post(self, request, *args, **kwargs):
@@ -26,3 +25,22 @@ class RubroCreate(CreateView):
 
     def tipos_servicios(self):
         return TipoServicio.objects.all()
+
+class RubroUpdate(UpdateView):
+    model = Rubro
+    template_name = 'rubro/rubro_detail.html'
+    form_class = RubroForm
+    success_url = reverse_lazy('rubro:rubro_listar')
+
+    @method_decorator(permission_required('rubro.change_rubro', login_url='rubro:rubro_listar'))
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
+class RubroDelete(DeleteView):
+    model = Rubro
+    template_name = 'rubro/rubro_delete.html'
+    success_url = reverse_lazy('rubro:rubro_listar')
+
+    @method_decorator(permission_required('rubro.delete_rubro', login_url='rubro:rubro_listar'))
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)

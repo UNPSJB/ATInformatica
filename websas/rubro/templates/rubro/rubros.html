@@ -35,13 +35,34 @@
                   <tr>
                     <th>Nombre</th>
                     <th>Descripción</th>
-                    <th></th>
-                    <th></th>
+                    <th>Ver</th>
+                    <th>Eliminar</th>
                   </tr>
                 </thead>
 
 
                 <tbody>
+                    {% if object_list %}
+                    {% for rubro in object_list %}
+                  <tr>
+                    <td>{{ rubro.nombre }}</td>
+                    <td>{{ rubro.descripcion }} </td>
+                    <td>
+                        <a href="{% url 'rubro:rubro_editar' rubro.id %}"><i class="fa fa-edit"></i></a>
+                      </td>
+                      <td>
+                        <a href="{% url 'rubro:rubro_eliminar' rubro.id %}"><i class="fa fa-trash"></i></a>
+                      </td>
+                    </tr>
+                  
+                  {% endfor %}
+                  {% else %}
+
+                  <h1>No hay rubros registrados</h1>
+                  <!-- no importa si hay un <h1> en el body, DataTables lo saca de la tabla -->
+
+                  {% endif %}  
+
                 </tbody>
               </table>
             </div>
