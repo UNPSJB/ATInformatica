@@ -2,3 +2,5 @@ Django==1.10
 psycopg2
 ipdb
 django-extensions==1.9.1
+sphinx==1.6.4
+
