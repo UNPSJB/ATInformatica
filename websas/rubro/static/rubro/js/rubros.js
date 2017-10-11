@@ -16,8 +16,3 @@ var tabla = $("#datatable-rubros").DataTable({
         className: "btn-sm"
     }, ],
 });
-
-// $('#datatable-rubros tbody').on('click', 'tr', function() {
-//     var datosFila = tabla.row(this).data();
-//     alert('Data: ' + datosFila);
-// });

@@ -10,7 +10,7 @@ class Rubro(models.Model):
 class Tarea(models.Model):
     nombre = models.CharField(max_length=30)
     rubro = models.ForeignKey(
-        Rubro
+        Rubro, 
     )
 
 class Tarifa(models.Model):
@@ -21,3 +21,6 @@ class Tarifa(models.Model):
         TipoServicio
     )
     precio = models.FloatField()
+
+    class Meta:
+        unique_together = (("tarea", "tipo_servicio"),)

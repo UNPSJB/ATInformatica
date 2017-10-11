@@ -57,7 +57,10 @@
 
 
 
-                <table id="datatable-rubros" class="table table-striped table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
+                <table id="datatable-rubro-detail" class="table table-striped table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
+
+                  <!-- Cabecera de la tabla -->
+                  
                     <thead>
                     <tr>
                       <th>Tarea</th>
@@ -71,6 +74,7 @@
   
                   
   
+                  <!-- Cuerpo de la tabla -->
                   <tbody>
                     {% with ''|center:10 as range %}
                     {% for _ in range %}
@@ -81,7 +85,10 @@
                         <td>Una tarea</td>
                         {% endif %}
                         {% for ts in view.tipos_servicios %}
-                          <td contenteditable="true"></td>
+                          <td>
+                            <input type="number" placeholder="Precio" min="0" value="0">
+                          </td>
+                          {% comment %} <td contenteditable="true"></td> {% endcomment %}
                         {% endfor %}
                         <td>
                           <a href="#"><i class="fa fa-edit"></i></a>
@@ -136,5 +143,5 @@
 <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
 <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
 <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
-<script src="/static/rubro/js/rubro.js"></script>
+<script src="/static/rubro/js/rubro_detail.js"></script>
 {% endblock javascripts %}
