@@ -24,7 +24,6 @@ $('#datatable-rubro-detail tbody').on('change', 'td', function() {
     //pero si no, estan de mas
     var iFila = tabla.row(this).index();
     var iCol = tabla.column(this).index()
-    // var iCelda = (iFila*10) + iCol
     var tipoServicio = $(tabla.column(this).header()).html();
 
 
@@ -35,8 +34,7 @@ $('#datatable-rubro-detail tbody').on('change', 'td', function() {
     
     // console.log(iCelda)
     // var precio = $(tabla.cell(this).data()).val()
-    // var precio = tabla.cell(this).$(":input:not(:focus)").val()
-    // var precio = tabla.cell(this).$(":input:eq("+iCelda+")").val()
+    var precio = tabla.cell(this).$(":input:not(:focus)").val()
     
     
     
