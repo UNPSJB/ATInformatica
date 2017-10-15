@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'producto',
     'persona',
     'rubro',
+    'tarea',
+    'tarifa',
     'servicio',
     'usuario',
     'orden',
