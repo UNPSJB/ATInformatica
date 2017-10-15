@@ -18,31 +18,83 @@ var tabla = $("#datatable-rubro-detail").DataTable({
 });
 
 $('#datatable-rubro-detail tbody').on('change', 'td', function() {
-    var tarea = tabla.row(this).data()[0];
 
-    //estos dos indices se usan por lo pronto para ver la fila y columna,
-    //pero si no, estan de mas
+    //recuperamos la tarea y el tipo de servicio de la celda
+    var tarea = tabla.row(this).data()[0];
+    var tipoServicio = $(tabla.column(this).header()).html();
+    
+    //armamos el id de la celda, con el indice de la fila y de la columna
     var iFila = tabla.row(this).index();
     var iCol = tabla.column(this).index()
-    var tipoServicio = $(tabla.column(this).header()).html();
+    var id = "#" + iFila + iCol
+    
+    //recuperamos el precio de la celda
+    var precio = tabla.cell(this).$(id).val()
 
-
-    /**
-     * tenemos que conseguir el input del elemento que recien cambio
-     * el loco me junta todos los inputs de las celdas, y nada que ver
-     */
-    
-    // console.log(iCelda)
-    // var precio = $(tabla.cell(this).data()).val()
-    var precio = tabla.cell(this).$(":input:not(:focus)").val()
-    
-    
-    
-    console.log("celda " + iFila +", " + iCol)
-    console.log('Tarea: ' + tarea + ", " + "Tipo de servicio: " + tipoServicio);
-    // console.log("Precio: " + precio)
-    console.log(precio)
+    console.log($("datatable-rubro-detail").attr("ajax-url"))
+    //mandamos los datos al servidor
+    $.ajax({    
+        //la url a donde hay que pegarle en el servidor esta en el html de la tabla
+        //de esta forma, podemos tener el .js separado del .html
+        url: $("#datatable-rubro-detail").attr("ajax-url"),
+        type: "POST",
+        data: {
+            "tarea": tarea,
+            "tipo_servicio": tipoServicio,
+            "precio": precio
+        },
+        dataType: 'json',
+        success: function(data){
+            console.log("en la success function");
+            console.log(data)
+        }
+    })
 });
+
+
+
+
+/**
+ * 
+ * funciones para conseguir el token csrf
+ * horrible que esto este aca, deberia moverselo mas arriba en la jerarquia
+ * sacado de este sitio:
+ * https://docs.djangoproject.com/en/dev/ref/csrf/
+ */
+
+
+// using jQuery
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+
+
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+
 
 
 

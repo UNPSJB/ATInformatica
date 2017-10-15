@@ -57,7 +57,7 @@
 
 
 
-                <table id="datatable-rubro-detail" class="table table-striped table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
+                <table id="datatable-rubro-detail" class="table table-striped table-bordered dt-responsive nowrap" cellSpacing=0 width=100% ajax-url="{% url 'tarifa:tarifa_crear' %}">
 
                   <!-- Cabecera de la tabla -->
                   
@@ -86,7 +86,9 @@
                         {% endif %}
                         {% for ts in view.tipos_servicios %}
                           <td>
-                            <input type="number" placeholder="Precio" min="0" value="0">
+                            <input type="number" placeholder="Precio" min="0" 
+                            id={{forloop.parentloop.counter0}}{{forloop.counter}}
+                            value="0">
                           </td>
                           {% comment %} <td contenteditable="true"></td> {% endcomment %}
                         {% endfor %}

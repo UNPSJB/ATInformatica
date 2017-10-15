@@ -3,9 +3,8 @@ from django.contrib.auth.decorators import permission_required
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
-
 from servicio.models import TipoServicio
-from .models import Rubro, Tarea, Tarifa
+from .models import Rubro
 from .forms import RubroForm
 # Create your views here.
 class RubroList(ListView):
