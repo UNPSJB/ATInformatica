@@ -1,0 +1,51 @@
+<div class="menu_section">
+    <h3>Workflow</h3>
+    <ul class="nav side-menu">
+        {% if user.is_superuser %}
+        <li><a href="/admin/"><i class="fa fa-cog"></i>Administración</a></li>
+        {% endif %}
+        <li><a><i class="fa fa-home"></i>Ordenes de trabajo<span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+                <li><a href="{% url 'orden:orden_crear' %}">Nueva orden de trabajo</a></li>
+                <li><a href="#">Revision, diagnostico y presupuesto</a></li>
+                <li><a href="#">Presupuestos a confirmar</a></li>
+                <li><a href="#">Asignaciones</a></li>
+                <li><a href="#">Cancelacion de orden de trabajo</a></li>
+                <hr>
+                <li><a href="#">Tareas pendientes</a></li>
+                <li><a href="#">Listado de ordenes de trabajo</a></li>
+            </ul>
+        </li>
+        <li><a><i class="fa fa-edit"></i>Técnicos<span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+                <li><a href="#">Técnicos asignados</a></li>
+                <li><a href="#">Técnicos disponibles</a></li>
+                <li><a href="#">Gestión de Jefes de Taller</a></li>
+                <hr>
+                <li><a href="{% url 'empleado:tecnico:tecnico_listar' %}">ABM Técnicos</a></li>
+            </ul>
+        </li>
+        <li><a><i class="fa fa-desktop"></i>Productos<span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+                <li><a href="{% url 'producto:producto_listar' %}">Productos y stock</a></li>
+                <li><a href="#">Reservas</a></li>
+            </ul>
+        </li>
+        <li><a><i class="fa fa-wrench"></i>Tipos de Servicio<span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+                <li><a href="/tServicio_detail.html">Altas - Modificación</a></li>
+                <li><a href="/tServicio.html">Listados - Bajas</a></li>
+            </ul>
+        </li>
+        <li><a><i class="fa fa-bar-chart-o"></i> Ordenes de trabajo <span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+            </ul>
+        </li>
+        <li><a><i class="fa fa-clone"></i>Rubros<span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+                <li><a href="/rubro_detail.html">Altas - Modificación</a></li>
+                <li><a href="/rubros.html">Listados - Bajas</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,119 @@
+{% extends "base_site.html" %}
+{% load staticfiles %}
+
+{% block clase_body %}
+footer_fixed
+{% endblock clase_body %}
+
+{% block interno_body %}
+    {% block navbar %}
+    <div class="top_nav">
+        {% include "top_navigation.html" %}
+    </div>
+    {% endblock navbar %}
+
+    {% block sidebar %}
+    <div class="col-md-3 left_col">
+        <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+                <a href="/" class="site_title"><i class="fa fa-spinner"></i> <span>Web SAS</span></a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <!-- menu profile quick info -->
+            <div class="profile clearfix">
+                <div class="profile_pic">
+                    <img src="/static/images/img.jpg" alt="..." class="img-circle profile_img">
+                </div>
+                <div class="profile_info">
+                    <span>Bienvenid@,</span>
+                    <h2>{% if user.is_authenticated %}{{ user.first_name }}{% else %} Usuario {% endif %}</h2>
+                </div>
+            </div>
+            <!-- /menu profile quick info -->
+
+            <br />
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu ">
+                {% block menu_sidebar %}
+                <!-- Los items de menu para cada vista pueden ir en un HTML.
+                    Estructura de ejemplo:
+
+                    <div class="menu_section"><h3>General</h3>
+                        <ul class="nav side-menu">
+                            <li><a><i class="fa fa-home"></i>Clientes<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="/cliente_detail.html">Altas - Modificación</a></li>
+                                    <li><a href="/clientes.html">Listados - Bajas</a></li>
+                                </ul>
+                            </li>
+                            <li><a><i class="fa fa-edit"></i>Técnicos<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="/tecnico_detail.html">Altas - Modificación</a></li>
+                                    <li><a href="/tecnicos.html">Listados - Bajas</a></li>
+                                </ul>
+                            </li>
+                            <li><a><i class="fa fa-desktop"></i>Productos<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="#">Altas - Modificación</a></li>
+                                    <li><a href="#">Listados - Bajas</a></li>
+                                </ul>
+                            </li>
+                            <li><a><i class="fa fa-table"></i>Tipos de tareas<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="/tTarea_detail.html">Altas - Modificación</a></li>
+                                    <li><a href="/tTareas.html">Listados - Bajas</a></li>
+                                </ul>
+                            </li>
+                            <li><a><i class="fa fa-wrench"></i>Tipos de Servicio<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="/tServicio_detail.html">Altas - Modificación</a></li>
+                                    <li><a href="/tServicio.html">Listados - Bajas</a></li>
+                                </ul>
+                            </li>
+                            <li><a><i class="fa fa-bar-chart-o"></i> Ordenes de trabajo <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                </ul>
+                            </li>
+                            <li><a><i class="fa fa-clone"></i>Rubros<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="/rubro_detail.html">Altas - Modificación</a></li>
+                                    <li><a href="/rubros.html">Listados - Bajas</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                -->
+            {% endblock menu_sidebar %}
+        </div>
+        <!-- /sidebar menu -->
+
+        <!-- /menu footer buttons -->
+        <div class="sidebar-footer hidden-small">
+            <a data-toggle="tooltip" data-placement="top" title="Configuracion">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+            </a>
+            <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+            </a>
+        </div>
+        <!-- /menu footer buttons -->
+    </div>
+    </div>
+    {% endblock sidebar %}
+
+    <div class="right_col" role="main" style="min-height: 3979px;">
+        <div class="">
+            {% block contenido %}
+            {% endblock contenido %}
+        </div>
+    </div>
+{% endblock interno_body %}
+    
+{% block footer %}
+<footer class="footer">
+    {% include "footer.html" %}
+  </footer>
+{% endblock footer %}

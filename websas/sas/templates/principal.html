@@ -1,0 +1,11 @@
+{% extends 'base_navs.html' %}
+
+{% block menu_sidebar %}
+{% include "perfiles/menu_principal.html" %}
+{% endblock menu_sidebar %}
+
+{% block contenido %}
+<div class="page-title">
+    ¡Bienvenido, {{user.rolname}}!
+</div>
+{% endblock contenido %}
