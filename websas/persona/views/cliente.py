@@ -32,6 +32,13 @@ class ClienteCreate(CreateView):
         else:
             return self.render_to_response(self.get_context_data(form=form))
 
+
+# TODO: debería devolver JSON con datos del nuevo cliente, cosa de pasarlo al parent
+class ClienteCreatePopup(ClienteCreate):
+    template_name = 'persona/cliente_form_popup.html'
+    success_url = '#'
+
+
 class ClienteUpdate(UpdateView):
     model = Persona
     template_name = 'persona/cliente_form.html'
