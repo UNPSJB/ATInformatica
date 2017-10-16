@@ -13,7 +13,7 @@ from orden.forms import OrdenForm
 
 class OrdenCreate(CreateView):
     model = Orden
-    template_name = 'orden/orden_nueva.html'
+    template_name = 'orden/orden_detail.html'
     form_class = OrdenForm
     success_url = reverse_lazy('/')
 
