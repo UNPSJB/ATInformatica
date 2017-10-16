@@ -13,16 +13,15 @@ from orden.forms import OrdenForm
 
 class OrdenCreate(CreateView):
     model = Orden
-    template_name = 'orden/orden_detail.html'
+    template_name = 'orden/orden_nueva.html'
     form_class = OrdenForm
-
     success_url = reverse_lazy('/')
 
-    def clientes(self):
-        return Cliente.objects.all()
-
-    def rubros(self):
-        return Rubro.objects.all()
-
-    def tecnicos(self):
-        return Tecnico.objects.all()
+    def get_context_data(self, **kwargs):
+        # Llamar a super para recuperar el contexto original
+        contexto = super(OrdenCreate, self).get_context_data(**kwargs)
+        # Agregar lo que necesita la vista
+        contexto['clientes'] = Cliente.objects.all()
+        contexto['rubros'] = Rubro.objects.all()
+        contexto['tecnicos'] = Tecnico.objects.all()
+        return contexto

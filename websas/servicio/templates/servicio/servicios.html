@@ -1,9 +1,6 @@
-{% extends "sas/base.html" %}
+{% extends "principal.html" %}
 
-{% block title %} Tipos de servicio {% endblock title %}
-
-{% block content %}
-<div class="right_col">
+{% block contenido %}
 <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
             <div class="x_title">
@@ -66,10 +63,9 @@
             </div>
           </div>
         </div>
-</div>
-{% endblock content %}
-{% block javascripts %}
-  {{ block.super }}
+{% endblock contenido %}
+
+{% block scripts %}
   <!-- Datatables -->
   <script src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
   <script src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
@@ -86,5 +82,6 @@
   <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
   <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
   <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+
   <script src="/static/servicio/js/servicio.js"></script>
-{% endblock javascripts %}
+{% endblock scripts %}

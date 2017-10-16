@@ -1,77 +1,72 @@
-{% extends "sas/base.html" %}
+{% extends "principal.html" %}
 
-{% block title %} Rubros {% endblock title %}
-
-
-{% block content %}
-<div class="right_col">
+{% block contenido %}
 <div class="col-md-12 col-sm-12 col-xs-12">
-          <div class="x_panel">
-            <div class="x_title">
-              <h2>Rubros</h2>
-              <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                </li>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Settings 1</a>
-                    </li>
-                    <li><a href="#">Settings 2</a>
-                    </li>
-                  </ul>
-                </li>
-                <li><a class="close-link"><i class="fa fa-close"></i></a>
-                </li>
-              </ul>
-              <div class="clearfix"></div>
-            </div>
-            <div class="x_content">
-              <!-- <p class="text-muted font-13 m-b-30">
-                The Buttons extension for DataTables provides a common set of options, API methods and styling to display buttons on a page that will interact with a DataTable. The core library provides the based framework upon which plug-ins can built.
-              </p> -->
-              <table id="datatable-rubros" class="table table-striped table-bordered">
-                <thead>
-                  <tr>
-                    <th>Nombre</th>
-                    <th>Descripción</th>
-                    <th>Ver</th>
-                    <th>Eliminar</th>
-                  </tr>
-                </thead>
+  <div class="x_panel">
+    <div class="x_title">
+      <h2>Rubros</h2>
+      <ul class="nav navbar-right panel_toolbox">
+        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Settings 1</a>
+            </li>
+            <li><a href="#">Settings 2</a>
+            </li>
+          </ul>
+        </li>
+        <li><a class="close-link"><i class="fa fa-close"></i></a>
+        </li>
+      </ul>
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+      <!-- <p class="text-muted font-13 m-b-30">
+        The Buttons extension for DataTables provides a common set of options, API methods and styling to display buttons on a page that will interact with a DataTable. The core library provides the based framework upon which plug-ins can built.
+      </p> -->
+      <table id="datatable-rubros" class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Ver</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
 
 
-                <tbody>
-                  {% if object_list %}
-                  {% for rubro in object_list %}
-                    <tr>
-                      <td>{{ rubro.nombre }}</td>
-                      <td>{{ rubro.descripcion }} </td>
-                      <td>
-                          <a href="{% url 'rubro:rubro_editar' rubro.id %}"><i class="fa fa-edit"></i></a>
-                        </td>
-                        <td>
-                          <a href="{% url 'rubro:rubro_eliminar' rubro.id %}"><i class="fa fa-trash"></i></a>
-                        </td>
-                    </tr>
-                  
-                  {% endfor %}
-                  {% else %}
+        <tbody>
+          {% if object_list %}
+          {% for rubro in object_list %}
+            <tr>
+              <td>{{ rubro.nombre }}</td>
+              <td>{{ rubro.descripcion }} </td>
+              <td>
+                  <a href="{% url 'rubro:rubro_editar' rubro.id %}"><i class="fa fa-edit"></i></a>
+                </td>
+                <td>
+                  <a href="{% url 'rubro:rubro_eliminar' rubro.id %}"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+          
+          {% endfor %}
+          {% else %}
 
-                  <h1>No hay rubros registrados</h1>
-                  <!-- no importa si hay un <h1> en el body, DataTables lo saca de la tabla -->
+          <h1>No hay rubros registrados</h1>
+          <!-- no importa si hay un <h1> en el body, DataTables lo saca de la tabla -->
 
-                  {% endif %}  
+          {% endif %}  
 
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
-{% endblock content %}
-{% block javascripts %}
-  {{ block.super }}
+{% endblock contenido %}
+
+{% block scripts %}
   <!-- Datatables -->
   <script src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
   <script src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
@@ -88,6 +83,6 @@
   <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
   <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
   <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
-  <script src="/static/rubro/js/rubros.js"></script>
   
-{% endblock javascripts %}
+  <script src="/static/rubro/js/rubros.js"></script>
+{% endblock scripts %}

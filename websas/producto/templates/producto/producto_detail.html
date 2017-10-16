@@ -1,43 +1,37 @@
-{% extends "sas/base.html" %}
+{% extends "principal.html" %}
 
-{% block title %} Producto Detail {% endblock title %}
-
-{% block content %}
-<div class="right_col">
-    <div class="clearfix"></div>
-        <div class="row">
-          <div class="x_panel">
-            <div class="x_title">
-              <h2>Producto #{{ producto.id }}<small>gestión de productos </small></h2>
-              <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                </li>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Settings 1</a>
-                    </li>
-                    <li><a href="#">Settings 2</a>
-                    </li>
-                  </ul>
-                </li>
-                <li><a class="close-link"><i class="fa fa-close"></i></a>
-                </li>
-              </ul>
-              <div class="clearfix"></div>
-            </div>
-            <div class="x_content">
-              <br />
-              <h2>{{ producto.nombre }}</h2>
-              <h2>{{ producto.descripcion }}</h2>
-              <h2>{{ producto.marca }}</h2>
-              <h2>{{ producto.stock_minimo }}</h2>
-              <h2>{{ producto.stock }}</h2>
-              <h2>{{ producto.precio }}</h2>
-              <a class="btn btn-info" href="{% url 'producto:producto_listar' %}">Volver</a>
-      </div>
-          </div>
-        </div>
-      </div>
+{% block contenido %}
+<div class="row">
+  <div class="x_panel">
+    <div class="x_title">
+      <h2>Producto #{{ producto.id }}<small>gestión de productos </small></h2>
+      <ul class="nav navbar-right panel_toolbox">
+        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Settings 1</a>
+            </li>
+            <li><a href="#">Settings 2</a>
+            </li>
+          </ul>
+        </li>
+        <li><a class="close-link"><i class="fa fa-close"></i></a>
+        </li>
+      </ul>
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+      <br />
+      <h2>{{ producto.nombre }}</h2>
+      <h2>{{ producto.descripcion }}</h2>
+      <h2>{{ producto.marca }}</h2>
+      <h2>{{ producto.stock_minimo }}</h2>
+      <h2>{{ producto.stock }}</h2>
+      <h2>{{ producto.precio }}</h2>
+      <a class="btn btn-info" href="{% url 'producto:producto_listar' %}">Volver</a>
+    </div>
+  </div>
 </div>
 {% endblock content %}

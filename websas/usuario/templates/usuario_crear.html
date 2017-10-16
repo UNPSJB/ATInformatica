@@ -1,22 +1,16 @@
-{% extends 'sas/base.html' %}
+{% extends 'principal.html' %}
+{% load staticfiles %}
 
-{% block title %} Editar Usuario {% endblock title %}
-
-{% block stylesheets %}
-  {{ block.super }}
+{% block estilos %}
   <!-- Animate.css -->
-  <link href="/static/vendors/animate.css/animate.min.css" rel="stylesheet">
-{% endblock stylesheets %}
+  <link href="{% static 'vendors/animate.css/animate.min.css' %}" rel="stylesheet">
+{% endblock estilos %}
 
-{% block body_class %}Editar Usuario{% endblock body_class %}
-
-{% block body %}
-
+{% block contenido %}
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     {{ persona.nombre }}
     <button type="submit">Crear usuario</button>
 </form>
-
-{% endblock body %}
+{% endblock contenido %}

@@ -1,0 +1,105 @@
+{% extends "principal.html" %}
+{% load staticfiles %}
+
+{% block estilos %}
+<!-- Smart Wizard CSS -->
+<link href="{% static 'vendors/jQuery-Smart-Wizard/styles/smart_wizard.css' %}" rel="stylesheet" type="text/css">
+
+<!-- DataTables CSS -->
+<link href="{% static 'vendors/datatables.net-bs/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css' %}" rel="stylesheet">
+
+<link href="{% static 'css/orden_nueva.css' %}" rel="stylesheet" type="text/css">
+{% endblock estilos %}
+
+{% block contenido %}
+<div class="x-panel">
+    <div class="x_title">
+        <h2>Nueva orden de trabajo</h2>
+    </div>
+    <div class="x_content">
+        <!-- Smart Wizard -->
+        <div id="creacion_ot" class="form_wizard wizard_horizontal">
+            <!-- Lista de pasos / cabecera -->
+                <ul class="wizard_steps anchor">
+                <li>
+                    <a href="#step-1" class="selected" isdone="1" rel="1">
+                    <span class="step_no">1</span>
+                    <span class="step_descr">
+                        CLIENTE<br>
+                        <small>Cliente asignado a la OT</small>
+                    </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#step-2" class="disabled" isdone="0" rel="2">
+                    <span class="step_no">2</span>
+                    <span class="step_descr">
+                        TIPO DE SERVICIO<br>
+                        <small>Tipo de servicio de la OT</small>
+                    </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#step-3" class="disabled" isdone="0" rel="3">
+                    <span class="step_no">3</span>
+                    <span class="step_descr">
+                                        RUBRO Y EQUIPO<br>
+                                        <small>Rubro/equipo asignado a la OT</small>
+                                    </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#step-4" class="disabled" isdone="0" rel="4">
+                    <span class="step_no">4</span>
+                    <span class="step_descr">
+                                        TÉCNICO<br>
+                                        <small>Técnico asignado a la OT</small>
+                                    </span>
+                    </a>
+                </li>
+                </ul>
+
+            <!-- Contenedor de los pasos / CONTENIDO -->
+            <div class="stepContainer">
+                <div id="step-1" class="content" style="display: block;">
+                    {% include "orden/listado_clientes.html" %}
+                </div>
+                
+                <div id="step-2" class="content" style="display: none;">
+                    {% comment %} {% include "orden/listado_servicios.html" %} {% endcomment %}
+                </div>
+                
+                <div id="step-3" class="content" style="display: none;">
+                    {% comment %} {% include "orden/orden_rubrosequipos.html" %} {% endcomment %}
+                </div>
+                
+                <div id="step-4" class="content" style="display: none;">
+                <h2 class="StepTitle">Step 4 Content</h2>
+
+                </div>
+            </div>
+
+            <div class="actionBar">
+                <div class="msgBox">
+                    <div class="content"></div>
+                    <a href="#" class="close">X</a>
+                </div>
+            </div>
+        </div>
+            <!-- End SmartWizard Content -->
+        </div>
+    </div>
+{% endblock contenido %}
+        
+{% block scripts %}
+<script type="text/javascript" src="{% static 'vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js' %}"></script>
+<script type="text/javascript" src="{% static 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'vendors/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'js/orden_nueva.js' %}"></script>
+{% endblock scripts %}

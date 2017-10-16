@@ -1,134 +1,122 @@
-{% extends "sas/base.html" %}
+{% extends "principal.html" %}
 
-{% block title %} Rubros {% endblock title %}
+{% block contenido %}
+<div class="row">
+  <div class="x_panel">
+    <div class="x_title">
 
-{% block content %}
-<div class="right_col">
-    <div class="clearfix"></div>
-        <div class="row">
-          <div class="x_panel">
-            <div class="x_title">
+      <h2>Rubro</h2>
+      
+      <ul class="nav navbar-right panel_toolbox">
+        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Settings 1</a>
+            </li>
+            <li><a href="#">Settings 2</a>
+            </li>
+          </ul>
+        </li>
+        <li><a class="close-link"><i class="fa fa-close"></i></a>
+        </li>
+      </ul>
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+      <br />
+      <form id="am-rubro" data-parsley-validate class="form-horizontal form-label-left">
 
-              <h2>Rubro</h2>
-              
-              <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                </li>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Settings 1</a>
-                    </li>
-                    <li><a href="#">Settings 2</a>
-                    </li>
-                  </ul>
-                </li>
-                <li><a class="close-link"><i class="fa fa-close"></i></a>
-                </li>
-              </ul>
-              <div class="clearfix"></div>
-            </div>
-            <div class="x_content">
-              <br />
-              <form id="am-rubro" data-parsley-validate class="form-horizontal form-label-left">
+        <!-- Comienzo del formulario - csrf_token para aceptar data POST en django -->
+        {% csrf_token %}
 
-                <!-- Comienzo del formulario - csrf_token para aceptar data POST en django -->
-                {% csrf_token %}
-
-                <!-- Campo de texto Nombre -->
-                <div class="form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.nombre.label }}">{{ form.nombre.label }}<span class="required">*</span>
-                  </label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    {{ form.nombre }}
-                  </div>
-                </div>
-
-                <!--  Campo texto Descripción -->
-                <div class="form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.descripcion.label }}">{{ form.descripcion.label }}<span class="required">*</span>
-                  </label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    {{ form.descripcion }}
-                  </div>
-                </div>
-
-                <div class="ln_solid"></div>
-
-
-
-                <table id="datatable-rubro-detail" class="table table-striped table-bordered dt-responsive nowrap" cellSpacing=0 width=100% ajax-url="{% url 'tarifa:tarifa_crear' %}">
-
-                  <!-- Cabecera de la tabla -->
-                  
-                    <thead>
-                    <tr>
-                      <th>Tarea</th>
-                      {% for ts in view.tipos_servicios %}
-                        <th> {{ ts.nombre }} </th>
-                      {% endfor %}
-                      <th>Ver</th>
-                      <th>Eliminar</th>
-                    </tr>
-                  </thead>
-  
-                  
-  
-                  <!-- Cuerpo de la tabla -->
-                  <tbody>
-                    {% with ''|center:10 as range %}
-                    {% for _ in range %}
-                      <tr>
-                        {% if forloop.counter == 1 %}
-                        <td>RDyP</td>
-                        {% else %}
-                        <td>Una tarea</td>
-                        {% endif %}
-                        {% for ts in view.tipos_servicios %}
-                          <td>
-                            <input type="number" placeholder="Precio" min="0" 
-                            id={{forloop.parentloop.counter0}}{{forloop.counter}}
-                            value="0">
-                          </td>
-                          {% comment %} <td contenteditable="true"></td> {% endcomment %}
-                        {% endfor %}
-                        <td>
-                          <a href="#"><i class="fa fa-edit"></i></a>
-                        </td>
-                        <td>
-                          <a href="#"><i class="fa fa-trash"></i></a>
-                        </td>
-                      </tr>
-                    {% endfor %}
-                    {% endwith %}
-            
-                  </tbody>
-                </table>
-  
-                <!-- (^) separador - grupo de botones (v) -->
-
-                <div class="form-group">
-                  <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                    <button class="btn btn-primary" type="button">Cancel</button>
-                  <button class="btn btn-primary" type="reset">Reset</button>
-                    <button type="submit" formmethod="POST" class="btn btn-success">Submit</button>
-                  </div>
-                </div>
-
-                
-                
-              </form>
-                  
-              
-            </div>
+        <!-- Campo de texto Nombre -->
+        <div class="form-group">
+          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.nombre.label }}">{{ form.nombre.label }}<span class="required">*</span>
+          </label>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            {{ form.nombre }}
           </div>
         </div>
-      </div>
-</div>
-{% endblock content %}
 
-{% block javascripts %}
-{{ block.super }}
+        <!--  Campo texto Descripción -->
+        <div class="form-group">
+          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.descripcion.label }}">{{ form.descripcion.label }}<span class="required">*</span>
+          </label>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            {{ form.descripcion }}
+          </div>
+        </div>
+
+        <div class="ln_solid"></div>
+
+
+
+        <table id="datatable-rubro-detail" class="table table-striped table-bordered dt-responsive nowrap" cellSpacing=0 width=100% ajax-url="{% url 'tarifa:tarifa_crear' %}">
+
+          <!-- Cabecera de la tabla -->
+          
+            <thead>
+            <tr>
+              <th>Tarea</th>
+              {% for ts in view.tipos_servicios %}
+                <th> {{ ts.nombre }} </th>
+              {% endfor %}
+              <th>Ver</th>
+              <th>Eliminar</th>
+            </tr>
+          </thead>
+
+          
+
+          <!-- Cuerpo de la tabla -->
+          <tbody>
+            {% with ''|center:10 as range %}
+            {% for _ in range %}
+              <tr>
+                {% if forloop.counter == 1 %}
+                <td>RDyP</td>
+                {% else %}
+                <td>Una tarea</td>
+                {% endif %}
+                {% for ts in view.tipos_servicios %}
+                  <td>
+                    <input type="number" placeholder="Precio" min="0" 
+                    id={{forloop.parentloop.counter0}}{{forloop.counter}}
+                    value="0">
+                  </td>
+                  {% comment %} <td contenteditable="true"></td> {% endcomment %}
+                {% endfor %}
+                <td>
+                  <a href="#"><i class="fa fa-edit"></i></a>
+                </td>
+                <td>
+                  <a href="#"><i class="fa fa-trash"></i></a>
+                </td>
+              </tr>
+            {% endfor %}
+            {% endwith %}
+    
+          </tbody>
+        </table>
+
+        <!-- (^) separador - grupo de botones (v) -->
+
+        <div class="form-group">
+          <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+            <button class="btn btn-primary" type="button">Cancel</button>
+          <button class="btn btn-primary" type="reset">Reset</button>
+            <button type="submit" formmethod="POST" class="btn btn-success">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock contenido %}
+
+{% block scripts %}
 <!-- Datatables -->
 <script src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
@@ -145,5 +133,6 @@
 <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
 <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
 <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+
 <script src="/static/rubro/js/rubro_detail.js"></script>
-{% endblock javascripts %}
+{% endblock scripts %}

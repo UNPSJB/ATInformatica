@@ -1,9 +1,6 @@
-{% extends "sas/base.html" %}
+{% extends "principal.html" %}
 
-{% block title %} Producto Detail {% endblock title %}
-
-{% block content %}
-<div class="right_col">
+{% block contenido %}
     <div class="clearfix"></div>
         <div class="row">
           <div class="x_panel">
@@ -100,11 +97,9 @@
           </div>
         </div>
       </div>
-</div>
-{% endblock content %}
+{% endblock contenido %}
 
-{% block javascripts %}
-{{ block.super }}
+{% block scripts %}
 <!-- validator -->
 <script src="/static/vendors/validator/validator.js"></script>
 <script>
@@ -115,4 +110,4 @@
     validator.message['invalid'] = 'contenido invalido';
     validator.message['number_min'] = 'no puede ser negativo';
 </script>
-{% endblock javascripts %}
+{% endblock scripts %}

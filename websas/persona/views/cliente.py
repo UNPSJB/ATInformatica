@@ -34,7 +34,7 @@ class ClienteCreate(CreateView):
 
 class ClienteUpdate(UpdateView):
     model = Persona
-    template_name = 'persona/cliente_detail.html'
+    template_name = 'persona/cliente_form.html'
     form_class = PersonaUpdateForm
     success_url = reverse_lazy('cliente:cliente_listar')
 
