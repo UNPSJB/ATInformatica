@@ -1,18 +1,56 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core.urlresolvers import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import permission_required
 
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
+from django.views.generic import View, CreateView, ListView, UpdateView, DeleteView, DetailView
 from persona.models import Cliente, Persona
 from persona.forms import PersonaForm, PersonaUpdateForm, EmpleadoForm
 
-class ClienteList(ListView):
-    model = Cliente
-    template_name = 'persona/clientes.html'
+# class ClienteList(ListView):
+#     model = Cliente
+#     template_name = 'persona/clientes.html'
+#     context_object_name = 'clientes'
 
-    def get_queryset(self):
-        return Cliente.objects.all()
+#     def get_context_data(self, **kwargs):
+#         context = super(ClienteList, self).get_context_data(**kwargs)
+#         context['tabla_botones'] = True
+#         return context
+
+#     def get_queryset(self):
+#         return Cliente.objects.all()
+
+
+class ClienteList(View):
+
+    def get(self, request):
+        return render(request, 'persona/clientes.html', {'tabla_botones': True})
+
+
+class ClienteListJSON(ListView):
+    model = Cliente
+
+    def get(self, request):
+        clientes = self.get_queryset()
+        lista_clientes = []
+        for cliente in clientes:
+            cliente_datos = {
+                'id': cliente.persona.id,
+                'nombre': cliente.persona.get_nombre_completo(),
+                'dni': cliente.persona.doc,
+                'domicilio': cliente.persona.domicilio,
+                'telefono': cliente.persona.telefono,
+                'email': cliente.persona.email,
+                'saldo': "-",
+                'url_ver': reverse_lazy('cliente:cliente_ver', args=[cliente.persona.id]),
+                'url_editar': reverse_lazy('cliente:cliente_editar', args=[cliente.persona.id]),
+                'url_eliminar': reverse_lazy('cliente:cliente_eliminar', args=[cliente.persona.id]),
+            }
+            lista_clientes.append(cliente_datos)
+
+        return JsonResponse({'data': lista_clientes})
+
 
 class ClienteCreate(CreateView):
     model = Persona

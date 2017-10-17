@@ -15,8 +15,12 @@ class Persona(models.Model):
     email = models.EmailField()
     telefono = models.CharField(max_length=15)
 
+    def get_nombre_completo(self):
+        return "{} {}".format(self.nombre, self.apellido)
+
     def __str__(self):
         return "{} {}".format(self.nombre, self.apellido)
+
 
 class Rol(models.Model):
     rolname = models.CharField(max_length=20, null=True, blank=True)
@@ -25,6 +29,7 @@ class Rol(models.Model):
         on_delete=models.CASCADE,
         null=True
     )
+
 
 class Tecnico(Rol):
     
@@ -39,11 +44,13 @@ class Cliente(Rol):
         super(self.__class__, self).__init__(*args, **kwargs)
         self.rolname = "Cliente"
 
+
 class JefeTaller(Rol):
 
     def __init__(self, *args, **kwargs):
         super(self.__class__, self).__init__(*args, **kwargs)
         self.rolname = "Jefe de Taller"
+
 
 class Gerente(Rol):
 
