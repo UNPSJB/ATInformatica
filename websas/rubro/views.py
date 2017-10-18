@@ -16,11 +16,15 @@ class RubroCreate(CreateView):
     model = Rubro
     template_name = 'rubro/rubro_detail.html'
     form_class = RubroForm
-    success_url = reverse_lazy('rubro:rubro_listar')
+    # success_url = reverse_lazy('rubro:rubro_listar')
 
-    @method_decorator(permission_required('rubro.add_rubro', login_url='rubro:rubros'))
+    @method_decorator(permission_required('rubro.add_rubro', login_url='rubro:rubro_listar'))
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
+
+    def get_success_url(self):
+        print("RubroCreate RUBRO {}".format(self.object.id))
+        return reverse_lazy("tarea:tarea_crear", args=(self.object.id, ))
 
     def tipos_servicios(self):
         return TipoServicio.objects.all()

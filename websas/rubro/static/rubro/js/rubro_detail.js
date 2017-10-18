@@ -31,7 +31,8 @@ $('#datatable-rubro-detail tbody').on('change', 'td', function() {
     //recuperamos el precio de la celda
     var precio = tabla.cell(this).$(id).val()
 
-    console.log($("datatable-rubro-detail").attr("ajax-url"))
+    // console.log($("datatable-rubro-detail").attr("ajax-url"))
+    
     //mandamos los datos al servidor
     $.ajax({    
         //la url a donde hay que pegarle en el servidor esta en el html de la tabla

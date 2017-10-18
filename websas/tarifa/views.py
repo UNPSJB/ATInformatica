@@ -1,3 +1,6 @@
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import permission_required
+
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views import View
@@ -10,6 +13,7 @@ class TarifaCreate(View):
     # }
     # if data['is_taken']:
     #     data['error_message'] = 'A user with this username already exists.'
+    @method_decorator(permission_required('tarifa.add_tarifa', login_url='rubro:rubro_listar'))
     def post(self, request, *args, **kwargs):
         print(request.POST.get("tarea"))
         print(request.POST.get("tipo_servicio"))
