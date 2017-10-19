@@ -8,27 +8,32 @@ class Orden(models.Model):
 
     cliente = models.ForeignKey(
         Cliente,
-        null=True
+        null=True,
+        related_name="ordenes"
     )
 
     rubro = models.ForeignKey(
-        Rubro
+        Rubro,
+        related_name="ordenes"
     )
 
     equipo = models.ForeignKey(
         "Equipo",
-        null=True
+        null=True,
+        related_name="ordenes"
     )
 
     tipo_servicio = models.ForeignKey(
-        TipoServicio
+        TipoServicio,
+        related_name="ordenes"
     )
 
     tecnico = models.ForeignKey(
-        Tecnico
+        Tecnico,
+        related_name="ordenes"
     )
 
 class Equipo(models.Model):
     nro_serie = models.IntegerField(unique=True)
-    decripcion = models.CharField(max_length=250)
+    descripcion = models.CharField(max_length=250)
 
