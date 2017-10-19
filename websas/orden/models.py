@@ -46,7 +46,7 @@ class Orden(models.Model):
         related_name="ordenes"
     )
 
-    descripcion = models.CharField(max_length  00)
+    descripcion = models.CharField(max_length=500)
 
     objects = OrdenManager()
 
