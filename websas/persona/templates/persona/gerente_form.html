@@ -1,109 +1,104 @@
-{% extends "sas/base.html" %}
+{% extends "principal.html" %}
 
-{% block title %} Tecnico Detail {% endblock title %}
+{% block contenido %}
 
-{% block content %}
-<div class="right_col">
-    <div class="clearfix"></div>
-        <div class="row">
-          <div class="x_panel">
-            <div class="x_title">
-              <h2>Gerentes <small>gestión de gerentes</small></h2>
-              <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                </li>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Settings 1</a>
-                    </li>
-                    <li><a href="#">Settings 2</a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-              <div class="clearfix"></div>
+<div class="row">
+  <div class="x_panel">
+    <div class="x_title">
+      <h2>Gerentes <small>gestión de gerentes</small></h2>
+      <ul class="nav navbar-right panel_toolbox">
+        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Settings 1</a>
+            </li>
+            <li><a href="#">Settings 2</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+      <br />
+      <!--<form method="post" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">-->
+      <form method="post" class="form-horizontal form-label-left" novalidate>  
+        {% csrf_token %}
+        <!-- MOSTRAR LOS ERRORES DEL SERVIDOR -->
+        {% if form.errors %}
+        <div class="clearfix">
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-error col-md-6 col-sm-6 col-xs-12 col-md-offset-3 col-sm-offset-3 col-xs-12">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-error col-md-6 col-sm-6 col-xs-12 col-md-offset-3 col-sm-offset-3 col-xs-12">
+                <strong>{{ error|escape }}</strong>
             </div>
-            <div class="x_content">
-              <br />
-              <!--<form method="post" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">-->
-              <form method="post" class="form-horizontal form-label-left" novalidate>  
-                {% csrf_token %}
-                <!-- MOSTRAR LOS ERRORES DEL SERVIDOR -->
-                {% if form.errors %}
-                <div class="clearfix">
-                {% for field in form %}
-                    {% for error in field.errors %}
-                        <div class="alert alert-error col-md-6 col-sm-6 col-xs-12 col-md-offset-3 col-sm-offset-3 col-xs-12">
-                            <strong>{{ error|escape }}</strong>
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-                {% for error in form.non_field_errors %}
-                    <div class="alert alert-error col-md-6 col-sm-6 col-xs-12 col-md-offset-3 col-sm-offset-3 col-xs-12">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
-                {% endfor %}
-                </div>
-                {% endif %}
-                <div class="item form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.nombre.label }}">{{ form.nombre.label }}
-                  </label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    {{ form.nombre }}
-                  </div>
-                </div>
-                <div class="item form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.apellido.label }}">{{ form.apellido.label }}
-                    </label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      {{ form.apellido }}
-                    </div>
-                  </div>
-                <div class="item form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.doc.label }}">{{ form.doc.label }} 
-                  </label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    {{ form.doc }}
-                  </div>
-                </div>
-                <div class="item form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.domicilio.label }}"> {{ form.domicilio.label }}
-                  </label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    {{ form.domicilio }}
-                  </div>
-                </div>
-                <div class="item form-group">
-                  <label for="{{ form.telefono.label }}" class="control-label col-md-3 col-sm-3 col-xs-12">{{ form.telefono.label }}</label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                      {{ form.telefono }}
-                  </div>
-                </div>
-                
-                <div class="item form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.email.label }}">{{ form.email.label }}</span>
-                  </label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                      {{ form.email }}
-                  </div>
-                </div>
-
-                <div class="ln_solid"></div>
-                <div class="form-group">
-                  <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                    <button class="btn btn-primary" type="button">Cancel</button>
-  		            <button class="btn btn-primary" type="reset">Reset</button>
-                    <button type="submit" class="btn btn-success">Submit</button>
-                  </div>
-                </div>
-              </form>
-            </div>
+        {% endfor %}
+        </div>
+        {% endif %}
+        <div class="item form-group">
+          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.nombre.label }}">{{ form.nombre.label }}
+          </label>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            {{ form.nombre }}
           </div>
         </div>
-      </div>
+        <div class="item form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.apellido.label }}">{{ form.apellido.label }}
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              {{ form.apellido }}
+            </div>
+          </div>
+        <div class="item form-group">
+          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.doc.label }}">{{ form.doc.label }} 
+          </label>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            {{ form.doc }}
+          </div>
+        </div>
+        <div class="item form-group">
+          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.domicilio.label }}"> {{ form.domicilio.label }}
+          </label>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            {{ form.domicilio }}
+          </div>
+        </div>
+        <div class="item form-group">
+          <label for="{{ form.telefono.label }}" class="control-label col-md-3 col-sm-3 col-xs-12">{{ form.telefono.label }}</label>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+              {{ form.telefono }}
+          </div>
+        </div>
+        
+        <div class="item form-group">
+          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.email.label }}">{{ form.email.label }}</span>
+          </label>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+              {{ form.email }}
+          </div>
+        </div>
+
+        <div class="ln_solid"></div>
+        <div class="form-group">
+          <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+            <button class="btn btn-primary" type="button">Cancel</button>
+          <button class="btn btn-primary" type="reset">Reset</button>
+            <button type="submit" class="btn btn-success">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
-{% endblock content %}
+{% endblock contenido %}
 
 {% block javascripts %}
 {{ block.super }}

@@ -12,14 +12,11 @@ class TecnicoCreate(EmpleadoCreate):
     
     template_name = 'persona/tecnico_form.html'
     success_url = reverse_lazy('empleado:tecnico:tecnico_listar')
-    
+    _rol = Tecnico()
+
     @method_decorator(permission_required('persona.add_tecnico', login_url='empleado:tecnico:tecnico_listar'))
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
-    
-    def crear_rol(self, persona):
-        tecnico = Tecnico(persona=persona)
-        tecnico.save()
 
 class TecnicoList(EmpleadoList):
     

@@ -1,6 +1,6 @@
 {% extends "principal.html" %}
 
-{% block content %}
+{% block contenido %}
         <div class="row">
           <div class="x_panel">
             <div class="x_title">
@@ -26,9 +26,9 @@
               <h1>{{ jefe.apellido }}</h1>
               <h1>{{ jefe.dni }}</h1>
               <h1>{{ jefe.email }}</h1>
-                <a class="btn btn-info" href="{% url 'persona:jefe:jefe_listar' %}">Volver</a>
+                <a class="btn btn-info" href="{% url 'empleado:jefe:jefe_listar' %}">Volver</a>
             </div>
           </div>
         </div>
       </div>
-{% endblock content %}
+{% endblock contenido %}

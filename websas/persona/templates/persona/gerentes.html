@@ -1,88 +1,79 @@
-{% extends "sas/base.html" %}
+{% extends "principal.html" %}
+{% load staticfiles %}
 
-{% block title %} gerentes {% endblock title %}
-
-{% block content %}
-<div class="right_col">
+{% block contenido %}
 <div class="col-md-12 col-sm-12 col-xs-12">
-          <div class="x_panel">
-            <div class="x_title">
-              <h2>Gestión de técnicos<small>Técnicos</small></h2>
-              <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                </li>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Settings 1</a>
-                    </li>
-                    <li><a href="#">Settings 2</a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-              <div class="clearfix"></div>
-            </div>
-            <div class="x_content">
-              <!-- párrafo para mostrar info adicional antes de la tabla
-              
-                <p class="text-muted font-13 m-b-30">
-                The Buttons extension for DataTables provides a common set of options, API methods and styling to display buttons on a page that will interact with a DataTable. The core library provides the based framework upon which plug-ins can built.
-                </p>
-              
-              -->
-              <table id="datatable-gerentes" class="table table-striped table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
-                <thead>
-                  <tr>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>DNI/CUIT/CUIL</th>
-                    <th>Domicilio</th>
-                    <th>Teléfono</th>
-                    <th>e-mail</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                  </tr>
-                </thead>
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Gestión de gerentes<small>Gerentes</small></h2>
+        <ul class="nav navbar-right panel_toolbox">
+          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#">Settings 1</a>
+              </li>
+              <li><a href="#">Settings 2</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
 
-                <tbody>
-                  {% if object_list %}
-                  {% for gerente in object_list %}
-                  <tr>
-                    <td>{{ gerente.persona.nombre }}</td>
-                    <td>{{ gerente.persona.apellido }}</td>
-                    <td>{{ gerente.persona.doc }}</td>
-                    <td>{{ gerente.persona.domicilio }}</td>
-                    <td>{{ gerente.persona.telefono }}</td>
-                    <td>{{ gerente.persona.email }}</td>
-                    <td>
-                      <a href="{% url 'empleado:gerente:gerente_ver' gerente.id %}"><i class="fa fa-eye"></i></a>
-                    </td>
-                    <td>
-                      <a href="{% url 'empleado:gerente:gerente_editar' gerente.id %}"><i class="fa fa-edit"></i></a>
-                    </td>
-                    <td>
-                      <a href="{% url 'empleado:gerente:gerente_eliminar' gerente.id %}"><i class="fa fa-trash"></i></a>
-                    </td>
-                  </tr>
-                  {% endfor %}
-                  {% else %}
+        <table id="datatable-gerentes" class="table table-striped table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>DNI/CUIT/CUIL</th>
+              <th>Domicilio</th>
+              <th>Teléfono</th>
+              <th>e-mail</th>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
 
-                  <h1>No hay técnicos registrados</h1>
-                  <!-- no importa si hay un <h1> en el body, DataTables lo saca de la tabla -->
+          <tbody>
+            {% if object_list %}
+            {% for gerente in object_list %}
+            <tr>
+              <td>{{ gerente.persona.nombre }}</td>
+              <td>{{ gerente.persona.apellido }}</td>
+              <td>{{ gerente.persona.doc }}</td>
+              <td>{{ gerente.persona.domicilio }}</td>
+              <td>{{ gerente.persona.telefono }}</td>
+              <td>{{ gerente.persona.email }}</td>
+              <td>
+                <a href="{% url 'empleado:gerente:gerente_ver' gerente.persona.id %}"><i class="fa fa-eye"></i></a>
+              </td>
+              <td>
+                <a href="{% url 'empleado:gerente:gerente_editar' gerente.persona.id %}"><i class="fa fa-edit"></i></a>
+              </td>
+              <td>
+                <a href="{% url 'empleado:gerente:gerente_eliminar' gerente.persona.id %}"><i class="fa fa-trash"></i></a>
+              </td>
+            </tr>
+            {% endfor %}
+            {% else %}
 
-                  {% endif %}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+            <h1>No hay técnicos registrados</h1>
+            <!-- no importa si hay un <h1> en el body, DataTables lo saca de la tabla -->
+
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
-{% endblock content %}
+{% endblock contenido %}
 
-{% block javascripts %}
-  {{ block.super }}
+{% block scripts %}
   <!-- Datatables -->
   <script src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
   <script src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
@@ -99,5 +90,6 @@
   <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
   <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
   <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
-  <script src="/static/persona/js/gerente.js"></script>
-{% endblock javascripts %}
+
+  <script src="{% static 'persona/js/gerente.js' %}"></script>
+{% endblock scripts %}

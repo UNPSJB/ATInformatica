@@ -18,6 +18,7 @@ class RegistrarUsuario(CreateView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
+        
         form = self.form_class(request.POST)
         if form.is_valid():
             usuario = form.save()
@@ -50,7 +51,7 @@ class RegistrarUsuario(CreateView):
 class UsuarioUpdate(UpdateView):
     model = Usuario
     template_name = 'usuario_editar.html'
-    form_class = UserChangeForm
+    form_class = UsuarioUpdateForm
     success_url = reverse_lazy('cliente:cliente_listar')
 
 

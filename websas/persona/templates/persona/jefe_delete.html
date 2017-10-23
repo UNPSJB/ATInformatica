@@ -1,18 +1,18 @@
 {% extends "principal.html" %}
 
-{% block content %}
+{% block contenido %}
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x-panel">
 
             <form method="post">
                     {% csrf_token%}
-                    <h3>Eliminar el jefe de taller {{ jefe.persona.nombre}}?</h3>
+                    <h3>Eliminar el jefe de taller {{ jefe.nombre}}?</h3>
                     <button class="btn btn-danger" type="submit">Eliminar</button>
                     <a class="btn btn-default" href="{% url 'empleado:jefe:jefe_listar' %}">Cancelar</a>
             </form>
         </div>
     </div>
-{% endblock content %}
+{% endblock contenido %}
 
 {% block javascripts %}
 {% endblock javascripts %}

@@ -12,14 +12,11 @@ class JefeTallerCreate(EmpleadoCreate):
 
     template_name = 'persona/jefe_form.html' 
     success_url = reverse_lazy('empleado:jefe:jefe_listar')
-    
+    _rol = JefeTaller()
+
     @method_decorator(permission_required('persona.add_jefetaller', login_url='empleado:jefe:jefe_listar'))
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
-
-    def crear_rol(self, persona):
-        jefe = JefeTaller(persona=persona)
-        jefe.save()
 
 class JefeTallerList(EmpleadoList):
     

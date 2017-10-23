@@ -7,7 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 from usuario.models import Usuario
 from persona.models import Rol
 from django.utils.decorators import method_decorator
-from persona.models import  Persona
+from persona.models import  Persona, Cliente
 from persona.forms import PersonaForm, EmpleadoForm, EmpleadoUpdateForm
 
 """""""""""""""""""""""""""""""""""""""
@@ -16,19 +16,17 @@ Vistas de empleados
 class EmpleadoCreate(CreateView):
     model = Persona
     form_class = EmpleadoForm
+    _rol = Cliente()
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
         form = self.form_class(request.POST)
         if form.is_valid():
             persona = form.save()
-            self.crear_rol(persona)
+            persona.agregar_rol(self._rol)
+            persona.save()
             return HttpResponseRedirect(self.get_success_url())
-        else:
-            return self.render_to_response(self.get_context_data(form=form))
-    
-    def crear_rol(self, persona):
-        pass
+        return self.render_to_response(self.get_context_data(form=form))
 
 class EmpleadoUpdate(UpdateView):
     model = Persona

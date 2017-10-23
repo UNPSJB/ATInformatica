@@ -12,14 +12,11 @@ class GerenteCreate(EmpleadoCreate):
     
     success_url = reverse_lazy('empleado:gerente:gerente_listar')
     template_name = 'persona/gerente_form.html'
-         
+    _rol = Gerente()
+
     @method_decorator(permission_required('persona.add_gerente', login_url='empleado:gerente:gerente_listar'))        
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
-
-    def crear_rol(self, persona):
-        gerente = Gerente(persona=persona)
-        gerente.save()
 
 class GerenteList(EmpleadoList):
 
