@@ -1,9 +1,18 @@
+from django.contrib.auth.decorators import login_required
 from django.conf.urls import url
-from .views import login_user, logout_user, RegistrarUsuario, UsuarioUpdate
-
+from .views import RegistrarUsuario, LoginView, LogoutView, CambiarContraseñaView
+from django.contrib.auth.views import (
+    PasswordChangeView,
+    PasswordChangeDoneView,
+)
 urlpatterns = [
-    url(r'login$', login_user, name="login"),
-    url(r'logout$', logout_user, name="logout"),
+    url(r'login$', LoginView.as_view(), name="login"),
+    url(r'logout$', login_required(LogoutView.as_view(), login_url='usuario:login'), name="logout"),
     url(r'crear/(?P<pk>\d+)$', RegistrarUsuario.as_view(), name="usuario_crear"),
-    url(r'editar/(?P<pk>\d+)$', UsuarioUpdate.as_view(), name="usuario_editar"),
+    url(r'^password_change/$', 
+        CambiarContraseñaView.as_view(),
+        name='password_change'),
+    url(r'^password_change/done/$',
+        PasswordChangeDoneView.as_view(template_name='password_change_done.html'),
+        name='password_change_done'),
 ]
