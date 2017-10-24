@@ -13,9 +13,12 @@ class OrdenQuerySet(models.QuerySet):
             estados = [estados]
         return self.annotate(max_id=models.Max('estados__id')).filter(
             estados__id=models.F('max_id'),
-            estados__tipo__in=[ e.TIPO for e in estados])
+            estados__tipo__in=[e.TIPO for e in estados])
 
 OrdenManager = OrdenBaseManager.from_queryset(OrdenQuerySet)
+
+
+
 # Create your models here.
 class Orden(models.Model):
 
@@ -33,6 +36,7 @@ class Orden(models.Model):
     equipo = models.ForeignKey(
         "Equipo",
         null=True,
+        blank=True,
         related_name="ordenes"
     )
 
@@ -41,10 +45,16 @@ class Orden(models.Model):
         related_name="ordenes"
     )
 
+    usuario = models.ForeignKey(
+        Usuario,
+        related_name="ordenes"
+    )
+
     tecnico = models.ForeignKey(
         Tecnico,
         related_name="ordenes"
     )
+
 
     descripcion = models.CharField(max_length=500)
 
@@ -57,25 +67,27 @@ class Orden(models.Model):
 
     @classmethod
     def crear(cls, usuario, cliente, rubro, tipo_servicio, tareas=None):
-        ot = cls(cliente=cliente, rubro=rubro, tipo_servicio=tipo_servicio)
+        ot = cls(cliente=cliente,
+                 usuario=usuario,
+                 tecnico=usuario.persona.como(Tecnico),
+                 rubro=rubro,
+                 tipo_servicio=tipo_servicio)
         ot.save()
-        ot.hacer(None, observacion="Orden creada")
+        ot.hacer(accion=None, usuario=usuario, observacion="Orden creada")
         return ot
 
     def estados_related(self):
         return [estado.related() for estado in self.estados.all()]
 
-    def hacer(self, accion, usuario, args, **kwargs):
+    def hacer(self, accion, usuario, *args, **kwargs):
         estado_actual = self.estado
         if estado_actual is not None and hasattr(estado_actual, accion):
             metodo = getattr(estado_actual, accion)
             estado_nuevo = metodo(self, *args, **kwargs)
-
-            #no tendria que ser 'estado_nuevo'?
             if estado_nuevo is not None:
                 estado_nuevo.save()
         elif estado_actual is None:
-            Iniciado(orden=self, usuario=usuario, *args, **kwargs).save()
+            Creada(orden=self, usuario=usuario, *args, **kwargs).save()
         else:
             raise Exception("***ORDEN DE TRABAJO: no se pudo realizar la accion***")
 
