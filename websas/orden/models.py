@@ -24,42 +24,19 @@ OrdenManager = OrdenBaseManager.from_queryset(OrdenQuerySet)
 # Create your models here.
 class Orden(models.Model):
 
-    cliente = models.ForeignKey(
-        Cliente,
-        null=True,
-        related_name="ordenes"
-    )
-
-    rubro = models.ForeignKey(
-        Rubro,
-        related_name="ordenes"
-    )
-
-    equipo = models.ForeignKey(
-        "Equipo",
-        null=True,
-        blank=True,
-        related_name="ordenes"
-    )
-
-    tipo_servicio = models.ForeignKey(
-        TipoServicio,
-        related_name="ordenes"
-    )
-
-    usuario = models.ForeignKey(
-        Usuario,
-        related_name="ordenes"
-    )
-
-    tecnico = models.ForeignKey(
-        Tecnico,
-        related_name="ordenes"
-    )
-
+    # TODO: estoy poniendo todo null true para probar
+    cliente = models.ForeignKey(Cliente,null=True,related_name="ordenes")
+    rubro = models.ForeignKey(Rubro, related_name="ordenes")
+    equipo = models.ForeignKey("Equipo", null=True, blank=True, related_name="ordenes")
+    tipo_servicio = models.ForeignKey(TipoServicio, null=True, blank=True, related_name="ordenes")
+    usuario = models.ForeignKey(Usuario, null=True, blank=True, related_name="ordenes")
+    tecnico = models.ForeignKey(Tecnico, null=True, blank=True, related_name="ordenes")
     descripcion = models.CharField(max_length=500)
 
     objects = OrdenManager()
+
+    def __str__(self):
+        return "{} {}".format(self.cliente, self.descripcion)
 
     @property
     def estado(self):
@@ -71,7 +48,7 @@ class Orden(models.Model):
         return self.estado.detalles
 
     @classmethod
-    def crear(cls, usuario, cliente, rubro, tipo_servicio, descripcion, tareas=None):
+    def crear(cls, usuario, cliente, rubro, tipo_servicio, descripcion):
         ot = cls(cliente=cliente,
                  usuario=usuario,
                  tecnico=usuario.persona.como(Tecnico),
@@ -79,7 +56,7 @@ class Orden(models.Model):
                  tipo_servicio=tipo_servicio,
                  descripcion=descripcion)
         ot.save()
-        ot.hacer(accion=None, usuario=usuario, tareas=tareas, observacion="Orden creada")
+        ot.hacer(accion=None, usuario=usuario)
         return ot
 
     def estados_related(self):
@@ -106,25 +83,19 @@ class Orden(models.Model):
 
 
 class DetalleOrden(models.Model):
-    orden = models.ForeignKey(
-        Orden,
-        related_name="detalles"
-    )
-    tarea = models.ForeignKey(
-        Tarea
-    )
+    orden = models.ForeignKey(Orden, related_name="detalles")
+    tarea = models.ForeignKey(Tarea)
     precio = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0'))
 
 class Estado(models.Model):
     TIPO = 0
     TIPOS = [
-        (0, 'estado')
+        (0, "estado")
     ]
     orden = models.ForeignKey(Orden, related_name="estados")
+    tipo = models.PositiveSmallIntegerField(choices=TIPOS)
     timestamp = models.DateTimeField(auto_now=True)
     usuario = models.ForeignKey(Usuario, null=True, blank=True)
-    tareas = models.ManyToManyField(Tarea)
-
 
     class Meta:
         get_latest_by = 'timestamp'
@@ -156,14 +127,15 @@ class Estado(models.Model):
         self.tareas.add(tarea)
 
 
-
-
 class Creada(Estado):
+    TIPO = 1
     def diagnosticar(self):
         """El tecnico agrega las tareas a realizar en la OT"""
         pass
 
 class Diagnosticada(Estado):
+    TIPO = 2
+    #tareas = models.ManyToManyField(Tarea)
     def aceptar(self):
         """Cliente acepta todas las tareas propuestas por el tecnico"""
         pass
@@ -176,6 +148,7 @@ class Diagnosticada(Estado):
         pass
 
 class Aceptada(Estado):
+    TIPO = 3
     def diagnosticar(self):
         """El tecnico agrega nuevas tareas a la OT"""
         pass
@@ -197,13 +170,12 @@ class Aceptada(Estado):
         self.orden.agregar_detalle()
 
 class Cerrada(Estado):
+    TIPO = 4
     pass
-
 
 class Equipo(models.Model):
     nro_serie = models.IntegerField(unique=True)
     descripcion = models.CharField(max_length=250)
-
 
 for Klass in Estado.__subclasses__():
     Estado.register(Klass)

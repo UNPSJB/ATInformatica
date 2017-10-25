@@ -44,9 +44,7 @@ class LoginView(FormView):
     @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
         user = request.user
-        if user.is_authenticated():
-            if user.primer_login and not user.is_superuser:
-                return HttpResponseRedirect(reverse_lazy('usuario:password_change'))  
+        if user.is_authenticated(): 
             return HttpResponseRedirect(self.get_success_url())
         else:
             return super(LoginView, self).dispatch(request, *args, **kwargs)

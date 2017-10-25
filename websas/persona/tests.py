@@ -9,8 +9,7 @@ class PersonasTest(TestCase):
             apellido="Alguien",
             doc="123321123",
             domicilio="cale213",
-            email="l@l.com",
-            telefono="123123123"
+            email="l@l.com"
         )
         self.persona.save()
 
