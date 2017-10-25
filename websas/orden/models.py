@@ -2,6 +2,7 @@ from django.db import models
 from persona.models import Cliente, Tecnico
 from rubro.models import Rubro
 from tarea.models import Tarea
+from tarifa.models import Tarifa
 from servicio.models import TipoServicio
 from usuario.models import Usuario
 from decimal import Decimal
@@ -62,7 +63,7 @@ class Orden(models.Model):
     def estados_related(self):
         return [estado.related() for estado in self.estados.all()]
 
-    def hacer(self, accion, usuario, *args, **kwargs):
+    def hacer(self, accion, *args, **kwargs):
         estado_actual = self.estado
         if estado_actual is not None and hasattr(estado_actual, accion):
             metodo = getattr(estado_actual, accion)
@@ -96,6 +97,7 @@ class Estado(models.Model):
     tipo = models.PositiveSmallIntegerField(choices=TIPOS)
     timestamp = models.DateTimeField(auto_now=True)
     usuario = models.ForeignKey(Usuario, null=True, blank=True)
+    tareas = models.ManyToManyField(Tarea)
 
     class Meta:
         get_latest_by = 'timestamp'
@@ -110,7 +112,6 @@ class Estado(models.Model):
         super(Estado, self).save(*args, **kwargs)
 
     def related(self):
-
         #me devuelvo si soy una subclase de Estado,
         #si soy de la clase Estado, devuelvo la cadena "Human friendly" del choices de tipo
         #return self if self.__class__ != Estado else getattr(self, self.get_tipo_display())
@@ -122,26 +123,44 @@ class Estado(models.Model):
     def agregar_tarea(self, tarea):
         """Agrega una tarea al estado de una OT"""
         if(self.orden.rubro != tarea.rubro):
-            raise TareaNoEsRubroException("pinchose")
-
+            raise Exception("***TAREAS EN ESTADO: no se pudo realizar la accion***")
         self.tareas.add(tarea)
+    
+    def set_col_tareas(self, tareas):
+        for tarea in tareas:
+            try:
+                self.agregar_tarea(tarea)
+            except:
+                print("No se pudo agregar la tarea:")
+                print(tarea)       
 
 
 class Creada(Estado):
     TIPO = 1
-    def diagnosticar(self):
+    def diagnosticar(self, tareas):
         """El tecnico agrega las tareas a realizar en la OT"""
-        pass
+        if tareas:
+            diagnosticada = Diagnosticada(orden=self.orden)
+            diagnosticada.save()
+            diagnosticada.set_col_tareas(tareas)
+            return diagnosticada
 
 class Diagnosticada(Estado):
     TIPO = 2
-    #tareas = models.ManyToManyField(Tarea)
+        
     def aceptar(self):
         """Cliente acepta todas las tareas propuestas por el tecnico"""
-        pass
-    def consensuar(self):
+        aceptada = Aceptada(orden=self.orden)
+        aceptada.save()
+        aceptada.set_col_tareas(self.tareas.all())
+        return aceptada
+
+    def consensuar(self, tareas):
         """Cliente acepta parcialmente las tareas propuestas por el tecnico"""
-        pass
+        aceptada = Aceptada(orden=self.orden)
+        aceptada.save()
+        aceptada.set_col_tareas(tareas)
+        return aceptada
 
     def cancelar(self):
         """El cliente no acepta ninguna tarea propuesta por el tecnico"""
@@ -149,13 +168,24 @@ class Diagnosticada(Estado):
 
 class Aceptada(Estado):
     TIPO = 3
-    def diagnosticar(self):
+    def diagnosticar(self, tareasnuevas):
         """El tecnico agrega nuevas tareas a la OT"""
-        pass
+        if tareasnuevas:
+            tareas = [] 
+            [tareas.append(tarea) for tarea in self.tareas.all()]
+            [tareas.append(tarea) for tarea in tareasnuevas]
+            diagnosticada = Diagnosticada(orden=self.orden)
+            diagnosticada.save()
+            diagnosticada.set_col_tareas(tareas)
+            return diagnosticada
 
     def cerrar(self):
         """Se terminaron todas las tareas presupuestadas exitosamente"""
-        pass
+        if self.tareas.all().count() != 0:
+            return self
+        cerrada = Cerrada(orden=self.orden)
+        cerrada.save()
+        return cerrada
 
     def cancelar(self):
         """El cliente decide cancelar el trabajo"""
@@ -167,11 +197,13 @@ class Aceptada(Estado):
 
     def finalizar_tarea(self, tarea):
         """El tecnico finalizo una tarea exitosamente"""
-        self.orden.agregar_detalle()
+        self.orden.agregar_detalle(tarea)
+        self.tareas.remove(tarea)
+        if self.tareas.all().count() == 0:
+            return self.cerrar()
 
 class Cerrada(Estado):
     TIPO = 4
-    pass
 
 class Equipo(models.Model):
     nro_serie = models.IntegerField(unique=True)
