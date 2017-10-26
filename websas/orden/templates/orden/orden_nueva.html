@@ -19,7 +19,7 @@
     </div>
     <div class="x_content">
         <!-- Smart Wizard -->
-        <div id="creacion_ot" class="form_wizard wizard_horizontal">
+        <div id="creacion_ot" ajax-url="{% url 'orden:orden_crear' %}" class="form_wizard wizard_horizontal">
             <!-- Lista de pasos / cabecera -->
                 <ul class="wizard_steps anchor">
                 <li>
@@ -67,15 +67,19 @@
                 </div>
                 
                 <div id="step-2" class="content" style="display: none;">
-                    {% comment %} {% include "orden/listado_servicios.html" %} {% endcomment %}
+                    {% include "orden/listado_servicios.html" %}
                 </div>
                 
                 <div id="step-3" class="content" style="display: none;">
-                    {% comment %} {% include "orden/orden_rubrosequipos.html" %} {% endcomment %}
+                    <!-- Que quisiste decir con este template -->
+                    {% comment %} {% include "orden/orden_rubrosequipos.html" %} {% endcomment %} 
+                    {% include "orden/listado_rubros.html" %}
                 </div>
                 
                 <div id="step-4" class="content" style="display: none;">
                 <h2 class="StepTitle">Step 4 Content</h2>
+
+                    {% include "orden/listado_tecnicos.html" %}
 
                 </div>
             </div>

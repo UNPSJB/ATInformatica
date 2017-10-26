@@ -18,6 +18,9 @@ class Persona(models.Model):
     def __str__(self):
         return "{} {}".format(self.nombre, self.apellido)
 
+    def get_nombre_completo(self):
+        return "{} {}".format(self.nombre, self.apellido)
+
     def como(self, Klass):
         """ Retorna una instancia de un rol asociado a una persona con la ayuda del método 
         related de la clase Rol.

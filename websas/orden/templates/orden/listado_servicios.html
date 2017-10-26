@@ -1,0 +1,27 @@
+<table id="datatable-rubros" class="table table-striped table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
+  <thead>
+    <tr>
+      <th></th>
+      <th>Nombre</th>
+      <th>Apellido</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if servicios %} {% for servicio in servicios %}
+    <tr>
+      <td>
+        <div class="radio">
+          <input data-idtiposervicio="{{ servicio.id }}" type="radio" class="flat" name="tipo_servicio">
+        </div>
+      </td>
+      <td>{{ servicio.nombre }}</td>
+      <td>{{ servicio.descripcion }}</td>
+    </tr>
+    {% endfor %} {% else %}
+
+    <h1>No hay servicios registrados</h1>
+    <!-- no importa si hay un <h1> en el body, DataTables lo saca de la tabla -->
+
+    {% endif %}
+  </tbody>
+</table>
