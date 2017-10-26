@@ -20,9 +20,6 @@ class OrdenQuerySet(models.QuerySet):
 
 OrdenManager = OrdenBaseManager.from_queryset(OrdenQuerySet)
 
-
-
-# Create your models here.
 class Orden(models.Model):
 
     # TODO: estoy poniendo todo null true para probar
@@ -77,7 +74,11 @@ class Orden(models.Model):
 
     def agregar_detalle(self, tarea):
         """Agrega un detalle con una tarea finalizada a una OT"""
+        if(self.rubro != tarea.rubro):
+            raise Exception("***AGREGAR DETALLE: tarea.rubro != orden.rubro***")
         tarifa = Tarifa.objects.get(tarea=tarea, tipo_servicio=self.tipo_servicio).precio
+        if not tarifa:
+            raise Exception("***AGREGAR DETALLE: no existe tarifa para el tipo de servicio y la tarea***")
         detalle = DetalleOrden(orden=self, tarea=tarea, precio=tarifa)
         detalle.save()
 
@@ -170,14 +171,15 @@ class Aceptada(Estado):
     TIPO = 3
     def diagnosticar(self, tareasnuevas):
         """El tecnico agrega nuevas tareas a la OT"""
-        if tareasnuevas:
-            tareas = [] 
-            [tareas.append(tarea) for tarea in self.tareas.all()]
-            [tareas.append(tarea) for tarea in tareasnuevas]
-            diagnosticada = Diagnosticada(orden=self.orden)
-            diagnosticada.save()
-            diagnosticada.set_col_tareas(tareas)
-            return diagnosticada
+        if not tareasnuevas:
+            return self
+        tareas = [] 
+        [tareas.append(tarea) for tarea in self.tareas.all()]
+        [tareas.append(tarea) for tarea in tareasnuevas]
+        diagnosticada = Diagnosticada(orden=self.orden)
+        diagnosticada.save()
+        diagnosticada.set_col_tareas(tareas)
+        return diagnosticada
 
     def cerrar(self):
         """Se terminaron todas las tareas presupuestadas exitosamente"""

@@ -7,33 +7,82 @@ from tarea.models import Tarea
 from servicio.models import TipoServicio
 from tarifa.models import Tarifa
 from decimal import Decimal
-# Create your tests here.
+
 class OrdenTest(TestCase):
     def setUp(self):
         
-        persona = Persona(
+        self.persona = Persona(
             nombre="Alguien",
             apellido="Alguien",
             doc="123321123",
             domicilio="cale213",
             email="l@l.com"
         )
-        persona.save()
-        persona.agregar_rol(Tecnico())
-        persona.agregar_rol(Cliente())
-        usuario = Usuario.objects.crear_usuario(username="Tecnico1", password="Tecnico1", persona=persona)
-        persona.agregar_rol(Usuario())
-        persona.save
-        rubro = Rubro(nombre="Notebooks", descripcion="Reparación de notebooks")
-        rubro.save()
-        tipo_servicio = TipoServicio(nombre="Taller", descripcion="Reparación de equipos en taller")
-        tipo_servicio.save()
-        descripcion = "Ta todo completamente hecho mierda"
-        self.orden = Orden.crear(usuario, persona.como(Cliente), rubro, tipo_servicio, descripcion)
+        self.persona.save()
+        self.persona.agregar_rol(Tecnico())
+        self.persona.agregar_rol(Cliente())
+        self.usuario = Usuario.objects.crear_usuario(username="Tecnico1", password="Tecnico1", persona=self.persona)
+        self.persona.agregar_rol(Usuario())
+        self.persona.save
+        self.rubro = Rubro(nombre="Notebooks", descripcion="Reparación de notebooks")
+        self.rubro.save()
+        self.tipo_servicio = TipoServicio(nombre="Taller", descripcion="Reparación de equipos en taller")
+        self.tipo_servicio.save()
+        self.descripcion = "Ta todo completamente hecho mierda"
+        self.orden = Orden.crear(self.usuario, self.persona.como(Cliente), self.rubro, self.tipo_servicio, self.descripcion)
         self.orden.save()
 
+    def test_crear(self):
+        # Testeamos que haya una orden creada y que sea la nuestra
+        self.assertTrue(Orden.objects.all().count(), 1)
+        orden = Orden.objects.all().first()
+        self.assertEqual(orden.id, self.orden.id)
+
     def test_estado_inicial(self):
+        # Testeamos que el estado inicial de la orden sea el correcto
         self.assertTrue(isinstance(self.orden.estado, Creada))
+
+    def test_agregar_detalle(self):
+        # Creamos una tarifa y una tarea para agregar el detalle
+        self.tarea = Tarea(nombre="Cambio de disco", rubro=self.rubro)
+        self.tarea.save()
+        self.tarifa = Tarifa(tarea=self.tarea, tipo_servicio=self.orden.tipo_servicio, precio=10)
+        self.tarifa.save()
+
+        # Agregamos el detalle
+        self.orden.agregar_detalle(self.tarea)
+
+        self.assertEqual(self.orden.detalles.all().count(), 1)
+        detalle = self.orden.detalles.all().first()
+        self.assertEqual(detalle.orden.id, self.orden.id)
+        self.assertEqual(detalle.tarea.id, self.tarea.id)
+        self.assertEqual(detalle.precio, self.tarifa.precio)
+
+        # Probamos que lance excepción si la tarea no es del rubro de la orden
+        rubro = Rubro(nombre="Impresoras Fiscales", descripcion="Reparación de impresoras fiscales")
+        rubro.save()
+        tarea = Tarea(nombre="Limpieza de cabezales", rubro=rubro)
+        tarea.save()
+        tarifa = Tarifa(tarea=tarea, tipo_servicio=self.orden.tipo_servicio, precio=10)
+        tarifa.save()
+        try:
+            self.orden.agregar_detalle(tarea)
+        except Exception as e:
+            print(str(e))
+        self.assertFalse(self.orden.detalles.all().count() > 1)
+
+        # Probamos que lance excepcion si no existe tarifa 
+        tarifa.delete()
+        tarea.rubro = self.orden.rubro
+        tarea.save()
+        try:
+            self.orden.agregar_detalle(tarea)
+        except Exception as e:
+            print(str(e))
+        self.assertFalse(self.orden.detalles.all().count() > 1)
+
+
+class EstadosTest(OrdenTest):
 
     def test_estados(self):
         # creamos rubros y tareas para las pruebas 

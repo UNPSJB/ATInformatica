@@ -4,11 +4,11 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import permission_required
 
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
-from orden.models import Orden, Equipo
+from .models import Orden, Equipo
 from persona.models import Cliente, Tecnico, Persona
 from rubro.models import Rubro
 
-from orden.forms import OrdenForm
+from .forms import OrdenForm
 # Create your views here.
 
 class OrdenCreate(CreateView):
