@@ -21,6 +21,9 @@ import os
 import sys
 sys.path.insert(0, os.path.join(os.path.abspath('..'), 'websas'))
 
+os.environ['DJANGO_SETTINGS_MODULE'] = 'websas.settings'
+import django
+django.setup()
 
 # -- General configuration ------------------------------------------------
 
