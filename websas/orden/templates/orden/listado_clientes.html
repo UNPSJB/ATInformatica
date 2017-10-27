@@ -1,4 +1,4 @@
-<table id="datatable-clientes" class="table table-striped table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
+<table id="datatable-clientes" class="table table-striped table-hover table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
     <thead>
     <tr>
     <th></th>
@@ -12,8 +12,7 @@
     </thead>
     <tbody>
         {% if clientes %}
-        {% for cliente in clientes %}
-        <tr>
+        {% for cliente in clientes %} <tr>
             <td >
                 <div class="radio">
                     <input data-idcliente="{{ cliente.persona.id }}" type="radio" class="flat" name="cliente">
@@ -25,7 +24,6 @@
             <td>{{ cliente.persona.domicilio }}</td>
             <td>{{ cliente.persona.telefono }}</td>
             <td>{{ cliente.persona.email }}</td>
-            <td>0</td>
         </tr>
 
         {% endfor %}
@@ -37,4 +35,3 @@
         {% endif %}  
     </tbody>
 </table>
-<div class="clearfix"></div>

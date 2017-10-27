@@ -3,6 +3,8 @@ from django.core.urlresolvers import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import permission_required
 
+from django.template.loader import render_to_string
+
 from django.http import JsonResponse
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 from servicio.models import TipoServicio
@@ -23,10 +25,10 @@ class OrdenCreate(CreateView):
         # Llamar a super para recuperar el contexto original
         contexto = super(OrdenCreate, self).get_context_data(**kwargs)
         # Agregar lo que necesita la vista
-        contexto['clientes'] = Cliente.objects.all()
-        contexto['rubros'] = Rubro.objects.all()
-        contexto['tecnicos'] = Tecnico.objects.all()
-        contexto['servicios'] = TipoServicio.objects.all()
+        # contexto['clientes'] = Cliente.objects.all()
+        # contexto['rubros'] = Rubro.objects.all()
+        # contexto['tecnicos'] = Tecnico.objects.all()
+        # contexto['servicios'] = TipoServicio.objects.all()
         return contexto
 
     def post(self, request, *args, **kwargs):
@@ -46,3 +48,6 @@ class OrdenCreate(CreateView):
 
         return JsonResponse({'data':'Todo mall'})
         
+class ClienteListado(ListView):
+    def get(self, request, *args, **kwargs):
+        return JsonResponse({'data':render_to_string('orden/listado_clientes.html',{'clientes':Cliente.objects.all()})})
