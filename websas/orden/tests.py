@@ -191,27 +191,19 @@ class TransicionesTest(OrdenTest):
         #                - Estado ACEPTADA - 
         ######################################################
 
-        # Probando el método diagnosticar en el estado Aceptada
+        # Probando diagnosticar en estado Aceptada - Debe quedar Diagnosticada y tener una tarea mas
         tarea4 = Tarea(nombre="Cambio de pantalla", rubro=self.orden.rubro)
         tarea4.save()
         tareas2 = []
         tareas2.append(tarea4)
         self.orden.hacer("diagnosticar", tareas2)
-
-        # Probando diagnosticar en estado Aceptada - Debe quedar Diagnosticada y tener una tarea mas
         self.assertTrue(isinstance(self.orden.estado, Diagnosticada))
-        self.assertEqual(self.orden.tareas.all().count(), 4)
-    
+        self.assertEqual(self.orden.tareas.all().count(), 4)    
 
-        # Probando el metodo consensuar
-        # Agregamos una nueva tarea para chequear que no se tomará en cuenta en la llamada a consensuar
-        self.orden.hacer("agregar_tarea", tarea4)
-        self.assertEqual(self.orden.tareas.all().count(), 4)
-        # Llamamos a consensuar
+        # Probando el metodo consensuar con solo 3 de las 4 tareas - debe quedar Aceptada y tener 3 tareas
         self.orden.hacer("consensuar", self.tareas)
         # Debe quedar aceptada y consistente la cantidad de tareas
         self.assertTrue(isinstance(self.orden.estado, Aceptada))
-        print(self.orden.tareas.all().count())
         self.assertEqual(self.orden.tareas.all().count(), 3)
         self.assertFalse(tarea4 in self.tareas)
 
@@ -236,5 +228,6 @@ class TransicionesTest(OrdenTest):
         self.orden.hacer("finalizar_tarea", self.orden.tareas.all().first())
         self.assertEqual(self.orden.tareas.all().count(), 1)
 
+        # Esta que es la ultima debe cambiar el estado a cerrada
         self.orden.hacer("finalizar_tarea", self.orden.tareas.all().first())
         self.assertTrue(isinstance(self.orden.estado, Cerrada))
