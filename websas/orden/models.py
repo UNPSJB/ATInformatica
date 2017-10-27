@@ -45,6 +45,11 @@ class Orden(models.Model):
     def detalles(self):
         return self.estado.detalles
 
+    @property
+    def tareas(self):
+        return self.estado.tareas
+
+    
     @classmethod
     def crear(cls, usuario, cliente, rubro, tipo_servicio, descripcion):
         ot = cls(cliente=cliente,
@@ -64,7 +69,7 @@ class Orden(models.Model):
         estado_actual = self.estado
         if estado_actual is not None and hasattr(estado_actual, accion):
             metodo = getattr(estado_actual, accion)
-            estado_nuevo = metodo(self, *args, **kwargs)
+            estado_nuevo = metodo(*args, **kwargs)
             if estado_nuevo is not None:
                 estado_nuevo.save()
         elif estado_actual is None:
@@ -79,9 +84,7 @@ class Orden(models.Model):
         tarifa = Tarifa.objects.get(tarea=tarea, tipo_servicio=self.tipo_servicio).precio
         if not tarifa:
             raise Exception("***AGREGAR DETALLE: no existe tarifa para el tipo de servicio y la tarea***")
-        detalle = DetalleOrden(orden=self, tarea=tarea, precio=tarifa)
-        detalle.save()
-
+        DetalleOrden(orden=self, tarea=tarea, precio=tarifa).save()
 
 
 class DetalleOrden(models.Model):
@@ -118,8 +121,8 @@ class Estado(models.Model):
         #return self if self.__class__ != Estado else getattr(self, self.get_tipo_display())
         return self.__class__ != Estado and self or getattr(self, self.get_tipo_display())
 
-    def cancelar(self):
-        raise NotImplementedError
+    def cancelar(self, motivo):
+        return Cancelada(orden=self.orden, motivo=motivo)
 
     def agregar_tarea(self, tarea):
         """Agrega una tarea al estado de una OT"""
@@ -134,23 +137,28 @@ class Estado(models.Model):
             except:
                 print("No se pudo agregar la tarea:")
                 print(tarea)       
-
-
+                
 class Creada(Estado):
     TIPO = 1
     def diagnosticar(self, tareas):
         """El tecnico agrega las tareas a realizar en la OT"""
-        if tareas:
-            diagnosticada = Diagnosticada(orden=self.orden)
-            diagnosticada.save()
-            diagnosticada.set_col_tareas(tareas)
-            return diagnosticada
+        if not tareas:
+            return self
+        diagnosticada = Diagnosticada(orden=self.orden)
+        diagnosticada.save()
+        diagnosticada.set_col_tareas(tareas)
+        return diagnosticada
 
 class Diagnosticada(Estado):
     TIPO = 2
-        
+
+    # se agregan tareas en el estado Diagnosticada ? deberia hacerse con el método diagnosticar o con 
+    # agregar_tarea ? 
+
     def aceptar(self):
         """Cliente acepta todas las tareas propuestas por el tecnico"""
+        if not self.tareas.all():
+            return self
         aceptada = Aceptada(orden=self.orden)
         aceptada.save()
         aceptada.set_col_tareas(self.tareas.all())
@@ -158,14 +166,12 @@ class Diagnosticada(Estado):
 
     def consensuar(self, tareas):
         """Cliente acepta parcialmente las tareas propuestas por el tecnico"""
+        if not tareas:
+            return self
         aceptada = Aceptada(orden=self.orden)
         aceptada.save()
         aceptada.set_col_tareas(tareas)
         return aceptada
-
-    def cancelar(self):
-        """El cliente no acepta ninguna tarea propuesta por el tecnico"""
-        pass
 
 class Aceptada(Estado):
     TIPO = 3
@@ -189,16 +195,10 @@ class Aceptada(Estado):
         cerrada.save()
         return cerrada
 
-    def cancelar(self):
-        """El cliente decide cancelar el trabajo"""
-        pass
-
-    def descartar(self):
-        """El tecnico decide cancelar el trabajo"""
-        pass
-
     def finalizar_tarea(self, tarea):
         """El tecnico finalizo una tarea exitosamente"""
+        if not tarea:
+            return self
         self.orden.agregar_detalle(tarea)
         self.tareas.remove(tarea)
         if self.tareas.all().count() == 0:
@@ -206,6 +206,10 @@ class Aceptada(Estado):
 
 class Cerrada(Estado):
     TIPO = 4
+
+class Cancelada(Estado): 
+    TIPO = 5
+    motivo = models.CharField(max_length=140)
 
 class Equipo(models.Model):
     nro_serie = models.IntegerField(unique=True)

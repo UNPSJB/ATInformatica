@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import Orden, Creada, Diagnosticada, Aceptada, Cerrada
+from .models import Orden, Creada, Diagnosticada, Aceptada, Cerrada, Cancelada
 from usuario.models import Usuario
 from persona.models import Cliente, Tecnico, Persona
 from rubro.models import Rubro
@@ -68,7 +68,8 @@ class OrdenTest(TestCase):
         try:
             self.orden.agregar_detalle(tarea)
         except Exception as e:
-            print(str(e))
+            pass
+            #print(str(e))
         self.assertFalse(self.orden.detalles.all().count() > 1)
 
         # Probamos que lance excepcion si no existe tarifa 
@@ -78,84 +79,162 @@ class OrdenTest(TestCase):
         try:
             self.orden.agregar_detalle(tarea)
         except Exception as e:
-            print(str(e))
+            pass
+            #print(str(e))
         self.assertFalse(self.orden.detalles.all().count() > 1)
 
 
-class EstadosTest(OrdenTest):
+class EstadoTest(OrdenTest):
+    
+    def setUp(self):
+        super().setUp()
+        self.tareas = []
+        self.tarea1 = Tarea(nombre="Cambio de disco", rubro=self.orden.rubro)
+        self.tarea1.save()
+        self.tarea2 = Tarea(nombre="Instalacion sistema operativo", rubro=self.orden.rubro)
+        self.tarea2.save()
 
-    def test_estados(self):
-        # creamos rubros y tareas para las pruebas 
-        rubro = Rubro(nombre="Notebooks", descripcion="Reparación de notebooks")
+    def test_agregar_tarea(self):
+
+        # Probamos caso de éxito
+        self.orden.estado.agregar_tarea(self.tarea1)
+        self.assertEqual(self.orden.tareas.all().count(), 1)
+        tarea = self.orden.tareas.all().first()
+        self.assertEqual(tarea.id, self.tarea1.id)
+
+        # Probamos que lance excepción si la tarea no es del rubro de la orden
+        rubro = Rubro(nombre="Impresoras Fiscales", descripcion="Reparación de impresoras fiscales")
         rubro.save()
-        self.orden.rubro = rubro
-        self.orden.save()
-        tareas = []
-        tarea1 = Tarea(nombre="Cambio de disco", rubro=rubro)
-        tarea1.save()
-        tarea2 = Tarea(nombre="Instalacion sistema operativo", rubro=rubro)
-        tarea2.save()
-        tarea3 = Tarea(nombre="Cambio de teclado", rubro=rubro)
-        tarea3.save()
-        tareas.append(tarea1)
-        tareas.append(tarea2)
-        tareas.append(tarea3)
-        
-        # Probando el método diagnosticar
+        tarea = Tarea(nombre="Limpieza de cabezales", rubro=rubro)
+        tarea.save()
+        try:
+            self.orden.estado.agregar_tarea(tarea)
+        except:
+            pass
+        self.assertFalse(tarea in self.orden.tareas.all())
+    
 
-        # El .hacer("accion", args) no está funcionando bien
-        self.orden.estado.diagnosticar(tareas)
-        #self.orden.hacer("diagnosticar", tareas)
+    def test_hacer(self):
+        # comprobamos que no tiene tareas
+        tareas = self.orden.tareas.all()
+        self.assertFalse(tareas)
         
-        # Debe quedar Diagnosticada
+        self.orden.hacer("agregar_tarea", self.tarea1)
+        self.assertEqual(self.orden.tareas.all().count(), 1)
+
+    def test_set_col_tareas(self):
+        self.tareas.append(self.tarea1)
+        self.tareas.append(self.tarea2)
+
+        self.orden.hacer("set_col_tareas", self.tareas)
+        self.assertEqual(self.orden.tareas.count(), 2)
+
+    
+    def test_cancelar(self):
+        # Probamos que pase a cancelada
+        self.orden.hacer("cancelar", "Porque se me canta")
+        self.assertTrue(isinstance(self.orden.estado, Cancelada))
+
+class TransicionesTest(OrdenTest):
+
+    def setUp(self):
+        super().setUp()
+        self.tareas = []
+        self.tarea1 = Tarea(nombre="Cambio de disco", rubro=self.orden.rubro)
+        self.tarea1.save()
+        self.tarea2 = Tarea(nombre="Instalacion sistema operativo", rubro=self.orden.rubro)
+        self.tarea2.save()
+        self.tarea3 = Tarea(nombre="Cambio de teclado", rubro=self.orden.rubro)
+        self.tarea3.save()
+        self.tareas.append(self.tarea1)
+        self.tareas.append(self.tarea2)
+        self.tareas.append(self.tarea3)
+
+    def test_trancisiones(self):
+
+        ######################################################
+        #                - Estado CREADA - 
+        ######################################################
+
+
+        # Probando el método diagnosticar - debe quedar Diagnosticada
+        # Ante lista de tareas vacía no debe transicionar
+        tareas = []
+        self.orden.hacer("diagnosticar", tareas)
+        self.assertFalse(isinstance(self.orden.estado, Diagnosticada))
+        self.assertTrue(isinstance(self.orden.estado, Creada))
+        self.orden.hacer("diagnosticar", self.tareas)
         self.assertTrue(isinstance(self.orden.estado, Diagnosticada))
-        
+    
+        ######################################################
+        #                - Estado DIAGNOSTICADA - 
+        ######################################################
+
+
+        # Probando que no pueda transicionar si no tiene tareas
+        # Removemos a la fuerza las tareas del estado Diagnosticada
+        # esta situación no debería ocurrir por lo probado en las lineas anteriores
+        [self.orden.estado.tareas.remove(tarea) for tarea in self.orden.tareas.all()]
+        self.orden.hacer("aceptar")
+        self.assertFalse(isinstance(self.orden.estado, Aceptada))
+        self.assertTrue(isinstance(self.orden.estado, Diagnosticada))
+
+        # Agregamos tareas al estado para probar la nueva transicion
+        [self.orden.hacer("agregar_tarea", tarea) for tarea in self.tareas]        
+
         # Probando el método aceptar - debe quedar Aceptada y tener la misma cantidad de tareas
-        self.orden.estado.aceptar()
+        self.orden.hacer("aceptar")
         self.assertTrue(isinstance(self.orden.estado, Aceptada))
-        self.assertEqual(self.orden.estado.tareas.all().count(), 3)
-        
-        
-        # Creamos una nueva tarea para probar diagnosticar en Aceptada
-        tarea4 = Tarea(nombre="Cambio de pantalla", rubro=rubro)
+        self.assertEqual(self.orden.tareas.all().count(), 3)
+
+        ######################################################
+        #                - Estado ACEPTADA - 
+        ######################################################
+
+        # Probando el método diagnosticar en el estado Aceptada
+        tarea4 = Tarea(nombre="Cambio de pantalla", rubro=self.orden.rubro)
         tarea4.save()
         tareas2 = []
         tareas2.append(tarea4)
-        self.orden.estado.diagnosticar(tareas2)
-        # Debe quedar Diagnosticada y tener una tarea mas
+        self.orden.hacer("diagnosticar", tareas2)
+
+        # Probando diagnosticar en estado Aceptada - Debe quedar Diagnosticada y tener una tarea mas
         self.assertTrue(isinstance(self.orden.estado, Diagnosticada))
-        self.assertEqual(self.orden.estado.tareas.all().count(), 4)
-        
+        self.assertEqual(self.orden.tareas.all().count(), 4)
+    
+
         # Probando el metodo consensuar
-        self.orden.estado.consensuar(tareas)
+        # Agregamos una nueva tarea para chequear que no se tomará en cuenta en la llamada a consensuar
+        self.orden.hacer("agregar_tarea", tarea4)
+        self.assertEqual(self.orden.tareas.all().count(), 4)
+        # Llamamos a consensuar
+        self.orden.hacer("consensuar", self.tareas)
         # Debe quedar aceptada y consistente la cantidad de tareas
         self.assertTrue(isinstance(self.orden.estado, Aceptada))
-        self.assertEqual(self.orden.estado.tareas.all().count(), 3)
-
+        print(self.orden.tareas.all().count())
+        self.assertEqual(self.orden.tareas.all().count(), 3)
+        self.assertFalse(tarea4 in self.tareas)
 
         # Probando el metodo finalizar_tarea
-        #
         # Creamos tarifas para probar
-        tarifa1 = Tarifa(tarea=tarea1, tipo_servicio=self.orden.tipo_servicio, precio=10)
+        tarifa1 = Tarifa(tarea=self.tareas[0], tipo_servicio=self.orden.tipo_servicio, precio=10)
         tarifa1.save()
-        tarifa2 = Tarifa(tarea=tarea2, tipo_servicio=self.orden.tipo_servicio, precio=20)
+        tarifa2 = Tarifa(tarea=self.tareas[1], tipo_servicio=self.orden.tipo_servicio, precio=20)
         tarifa2.save()
-        tarifa3 = Tarifa(tarea=tarea3, tipo_servicio=self.orden.tipo_servicio, precio=30)
+        tarifa3 = Tarifa(tarea=self.tareas[2], tipo_servicio=self.orden.tipo_servicio, precio=30)
         tarifa3.save()
 
-        self.orden.estado.finalizar_tarea(self.orden.estado.tareas.all().first())
+        # llamamos a finalizar tarea
+        self.orden.hacer("finalizar_tarea", self.orden.tareas.all().first())
+
         # Al finalizar una tarea se debe crear un detalle y debe haber una tarea menos en el estado
-        detalle = self.orden.detalles.get(tarea=tarea1)
+        detalle = self.orden.detalles.get(tarea=self.tareas[0])
         self.assertEqual(detalle.precio, tarifa1.precio)
-        self.assertEqual(self.orden.estado.tareas.all().count(), 2)
+        self.assertEqual(self.orden.tareas.all().count(), 2)
 
         # Finalizamos una tarea mas y la proxima deberia cambiar el estado a Cerrada
-        self.orden.estado.finalizar_tarea(self.orden.estado.tareas.all().first())
-        self.assertEqual(self.orden.estado.tareas.all().count(), 1)
+        self.orden.hacer("finalizar_tarea", self.orden.tareas.all().first())
+        self.assertEqual(self.orden.tareas.all().count(), 1)
 
-        self.orden.estado.finalizar_tarea(self.orden.estado.tareas.all().first())
+        self.orden.hacer("finalizar_tarea", self.orden.tareas.all().first())
         self.assertTrue(isinstance(self.orden.estado, Cerrada))
-
-        # Falla el anteriror probamos cerrar a manopla
-        # self.orden.estado.cerrar()
-        # self.assertTrue(isinstance(self.orden.estado, Cerrada))
