@@ -26,9 +26,9 @@ class OrdenCreate(CreateView):
         contexto = super(OrdenCreate, self).get_context_data(**kwargs)
         # Agregar lo que necesita la vista
         # contexto['clientes'] = Cliente.objects.all()
-        # contexto['rubros'] = Rubro.objects.all()
-        # contexto['tecnicos'] = Tecnico.objects.all()
-        # contexto['servicios'] = TipoServicio.objects.all()
+        contexto['rubros'] = Rubro.objects.all()
+        contexto['tecnicos'] = Tecnico.objects.all()
+        contexto['servicios'] = TipoServicio.objects.all()
         return contexto
 
     def post(self, request, *args, **kwargs):

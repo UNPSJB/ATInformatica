@@ -1,6 +1,6 @@
 .form_wizard .stepContainer {
     display: block;
-    position: relative;
+    /* position: relative; */
     margin: 0;
     padding: 0;
     border: 0 solid #CCC;
@@ -20,7 +20,7 @@
 .wizard_horizontal ul.wizard_steps li a,
 .wizard_horizontal ul.wizard_steps li:hover {
     display: block;
-    position: relative;
+    /* position: relative; */
     -moz-opacity: 1;
     filter: alpha(opacity=100);
     opacity: 1;
@@ -28,7 +28,7 @@
 }
 .wizard_horizontal ul.wizard_steps li a:before {
     content: "";
-    position: absolute;
+    /* position: absolute; */
     height: 4px;
     background: #ccc;
     top: 20px;
@@ -48,7 +48,7 @@
     margin: 0 auto 5px;
     font-size: 16px;
     text-align: center;
-    position: relative;
+    /* position: relative; */
     z-index: 5
 }
 .wizard_horizontal ul.wizard_steps li a.selected:before,
@@ -73,6 +73,13 @@
     width: 80%;
     float: left;
     padding: 0 10px
+}
+
+#creacion_ot {
+    height: 100%;
+}
+.radio {
+    margin-left: 3em;
 }
 .actionBar {
     width: 100%;

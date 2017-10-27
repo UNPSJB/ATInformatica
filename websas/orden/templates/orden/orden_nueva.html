@@ -59,12 +59,12 @@
             </ul>
 
             <!-- Contenedor de los pasos / CONTENIDO -->
+
             <div class="stepContainer">
                 <div id="step-1">
                     <div id="clientes">
                         {% include "orden/listado_clientes.html" %}
                     </div>
-                    <button id="agregar_cliente" class="btn btn-primary">Agregar Cliente</button>
                 </div>
 
                 <div id="step-2">
@@ -100,5 +100,4 @@
 <script type="text/javascript" src="{% static 'vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
-
 <script type="text/javascript" src="{% static 'js/orden_nueva.js' %}"></script>  {% endblock scripts %}
