@@ -29,7 +29,7 @@ class OrdenTest(TestCase):
         self.tipo_servicio = TipoServicio(nombre="Taller", descripcion="Reparación de equipos en taller")
         self.tipo_servicio.save()
         self.descripcion = "Ta todo completamente hecho mierda"
-        self.orden = Orden.crear(self.usuario, self.persona.como(Cliente), self.rubro, self.tipo_servicio, self.descripcion)
+        self.orden = Orden.crear(self.usuario, self.persona.como(Cliente), self.persona.como(Tecnico), self.rubro, self.tipo_servicio, self.descripcion)
         self.orden.save()
 
     def test_crear(self):

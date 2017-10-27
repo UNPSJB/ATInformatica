@@ -1,5 +1,7 @@
 from django.test import TestCase
 from .models import Persona, Rol, Cliente, Tecnico, JefeTaller
+from orden.models import Orden
+from orden.tests import OrdenTest
 # Create your tests here.
 
 class PersonasTest(TestCase):
@@ -28,9 +30,9 @@ class PersonasTest(TestCase):
         clase = self.persona.como(Tecnico)
         self.assertEqual(clase.__class__.__name__,"Tecnico")
         
-    # def test_roles_related(self):
-    #     self.persona.agregar_rol(Tecnico())
-    #     self.persona.agregar_rol(JefeTaller())
-    #     roles = self.persona.roles_related()
-    #     self.assertEqual(roles, [Tecnico(), JefeTaller()])
+# class ClienteTest(PersonasTest):
+#     def setUp(self):
+#         super().setUp()
+
+
 

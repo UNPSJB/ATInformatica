@@ -27,7 +27,7 @@ class Orden(models.Model):
     """
 
     # TODO: estoy poniendo todo null true para probar
-    cliente = models.ForeignKey(Cliente,null=True,related_name="ordenes")
+    cliente = models.ForeignKey(Cliente, null=True,related_name="ordenes")
     rubro = models.ForeignKey(Rubro, related_name="ordenes")
     equipo = models.ForeignKey("Equipo", null=True, blank=True, related_name="ordenes")
     tipo_servicio = models.ForeignKey(TipoServicio, null=True, blank=True, related_name="ordenes")
@@ -42,8 +42,7 @@ class Orden(models.Model):
 
     @property
     def estado(self):
-        """Propiedad que devuelve el estado actual de la Orden de Trabajo
-        """
+        """Propiedad que devuelve el estado actual de la Orden de Trabajo"""
         if self.estados.exists():
             return self.estados.latest().related()
 
@@ -66,7 +65,7 @@ class Orden(models.Model):
         return self.estado.tareas
 
     @classmethod
-    def crear(cls, usuario, cliente, rubro, tipo_servicio, descripcion):
+    def crear(cls, usuario, cliente, tecnico, rubro, tipo_servicio, descripcion):
         """Método para crear una Orden de Trabajo
 
         Args:
@@ -81,7 +80,7 @@ class Orden(models.Model):
         """
         ot = cls(cliente=cliente,
                  usuario=usuario,
-                 tecnico=usuario.persona.como(Tecnico),
+                 tecnico=tecnico,
                  rubro=rubro,
                  tipo_servicio=tipo_servicio,
                  descripcion=descripcion)

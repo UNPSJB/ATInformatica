@@ -34,8 +34,9 @@ class Persona(models.Model):
 
     def agregar_rol(self, rol):
         """ Agrega un rol a una persona.
-        Args
-            rol (string): rol
+        
+        **Args:**
+            - rol (string): rol
         """
         if not self.sos(rol.__class__):
             rol.persona = self
@@ -47,10 +48,11 @@ class Persona(models.Model):
 
     def sos(self, Klass):
         """ Recibe una subclase de rol y retorna True si la persona está asociada y False si no.
-        Args
-            Klass (string): subclase de Rol
-        Returns
-            bool 
+        
+        **Args:**    
+            - Klass (string): subclase de Rol
+        **Returns:**
+            - bool 
         """
         return any([isinstance(rol, Klass) for rol in self.roles_related()])
 
@@ -96,25 +98,17 @@ class Tecnico(Rol):
 class Cliente(Rol):
     """ Modelo de rol Técnico. """
     TIPO = 2
-    def __init__(self, *args, **kwargs):
-        super(self.__class__, self).__init__(*args, **kwargs)
-        self.rolname = "Cliente"
 
+    def ordenes(self, estado):
+        return self.ordenes.filter(isinstance(self.ordenes.estado, estado))
 
 class JefeTaller(Rol):
     """ Modelo de rol Técnico. """
     TIPO = 3
-    def __init__(self, *args, **kwargs):
-        super(self.__class__, self).__init__(*args, **kwargs)
-        self.rolname = "Jefe de Taller"
-
 
 class Gerente(Rol):
     """ Modelo de rol Técnico. """
     TIPO = 4
-    def __init__(self, *args, **kwargs):
-        super(self.__class__, self).__init__(*args, **kwargs)
-        self.rolname = "Gerente"
 
-for Klass in [Cliente, Tecnico, JefeTaller, Gerente]:
+for Klass in Rol.__subclasses__():
     Rol.register(Klass)
