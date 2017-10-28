@@ -23,7 +23,7 @@
     </div>
     <div class="x_content">
       <br />
-      <form method="post" class="form-horizontal form-label-left" novalidate>  
+      <form id="form_cliente" method="post" class="form-horizontal form-label-left" novalidate>  
         {% csrf_token %}
         <!-- MOSTRAR LOS ERRORES DEL SERVIDOR -->
         {% if form.errors %}
@@ -102,6 +102,7 @@
 {% block scripts %}
 <!-- validator -->
 <script src="{% static 'vendors/validator/validator.js' %}"></script>
+<script src="{% static 'persona/js/cliente_popup.js' %}"></script>
 <script>
 		// initialize the validator function
     validator.message['empty'] = 'este campo es requerido';
