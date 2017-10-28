@@ -48,7 +48,6 @@ class OrdenCreate(CreateView):
 
         return JsonResponse({'data':'Todo mall'})
         
-<<<<<<< HEAD
 class OrdenesList(ListView):
     model = Orden
     template_name = 'orden/ordenes.html'
@@ -61,8 +60,7 @@ class OrdenDelete(DeleteView):
 class OrdenDetail(DetailView):
     model = Orden
     template_name = 'orden/orden_ver.html'
-=======
+    
 class ClienteListado(ListView):
     def get(self, request, *args, **kwargs):
         return JsonResponse({'data':render_to_string('orden/listado_clientes.html',{'clientes':Cliente.objects.all()})})
->>>>>>> 5b873070e46bacce4531cb8714c03ca921c57770
