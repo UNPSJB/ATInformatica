@@ -1,9 +1,18 @@
-{% extends "sas/base.html" %}
+{% extends "principal.html" %}
+{% load staticfiles %}
 
-{% block title %} OrdenTrabajo Delete {% endblock title %}
+{% block estilos %}
+<!-- Smart Wizard CSS -->
+<link href="{% static 'vendors/jQuery-Smart-Wizard/styles/smart_wizard.css' %}" rel="stylesheet" type="text/css">
 
+<!-- DataTables CSS -->
+<link href="{% static 'vendors/datatables.net-bs/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css' %}" rel="stylesheet">
 
-{% block content %}
+<link href="{% static 'css/orden_nueva.css' %}" rel="stylesheet" type="text/css">
+{% endblock estilos %}
+
+{% block contenido %}
 <div class="right_col">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x-panel">
@@ -17,7 +26,7 @@
         </div>
     </div>
 </div>
-{% endblock content %}
+{% endblock contenido %}
 
 {% block javascripts %}
   {{ block.super }}

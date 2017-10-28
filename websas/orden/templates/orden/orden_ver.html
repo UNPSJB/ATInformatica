@@ -1,0 +1,107 @@
+{% extends "principal.html" %}
+{% load staticfiles %}
+
+{% block estilos %}
+<link href="/static/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+<link href="/static/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+<link href="/static/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+<link href="{% static 'css/orden_nueva.css' %}" rel="stylesheet" type="text/css">
+{% endblock estilos %}
+
+{% block contenido %}
+<div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2><i class="fa fa-bars"></i> Orden de Trabajo <small>Orden Nro: {{ orden.id }}</small></h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+              </li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#">Settings 1</a>
+                  </li>
+                  <li><a href="#">Settings 2</a>
+                  </li>
+                </ul>
+              </li>
+              <li><a class="close-link"><i class="fa fa-close"></i></a>
+              </li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content col-md-12">
+
+            <div class="col-xs-9 ">
+              <!-- Tab panes -->
+              <div class="tab-content">
+                <!-- Tab DATOS ORDEN -->
+                <div class="tab-pane active" id="datosOrden">
+                  <p class="lead">Datos Orden.</p>
+                  <label class="control-label col-md-2 col-sm-3 col-xs-12" for="cliente">Cliente:</label>
+                  <h4 name="cliente">{{ orden.cliente.nombre }}</h4>
+                  <label class="control-label col-md-2 col-sm-3 col-xs-12" for="descripcion">Descripción:</label>
+                  <h4 name="descripcion">{{ orden.descripcion }}</h4>
+                  <label class="control-label col-md-2 col-sm-3 col-xs-12" for="rubro">Rubro:</label>
+                  <h4 name="rubro">{{ orden.rubro.nombre }}</h4>
+                  <label class="control-label col-md-2 col-sm-3 col-xs-12" for="tipo_servicio">Servicio:</label>
+                  <h4 name="tipo_servicio">{{ orden.tipo_servicio.nombre }}</h4>
+                  <label class="control-label col-md-2 col-sm-3 col-xs-12" for="usuario">Creador:</label>
+                  <h4 name="usuario">{{ orden.usuario.persona.nombre }}</h4>
+                </div>
+
+                <!-- Tab HISTORIAL -->
+                <div class="tab-pane" id="historial">
+                    <p class="lead">Historial.</p>
+                    <div class="col-md-12 col-sm-6 col-xs-12">
+                        <div class="x_content">
+                        <ul class="list-unstyled timeline">
+                            <li>
+                            <div class="block">
+                                <div class="tags">
+                                <a href="" class="tag">
+                                    <span>Acción</span>
+                                </a>
+                                </div>
+                                <div class="block_content">
+                                <h2 class="title">
+                                    <a>Who Needs Sundance When You’ve Got&nbsp;Crowdfunding?</a>
+                                </h2>
+                                <div class="byline">
+                                    <span>13 hours ago</span> by <a>Jane Smith</a>
+                                </div>
+                                <p class="excerpt">Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that could fund your project, and if the buyers liked your flick, they’d pay to Fast-forward and… <a>Read&nbsp;More</a>
+                                </p>
+                                </div>
+                            </div>
+                            </li>
+                        </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tareasPendientes">Tareas Pendientes.</div>
+                <div class="tab-pane" id="tareasFinalizadas">Tareas Finalizadas.</div>
+                <div class="tab-pane" id="agregarTarea">Agregar Tarea.</div>
+                <div class="tab-pane" id="finalizarTarea">Finalizar Tarea.</div>
+              </div>
+            </div>
+
+            <div class="col-xs-3">
+              <!-- required for floating -->
+              <!-- Nav tabs -->
+              <ul class="nav nav-tabs tabs-right">
+                <li class="active"><a href="#datosOrden" data-toggle="tab">Datos Orden</a></li>
+                <li><a href="#historial" data-toggle="tab">Historial</a></li>
+                <li><a href="#tareasPendientes" data-toggle="tab">Tareas Pendientes</a></li>
+                <li><a href="#tareasFinalizadas" data-toggle="tab">Tareas Finalizadas</a></li>
+                <li><a href="#agregarTarea" data-toggle="tab">Agregar Tarea</a></li>
+                <li><a href="#finalizarTarea" data-toggle="tab">Finalizar Tarea.</a></li>
+              </ul>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+      <div class="clearfix"></div>
+{% endblock contenido %}

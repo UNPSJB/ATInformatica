@@ -46,3 +46,15 @@ class OrdenCreate(CreateView):
 
         return JsonResponse({'data':'Todo mall'})
         
+class OrdenesList(ListView):
+    model = Orden
+    template_name = 'orden/ordenes.html'
+
+class OrdenDelete(DeleteView):
+    model = Orden
+    template_name = 'orden/orden_delete.html'
+    success_url = reverse_lazy('orden:orden_listar')
+
+class OrdenDetail(DetailView):
+    model = Orden
+    template_name = 'orden/orden_ver.html'

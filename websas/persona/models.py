@@ -72,6 +72,10 @@ class Rol(models.Model):
         null=True
     )
 
+    @property
+    def nombre(self):
+        return str(self.persona)
+
     def save(self, *args, **kwargs):
         if self.pk is None:
             self.tipo = self.__class__.TIPO
