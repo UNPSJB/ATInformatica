@@ -124,12 +124,12 @@ class Orden(models.Model):
             Exception: si la tarea recibida es de un rubro distinto a la Orden de Trabajo
             Exception: si no existe tarifa para la tarea en el tipo de servicio
         """
-        if(self.rubro != tarea.rubro):
+        if(self.rubro != tarea.tipo_tarea.rubro):
             raise Exception("***AGREGAR DETALLE: tarea.rubro != orden.rubro***")
-        tarifa = Tarifa.objects.get(tarea=tarea, tipo_servicio=self.tipo_servicio).precio
+        tarifa = Tarifa.objects.get(tipo_tarea=tarea.tipo_tarea, tipo_servicio=self.tipo_servicio).precio
         if not tarifa:
             raise Exception("***AGREGAR DETALLE: no existe tarifa para el tipo de servicio y la tarea***")
-        DetalleOrden(orden=self, tarea=tarea, precio=tarifa).save()
+        DetalleOrden(orden=self, tarea=tarea).save()
 
 
 class DetalleOrden(models.Model):
@@ -139,7 +139,6 @@ class DetalleOrden(models.Model):
     """
     orden = models.ForeignKey(Orden, related_name="detalles")
     tarea = models.ForeignKey(Tarea)
-    precio = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0'))
 
 class Estado(models.Model):
     """Modelo de Estado para la Orden de Trabajo"""
@@ -188,7 +187,7 @@ class Estado(models.Model):
         Raise:
             Exception si el rubro de la tarea es distinto al rubro de la Orden de Trabajo 
         """
-        if(self.orden.rubro != tarea.rubro):
+        if(self.orden.rubro != tarea.tipo_tarea.rubro):
             raise Exception("***TAREAS EN ESTADO: no se pudo realizar la accion***")
         self.tareas.add(tarea)
     

@@ -3,7 +3,7 @@ from .models import Orden, Creada, Diagnosticada, Aceptada, Cerrada, Cancelada
 from usuario.models import Usuario
 from persona.models import Cliente, Tecnico, Persona
 from rubro.models import Rubro
-from tarea.models import Tarea
+from tarea.models import Tarea, TipoTarea
 from servicio.models import TipoServicio
 from tarifa.models import Tarifa
 from decimal import Decimal
@@ -44,9 +44,11 @@ class OrdenTest(TestCase):
 
     def test_agregar_detalle(self):
         # Creamos una tarifa y una tarea para agregar el detalle
-        self.tarea = Tarea(nombre="Cambio de disco", rubro=self.rubro)
+        tipo_tarea = TipoTarea(nombre="Cambio de disco", rubro=self.rubro)
+        tipo_tarea.save()
+        self.tarea = Tarea(tipo_tarea=tipo_tarea)
         self.tarea.save()
-        self.tarifa = Tarifa(tarea=self.tarea, tipo_servicio=self.orden.tipo_servicio, precio=10)
+        self.tarifa = Tarifa(tipo_tarea=self.tarea.tipo_tarea, tipo_servicio=self.orden.tipo_servicio, precio=10)
         self.tarifa.save()
 
         # Agregamos el detalle
@@ -56,14 +58,15 @@ class OrdenTest(TestCase):
         detalle = self.orden.detalles.all().first()
         self.assertEqual(detalle.orden.id, self.orden.id)
         self.assertEqual(detalle.tarea.id, self.tarea.id)
-        self.assertEqual(detalle.precio, self.tarifa.precio)
-
+        
         # Probamos que lance excepción si la tarea no es del rubro de la orden
         rubro = Rubro(nombre="Impresoras Fiscales", descripcion="Reparación de impresoras fiscales")
         rubro.save()
-        tarea = Tarea(nombre="Limpieza de cabezales", rubro=rubro)
+        tipo_tarea = TipoTarea(nombre="Limpieza de cabezales", rubro=rubro)
+        tipo_tarea.save()
+        tarea = Tarea(tipo_tarea=tipo_tarea)
         tarea.save()
-        tarifa = Tarifa(tarea=tarea, tipo_servicio=self.orden.tipo_servicio, precio=10)
+        tarifa = Tarifa(tipo_tarea=tipo_tarea, tipo_servicio=self.orden.tipo_servicio, precio=10)
         tarifa.save()
         try:
             self.orden.agregar_detalle(tarea)
@@ -74,7 +77,7 @@ class OrdenTest(TestCase):
 
         # Probamos que lance excepcion si no existe tarifa 
         tarifa.delete()
-        tarea.rubro = self.orden.rubro
+        tarea.tipo_tarea.rubro = self.orden.rubro
         tarea.save()
         try:
             self.orden.agregar_detalle(tarea)
@@ -89,9 +92,13 @@ class EstadoTest(OrdenTest):
     def setUp(self):
         super().setUp()
         self.tareas = []
-        self.tarea1 = Tarea(nombre="Cambio de disco", rubro=self.orden.rubro)
+        tipo_tarea = TipoTarea(nombre="Cambio de disco", rubro=self.rubro)
+        tipo_tarea.save()
+        self.tarea1 = Tarea(tipo_tarea=tipo_tarea)
         self.tarea1.save()
-        self.tarea2 = Tarea(nombre="Instalacion sistema operativo", rubro=self.orden.rubro)
+        tipo_tarea = TipoTarea(nombre="Instalacion sistema operativo", rubro=self.orden.rubro)
+        tipo_tarea.save()
+        self.tarea2 = Tarea(tipo_tarea=tipo_tarea)
         self.tarea2.save()
 
     def test_agregar_tarea(self):
@@ -105,7 +112,9 @@ class EstadoTest(OrdenTest):
         # Probamos que lance excepción si la tarea no es del rubro de la orden
         rubro = Rubro(nombre="Impresoras Fiscales", descripcion="Reparación de impresoras fiscales")
         rubro.save()
-        tarea = Tarea(nombre="Limpieza de cabezales", rubro=rubro)
+        tipo_tarea = TipoTarea(nombre="Limpieza de cabezales", rubro=rubro)
+        tipo_tarea.save()
+        tarea = Tarea(tipo_tarea=tipo_tarea)
         tarea.save()
         try:
             self.orden.estado.agregar_tarea(tarea)
@@ -140,11 +149,17 @@ class TransicionesTest(OrdenTest):
     def setUp(self):
         super().setUp()
         self.tareas = []
-        self.tarea1 = Tarea(nombre="Cambio de disco", rubro=self.orden.rubro)
+        tipo_tarea = TipoTarea(nombre="Cambio de disco", rubro=self.orden.rubro)
+        tipo_tarea.save()
+        self.tarea1 = Tarea(tipo_tarea=tipo_tarea)
         self.tarea1.save()
-        self.tarea2 = Tarea(nombre="Instalacion sistema operativo", rubro=self.orden.rubro)
+        tipo_tarea = TipoTarea(nombre="Instalacion sistema operativo", rubro=self.orden.rubro)
+        tipo_tarea.save()
+        self.tarea2 = Tarea(tipo_tarea=tipo_tarea)
         self.tarea2.save()
-        self.tarea3 = Tarea(nombre="Cambio de teclado", rubro=self.orden.rubro)
+        tipo_tarea = TipoTarea(nombre="Cambio de teclado", rubro=self.orden.rubro)
+        tipo_tarea.save()
+        self.tarea3 = Tarea(tipo_tarea=tipo_tarea)
         self.tarea3.save()
         self.tareas.append(self.tarea1)
         self.tareas.append(self.tarea2)
@@ -155,7 +170,6 @@ class TransicionesTest(OrdenTest):
         ######################################################
         #                - Estado CREADA - 
         ######################################################
-
 
         # Probando el método diagnosticar - debe quedar Diagnosticada
         # Ante lista de tareas vacía no debe transicionar
@@ -169,7 +183,6 @@ class TransicionesTest(OrdenTest):
         ######################################################
         #                - Estado DIAGNOSTICADA - 
         ######################################################
-
 
         # Probando que no pueda transicionar si no tiene tareas
         # Removemos a la fuerza las tareas del estado Diagnosticada
@@ -192,7 +205,9 @@ class TransicionesTest(OrdenTest):
         ######################################################
 
         # Probando diagnosticar en estado Aceptada - Debe quedar Diagnosticada y tener una tarea mas
-        tarea4 = Tarea(nombre="Cambio de pantalla", rubro=self.orden.rubro)
+        tipo_tarea = TipoTarea(nombre="Cambio de pantalla", rubro=self.orden.rubro)
+        tipo_tarea.save()
+        tarea4 = Tarea(tipo_tarea=tipo_tarea)
         tarea4.save()
         tareas2 = []
         tareas2.append(tarea4)
@@ -209,11 +224,11 @@ class TransicionesTest(OrdenTest):
 
         # Probando el metodo finalizar_tarea
         # Creamos tarifas para probar
-        tarifa1 = Tarifa(tarea=self.tareas[0], tipo_servicio=self.orden.tipo_servicio, precio=10)
+        tarifa1 = Tarifa(tipo_tarea=self.tareas[0].tipo_tarea, tipo_servicio=self.orden.tipo_servicio, precio=10)
         tarifa1.save()
-        tarifa2 = Tarifa(tarea=self.tareas[1], tipo_servicio=self.orden.tipo_servicio, precio=20)
+        tarifa2 = Tarifa(tipo_tarea=self.tareas[1].tipo_tarea, tipo_servicio=self.orden.tipo_servicio, precio=20)
         tarifa2.save()
-        tarifa3 = Tarifa(tarea=self.tareas[2], tipo_servicio=self.orden.tipo_servicio, precio=30)
+        tarifa3 = Tarifa(tipo_tarea=self.tareas[2].tipo_tarea, tipo_servicio=self.orden.tipo_servicio, precio=30)
         tarifa3.save()
 
         # llamamos a finalizar tarea
@@ -221,7 +236,7 @@ class TransicionesTest(OrdenTest):
 
         # Al finalizar una tarea se debe crear un detalle y debe haber una tarea menos en el estado
         detalle = self.orden.detalles.get(tarea=self.tareas[0])
-        self.assertEqual(detalle.precio, tarifa1.precio)
+        self.assertTrue(detalle)
         self.assertEqual(self.orden.tareas.all().count(), 2)
 
         # Finalizamos una tarea mas y la proxima deberia cambiar el estado a Cerrada
