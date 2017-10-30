@@ -323,6 +323,12 @@ class Cancelada(Estado):
 class Equipo(models.Model):
     nro_serie = models.IntegerField(unique=True)
     descripcion = models.CharField(max_length=250)
+    rubro = models.ForeignKey(
+        Rubro,
+        null=True,
+        blank=True
+        )
+
 
 for Klass in Estado.__subclasses__():
     Estado.register(Klass)

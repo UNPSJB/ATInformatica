@@ -1,8 +1,9 @@
-    <table id="datatable-rubros" class="table table-striped table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
+    <table id="datatable-equipos" data-popup_url="{% url 'orden:equipo_crear_popup' %}" class="table table-striped table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
         <thead>
         <tr>
         <th></th>
-        <th>Nombre</th>
+        <th>Nro Serie</th>
+        <th>Rubro</th>
         <th>Descripción</th>
         </tr>
         </thead>
@@ -15,7 +16,8 @@
                         <input type="radio" class="flat" name="equipo">
                     </div>
                 </td>
-                <td>{{ eqipo.nro_serie }}</td>
+                <td>{{ equipo.nro_serie }}</td>
+                <td>{{ equipo.rubro }}</td>
                 <td>{{ equipo.descripcion }}</td>
             </tr>
             {% endfor %}

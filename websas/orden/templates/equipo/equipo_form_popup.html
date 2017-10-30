@@ -1,0 +1,93 @@
+{% extends "base_site.html" %}
+{% load staticfiles %}
+{% block contenido %}
+    <div class="clearfix"></div>
+        <div class="row">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Equipos <small>gestión de equipos</small></h2>
+              <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Settings 1</a>
+                    </li>
+                    <li><a href="#">Settings 2</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <br />
+              <form method="post" class="form-horizontal form-label-left" novalidate>  
+                {% csrf_token %}
+                {% if form.errors %}
+                <div class="clearfix">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-error col-md-6 col-sm-6 col-xs-12 col-md-offset-3 col-sm-offset-3 col-xs-12">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-error col-md-6 col-sm-6 col-xs-12 col-md-offset-3 col-sm-offset-3 col-xs-12">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+                </div>
+                {% endif %}
+                <div class="item form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.nro_serie.label }}">{{ form.nro_serie.label }}
+                  </label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    {{ form.nro_serie }}
+                  </div>
+                </div>
+                <div class="item form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.rubro.label }}">{{ form.rubro.label }}
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      {{ form.rubro }}
+                    </div>
+                  </div>
+                <div class="item form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.descripcion.label }}">{{ form.descripcion.label }} 
+                  </label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    {{ form.descripcion }}
+                  </div>
+                </div>
+                
+
+                <div class="ln_solid"></div>
+                <div class="item form-group">
+                  <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                    <button class="btn btn-primary" type="button">Cancel</button>
+  		            <button class="btn btn-primary" type="reset">Reset</button>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endblock contenido %}
+
+{% block scripts %}
+<!-- validator -->
+<script src="/static/vendors/validator/validator.js"></script>
+<script>
+		// initialize the validator function
+    validator.message['empty'] = 'este campo es requerido';
+    validator.message['number'] = 'debe ser un número';
+    validator.message['email'] = 'debe ser un email';
+    validator.message['invalid'] = 'contenido invalido';
+    validator.message['number_min'] = 'no puede ser negativo';
+</script>
+{% endblock scripts %}

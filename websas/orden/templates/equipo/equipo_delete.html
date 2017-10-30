@@ -1,0 +1,17 @@
+{% extends "principal.html" %}
+
+{% block contenido %}
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x-panel">
+        <form method="post">
+            {% csrf_token%}
+            <h3>¿Eliminar el Equipo {{ equipo.nro_serie }} | {{ equipo.descripcion }}?</h3>
+            <button class="btn btn-danger" type="submit">Eliminar</button>
+            <a class="btn btn-default" href="{% url 'orden:equipo_listar' %}">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock contenido %}
+
+{% block scripts %}
+{% endblock scripts %}
