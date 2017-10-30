@@ -3,7 +3,6 @@ var tabla
 $(document).ready(function(){
     get_clientes()   
     console.log('tabla_clientes')
-    tabla = tabla_clientes()
 
 
 })
@@ -38,6 +37,7 @@ var tabla_html = $("#datatable-clientes")
 var popup_attrs = "location=no,menubar=no,resizable=no,scrollbars=no";
 
 
+var popup
 // Inicializacion y referencia al DataTable, con la config ajax de cada columna
 function tabla_clientes(){
     tabla_html = $("#datatable-clientes")
@@ -63,7 +63,7 @@ function tabla_clientes(){
                 // TODO: si es necesario generar el form de nuevo técnico
                 // como modal, este botón puede dispararlo
                 // Por ahora sólo pega a crear técnico
-                var ventana = window.open(tabla_html.attr('data-popup_url'), 'Crear nuevo cliente', popup_attrs);
+                popup = window.open(tabla_html.attr('data-popup_url'), 'Crear nuevo cliente', popup_attrs);
             },
             className: "btn-sm btn-info"
         }, {
