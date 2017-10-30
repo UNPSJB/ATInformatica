@@ -15,8 +15,7 @@
                     <input data-idtecnico="{{ tecnico.persona.id }}" type="radio" class="flat" name="tecnico">
                 </div>
             </td>
-            <td>{{ tecnico.persona.nombre }}</td>
-            <td>{{ tecnico.persona.apellido }}</td>
+            <td>{{ tecnico.persona.nombre }} {{ tecnico.persona.apellido }}</td>
         </tr>
         {% endfor %}
         {% else %}

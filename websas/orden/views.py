@@ -12,7 +12,7 @@ from .models import Orden, Equipo
 from persona.models import Cliente, Tecnico, Persona
 from rubro.models import Rubro
 
-from .forms import OrdenForm
+from .forms import OrdenForm, EquipoForm
 # Create your views here.
 
 class OrdenCreate(CreateView):
@@ -64,3 +64,31 @@ class OrdenDetail(DetailView):
 class ClienteListado(ListView):
     def get(self, request, *args, **kwargs):
         return JsonResponse({'data':render_to_string('orden/listado_clientes.html',{'clientes':Cliente.objects.all()})})
+
+class EquipoListado(ListView):
+    def get(self, request, *args, **kwargs):
+        return JsonResponse({'data':render_to_string('orden/listado_equipos.html',{'equipos':Equipo.objects.all()})})
+
+class EquipoCreate(CreateView):
+    model = Equipo
+    template_name = 'equipo/equipo_form.html'
+    form_class = EquipoForm
+    success_url = reverse_lazy('orden:equipo_listar')
+
+class EquipoList(ListView):
+    model = Equipo
+    template_name = 'equipo/equipos.html'
+
+class EquipoUpdate(UpdateView):
+    model = Equipo
+    template_name = 'equipo/equipo_form.html'
+    form_class = EquipoForm
+    success_url = reverse_lazy('orden:equipo_listar')
+class EquipoDelete(DeleteView):
+    model = Equipo
+    template_name = 'equipo/equipo_delete.html'
+    success_url = reverse_lazy('orden:equipo_listar')
+
+class EquipoCreatePopUp(EquipoCreate):
+    template_name ='equipo/equipo_form_popup.html'
+    success_url = '#'

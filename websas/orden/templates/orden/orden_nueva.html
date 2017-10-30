@@ -40,7 +40,7 @@
                     <a href="#step-3" class="disabled" isdone="0" rel="3">
                         <span class="step_no">3</span>
                         <span class="step_descr">
-                            RUBRO Y EQUIPO
+                            RUBRO
                             <br>
                             <small>Rubro/equipo asignado a la OT</small>
                         </span>
@@ -50,7 +50,17 @@
                     <a href="#step-4" class="disabled" isdone="0" rel="4">
                         <span class="step_no">4</span>
                         <span class="step_descr">
-                            TÉCNICO
+                            EQUIPO
+                            <br>
+                            <small>Equipo incluído en la OT</small>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#step-5" class="disabled" isdone="0" rel="5">
+                        <span class="step_no">5</span>
+                        <span class="step_descr">
+                            TECNICO
                             <br>
                             <small>Técnico asignado a la OT</small>
                         </span>
@@ -72,11 +82,17 @@
 
                 <div id="step-3">
                     <!-- Que quisiste decir con este template -->
-                    {% comment %} {% include "orden/orden_rubrosequipos.html" %} {% endcomment %} 
                     {% include "orden/listado_rubros.html" %}
                 </div>
 
                 <div id="step-4">
+                    <!-- Que quisiste decir con este template -->
+                    <div id="equipos">
+                        {% include "orden/listado_equipos.html" %}
+                    </div>
+                </div>
+
+                <div id="step-5">
                     {% include "orden/listado_tecnicos.html" %}
                 </div>
 
@@ -100,6 +116,10 @@
 <script type="text/javascript" src="{% static 'vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/orden_nueva.js' %}"></script>  
 <script type="text/javascript" src="{% static 'js/cliente_ot.js' %}"></script>  
+<script type="text/javascript" src="{% static 'js/tipo_servicio_ot.js' %}"></script>  
+<script type="text/javascript" src="{% static 'js/rubro_ot.js' %}"></script>  
+<script type="text/javascript" src="{% static 'js/equipo_ot.js' %}"></script>  
+<script type="text/javascript" src="{% static 'js/tecnico_ot.js' %}"></script>  
 <script>
 csrf_token = '{{ csrf_token }}';
 
