@@ -1,6 +1,5 @@
 from django.db import models
 from rubro.models import Rubro
-from producto.models import Producto, ReservaStock 
 from usuario.models import Usuario
 from decimal import Decimal
 
@@ -32,19 +31,11 @@ class Tarea(models.Model):
     tipo_tarea = models.ForeignKey(
         TipoTarea
     )
-    repuesto = models.ForeignKey(
-        ReservaStock, null=True, blank=True
-    )
-    cantidad = models.PositiveIntegerField(default=1, null=True, blank=True)
     observacion = models.CharField(max_length=250)
 
     @classmethod
-    def crear(cls, tipo_tarea, producto, cantidad, observacion):
-        reserva = ReservaStock(producto=producto, cantidad=cantidad)
-        reserva.save()
+    def crear(cls, tipo_tarea, observacion):
         tarea = cls(tipo_tarea=tipo_tarea,
-                 repuesto=reserva,
-                 cantidad=cantidad,
                  observacion=observacion)
         tarea.save()
         tarea.hacer(accion=None)
