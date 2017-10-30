@@ -38,6 +38,14 @@ class ProductoTest(TestCase):
     def test_stock_bajo(self):
         self.assertTrue(self.producto.stock_es_bajo)
 
+    def test_precio(self):
+        # testeamos que al cambiar el precio del producto no cambie en la reserva
+        self.producto.precio=400
+        self.producto.save()
+        self.assertFalse(self.producto.precio == self.reserva.precio_unitario)
+        self.assertEqual(self.reserva.precio_unitario, 600)
+
     def test_eliminar_reserva(self):
         self.reserva.eliminar()
-        self.assertFalse(self.reserva.activa)        
+        self.assertFalse(self.reserva.activa)      
+

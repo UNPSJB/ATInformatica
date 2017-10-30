@@ -92,9 +92,9 @@ class TareaStockTest(TestCase):
         # TODO: Revisar bien - puede ser un tema de la base de datos de test
         # Pareciera ser que hace lo que debe en [método usar_repuestos]
         reserva = self.tarea.reservas.get(pk=self.reserva.id)
-        print("Stock de la reserva {}, antes = {}".format(self.producto.id, str(self.producto.stock)))
+        # print("Stock de la reserva {}, antes = {}".format(self.producto.id, str(self.producto.stock)))
         self.tarea.hacer("realizar")
         self.assertTrue(isinstance(self.tarea.estado, TareaRealizada))
         # self.assertEqual()
-        print("Stock de la reserva {}, despues = {} activa {}".format(self.producto.id, str(reserva.producto.stock), reserva.activa))
+        # print("Stock de la reserva {}, despues = {} activa {}".format(self.producto.id, str(reserva.producto.stock), reserva.activa))
        

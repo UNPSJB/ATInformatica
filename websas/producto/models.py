@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Sum
 from tarea.models import Tarea
+from decimal import Decimal
 # Create your models here.
 class Producto(models.Model):
 
@@ -9,11 +10,14 @@ class Producto(models.Model):
     marca = models.CharField(max_length=20)
     stock_minimo = models.IntegerField()
     stock = models.IntegerField()
-    precio = models.FloatField()
+    precio = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0'))
 
     @property
     def stockReservado(self): 
-        return self.reservas.filter(activa=True).values_list('producto').aggregate(Sum('cantidad')).get('cantidad__sum')
+        return self.reservas.filter(activa=True
+            ).values_list('producto'
+            ).aggregate(Sum('cantidad')
+            ).get('cantidad__sum')
 
     @property
     def stockDisponible(self):
@@ -31,10 +35,15 @@ class ReservaStock(models.Model):
     tarea = models.ForeignKey(
         Tarea, related_name="reservas"
     )
+    precio_unitario = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0'))
     cantidad = models.PositiveIntegerField()
 
     class Meta:
         unique_together = (("producto", "tarea"),)
+
+    def save(self, *args, **kwagrs):
+        super(self.__class__, self).save(*args, **kwagrs)
+        self.precio_unitario = self.producto.precio
 
     @property
     def hay_stock(self):

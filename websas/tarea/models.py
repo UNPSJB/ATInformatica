@@ -1,6 +1,7 @@
 from django.db import models
 from rubro.models import Rubro
 from usuario.models import Usuario
+from orden.models import Estado
 from decimal import Decimal
 
 # Create your models here.
@@ -30,6 +31,9 @@ TareaManager = TareaBaseManager.from_queryset(TareaQuerySet)
 class Tarea(models.Model):
     tipo_tarea = models.ForeignKey(
         TipoTarea
+    )
+    orden = models.ForeignKey(
+        Estado, null=True, blank=True, related_name="tareas"
     )
     observacion = models.CharField(max_length=250)
 

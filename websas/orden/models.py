@@ -1,8 +1,6 @@
 from django.db import models
 from persona.models import Cliente, Tecnico
 from rubro.models import Rubro
-from tarea.models import Tarea
-from tarifa.models import Tarifa
 from servicio.models import TipoServicio
 from usuario.models import Usuario
 from decimal import Decimal
@@ -126,7 +124,7 @@ class Orden(models.Model):
         """
         if(self.rubro != tarea.tipo_tarea.rubro):
             raise Exception("***AGREGAR DETALLE: tarea.rubro != orden.rubro***")
-        tarifa = Tarifa.objects.get(tipo_tarea=tarea.tipo_tarea, tipo_servicio=self.tipo_servicio).precio
+        tarifa = tarea.tipo_tarea.tarifas.get(tipo_servicio=self.tipo_servicio).precio
         if not tarifa:
             raise Exception("***AGREGAR DETALLE: no existe tarifa para el tipo de servicio y la tarea***")
         DetalleOrden(orden=self, tarea=tarea).save()
@@ -138,7 +136,8 @@ class DetalleOrden(models.Model):
     Nota: contiene la tarea que se realizó y el precio de la misma
     """
     orden = models.ForeignKey(Orden, related_name="detalles")
-    tarea = models.ForeignKey(Tarea)
+    tarea = models.OneToOneField('tarea.Tarea')
+
 
 class Estado(models.Model):
     """Modelo de Estado para la Orden de Trabajo"""
@@ -150,7 +149,6 @@ class Estado(models.Model):
     tipo = models.PositiveSmallIntegerField(choices=TIPOS)
     timestamp = models.DateTimeField(auto_now=True)
     usuario = models.ForeignKey(Usuario, null=True, blank=True)
-    tareas = models.ManyToManyField(Tarea)
 
     class Meta:
         get_latest_by = 'timestamp'

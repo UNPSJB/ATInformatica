@@ -2,8 +2,12 @@ from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import permission_required
 from django.http import JsonResponse
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, CreateView, ListView, UpdateView, DeleteView, DetailView
 from rubro.models import Rubro
+from .models import TipoTarea
+from .forms import TipoTareaForm
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse_lazy
 # Create your views here.
 class TareaCreate(TemplateView):
     template_name = "tarea/tarea_detail.html"
@@ -25,3 +29,25 @@ class TareaCreate(TemplateView):
     def get(self, request, id_rubro, *args, **kwargs):
         print("TareaCreate RUBRO {}".format(id_rubro))
         return super().get(request, *args, **kwargs)
+
+class TipoTareaCreate(CreateView):
+    model = TipoTarea
+    template_name = 'tarea/tipo_tarea_form.html'
+    form_class =  TipoTareaForm
+    success_url = reverse_lazy('tarea:tipo_tarea_listar')
+
+class TipoTareaList(ListView):
+    model = TipoTarea
+    template_name = 'tarea/tipos_tareas.html'
+
+class TipoTareaUpdate(UpdateView):
+    template_name = 'tarea/tipo_tarea_form.html'
+    success_url = reverse_lazy('tarea:tipo_tarea_listar')
+class TipoTareaDelete(DeleteView):
+    template_name = 'tarea/tipo_tarea_delete.html'
+    success_url = reverse_lazy('tarea:tipo_tarea_listar')
+
+class TipoTareaDetail(DetailView):
+    context_object_name = 'tipo_tarea'
+    template_name = 'tarea/tipo_tarea_detail.html'
+    success_url = reverse_lazy('tarea:tipo_tarea_listar')

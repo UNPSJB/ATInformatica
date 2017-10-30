@@ -1,0 +1,19 @@
+{% extends "principal.html" %}
+
+{% block contenido %}
+<div class="right_col">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x-panel">
+            <form method="post">
+                    {% csrf_token%}
+                    <h3>Eliminar el tipo de tarea {{ tipo_tarea.nombre }}?</h3>
+                    <button class="btn btn-danger" type="submit">Eliminar</button>
+                    <a class="btn btn-default" href="{% url 'tarea:tipo_tarea_listar' %}">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock contenido %}
+
+{% block javascripts %}
+{% endblock javascripts %}
