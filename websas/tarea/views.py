@@ -41,6 +41,8 @@ class TipoTareaList(ListView):
     template_name = 'tarea/tipos_tareas.html'
 
 class TipoTareaUpdate(UpdateView):
+    model = TipoTarea
+    form_class = TipoTareaForm
     template_name = 'tarea/tipo_tarea_form.html'
     success_url = reverse_lazy('tarea:tipo_tarea_listar')
 class TipoTareaDelete(DeleteView):
@@ -48,6 +50,7 @@ class TipoTareaDelete(DeleteView):
     success_url = reverse_lazy('tarea:tipo_tarea_listar')
 
 class TipoTareaDetail(DetailView):
+    model = TipoTarea
     context_object_name = 'tipo_tarea'
     template_name = 'tarea/tipo_tarea_detail.html'
     success_url = reverse_lazy('tarea:tipo_tarea_listar')
