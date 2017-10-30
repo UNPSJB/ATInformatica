@@ -12,12 +12,12 @@ class Producto(models.Model):
     precio = models.FloatField()
 
     @property
-    def stockDisponible(self):
-        return self.stock - self.reservas.filter(activa=True).values_list('producto').aggregate(Sum('cantidad')).get('cantidad__sum')
-
-    @property
     def stockReservado(self): 
         return self.reservas.filter(activa=True).values_list('producto').aggregate(Sum('cantidad')).get('cantidad__sum')
+
+    @property
+    def stockDisponible(self):
+        return self.stock - self.stockReservado
 
     @property
     def stock_es_bajo(self):
@@ -36,6 +36,20 @@ class ReservaStock(models.Model):
     class Meta:
         unique_together = (("producto", "tarea"),)
 
+    @property
+    def hay_stock(self):
+        return self.producto.stockDisponible >= 0
+
     def eliminar(self):
         self.activa = False
         self.save()
+
+    def usar_repuestos(self):
+        # print("Stock de la reserva {}, antes = {}".format(self.id, str(self.producto.stock)))
+        self.producto.stock = self.producto.stock - self.cantidad
+        self.producto.save()
+        # print("Stock de la reserva {}, despues = {}".format(self.id, str(self.producto.stock)))
+        # print("Estado antes {}".format(self.activa))
+        self.activa = False
+        self.save()
+        # print("Estado despues {}".format(self.activa))

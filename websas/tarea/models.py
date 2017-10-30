@@ -108,16 +108,30 @@ class TareaPresupuestada(EstadoTarea):
     """ Se espera que el cliente la acepte """
     TIPO = 1
     def aceptar(self):
+        for reserva in self.tarea.reservas.filter(activa=True):
+            if not reserva.hay_stock:
+                return TareaEsperaRepuestos(tarea=self.tarea)
         return TareaPendiente(tarea=self.tarea)
     
 class TareaEsperaRepuestos(EstadoTarea):
     """ No hay stock de repuestos para realizar el trabajo """
     TIPO = 2
+    def desbloquear(self):
+        hay_respuestos = True
+        for reserva in self.tarea.reservas.filter(activa=True):
+            if not reserva.hay_stock:
+                hay_respuestos = False
+        if not hay_respuestos:
+            return self
+        return TareaPendiente(tarea=self.tarea)
+
 
 class TareaPendiente(EstadoTarea):
     """ Fue aceptada la tarea y ahora hay que realizarla """
     TIPO = 3
     def realizar(self):
+        for reserva in self.tarea.reservas.filter(activa=True):
+           reserva.usar_repuestos()
         return TareaRealizada(tarea=self.tarea)
 
 class TareaRealizada(EstadoTarea):
