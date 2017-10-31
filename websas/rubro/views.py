@@ -24,7 +24,8 @@ class RubroCreate(CreateView):
 
     def get_success_url(self):
         print("RubroCreate RUBRO {}".format(self.object.id))
-        return reverse_lazy("tarea:tarea_crear", args=(self.object.id, ))
+        return reverse_lazy('rubro:rubro_listar')
+        #return reverse_lazy("tarea:tarea_crear", args=(self.object.id, ))
 
     def tipos_servicios(self):
         return TipoServicio.objects.all()

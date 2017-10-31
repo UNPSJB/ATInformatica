@@ -32,8 +32,8 @@ class Tarea(models.Model):
     tipo_tarea = models.ForeignKey(
         TipoTarea
     )
-    orden = models.ForeignKey(
-        Estado, null=True, blank=True, related_name="tareas"
+    estado_orden = models.ForeignKey(
+        Estado, null=True, blank=True, on_delete=models.CASCADE, related_name="tareas"
     )
     observacion = models.CharField(max_length=250)
 

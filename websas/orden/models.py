@@ -177,7 +177,7 @@ class Estado(models.Model):
         """
         return Cancelada(orden=self.orden, motivo=motivo)
 
-    def agregar_tarea(self, tarea):
+    def agregar_tarea(self, tipo_tarea, observacion):
         """Agrega una tarea al estado de una OT"
         
         Args: 
@@ -185,9 +185,10 @@ class Estado(models.Model):
         Raise:
             Exception si el rubro de la tarea es distinto al rubro de la Orden de Trabajo 
         """
-        if(self.orden.rubro != tarea.tipo_tarea.rubro):
+        if(self.orden.rubro != tipo_tarea.rubro):
             raise Exception("***TAREAS EN ESTADO: no se pudo realizar la accion***")
-        self.tareas.add(tarea)
+            
+        self.tarea_set.create(tipo_tarea=tipo_tarea, observacion=observacion)
     
     def set_col_tareas(self, tareas):
         """Setea la colección de tareas a realizar para la Orden de Trabajo

@@ -9,3 +9,7 @@ class Rubro(models.Model):
 
     def __str__(self):
         return '{}'.format(self.nombre)
+
+    @property
+    def tipos_tareas_related(self):
+        return self.tipos_tareas.all()

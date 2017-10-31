@@ -35,12 +35,10 @@ class OrdenCreate(CreateView):
         persona = Persona.objects.get(pk=request.POST.get('cliente'))
         rubro = Rubro.objects.get(pk=request.POST.get('rubro'))
         servicio = TipoServicio.objects.get(pk=request.POST.get('servicio'))
-
         print(persona, rubro, servicio)
         
         if persona.sos(Cliente):
-            orden = Orden(usuario=request.user, cliente=persona.como(Cliente), rubro=rubro, tipo_servicio=servicio, descripcion="Alto bolonqui")
-            orden.save()
+            orden = Orden.crear(usuario=request.user, cliente=persona.como(Cliente), tecnico=None, rubro=rubro, tipo_servicio=servicio, descripcion="Alto bolonqui") 
 
             print(orden)
 
@@ -60,7 +58,13 @@ class OrdenDelete(DeleteView):
 class OrdenDetail(DetailView):
     model = Orden
     template_name = 'orden/orden_ver.html'
-    
+
+    def get_context_data(self, **kwargs):
+        contexto = super(self.__class__, self).get_context_data(**kwargs)
+        pk = self.kwargs.get('pk')
+        orden = Orden.objects.get(pk=pk)
+        contexto['tipos_tareas'] = orden.rubro.tipos_tareas_related
+        return contexto
 class ClienteListado(ListView):
     def get(self, request, *args, **kwargs):
         return JsonResponse({'data':render_to_string('orden/listado_clientes.html',{'clientes':Cliente.objects.all()})})

@@ -1,0 +1,34 @@
+<table id="datatable-tipo-tarea" class="table table-striped table-hover table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
+    <thead>
+    <tr>
+    <th></th>
+    <th>Nombre</th>
+    <th>Descripcion</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% if tipos_tareas %}
+        {% for tipo_tarea in tipos_tareas %} <tr>
+            <td>
+                &nbsp;
+                <div class="radio">
+                    <input  style="position:relative;" data-idtipotarea="{{ tipo_tarea.id }}" type="radio" class="flat" name="tipo_tarea">
+                </div>
+            </td>
+            <td>{{ tipo_tarea.nombre }} </td>
+            <td>{{ tipo_tarea.descripcion }}</td>
+        </tr>
+
+        {% endfor %}
+        {% else %}
+
+        <h1>No hay tipos de tarea registrados</h1>    
+        {% endif %}  
+    </tbody>
+</table>
+<div class="clearfix"></div>
+<span hidden id="id-orden-tarea">{{ orden.id }}</span>
+<div>
+    <label for="observacion">Observaciones</label>
+    <textarea name="observacion" id="observaciontarea" cols="60" rows="10"></textarea>
+</div>
