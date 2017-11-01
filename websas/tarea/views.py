@@ -7,7 +7,7 @@ from django.views import View
 from rubro.models import Rubro
 from .models import TipoTarea, Tarea
 from .forms import TipoTareaForm
-from orden.models import Orden, Estado
+from orden.models import Orden
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
 # Create your views here.
@@ -33,12 +33,14 @@ from django.core.urlresolvers import reverse_lazy
 #         return super().get(request, *args, **kwargs)
 
 class TareaCreate(View):    
+    
+    # TODO: sanitizar las cadenas
     def post(self, request, *args, **kwargs):
         tipo_tarea = TipoTarea.objects.get(pk=request.POST['tipo_tarea'])
         observacion = request.POST['observacion']
+        tarea = Tarea.crear(tipo_tarea=tipo_tarea, observacion=observacion)
         orden = Orden.objects.get(pk=request.POST['estado_orden'])
-        tarea = orden.hacer("agregar_tarea", tipo_tarea, observacion)
-        print(tarea)
+        orden.hacer("agregar_tarea", tarea)
         return JsonResponse({'data':'Todo mall'})
 
 class TipoTareaCreate(CreateView):

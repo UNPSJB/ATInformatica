@@ -13,3 +13,7 @@ class Rubro(models.Model):
     @property
     def tipos_tareas_related(self):
         return self.tipos_tareas.all()
+
+    @property
+    def equipos_related(self):
+        return self.equipos.all()

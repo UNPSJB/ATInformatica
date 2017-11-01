@@ -54,11 +54,7 @@ class ReservaStock(models.Model):
         self.save()
 
     def usar_repuestos(self):
-        # print("Stock de la reserva {}, antes = {}".format(self.id, str(self.producto.stock)))
         self.producto.stock = self.producto.stock - self.cantidad
         self.producto.save()
-        # print("Stock de la reserva {}, despues = {}".format(self.id, str(self.producto.stock)))
-        # print("Estado antes {}".format(self.activa))
         self.activa = False
         self.save()
-        # print("Estado despues {}".format(self.activa))

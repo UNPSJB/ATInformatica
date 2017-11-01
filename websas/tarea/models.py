@@ -1,7 +1,7 @@
 from django.db import models
 from rubro.models import Rubro
 from usuario.models import Usuario
-from orden.models import Estado
+from orden.models import Orden
 from decimal import Decimal
 
 # Create your models here.
@@ -32,15 +32,24 @@ class Tarea(models.Model):
     tipo_tarea = models.ForeignKey(
         TipoTarea
     )
-    estado_orden = models.ForeignKey(
-        Estado, null=True, blank=True, on_delete=models.CASCADE, related_name="tareas"
+    orden = models.ForeignKey(
+        Orden, null=True, blank=True, on_delete=models.CASCADE, related_name="tareas"
     )
     observacion = models.CharField(max_length=250)
+    productos = models.ManyToManyField('producto.Producto', through='producto.ReservaStock', related_name='tareas')
+    precio = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0'))
+
+    objects = TareaManager()
 
     @classmethod
-    def crear(cls, tipo_tarea, observacion):
+    def crear(cls, tipo_tarea, orden, observacion):
         tarea = cls(tipo_tarea=tipo_tarea,
+                 orden=orden,
                  observacion=observacion)
+        tarea.save()
+        tipo_servicio = tarea.orden.tipo_servicio
+        tarifa = tarea.tipo_tarea.tarifas.get(tipo_servicio=tipo_servicio)
+        tarea.precio = tarifa.precio 
         tarea.save()
         tarea.hacer(accion=None)
         return tarea
@@ -112,30 +121,16 @@ class TareaPresupuestada(EstadoTarea):
     """ Se espera que el cliente la acepte """
     TIPO = 1
     def aceptar(self):
-        for reserva in self.tarea.reservas.filter(activa=True):
-            if not reserva.hay_stock:
-                return TareaEsperaRepuestos(tarea=self.tarea)
-        return TareaPendiente(tarea=self.tarea)
-    
-class TareaEsperaRepuestos(EstadoTarea):
-    """ No hay stock de repuestos para realizar el trabajo """
-    TIPO = 2
-    def desbloquear(self):
-        hay_respuestos = True
-        for reserva in self.tarea.reservas.filter(activa=True):
-            if not reserva.hay_stock:
-                hay_respuestos = False
-        if not hay_respuestos:
-            return self
         return TareaPendiente(tarea=self.tarea)
 
 
 class TareaPendiente(EstadoTarea):
     """ Fue aceptada la tarea y ahora hay que realizarla """
     TIPO = 3
-    def realizar(self):
-        for reserva in self.tarea.reservas.filter(activa=True):
-           reserva.usar_repuestos()
+    def finalizar(self):
+        if any(map(lambda reserva: not reserva.hay_stock, self.tarea.reservas.filter(activa=True))):
+            return
+        map(lambda reserva: reserva.usar_repuestos(), self.tarea.reservas.filter(activa=True))
         return TareaRealizada(tarea=self.tarea)
 
 class TareaRealizada(EstadoTarea):

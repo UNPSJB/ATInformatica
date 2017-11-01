@@ -64,6 +64,7 @@ class OrdenDetail(DetailView):
         pk = self.kwargs.get('pk')
         orden = Orden.objects.get(pk=pk)
         contexto['tipos_tareas'] = orden.rubro.tipos_tareas_related
+        contexto['tareas_presupuestadas'] = orden.tareas_presupuestadas
         return contexto
 class ClienteListado(ListView):
     def get(self, request, *args, **kwargs):

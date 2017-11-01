@@ -9,14 +9,10 @@
                     <input type="checkbox" id="check-all" class="flat">
                 </th>
                 <th class="column-title">Tarea </th>
-                <th class="column-title">Estado </th>
                 <th class="column-title">Tarifa </th>
-                <th class="column-title">Repuesto </th>
-                <th class="column-title">Precio Unitario </th>
-                <th class="column-title">Cantidad </th>
+                <th class="column-title">Costo repuestos </th>
                 <th class="column-title">Subtotal </th>
 
-                <th class="column-title no-link last"><span class="nobr">Action</span>
                 </th>
                 <th class="bulk-actions" colspan="7">
                     <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
@@ -25,21 +21,20 @@
             </thead>
 
             <tbody>
+                {% if tareas_presupuestadas %}
+                {% for tarea in tareas_presupuestadas %}
                 <tr class="even pointer">
                 <td class="a-center ">
                     <input type="checkbox" class="flat" name="table_records">
                 </td>
-                <td class=" ">121000040</td>
-                <td class=" ">121000040</td>
-                <td class=" ">May 23, 2014 11:47:56 PM </td>
-                <td class=" ">121000210 <i class="success fa fa-long-arrow-up"></i></td>
-                <td class=" ">John Blank L</td>
-                <td class=" ">Paid</td>
+                <td class=" ">{{ tarea.nombre }}</td>
+                <td class=" ">{{ tarea.precio }}</td>
                 <td class="a-right a-right ">$7.45</td>
                 <td class=" last"><a href="#">View</a>
                 </td>
                 </tr>
-                
+                {% endfor %}
+                {% endif %} 
             </tbody>
             </table>
             <button class="btn btn-success">Aceptar tareas</button>
@@ -48,3 +43,10 @@
 
         </div>                  
         </div>
+
+
+<!-- 
+        <td class=" ">121000040</td>
+        <td class=" ">121000040</td>
+        <td class=" ">May 23, 2014 11:47:56 PM </td>
+        <td class=" ">121000210 <i class="success fa fa-long-arrow-up"></i></td> -->
