@@ -41,6 +41,21 @@ class Tarea(models.Model):
 
     objects = TareaManager()
 
+    @property
+    def nombre(self):
+        return self.tipo_tarea.nombre
+    
+    @property
+    def descripcion(self):
+        return self.tipo_tarea.descripcion
+
+    @property
+    def rubro(self):
+        return self.tipo_tarea.rubro
+
+    def reservar_stock(self, producto, cantidad):
+        self.reservas.create(tarea=self, producto=producto, cantidad=cantidad)
+
     @classmethod
     def crear(cls, tipo_tarea, orden, observacion):
         tarea = cls(tipo_tarea=tipo_tarea,
@@ -74,18 +89,6 @@ class Tarea(models.Model):
         else:
             raise Exception("***ORDEN DE TRABAJO: no se pudo realizar la accion***")
 
-    @property
-    def nombre(self):
-        return self.tipo_tarea.nombre
-    
-    @property
-    def descripcion(self):
-        return self.tipo_tarea.descripcion
-
-    @property
-    def rubro(self):
-        return self.tipo_tarea.rubro
-
 
 class EstadoTarea(models.Model):
     """Modelo de Estado para la Tarea"""
@@ -114,30 +117,32 @@ class EstadoTarea(models.Model):
         """Devuelve un objeto estado de la Tarea."""
         return self.__class__ != EstadoTarea and self or getattr(self, self.get_tipo_display())
 
-    def cancelar(self):
-        return TareaCancelada(tarea=self.tarea)
-
 class TareaPresupuestada(EstadoTarea):
     """ Se espera que el cliente la acepte """
     TIPO = 1
     def aceptar(self):
         return TareaPendiente(tarea=self.tarea)
 
+    def cancelar(self):
+        return TareaCancelada(tarea=self.tarea)
 
 class TareaPendiente(EstadoTarea):
     """ Fue aceptada la tarea y ahora hay que realizarla """
-    TIPO = 3
+    TIPO = 2
     def finalizar(self):
         if any(map(lambda reserva: not reserva.hay_stock, self.tarea.reservas.filter(activa=True))):
             return
         map(lambda reserva: reserva.usar_repuestos(), self.tarea.reservas.filter(activa=True))
         return TareaRealizada(tarea=self.tarea)
 
+    def cancelar(self):
+        return TareaCancelada(tarea=self.tarea)
+
 class TareaRealizada(EstadoTarea):
-    TIPO = 4
+    TIPO = 3
 
 class TareaCancelada(EstadoTarea):
-    TIPO = 5
+    TIPO = 4
     """ La tarea estaba aceptada y fue cancelada """
 
 for Klass in EstadoTarea.__subclasses__():

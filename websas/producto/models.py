@@ -33,7 +33,7 @@ class ReservaStock(models.Model):
         Producto, related_name="reservas"
     )
     tarea = models.ForeignKey(
-        Tarea, related_name="reservas"
+        Tarea, on_delete=models.CASCADE, related_name="reservas"
     )
     precio_unitario = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0'))
     cantidad = models.PositiveIntegerField()
@@ -48,6 +48,10 @@ class ReservaStock(models.Model):
     @property
     def hay_stock(self):
         return self.producto.stockDisponible >= 0
+
+    @property
+    def subtotal(self):
+        return self.precio_unitario * self.cantidad
 
     def eliminar(self):
         self.activa = False

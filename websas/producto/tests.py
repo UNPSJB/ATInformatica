@@ -11,6 +11,8 @@ from persona.models import Cliente, Tecnico, Persona
 class ProductoTest(TestCase):
 
     def setUp(self):
+        # Creamos una orden de trabajo para probar comportamiento de la reserva de stock 
+        # frente a las tareas
         self.persona = Persona(
             nombre="Alguien",
             apellido="Alguien",
@@ -28,10 +30,18 @@ class ProductoTest(TestCase):
         self.rubro.save()
         self.tipo_servicio = TipoServicio(nombre="Taller", descripcion="Reparación de equipos en taller")
         self.tipo_servicio.save()
-        self.descripcion = "Ta todo completamente hecho mierda"
-        self.orden = Orden.crear(self.usuario, self.persona.como(Cliente), self.persona.como(Tecnico), self.rubro, self.tipo_servicio, self.descripcion)
+        self.descripcion = "Ta destruida la máquina"
+
+        self.orden = Orden.crear(self.usuario, 
+            self.persona.como(Cliente), 
+            self.persona.como(Tecnico), 
+            self.rubro, 
+            self.tipo_servicio, 
+            self.descripcion
+        )
         self.orden.save()
 
+        # creamos un producto, tarifa y tarea para reservar stock
         self.producto = Producto(
             nombre="SSD", 
             descripcion="Disco de estado sólido",
@@ -41,9 +51,6 @@ class ProductoTest(TestCase):
             precio=600
         )
         self.producto.save()
-
-        self.rubro = Rubro(nombre="Notebooks", descripcion="Reparación de notebooks")
-        self.rubro.save()
         self.tipo_tarea = TipoTarea(nombre="Cambio de disco", rubro=self.rubro)
         self.tipo_tarea.save()  
         self.tarifa = Tarifa(tipo_tarea=self.tipo_tarea, tipo_servicio=self.tipo_servicio, precio=300)
@@ -73,6 +80,10 @@ class ProductoTest(TestCase):
         self.producto.save()
         self.assertFalse(self.producto.precio == self.reserva.precio_unitario)
         self.assertEqual(self.reserva.precio_unitario, 600)
+
+    def test_subtotal(self):
+        subtotal = self.reserva.precio_unitario * self.reserva.cantidad
+        self.assertTrue(subtotal == self.reserva.subtotal)
 
     def test_eliminar_reserva(self):
         self.reserva.eliminar()

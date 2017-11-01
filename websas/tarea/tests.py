@@ -12,6 +12,7 @@ from tarifa.models import Tarifa
 class TareaTest(TestCase):
 
     def setUp(self):
+        # creamos una orden de trabajo para agregarle tareas
         self.persona = Persona(
             nombre="Alguien",
             apellido="Alguien",
@@ -33,6 +34,7 @@ class TareaTest(TestCase):
         self.orden = Orden.crear(self.usuario, self.persona.como(Cliente), self.persona.como(Tecnico), self.rubro, self.tipo_servicio, self.descripcion)
         self.orden.save()
 
+        # creamos un producto para reservar stock
         self.producto = Producto(
             nombre="SSD", 
             descripcion="Disco de estado sólido",
@@ -42,16 +44,20 @@ class TareaTest(TestCase):
             precio=600
         )
         self.producto.save()
-        self.rubro = Rubro(nombre="Notebooks", descripcion="Reparación de notebooks")
-        self.rubro.save()
+
+        # Creamos un tipo de tarea y una tarifa para la creación de la tarea
         self.tipo_tarea = TipoTarea(nombre="Cambio de disco", rubro=self.rubro)
         self.tipo_tarea.save()   
         self.tarifa = Tarifa(tipo_tarea=self.tipo_tarea, tipo_servicio=self.tipo_servicio, precio=300)
-        self.tarifa.save()       
+        self.tarifa.save()   
+
+
         self.tarea = Tarea.crear(
             tipo_tarea=self.tipo_tarea,
             orden = self.orden,
             observacion="Guardar el disco viejo")
         self.tarea.save()
-        self.reserva = ReservaStock(tarea=self.tarea, producto=self.producto, cantidad=12)
-        self.reserva.save()
+
+    def test_reservar_stock(self):
+        self.tarea.reservar_stock(self.producto, 12)
+        self.assertTrue(self.producto.stockReservado == 12)
