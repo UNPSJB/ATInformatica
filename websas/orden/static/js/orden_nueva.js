@@ -52,7 +52,8 @@ function crearOrden(objs, context){
         'cliente':$('input:checked[name=cliente]')[0].dataset['idcliente'],
         'tecnico':$('input:checked[name=tecnico]')[0].dataset['idtecnico'],
         'servicio':$('input:checked[name=tipo_servicio]')[0].dataset['idtiposervicio'],
-        'rubro':$('input:checked[name=rubro]')[0].dataset['idrubro']
+        'rubro':$('input:checked[name=rubro]')[0].dataset['idrubro'],
+        'equipo':$('input:checked[name=equipo]')[0].dataset['idequipo']
     }
 
     console.log(data)

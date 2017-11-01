@@ -25,7 +25,6 @@ class OrdenCreate(CreateView):
         # Llamar a super para recuperar el contexto original
         contexto = super(OrdenCreate, self).get_context_data(**kwargs)
         # Agregar lo que necesita la vista
-        # contexto['clientes'] = Cliente.objects.all()
         contexto['rubros'] = Rubro.objects.all()
         contexto['tecnicos'] = Tecnico.objects.all()
         contexto['servicios'] = TipoServicio.objects.all()
@@ -35,10 +34,12 @@ class OrdenCreate(CreateView):
         persona = Persona.objects.get(pk=request.POST.get('cliente'))
         rubro = Rubro.objects.get(pk=request.POST.get('rubro'))
         servicio = TipoServicio.objects.get(pk=request.POST.get('servicio'))
-        print(persona, rubro, servicio)
+        tecnico = Persona.objects.get(pk=request.POST.get('tecnico'))
+        equipo = Equipo.objects.get(pk=request.POST.get('equipo'))
+        print(persona, rubro, servicio,tecnico)
         
         if persona.sos(Cliente):
-            orden = Orden.crear(usuario=request.user, cliente=persona.como(Cliente), tecnico=None, rubro=rubro, tipo_servicio=servicio, descripcion="Alto bolonqui") 
+            orden = Orden.crear(usuario=request.user, cliente=persona.como(Cliente), tecnico=tecnico.como(Tecnico), rubro=rubro, tipo_servicio=servicio, descripcion="Alto bolonqui",equipo=equipo) 
 
             print(orden)
 

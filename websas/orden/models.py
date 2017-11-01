@@ -48,7 +48,7 @@ class Orden(models.Model):
 
 
     @classmethod
-    def crear(cls, usuario, cliente, tecnico, rubro, tipo_servicio, descripcion):
+    def crear(cls, usuario, cliente, tecnico, rubro, equipo,tipo_servicio, descripcion):
         """Método para crear una Orden de Trabajo
 
         Args:
@@ -65,6 +65,7 @@ class Orden(models.Model):
                  usuario=usuario,
                  tecnico=tecnico,
                  rubro=rubro,
+                 equipo=equipo,
                  tipo_servicio=tipo_servicio,
                  descripcion=descripcion)
         ot.save()
