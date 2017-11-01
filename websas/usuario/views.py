@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from .forms import UsuarioUpdateForm, RegistrarUsuarioForm
+from .forms import UsuarioUpdateForm, RegistrarUsuarioForm, UsuarioCambiarPasswordForm
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from .models import Usuario
@@ -18,7 +19,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic import FormView, TemplateView, RedirectView
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView
 
 class RegistrarUsuario(TemplateView):
     model = Usuario
@@ -52,6 +53,7 @@ class LoginView(FormView):
     def form_valid(self, form):
         user = Usuario.objects.get(username=form.get_user())
         if user.primer_login and not user.is_superuser:
+            messages.warning(self.request, "Se recomienda cambiar la contraseña predeterminada.")
             self.success_url = reverse_lazy('usuario:password_change')
         login(self.request, form.get_user())
         return super(LoginView, self).form_valid(form)
@@ -65,5 +67,13 @@ class LogoutView(RedirectView):
         return super(LogoutView, self).get(request, *args, **kwargs)
 
 class CambiarContraseñaView(PasswordChangeView):
-    success_url = reverse_lazy('index:index')
+    form_class = UsuarioCambiarPasswordForm
+    success_url = reverse_lazy('usuario:password_change_done')
     template_name = 'password_change_form.html'
+
+
+class CambiarContraseñaOKView(PasswordChangeDoneView):
+    def get(request, self):
+        volver_url = reverse_lazy('index:index')
+        messages.success(self, 'La contaseña se actualizó correctamente.', extra_tags='alert-success alert-dismissable')
+        return HttpResponseRedirect(volver_url)

@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.conf.urls import url
-from .views import RegistrarUsuario, LoginView, LogoutView, CambiarContraseñaView
+from .views import RegistrarUsuario, LoginView, LogoutView, CambiarContraseñaView, CambiarContraseñaOKView
 from django.contrib.auth.views import (
     PasswordChangeView,
     PasswordChangeDoneView,
@@ -13,6 +13,6 @@ urlpatterns = [
         CambiarContraseñaView.as_view(),
         name='password_change'),
     url(r'^password_change/done/$',
-        PasswordChangeDoneView.as_view(template_name='password_change_done.html'),
+        CambiarContraseñaOKView.as_view(),
         name='password_change_done'),
 ]
