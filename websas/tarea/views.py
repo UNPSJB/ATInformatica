@@ -38,9 +38,8 @@ class TareaCreate(View):
     def post(self, request, *args, **kwargs):
         tipo_tarea = TipoTarea.objects.get(pk=request.POST['tipo_tarea'])
         observacion = request.POST['observacion']
-        tarea = Tarea.crear(tipo_tarea=tipo_tarea, observacion=observacion)
         orden = Orden.objects.get(pk=request.POST['estado_orden'])
-        orden.hacer("agregar_tarea", tarea)
+        orden.agregar_tarea(tipo_tarea, observacion)
         return JsonResponse({'data':'Todo mall'})
 
 class TipoTareaCreate(CreateView):

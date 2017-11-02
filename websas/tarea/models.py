@@ -1,7 +1,7 @@
 from django.db import models
 from rubro.models import Rubro
 from usuario.models import Usuario
-from orden.models import Orden
+# from orden.models import Orden
 from decimal import Decimal
 
 # Create your models here.
@@ -33,13 +33,15 @@ class Tarea(models.Model):
         TipoTarea
     )
     orden = models.ForeignKey(
-        Orden, null=True, blank=True, on_delete=models.CASCADE, related_name="tareas"
+        'orden.Orden', on_delete=models.CASCADE, related_name="tareas"
     )
     observacion = models.CharField(max_length=250)
     productos = models.ManyToManyField('producto.Producto', through='producto.ReservaStock', related_name='tareas')
     precio = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0'))
-
     objects = TareaManager()
+
+    class Meta:
+        unique_together = (("tipo_tarea", "orden"),)
 
     @property
     def nombre(self):
@@ -53,8 +55,8 @@ class Tarea(models.Model):
     def rubro(self):
         return self.tipo_tarea.rubro
 
-    def reservar_stock(self, producto, cantidad):
-        self.reservas.create(tarea=self, producto=producto, cantidad=cantidad)
+    def estas_presupuestada(self):
+        return isinstance(self.estado, TareaPresupuestada)
 
     @classmethod
     def crear(cls, tipo_tarea, orden, observacion):
@@ -64,6 +66,9 @@ class Tarea(models.Model):
         tarea.save()
         tipo_servicio = tarea.orden.tipo_servicio
         tarifa = tarea.tipo_tarea.tarifas.get(tipo_servicio=tipo_servicio)
+        if not tarifa:
+            tarea.delete()
+            raise Exception("El tipo de tarea {} no se encuentra tarifada para el tipo de servicio {}".format(tipo_tarea, tipo_servicio))
         tarea.precio = tarifa.precio 
         tarea.save()
         tarea.hacer(accion=None)
@@ -117,21 +122,32 @@ class EstadoTarea(models.Model):
         """Devuelve un objeto estado de la Tarea."""
         return self.__class__ != EstadoTarea and self or getattr(self, self.get_tipo_display())
 
+    def cancelar(self):
+        [self.cancelar_reserva(reserva) for reserva in self.tarea.reservas.all()]
+        return TareaCancelada(tarea=self.tarea)
+
+    def reservar_stock(self, producto, cantidad):
+        self.tarea.reservas.create(tarea=self, producto=producto, cantidad=cantidad)
+
+    def cancelar_reserva(self, producto):
+        reserva = self.tarea.reservas.get(producto=producto.id)
+        if reserva:
+            reserva.eliminar()
+            return self
+        raise Exception("***TAREA: no existe la reserva indicada***")
+
 class TareaPresupuestada(EstadoTarea):
     """ Se espera que el cliente la acepte """
     TIPO = 1
     def aceptar(self):
         return TareaPendiente(tarea=self.tarea)
 
-    def cancelar(self):
-        return TareaCancelada(tarea=self.tarea)
-
 class TareaPendiente(EstadoTarea):
     """ Fue aceptada la tarea y ahora hay que realizarla """
     TIPO = 2
     def finalizar(self):
         if any(map(lambda reserva: not reserva.hay_stock, self.tarea.reservas.filter(activa=True))):
-            return
+            raise Exception("No hay stock suficiente para completar la tarea")
         map(lambda reserva: reserva.usar_repuestos(), self.tarea.reservas.filter(activa=True))
         return TareaRealizada(tarea=self.tarea)
 
@@ -141,9 +157,27 @@ class TareaPendiente(EstadoTarea):
 class TareaRealizada(EstadoTarea):
     TIPO = 3
 
+    def cancelar(self):
+        return self
+
+    def cancelar_reserva(self):
+        return self
+
+    def reservar_stock(sell):
+        return self
+
 class TareaCancelada(EstadoTarea):
     TIPO = 4
     """ La tarea estaba aceptada y fue cancelada """
+
+    def cancelar(self):
+        return self
+
+    def cancelar_reserva(self):
+        return self
+
+    def reservar_stock(sell):
+        return self
 
 for Klass in EstadoTarea.__subclasses__():
     EstadoTarea.register(Klass)

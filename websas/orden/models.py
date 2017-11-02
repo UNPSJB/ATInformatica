@@ -4,6 +4,7 @@ from rubro.models import Rubro
 from servicio.models import TipoServicio
 from usuario.models import Usuario
 from decimal import Decimal
+from tarea.models import Tarea
 
 
 class Orden(models.Model):
@@ -41,7 +42,7 @@ class Orden(models.Model):
     def tareas_presupuestadas(self):
         tareas_presupuestadas = []
         for tarea in self.tareas.all():
-            if tarea.presupuestada:
+            if tarea.estas_presupuestada():
                 tareas_presupuestadas.append(tarea)
         return tareas_presupuestadas
 
@@ -71,7 +72,7 @@ class Orden(models.Model):
         ot.save()
         return ot
     
-    def agregar_tarea(self, tarea):
+    def agregar_tarea(self, tipo_tarea, observacion):
         """Agrega una tarea al estado de una OT"
         
         Args: 
@@ -79,9 +80,9 @@ class Orden(models.Model):
         Raise:
             Exception si el rubro de la tarea es distinto al rubro de la Orden de Trabajo 
         """
-        if(self.rubro != tarea.tipo_tarea.rubro):
+        if(self.rubro != tipo_tarea.rubro):
             raise Exception("***TAREAS EN ESTADO: no se pudo realizar la accion***")
-        self.tareas.add(tarea)   
+        Tarea.crear(tipo_tarea=tipo_tarea, orden=self, observacion=observacion)  
 
     
 

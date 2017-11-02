@@ -40,10 +40,12 @@ class Producto(models.Model):
     
         Returns: 
             int """
-        return self.reservas.filter(activa=True
-            ).values_list('producto'
-            ).aggregate(Sum('cantidad')
-            ).get('cantidad__sum')
+        stock_reservado = self.reservas.filter(activa=True).values_list('producto').aggregate(
+            Sum('cantidad')).get('cantidad__sum')
+
+        if stock_reservado:
+            return stock_reservado
+        return 0
 
     @property
     def stock_disponible(self):
@@ -119,5 +121,4 @@ class ReservaStock(models.Model):
         """ Método para consumir los repuestos reservados """
         self.producto.stock = self.producto.stock - self.cantidad
         self.producto.save()
-        self.activa = False
-        self.save()
+        self.eliminar()
