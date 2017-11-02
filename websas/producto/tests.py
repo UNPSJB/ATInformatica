@@ -32,12 +32,14 @@ class ProductoTest(TestCase):
         self.tipo_servicio.save()
         self.descripcion = "Ta destruida la máquina"
 
-        self.orden = Orden.crear(self.usuario, 
-            self.persona.como(Cliente), 
-            self.persona.como(Tecnico), 
-            self.rubro, 
-            self.tipo_servicio, 
-            self.descripcion
+        self.orden = Orden.crear(
+            cliente=self.persona.como(Cliente), 
+            usuario=self.usuario, 
+            tecnico=self.persona.como(Tecnico), 
+            rubro=self.rubro,
+            equipo=None, 
+            tipo_servicio=self.tipo_servicio, 
+            descripcion=self.descripcion
         )
         self.orden.save()
 
@@ -45,7 +47,7 @@ class ProductoTest(TestCase):
         self.producto = Producto(
             nombre="SSD", 
             descripcion="Disco de estado sólido",
-            marca="Kingtong",
+            marca="kingstong",
             stock_minimo=10,
             stock=20,
             precio=600
@@ -64,15 +66,44 @@ class ProductoTest(TestCase):
         # Reserva de 12 unidades del producto el stock mínimo del producto es 10
         self.reserva = ReservaStock(tarea=self.tarea, producto=self.producto, cantidad=12)
         self.reserva.save()
-    
+
+    def test_save(self):
+        # testeamos que se hayan formateado las cadenas nombre y marca a formamo title
+        self.assertTrue(str.istitle(self.producto.nombre))
+        self.assertTrue(str.istitle(self.producto.marca))
+
+        # intentamos crear nuevamente el producto comprobando que lanza excepción
+        try:
+            producto = Producto(
+                nombre="ssd", 
+                descripcion="Disco de estado sólido",
+                marca="kingstong",
+                stock_minimo=10,
+                stock=20,
+                precio=600
+            )
+            producto.save()
+        except Exception as e:
+            print(str(e))
+        
+        self.assertFalse(producto.id)
+
     def test_stock_disponible(self):
-        self.assertEqual(self.producto.stockDisponible, 8)
+        # En línea 52 se fijó el stock en 20. En linea 67 se creó una reserva de 12
+        self.assertEqual(self.producto.stock_disponible, 8)
 
     def test_stock_reservado(self):
-        self.assertEqual(self.producto.stockReservado, 12)
+        self.assertEqual(self.producto.stock_reservado, 12)
 
     def test_stock_bajo(self):
+        # En línea 51 se fijó el stock mínimo requerido en 10. El stock es bajo si
+        # stock disponible (8) < sotck mínimo (10)
         self.assertTrue(self.producto.stock_es_bajo)
+
+class ReservaTest(ProductoTest):
+
+    def setUp(self):
+        super().setUp()
 
     def test_precio(self):
         # testeamos que al cambiar el precio del producto no cambie en la reserva
@@ -82,10 +113,24 @@ class ProductoTest(TestCase):
         self.assertEqual(self.reserva.precio_unitario, 600)
 
     def test_subtotal(self):
+        # Testeamos la corrección de la @property subtotal
         subtotal = self.reserva.precio_unitario * self.reserva.cantidad
         self.assertTrue(subtotal == self.reserva.subtotal)
 
     def test_eliminar_reserva(self):
+        # Testeamos el método eliminar
         self.reserva.eliminar()
         self.assertFalse(self.reserva.activa)      
 
+    def test_usar_repuestos(self):
+        self.assertTrue(self.producto.stock == 20)
+        self.reserva.usar_repuestos()
+        self.assertTrue(self.producto.stock == 8)
+
+    def test_hay_stock(self):
+        # Seteamos el stock del producto a 0 para comprobar que el stock reservado se mantiene y 
+        # que la @property hay_stock da falso
+        self.assertTrue(self.reserva.hay_stock)
+        self.producto.stock = 0
+        self.assertEqual(self.producto.stock_reservado, self.reserva.cantidad)
+        self.assertFalse(self.reserva.hay_stock)
