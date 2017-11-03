@@ -1,11 +1,17 @@
 from django.db import models
 from rubro.models import Rubro
 from usuario.models import Usuario
-# from orden.models import Orden
 from decimal import Decimal
 
 # Create your models here.
 class TipoTarea(models.Model):
+    """ Modelo para la gestión de tipos de tarea
+
+    Attributes:
+        nombre(str): nombre del tipo de tarea
+        descripcion(str, opcional): descripción del tipo de tarea
+        rubro(:obj: Rubro): rubro al que pertenece el tipo de tarea """
+
     nombre = models.CharField(max_length=30)
     descripcion = models.CharField(max_length=100, null=True, blank=True)
     rubro = models.ForeignKey(
@@ -29,13 +35,22 @@ class TareaQuerySet(models.QuerySet):
 TareaManager = TareaBaseManager.from_queryset(TareaQuerySet)
 
 class Tarea(models.Model):
+    """ Modelo para la gestión de las tareas de las Órdenes de Trabajo
+
+    Attributes:
+        tipo_tarea(:obj:TipoTarea): tipo de tarea de la tarea a gestionar
+        orden(:obj:Orden): Órden de Trabajo para la cual se creó la tarea
+        observacion(str, opcional): observación de la tarea
+        productos(:[obj..]:Producto, opcional): colección de productos (repuestos) necesarios para la tarea
+        precio(:obj: Decimal): precio de la tarea """
+
     tipo_tarea = models.ForeignKey(
-        TipoTarea
+        TipoTarea, related_name="tareas"
     )
     orden = models.ForeignKey(
         'orden.Orden', on_delete=models.CASCADE, related_name="tareas"
     )
-    observacion = models.CharField(max_length=250)
+    observacion = models.CharField(max_length=250, null=True, blank=True)
     productos = models.ManyToManyField('producto.Producto', through='producto.ReservaStock', related_name='tareas')
     precio = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0'))
     objects = TareaManager()
@@ -45,30 +60,76 @@ class Tarea(models.Model):
 
     @property
     def nombre(self):
+        """ Propiedad de sólo lectura que devuelve el nombre del tipo de tarea asociado a la tarea """
         return self.tipo_tarea.nombre
     
     @property
     def descripcion(self):
+        """ Propiedad de sólo lectura que devuelve la descripción del tipo de tarea asociado a la tarea """
         return self.tipo_tarea.descripcion
 
     @property
     def rubro(self):
+        """ Propiedad de sólo lectura que devuelve el rubro del tipo de tarea asociado a la tarea """
         return self.tipo_tarea.rubro
 
     def estas_presupuestada(self):
+        """ Método que consulta si la tarea está en estado TareaPresupuestada 
+        
+        Returns:
+            True si la el estado de la tarea es TareaPresupuestada, False si no """
         return isinstance(self.estado, TareaPresupuestada)
+
+    def estas_pendiente(self):
+        """ Método que consulta si la tarea está en estado TareaPendiente 
+        
+        Returns:
+            True si la el estado de la tarea es TareaPendiente, False si no """
+        return isinstance(self.estado, TareaPendiente)
+
+    def estas_realizada(self):
+        """ Método que consulta si la tarea está en estado TareaRealizada 
+        
+        Returns:
+            True si la el estado de la tarea es TareaRealizada, False si no """
+        return isinstance(self.estado, TareaRealizada)
+
+    def estas_cancelada(self):
+        """ Método que consulta si la tarea está en estado TareaCancelada 
+        
+        Returns:
+            True si la el estado de la tarea es TareaCancelada, False si no """
+        return isinstance(self.estado, TareaCancelada)
 
     @classmethod
     def crear(cls, tipo_tarea, orden, observacion):
-        tarea = cls(tipo_tarea=tipo_tarea,
-                 orden=orden,
-                 observacion=observacion)
+
+        """ Método para la creación de nuevas tareas 
+        
+        Controla la existencia de una Tarifa para el TipoTarea y el TipoServicio,
+        de lo contrario lanza excepción.
+        Además setea el precio de la tarea en función del precio de la tarifa al 
+        momento de la creación.
+
+        Args:
+            tipo_tarea(:obj:TipoTarea): tipo de tarea de la tarea a gestionar
+            orden(:obj:Orden): Órden de Trabajo para la cual se creó la tarea
+            observacion(str, opcional): observación de la tarea
+        
+        Returns:
+            obj:Tarea 
+
+        Raise:
+            Exception (si no existe Tarifa para el tipo de tarea y el tipo de servicio) """
+
+        tarea = cls(tipo_tarea=tipo_tarea, orden=orden, observacion=observacion)
         tarea.save()
         tipo_servicio = tarea.orden.tipo_servicio
-        tarifa = tarea.tipo_tarea.tarifas.get(tipo_servicio=tipo_servicio)
-        if not tarifa:
+        try:
+            tarifa = tarea.tipo_tarea.tarifas.get(tipo_servicio=tipo_servicio)
+        except Exception as e:
             tarea.delete()
-            raise Exception("El tipo de tarea {} no se encuentra tarifada para el tipo de servicio {}".format(tipo_tarea, tipo_servicio))
+            raise Exception("El tipo de tarea: {}, no se encuentra tarifada para el tipo de servicio {}".format(tipo_tarea, tipo_servicio))
         tarea.precio = tarifa.precio 
         tarea.save()
         tarea.hacer(accion=None)
@@ -76,13 +137,34 @@ class Tarea(models.Model):
 
     @property
     def estado(self):
+        """ Método que retorna el estado actual de la tarea 
+        
+        Returns:
+            TareaEstado """
         if self.estados.exists():
             return self.estados.latest().related()
     
     def estados_related(self):
+        """ Método que retorna la lista de estados por los que pasó la tarea (incluyendo el actual) 
+        
+        Returns:
+            [<TareaEstado>..] """
         return [estado.related() for estado in self.estados.all()]
 
     def hacer(self, accion, *args, **kwargs):
+        """ Método que permite invocar a un método de un estado desde el objeto tarea
+
+        Args:
+            accion(str): nombre del método a invocar
+            *args y **kwargs: los argumentos que se le pasarán al método
+
+        Returns:
+            TareaEstado, si el método es de transición crea la instancia correspondiente, 
+            si no, devuelve el estado actual 
+
+        Raise:
+            Exception si se intenta invocar a un método que no existe en el estado actual  
+        """
         estado_actual = self.estado
         if estado_actual is not None and hasattr(estado_actual, accion):
             metodo = getattr(estado_actual, accion)
@@ -150,9 +232,6 @@ class TareaPendiente(EstadoTarea):
             raise Exception("No hay stock suficiente para completar la tarea")
         map(lambda reserva: reserva.usar_repuestos(), self.tarea.reservas.filter(activa=True))
         return TareaRealizada(tarea=self.tarea)
-
-    def cancelar(self):
-        return TareaCancelada(tarea=self.tarea)
 
 class TareaRealizada(EstadoTarea):
     TIPO = 3

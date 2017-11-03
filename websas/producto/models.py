@@ -40,8 +40,10 @@ class Producto(models.Model):
     
         Returns: 
             int """
-        stock_reservado = self.reservas.filter(activa=True).values_list('producto').aggregate(
-            Sum('cantidad')).get('cantidad__sum')
+        stock_reservado = self.reservas.filter(activa=True
+                                ).values_list('producto'
+                                ).aggregate(Sum('cantidad')
+                                ).get('cantidad__sum')
 
         if stock_reservado:
             return stock_reservado

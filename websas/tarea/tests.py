@@ -51,20 +51,63 @@ class TareaTest(TestCase):
             stock=20,
             precio=600
         )
-        self.producto.save()
+        self.producto.save()  
+
+    def test_crear(self):
 
         # Creamos un tipo de tarea y una tarifa para la creación de la tarea
         self.tipo_tarea = TipoTarea(nombre="Cambio de disco", rubro=self.rubro)
         self.tipo_tarea.save()   
         self.tarifa = Tarifa(tipo_tarea=self.tipo_tarea, tipo_servicio=self.tipo_servicio, precio=300)
-        self.tarifa.save()   
+        self.tarifa.save() 
 
         # creamos la tarea
         self.tarea = Tarea.crear(
             tipo_tarea=self.tipo_tarea,
             orden = self.orden,
             observacion="Guardar el disco viejo")
-        self.tarea.save()
+
+        # Testeamos que el precio de la tarea sea el precio de la tarifa
+        self.assertEqual(self.tarifa.precio, self.tarea.precio)
+    
+    def test_crear_sin_tarifa(self):
+        # Creamos un tipo de tarea sin tarifa para la creación de la tarea
+        self.tipo_tarea = TipoTarea(nombre="crear_sin_tarifa", rubro=self.rubro)
+        self.tipo_tarea.save()   
+
+        # Verificamos que el tipo de tarea creado no tiene tareas asociadas
+        self.assertEqual(self.tipo_tarea.tareas.all().count(), 0)
+        try:
+            # creamos la tarea
+            self.tarea = Tarea.crear(
+                tipo_tarea=self.tipo_tarea,
+                orden = self.orden,
+                observacion="Guardar el disco viejo")
+        except Exception as e:
+            #print(str(e))
+            pass
+
+        # Testeamos que el tipo de tarea sigue sin tareas asociadas, con lo cual la tarea no se ha creado
+        self.assertEqual(self.tipo_tarea.tareas.all().count(), 0)
+
+
+class TareaTransicionesTest(TareaTest):
+
+    def setUp(self):
+        super().setUp()
+
+        # Creamos un tipo de tarea y una tarifa para la creación de la tarea
+        self.tipo_tarea = TipoTarea(nombre="Cambio de disco", rubro=self.rubro)
+        self.tipo_tarea.save()   
+        self.tarifa = Tarifa(tipo_tarea=self.tipo_tarea, tipo_servicio=self.tipo_servicio, precio=300)
+        self.tarifa.save() 
+
+        # creamos la tarea
+        self.tarea = Tarea.crear(
+            tipo_tarea=self.tipo_tarea,
+            orden = self.orden,
+            observacion="Guardar el disco viejo")
+        self.tarea.save() 
 
     def test_estado_inicial(self):
         self.assertTrue(isinstance(self.tarea.estado, TareaPresupuestada))
@@ -120,19 +163,20 @@ class TareaTest(TestCase):
         try:
             self.tarea.hacer("finalizar")
         except Exception as e:
-            print(str(e))
-        
+            #print(str(e))
+            pass
+            
         self.assertTrue(isinstance(self.tarea.estado, TareaPendiente))
 
         self.producto.stock = 20
         self.producto.save()
-
-
+        
         try:
             self.tarea.hacer("finalizar")
         except Exception as e:
-            print(str(e))
-        
+            #print(str(e))
+            pass
+
         self.assertTrue(isinstance(self.tarea.estado, TareaRealizada))
         
         # TODO: consultar por que carajo no cambia el stock.

@@ -84,8 +84,8 @@ class ProductoTest(TestCase):
             )
             producto.save()
         except Exception as e:
-            print(str(e))
-        
+            #print(str(e))
+            pass
         self.assertFalse(producto.id)
 
     def test_stock_disponible(self):
