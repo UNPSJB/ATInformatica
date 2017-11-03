@@ -13,30 +13,18 @@ class Orden(models.Model):
     Nota: La Orden de Trabajo es la entidad principal del sistema
     """
 
-    # TODO: estoy poniendo todo null true para probar
     cliente = models.ForeignKey(Cliente, null=True,related_name="ordenes")
     rubro = models.ForeignKey(Rubro, related_name="ordenes")
     equipo = models.ForeignKey("Equipo", null=True, blank=True, related_name="ordenes")
     tipo_servicio = models.ForeignKey(TipoServicio, null=True, blank=True, related_name="ordenes")
     usuario = models.ForeignKey(Usuario, null=True, blank=True, related_name="ordenes")
     tecnico = models.ForeignKey(Tecnico, null=True, blank=True, related_name="ordenes")
-    descripcion = models.CharField(max_length=500)
+    descripcion = models.CharField(max_length=500, null=True, blank=True)
     cerrada = models.BooleanField(default=False)
     cancelada = models.BooleanField(default=False)
 
     def __str__(self):
         return "{} {}".format(self.cliente, self.descripcion)
-
-
-
-    @property
-    def detalles(self):
-        """Propiedad que devuelve los Detalles de Orden asociados a la Orden de Trabajo
-
-        Nota: un Detalle de Orden, contiene la Tarea que se realizó y el valor (precio) de la 
-        Tarifa de la Tarea en el momento en que se creó el Detalle
-        """
-        return self.estado.detalles
 
     @property
     def tareas_presupuestadas(self):
@@ -46,7 +34,29 @@ class Orden(models.Model):
                 tareas_presupuestadas.append(tarea)
         return tareas_presupuestadas
 
+    @property
+    def tareas_pendientes(self):
+        tareas_pendientes = []
+        for tarea in self.tareas.all():
+            if tarea.estas_pendiente():
+                tareas_pendientes.append(tarea)
+        return tareas_pendientes
 
+    @property
+    def tareas_realizadas(self):
+        tareas_realizadas = []
+        for tarea in self.tareas.all():
+            if tarea.estas_realizada():
+                tareas_realizadas.append(tarea)
+        return tareas_realizadas
+
+    @property
+    def tareas_canceladas(self):
+        tareas_canceladas = []
+        for tarea in self.tareas.all():
+            if tarea.estas_cancelada():
+                tareas_canceladas.append(tarea)
+        return tareas_canceladas
 
     @classmethod
     def crear(cls, usuario, cliente, tecnico, rubro, equipo,tipo_servicio, descripcion):
@@ -78,11 +88,29 @@ class Orden(models.Model):
         Args: 
             tarea (Tarea): la tarea a agregar a la Orden de Trabajo
         Raise:
-            Exception si el rubro de la tarea es distinto al rubro de la Orden de Trabajo 
-        """
+            Exception si el rubro de la tarea es distinto al rubro de la Orden de Trabajo """
+            
         if(self.rubro != tipo_tarea.rubro):
             raise Exception("***TAREAS EN ESTADO: no se pudo realizar la accion***")
-        Tarea.crear(tipo_tarea=tipo_tarea, orden=self, observacion=observacion)  
+        Tarea.crear(tipo_tarea=tipo_tarea, orden=self, observacion=observacion)
+
+    def aceptar_tareas(self, tareas):
+        if type(tareas) != list:
+            tareas = [tareas]
+        
+        [tarea.hacer("aceptar") for tarea in tareas]
+    
+    def finalizar_tareas(self, tareas):
+        if type(tareas) != list:
+            tareas = [tareas]
+        
+        [tarea.hacer("finalizar") for tarea in tareas]
+
+    def cancelar_tareas(self, tareas):
+        if type(tareas) != list:
+            tareas = [tareas]
+        
+        [tarea.hacer("cancelar") for tarea in tareas]  
 
     
 
