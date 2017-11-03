@@ -121,6 +121,6 @@ class ReservaStock(models.Model):
 
     def usar_repuestos(self):
         """ Método para consumir los repuestos reservados """
-        self.producto.stock = self.producto.stock - self.cantidad
+        self.producto.stock -= self.cantidad
         self.producto.save()
         self.eliminar()

@@ -54,7 +54,6 @@ class TareaTest(TestCase):
         self.producto.save()  
 
     def test_crear(self):
-
         # Creamos un tipo de tarea y una tarifa para la creación de la tarea
         self.tipo_tarea = TipoTarea(nombre="Cambio de disco", rubro=self.rubro)
         self.tipo_tarea.save()   
@@ -84,14 +83,42 @@ class TareaTest(TestCase):
                 orden = self.orden,
                 observacion="Guardar el disco viejo")
         except Exception as e:
-            #print(str(e))
-            pass
+            self.assertTrue(e)
 
         # Testeamos que el tipo de tarea sigue sin tareas asociadas, con lo cual la tarea no se ha creado
         self.assertEqual(self.tipo_tarea.tareas.all().count(), 0)
 
+    def test_sos_estado_nombreEstado(self):
+        # Test para los métodos que preguntan si una tarea está en un determinado estado
 
-class TareaTransicionesTest(TareaTest):
+        # Creamos un tipo de tarea y una tarifa para la creación de la tarea
+        self.tipo_tarea = TipoTarea(nombre="Cambio de disco", rubro=self.rubro)
+        self.tipo_tarea.save()   
+        self.tarifa = Tarifa(tipo_tarea=self.tipo_tarea, tipo_servicio=self.tipo_servicio, precio=300)
+        self.tarifa.save() 
+
+        # creamos la tarea
+        self.tarea = Tarea.crear(
+            tipo_tarea=self.tipo_tarea,
+            orden = self.orden,
+            observacion="Guardar el disco viejo")
+        
+        # Se crean las inscancias de cada estado asignandosele la tarea. De este modo se hacen las pruebas 
+        # sin poner de por medio los métodos que hacen transicionar la tarea (éstos últimos se testean mas adelante)
+
+        tarea_presupuestada = TareaPresupuestada(self.tarea)
+        self.assertTrue(self.tarea.estas_presupuestada)
+
+        tarea_pendiente = TareaPendiente(self.tarea)
+        self.assertTrue(self.tarea.estas_pendiente)
+
+        tarea_cancelada = TareaCancelada(self.tarea)
+        self.assertTrue(self.tarea.estas_cancelada)
+
+        tarea_realizada = TareaRealizada(self.tarea)
+        self.assertTrue(self.tarea.estas_realizada)
+
+class TareaTransicionesSinStockTest(TareaTest):
 
     def setUp(self):
         super().setUp()
@@ -110,33 +137,29 @@ class TareaTransicionesTest(TareaTest):
         self.tarea.save() 
 
     def test_estado_inicial(self):
+        # Testeamos que el estado inicial de la tarea sea TareaPresupuestada
         self.assertTrue(isinstance(self.tarea.estado, TareaPresupuestada))
 
-    def test_reservar_stock(self):
-        self.tarea.hacer("reservar_stock", self.producto, 12)
-        self.assertTrue(self.producto.stock_reservado == 12)
-    
-    def test_cancelar_reserva(self):
-        # Creamos una reserva para luego probar el método cancelar
-        self.tarea.hacer("reservar_stock", self.producto, 12)
-        self.assertTrue(self.producto.stock_reservado == 12)
-
-        self.tarea.hacer("cancelar_reserva", self.producto)
-        self.assertEqual(self.producto.stock_reservado, 0)
-
-
-
     def test_aceptar(self):
+        # Testeamos el caso de éxito del método aceṕtar
         self.tarea.hacer("aceptar")
         self.assertTrue(isinstance(self.tarea.estado, TareaPendiente))
 
-    def test_finalizar(self):
+        # Intentamos probar aceptar en el estado TareaPendiente para probar que falla y se mantiene en el mismo estado
+        try:
+            self.tarea.hacer("aceptar")
+        except Exception as e:
+            self.assertTrue(e)
 
+        self.assertTrue(isinstance(self.tarea.estado, TareaPendiente))
+    
+    def test_finalizar(self):
         # Intentamos finalizar sin haber aceptado
         try:
             self.tarea.hacer("finalizar")
         except Exception as e:
-            pass
+            self.assertTrue(e)
+
         self.assertFalse(isinstance(self.tarea.estado, TareaRealizada))
         self.assertTrue(isinstance(self.tarea.estado, TareaPresupuestada))
 
@@ -148,11 +171,50 @@ class TareaTransicionesTest(TareaTest):
         self.tarea.hacer("finalizar")
         self.assertTrue(isinstance(self.tarea.estado, TareaRealizada))
 
-    def test_finalizar_sin_stock(self):
+    def test_cancelar(self):
+        # Testeamos que el método cancelar nos devuelva una tarea en estado Cancelada
+        self.tarea.hacer("cancelar")
+        self.assertTrue(isinstance(self.tarea.estado, TareaCancelada))
 
+class TareaConStockTest(TareaTest):
+
+    def setUp(self):
+        super().setUp()
+        # Creamos un tipo de tarea y una tarifa para la creación de la tarea
+        self.tipo_tarea = TipoTarea(nombre="Cambio de disco", rubro=self.rubro)
+        self.tipo_tarea.save()   
+        self.tarifa = Tarifa(tipo_tarea=self.tipo_tarea, tipo_servicio=self.tipo_servicio, precio=300)
+        self.tarifa.save() 
+
+        # creamos la tarea
+        self.tarea = Tarea.crear(
+            tipo_tarea=self.tipo_tarea,
+            orden = self.orden,
+            observacion="Guardar el disco viejo")
+        self.tarea.save() 
+
+    def test_reservar_stock(self): 
+        # Creamos una reserva a traves del método reservar_stock y verificamos la cantidad de stock reservado
+        self.assertTrue(self.producto.stock_reservado == 0)
+        self.tarea.hacer("reservar_stock", self.producto, 12)
+        self.assertTrue(self.producto.stock_reservado == 12)
+    
+    def test_cancelar_reserva(self):
+        # Creamos una reserva para luego probar el método cancelar
+        self.tarea.hacer("reservar_stock", self.producto, 12)
+        self.assertTrue(self.producto.stock_reservado == 12)
+
+        self.tarea.hacer("cancelar_reserva", self.producto)
+        self.assertEqual(self.producto.stock_reservado, 0)
+
+    def test_finalizar_sin_stock(self):
+        # Probamos que el método finalizar falle si no hay stock suficiente para realizarla
+
+        # Seteamos el stock del producto en 0
         self.producto.stock = 0
         self.producto.save()
 
+        # Reservamos unidades de stock
         self.tarea.hacer("reservar_stock", self.producto, 12)
         self.assertTrue(self.producto.stock_reservado == 12)
         
@@ -160,32 +222,35 @@ class TareaTransicionesTest(TareaTest):
         self.tarea.hacer("aceptar")
         self.assertTrue(isinstance(self.tarea.estado, TareaPendiente))
 
+        # Intentamos finalizar la tarea
         try:
             self.tarea.hacer("finalizar")
         except Exception as e:
-            #print(str(e))
-            pass
-            
+            self.assertTrue(e)
+        
+        # Comprobamos que siga en estado pendiente 
         self.assertTrue(isinstance(self.tarea.estado, TareaPendiente))
 
+        # Agregamos stock al producto
         self.producto.stock = 20
         self.producto.save()
         
+        # Intentamos nuevamente finalizar
         try:
             self.tarea.hacer("finalizar")
         except Exception as e:
-            #print(str(e))
-            pass
+            self.assertTrue(e)
 
+        # Comprobamos que ahora el estado es TareaRealizada
         self.assertTrue(isinstance(self.tarea.estado, TareaRealizada))
         
         # TODO: consultar por que carajo no cambia el stock.
         # self.assertEqual(self.producto.stock, 8)
 
 
-    def test_cancelar(self):
+    def test_cancelar_con_stock(self):
         # Testeamos que el método cancelar nos devuelva una tarea en estado Cancelada
-        # además si había stock reservado debería devolverlo
+        # además si había stock reservado debería "des-reservarse"
 
         # Creamos una reserva para probar
         self.tarea.hacer("reservar_stock", self.producto, 12)
