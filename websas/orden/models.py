@@ -89,33 +89,43 @@ class Orden(models.Model):
             tarea (Tarea): la tarea a agregar a la Orden de Trabajo
         Raise:
             Exception si el rubro de la tarea es distinto al rubro de la Orden de Trabajo """
-            
+    
         if(self.rubro != tipo_tarea.rubro):
             raise Exception("***TAREAS EN ESTADO: no se pudo realizar la accion***")
         Tarea.crear(tipo_tarea=tipo_tarea, orden=self, observacion=observacion)
 
     def aceptar_tareas(self, tareas):
-        if type(tareas) != list:
-            tareas = [tareas]
-        
-        [tarea.hacer("aceptar") for tarea in tareas]
+        if not self.cerrada and not self.cancelada:
+            if type(tareas) != list:
+                tareas = [tareas]
+            
+            [tarea.hacer("aceptar") for tarea in tareas]
     
     def finalizar_tareas(self, tareas):
-        if type(tareas) != list:
-            tareas = [tareas]
+        if not self.cerrada and not self.cancelada:
+            if type(tareas) != list:
+                tareas = [tareas]
         
         [tarea.hacer("finalizar") for tarea in tareas]
+        
 
     def cancelar_tareas(self, tareas):
-        if type(tareas) != list:
-            tareas = [tareas]
+        if not self.cerrada and not self.cancelada:
+            if type(tareas) != list:
+                tareas = [tareas]
         
         [tarea.hacer("cancelar") for tarea in tareas]  
 
-    
+        if not self.tareas_pendientes and not self.tareas_presupuestadas and not self.tareas_realizadas:
+            self.cancelar()
 
+    def cancelar(self):
+        self.cancelada = True
+        self.save()
 
-    
+    def cerrar(self):
+        self.cerrada = True
+        self.save()
 
 class Equipo(models.Model):
     nro_serie = models.IntegerField(unique=True)

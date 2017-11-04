@@ -3,7 +3,7 @@ from .models import Orden
 from usuario.models import Usuario
 from persona.models import Cliente, Tecnico, Persona
 from rubro.models import Rubro
-from tarea.models import Tarea, TipoTarea
+from tarea.models import Tarea, TipoTarea, TareaPresupuestada, TareaPendiente, TareaRealizada, TareaCancelada
 from servicio.models import TipoServicio
 from tarifa.models import Tarifa
 from decimal import Decimal
@@ -23,7 +23,7 @@ class OrdenTest(TestCase):
         self.persona.agregar_rol(Cliente())
         self.usuario = Usuario.objects.crear_usuario(username="Tecnico1", password="Tecnico1", persona=self.persona)
         self.persona.agregar_rol(Usuario())
-        self.persona.save
+        self.persona.save()
         self.rubro = Rubro(nombre="Notebooks", descripcion="Reparación de notebooks")
         self.rubro.save()
         self.tipo_servicio = TipoServicio(nombre="Taller", descripcion="Reparación de equipos en taller")
@@ -43,36 +43,106 @@ class OrdenTest(TestCase):
     def test_crear(self):
         # Testeamos que haya una orden creada y que sea la nuestra
         self.assertTrue(Orden.objects.all().count(), 1)
-        orden = Orden.objects.all().first()
-        self.assertEqual(orden.id, self.orden.id)
 
     def test_agregar_tarea(self):
-        # self.tipo_tarea = TipoTarea(nombre="Cambio de disco", rubro=self.rubro)
-        # self.tipo_tarea.save()
-        # self.tarifa = Tarifa(tipo_tarea=self.tipo_tarea, tipo_servicio=self.tipo_servicio, precio=300)
-        # self.tarifa.save()        
-        # self.tarea = Tarea.crear(
-        #     tipo_tarea=self.tipo_tarea,
-        #     orden = self.orden,
-        #     observacion="Guardar el disco viejo")
-        # self.tarea.save()
-        # # Probamos caso de éxito
-        # self.orden.agregar_tarea(self.tarea)
-        # self.assertEqual(self.orden.tareas.all().count(), 1)
-        # tarea = self.orden.tareas.all().first()
-        # self.assertEqual(tarea.id, self.tarea.id)
+        self.tipo_tarea1 = TipoTarea(nombre="Cambio de disco", rubro=self.rubro)
+        self.tipo_tarea1.save()
+        self.tarifa = Tarifa(tipo_tarea=self.tipo_tarea1, tipo_servicio=self.tipo_servicio, precio=300)
+        self.tarifa.save()        
+        self.observacion = "Guardar el disco viejo"
+       
+        # Probamos caso de éxito
+        self.orden.agregar_tarea(self.tipo_tarea1, self.observacion)
+        self.assertEqual(self.orden.tareas.count(), 1)
+        self.assertTrue(self.orden.tareas.get(tipo_tarea=self.tipo_tarea1).estas_presupuestada())
 
-        # # Probamos que lance excepción si la tarea no es del rubro de la orden
-        # rubro = Rubro(nombre="Impresoras Fiscales", descripcion="Reparación de impresoras fiscales")
-        # rubro.save()
-        # tipo_tarea = TipoTarea(nombre="Limpieza de cabezales", rubro=rubro)
-        # tipo_tarea.save()
-        # tarea = Tarea(tipo_tarea=tipo_tarea)
-        # tarea.save()
-        # try:
-        #     self.orden.agregar_tarea(tarea)
-        # except:
-        #     pass
-        # self.assertFalse(tarea in self.orden.tareas.all())
+        # Probamos que lance excepción si la tarea no es del rubro de la orden
+        rubro = Rubro(nombre="Impresoras Fiscales", descripcion="Reparación de impresoras fiscales")
+        rubro.save()
+        tipo_tarea = TipoTarea(nombre="Limpieza de cabezales", rubro=rubro)
+        tipo_tarea.save()
 
-        pass
+        try:
+            self.orden.agregar_tarea(tipo_tarea, self.observacion)
+        except Exception as e:
+            self.assertTrue(e)
+        
+        self.assertEqual(self.orden.tareas.count(), 1)
+
+class OrdenTareasTest(OrdenTest):
+
+    def setUp(self):
+        super().setUp()
+        self.orden2 = Orden.crear(
+            cliente=self.persona.como(Cliente), 
+            usuario=self.usuario, 
+            tecnico=self.persona.como(Tecnico), 
+            rubro=self.rubro,
+            equipo=None, 
+            tipo_servicio=self.tipo_servicio, 
+            descripcion=self.descripcion
+        )
+        self.orden2.save()
+        
+        # Creamos un conjunto de tareas para probar las trancisiones
+        self.tipo_tarea1 = TipoTarea(nombre="Tarea 1", rubro=self.rubro)
+        self.tipo_tarea1.save()
+        self.tarifa1 = Tarifa(tipo_tarea=self.tipo_tarea1, tipo_servicio=self.tipo_servicio, precio=300)
+        self.tarifa1.save()        
+        self.observacion1 = "Tarea 1"
+
+        self.tipo_tarea2 = TipoTarea(nombre="Tarea 2", rubro=self.rubro)
+        self.tipo_tarea2.save()
+        self.tarifa2 = Tarifa(tipo_tarea=self.tipo_tarea2, tipo_servicio=self.tipo_servicio, precio=1000)
+        self.tarifa2.save()        
+        self.observacion2 = "Tarea 2"
+
+        self.tipo_tarea3 = TipoTarea(nombre="Tarea 3", rubro=self.rubro)
+        self.tipo_tarea3.save()
+        self.tarifa3 = Tarifa(tipo_tarea=self.tipo_tarea3, tipo_servicio=self.tipo_servicio, precio=300)
+        self.tarifa3.save()        
+        self.observacion3 = "Tarea 3"
+
+        self.tipo_tarea4 = TipoTarea(nombre="Tarea 4", rubro=self.rubro)
+        self.tipo_tarea4.save()
+        self.tarifa4 = Tarifa(tipo_tarea=self.tipo_tarea4, tipo_servicio=self.tipo_servicio, precio=300)
+        self.tarifa4.save()        
+        self.observacion4 = "Tarea 5"
+
+        self.tipo_tarea5 = TipoTarea(nombre="Tarea 5", rubro=self.rubro)
+        self.tipo_tarea5.save()
+        self.tarifa5 = Tarifa(tipo_tarea=self.tipo_tarea5, tipo_servicio=self.tipo_servicio, precio=300)
+        self.tarifa5.save()        
+        self.observacion5 = "Tarea 5"
+
+        self.tipo_tarea6 = TipoTarea(nombre="Tarea 6", rubro=self.rubro)
+        self.tipo_tarea6.save()
+        self.tarifa6 = Tarifa(tipo_tarea=self.tipo_tarea6, tipo_servicio=self.tipo_servicio, precio=300)
+        self.tarifa6.save()        
+        self.observacion6 = "Tarea 6"
+
+        # Agragamos las tareas con sus distintos tipos
+        self.orden2.agregar_tarea(self.tipo_tarea1, self.observacion1)
+        self.orden2.agregar_tarea(self.tipo_tarea2, self.observacion2)
+        self.orden2.agregar_tarea(self.tipo_tarea3, self.observacion3)
+        self.orden2.agregar_tarea(self.tipo_tarea4, self.observacion4)
+        self.orden2.agregar_tarea(self.tipo_tarea5, self.observacion5)
+        self.orden2.agregar_tarea(self.tipo_tarea6, self.observacion6)
+
+        self.assertEqual(self.orden2.tareas.count(), 6)
+
+        # Hay que reservar stock para 4 tareas
+
+        # Ademas de las 6 tienen que quedar 3 pendiente/realizada y 3 pendiente/candelada 
+
+        # Hay que jugar con el stock
+        # 
+        # de las 4 que reservan stock las 2 que hacen pendiente/relaizada, 
+        # una de ellas debe quedar bloqueada por falta de stock
+        # 
+        #  
+
+
+        # Probar las transiciones con una sola tarea
+        
+        #self.assertTrue(isinstance(tarea1.estado, TareaPresupuestada))        
