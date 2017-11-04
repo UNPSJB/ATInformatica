@@ -32,7 +32,7 @@ class TareaTest(TestCase):
         self.tipo_servicio.save()
         self.descripcion = "Ta todo completamente hecho mierda"
 
-        self.orden = Orden.crear(
+        self.orden = Orden(
             cliente=self.persona.como(Cliente), 
             usuario=self.usuario, 
             tecnico=self.persona.como(Tecnico), 

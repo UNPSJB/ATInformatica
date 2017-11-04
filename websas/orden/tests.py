@@ -29,7 +29,7 @@ class OrdenTest(TestCase):
         self.tipo_servicio = TipoServicio(nombre="Taller", descripcion="Reparación de equipos en taller")
         self.tipo_servicio.save()
         self.descripcion = "Ta todo completamente hecho mierda"
-        self.orden = Orden.crear(
+        self.orden = Orden(
             cliente=self.persona.como(Cliente), 
             usuario=self.usuario, 
             tecnico=self.persona.como(Tecnico), 
@@ -73,7 +73,7 @@ class OrdenTareasTest(OrdenTest):
 
     def setUp(self):
         super().setUp()
-        self.orden2 = Orden.crear(
+        self.orden2 = Orden(
             cliente=self.persona.como(Cliente), 
             usuario=self.usuario, 
             tecnico=self.persona.como(Tecnico), 
@@ -121,6 +121,8 @@ class OrdenTareasTest(OrdenTest):
         self.tarifa6.save()        
         self.observacion6 = "Tarea 6"
 
+
+    def test_aceptar_finalizar(self):
         # Agragamos las tareas con sus distintos tipos
         self.orden2.agregar_tarea(self.tipo_tarea1, self.observacion1)
         self.orden2.agregar_tarea(self.tipo_tarea2, self.observacion2)
@@ -129,20 +131,54 @@ class OrdenTareasTest(OrdenTest):
         self.orden2.agregar_tarea(self.tipo_tarea5, self.observacion5)
         self.orden2.agregar_tarea(self.tipo_tarea6, self.observacion6)
 
-        self.assertEqual(self.orden2.tareas.count(), 6)
-
-        # Hay que reservar stock para 4 tareas
-
-        # Ademas de las 6 tienen que quedar 3 pendiente/realizada y 3 pendiente/candelada 
-
-        # Hay que jugar con el stock
-        # 
-        # de las 4 que reservan stock las 2 que hacen pendiente/relaizada, 
-        # una de ellas debe quedar bloqueada por falta de stock
-        # 
-        #  
-
-
-        # Probar las transiciones con una sola tarea
+        # Testeamos la propiedad tareas_presupuestadas. 
+        self.assertEqual(len(self.orden2.tareas_presupuestadas), 6)
         
-        #self.assertTrue(isinstance(tarea1.estado, TareaPresupuestada))        
+        ids_tareas = []
+        [ids_tareas.append(tarea.id) for tarea in self.orden2.tareas.all()]
+
+        # Testeamos el método aceptar_tareas y la propiedad tareas_aceptadas
+        self.orden2.aceptar_tareas(ids_tareas)
+        self.assertEqual(len(self.orden2.tareas_presupuestadas), 0)
+        self.assertEqual(len(self.orden2.tareas_pendientes), 6)
+
+        # Testeamos el método finalizar_tareas y la propiedad tareas_realizadas
+        self.orden2.finalizar_tareas(ids_tareas)
+        self.assertEqual(len(self.orden2.tareas_pendientes), 0)
+        self.assertEqual(len(self.orden2.tareas_realizadas), 6)
+
+    def test_presupuestada_cancelar(self):
+        # Agragamos las tareas con sus distintos tipos
+        self.orden2.agregar_tarea(self.tipo_tarea1, self.observacion1)
+        self.orden2.agregar_tarea(self.tipo_tarea2, self.observacion2)
+        self.orden2.agregar_tarea(self.tipo_tarea3, self.observacion3)
+        self.orden2.agregar_tarea(self.tipo_tarea4, self.observacion4)
+        self.orden2.agregar_tarea(self.tipo_tarea5, self.observacion5)
+        self.orden2.agregar_tarea(self.tipo_tarea6, self.observacion6)
+
+        # Testeamos la propiedad tareas_presupuestadas. 
+        self.assertEqual(len(self.orden2.tareas_presupuestadas), 6)    
+
+        ids_tareas = []
+        [ids_tareas.append(tarea.id) for tarea in self.orden2.tareas.all()]
+
+        # Testeamos el método cancelar_tareas y la propiedad tareas_canceladas
+        self.orden2.cancelar_tareas(ids_tareas)
+        self.assertEqual(len(self.orden2.tareas_presupuestadas), 0)
+        self.assertEqual(len(self.orden2.tareas_canceladas), 6)
+
+    def test_cancelar_orden(self):
+        # Agragamos las tareas con sus distintos tipos
+        self.orden2.agregar_tarea(self.tipo_tarea1, self.observacion1)
+        self.orden2.agregar_tarea(self.tipo_tarea2, self.observacion2)
+        self.orden2.agregar_tarea(self.tipo_tarea3, self.observacion3)
+        self.orden2.agregar_tarea(self.tipo_tarea4, self.observacion4)
+        self.orden2.agregar_tarea(self.tipo_tarea5, self.observacion5)
+        self.orden2.agregar_tarea(self.tipo_tarea6, self.observacion6)
+
+        # Testeamos la propiedad tareas_presupuestadas. 
+        self.assertEqual(len(self.orden2.tareas_presupuestadas), 6)
+
+        self.orden2.cancelar()
+        self.assertTrue(self.orden2.cancelada)
+        self.assertEqual(len(self.orden2.tareas_canceladas), 6)

@@ -39,10 +39,9 @@ class OrdenCreate(CreateView):
         print(persona, rubro, servicio,tecnico)
         
         if persona.sos(Cliente):
-            orden = Orden.crear(usuario=request.user, cliente=persona.como(Cliente), tecnico=tecnico.como(Tecnico), rubro=rubro, tipo_servicio=servicio, descripcion="Alto bolonqui",equipo=equipo) 
-
-            print(orden)
-
+            orden = Orden(usuario=request.user, cliente=persona.como(Cliente), tecnico=tecnico.como(Tecnico), rubro=rubro, tipo_servicio=servicio, descripcion="Alto bolonqui",equipo=equipo) 
+            orden.save()
+            
             return JsonResponse({'data':'Todo pioooola'})
 
         return JsonResponse({'data':'Todo mall'})

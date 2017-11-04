@@ -32,7 +32,7 @@ class ProductoTest(TestCase):
         self.tipo_servicio.save()
         self.descripcion = "Ta destruida la máquina"
 
-        self.orden = Orden.crear(
+        self.orden = Orden(
             cliente=self.persona.como(Cliente), 
             usuario=self.usuario, 
             tecnico=self.persona.como(Tecnico), 

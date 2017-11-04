@@ -4,15 +4,10 @@ from rubro.models import Rubro
 from servicio.models import TipoServicio
 from usuario.models import Usuario
 from decimal import Decimal
-from tarea.models import Tarea
+from tarea.models import Tarea, TareaPendiente, TareaPresupuestada, TareaRealizada, TareaCancelada
 
 
 class Orden(models.Model):
-    """Modelo de Orden de Trabajo
-
-    Nota: La Orden de Trabajo es la entidad principal del sistema
-    """
-
     cliente = models.ForeignKey(Cliente, null=True,related_name="ordenes")
     rubro = models.ForeignKey(Rubro, related_name="ordenes")
     equipo = models.ForeignKey("Equipo", null=True, blank=True, related_name="ordenes")
@@ -26,104 +21,62 @@ class Orden(models.Model):
     def __str__(self):
         return "{} {}".format(self.cliente, self.descripcion)
 
-    @property
-    def tareas_presupuestadas(self):
-        tareas_presupuestadas = []
-        for tarea in self.tareas.all():
-            if tarea.estas_presupuestada():
-                tareas_presupuestadas.append(tarea)
-        return tareas_presupuestadas
-
-    @property
-    def tareas_pendientes(self):
-        tareas_pendientes = []
-        for tarea in self.tareas.all():
-            if tarea.estas_pendiente():
-                tareas_pendientes.append(tarea)
-        return tareas_pendientes
-
-    @property
-    def tareas_realizadas(self):
-        tareas_realizadas = []
-        for tarea in self.tareas.all():
-            if tarea.estas_realizada():
-                tareas_realizadas.append(tarea)
-        return tareas_realizadas
-
-    @property
-    def tareas_canceladas(self):
-        tareas_canceladas = []
-        for tarea in self.tareas.all():
-            if tarea.estas_cancelada():
-                tareas_canceladas.append(tarea)
-        return tareas_canceladas
-
-    @classmethod
-    def crear(cls, usuario, cliente, tecnico, rubro, equipo,tipo_servicio, descripcion):
-        """Método para crear una Orden de Trabajo
-
-        Args:
-            usuario (Usuario): es el usuario de la sección actual
-            cliente (Cliente): es el cliente para el que se crea la Orden de Trabajo
-            rubro   (Rubro): es el rubro para el cual se crea la Orden de Trabajo
-            tipo_servicio (TipoServicio): es el tipo de servicio de la Orden de Trabajo
-            descripcion (String): es una descripción de los problemas que el Cliente identificó
-        
-        Returns: 
-            ot (Orden de Trabajo)
-        """
-        ot = cls(cliente=cliente,
-                 usuario=usuario,
-                 tecnico=tecnico,
-                 rubro=rubro,
-                 equipo=equipo,
-                 tipo_servicio=tipo_servicio,
-                 descripcion=descripcion)
-        ot.save()
-        return ot
-    
     def agregar_tarea(self, tipo_tarea, observacion):
-        """Agrega una tarea al estado de una OT"
-        
-        Args: 
-            tarea (Tarea): la tarea a agregar a la Orden de Trabajo
-        Raise:
-            Exception si el rubro de la tarea es distinto al rubro de la Orden de Trabajo """
-    
         if(self.rubro != tipo_tarea.rubro):
             raise Exception("***TAREAS EN ESTADO: no se pudo realizar la accion***")
         Tarea.crear(tipo_tarea=tipo_tarea, orden=self, observacion=observacion)
 
-    def aceptar_tareas(self, tareas):
+    def _tareas_en_estado(self, estado):
+        tareas_en_estado = []
+        for tarea in self.tareas.all():
+            if isinstance(tarea.estado, estado):
+                tareas_en_estado.append(tarea)
+        return tareas_en_estado
+
+    @property
+    def tareas_presupuestadas(self):
+        return self._tareas_en_estado(TareaPresupuestada)
+
+    @property
+    def tareas_pendientes(self):
+        return self._tareas_en_estado(TareaPendiente)
+
+    @property
+    def tareas_realizadas(self):
+        return self._tareas_en_estado(TareaRealizada)
+
+    @property
+    def tareas_canceladas(self):
+        return self._tareas_en_estado(TareaCancelada)
+
+    def _hacer_en_tareas(self, ids_tareas, accion):
         if not self.cerrada and not self.cancelada:
-            if type(tareas) != list:
-                tareas = [tareas]
+
+            if type(ids_tareas) != list:
+                ids_tareas = [ids_tareas]
             
-            [tarea.hacer("aceptar") for tarea in tareas]
+            [tarea.hacer(accion) for tarea in self.tareas.filter(pk__in=ids_tareas)]
+
+    def aceptar_tareas(self, ids_tareas):
+        self._hacer_en_tareas(ids_tareas, "aceptar")
     
-    def finalizar_tareas(self, tareas):
-        if not self.cerrada and not self.cancelada:
-            if type(tareas) != list:
-                tareas = [tareas]
-        
-        [tarea.hacer("finalizar") for tarea in tareas]
-        
+    def finalizar_tareas(self, ids_tareas):
+        self._hacer_en_tareas(ids_tareas, "finalizar")
 
-    def cancelar_tareas(self, tareas):
-        if not self.cerrada and not self.cancelada:
-            if type(tareas) != list:
-                tareas = [tareas]
-        
-        [tarea.hacer("cancelar") for tarea in tareas]  
-
-        if not self.tareas_pendientes and not self.tareas_presupuestadas and not self.tareas_realizadas:
-            self.cancelar()
+    def cancelar_tareas(self, ids_tareas):
+        self._hacer_en_tareas(ids_tareas, "cancelar")
 
     def cancelar(self):
+        if self.tareas_realizadas:
+            raise Exception("La orden de trabajo nro: {} tiene tareas realizadas y no se puede cancelar".format(self.id))
+        
+        [tarea.hacer("cancelar") for tarea in self.tareas.all()]
         self.cancelada = True
         self.save()
 
     def cerrar(self):
+        if self.tareas_pendientes:
+            raise Exception("La orden de trabajo nro: {} tiene tareas pendientes y no se puede cerrar".format(self.id))
         self.cerrada = True
         self.save()
 
@@ -131,4 +84,3 @@ class Equipo(models.Model):
     nro_serie = models.IntegerField(unique=True)
     descripcion = models.CharField(max_length=250)
     rubro = models.ForeignKey(Rubro, null=True, blank=True, related_name = "equipos")
-
