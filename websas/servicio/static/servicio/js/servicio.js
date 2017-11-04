@@ -1,26 +1,39 @@
-$("#datatable-servicio").DataTable({
-    responsive: true,
-    dom: "Bfrtip",
-    buttons: [{
+var tabla_html = $('#datatable-servicio');
+
+var botones_default = [{
+    extend: "copy",
+    text: "Copiar tabla",
+    className: "btn-sm"
+}, {
+    extend: "csv",
+    text: "Exportar tabla a CSV",
+    className: "btn-sm"
+}, {
+    extend: "print",
+    text: "Imprimir tabla",
+    className: "btn-sm"
+}];
+
+var botones_dt;
+
+console.log(tabla_html.attr('data-url_agregar'))
+
+if (tabla_html.attr('data-url_agregar')) {
+    var boton_agregar = [{
         text: "<b>Nuevo servicio</b>",
         action: function() {
-            // TODO: si es necesario generar el form de nuevo técnico
-            // como modal, este botón puede dispararlo
-            // Por ahora sólo pega a crear técnico
-            location.href = "/servicio/crear";
+            location.href = tabla_html.attr('data-url_agregar');
         },
         className: "btn-sm btn-info"
-    }, {
-        extend: "copy",
-        text: "Copiar tabla",
-        className: "btn-sm"
-    }, {
-        extend: "csv",
-        text: "Exportar tabla a CSV",
-        className: "btn-sm"
-    }, {
-        extend: "print",
-        text: "Imprimir tabla",
-        className: "btn-sm"
-    }, ],
+    }]
+
+    botones_dt = boton_agregar.concat(botones_default);
+} else {
+    botones_dt = botones_default;
+}
+
+tabla_html.DataTable({
+    responsive: true,
+    dom: "Bfrtip",
+    buttons: botones_dt,
 });
