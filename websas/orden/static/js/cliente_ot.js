@@ -1,4 +1,5 @@
 
+var popup
 var tabla
 $(document).ready(function(){
     get_clientes()   
@@ -6,6 +7,11 @@ $(document).ready(function(){
 
 
 })
+
+function close_popup(){
+    get_clientes()
+    popup.close()
+}
 
 function get_clientes(){
 
@@ -37,7 +43,6 @@ var tabla_html = $("#datatable-clientes")
 var popup_attrs = "location=no,menubar=no,resizable=no,scrollbars=no";
 
 
-var popup
 // Inicializacion y referencia al DataTable, con la config ajax de cada columna
 function tabla_clientes(){
     tabla_html = $("#datatable-clientes")
