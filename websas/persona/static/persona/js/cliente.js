@@ -38,3 +38,8 @@ tabla_html.DataTable({
     dom: "Bfrtip",
     buttons: botones_dt,
 });
+
+$(function() {
+    $('#contenido_cargando').attr('hidden', true);
+    $('#contenido_tabla').attr('hidden', false);
+});

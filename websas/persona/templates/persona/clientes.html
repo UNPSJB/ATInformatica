@@ -32,9 +32,12 @@
       <div class="clearfix"></div>
     </div>
     
-    <div class="x_content" id="contenido_tabla">
-        {% include "persona/tabla_clientes.html" %}
-      </div>
+    <div id="contenido_cargando">
+      <span style="display: table; margin:0 auto;"><img src="{% static 'img/cargando.gif' %}" alt="cargando clientes">&nbsp;&nbsp;Cargando...</span>
+    </div>
+    <div hidden class="x_content" id="contenido_tabla">
+      {% include "persona/tabla_clientes.html" %}
+    </div>
   </div>
 </div>
 {% endblock contenido %}
