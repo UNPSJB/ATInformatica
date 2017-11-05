@@ -12,6 +12,11 @@
 
 {% block body %}
   <div>
+    {% if messages %}
+    {% for message in messages %}
+    <p><div style="float: None; margin: 0 auto; width: 50%;" class="alert alert-{{ message.tags }}">{{ message|safe }}</div></p>
+    {% endfor %}
+    {% endif %}
     <a class="hiddenanchor" id="signup"></a>
     <a class="hiddenanchor" id="signin"></a>
 

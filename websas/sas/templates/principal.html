@@ -5,14 +5,5 @@
 {% endblock menu_sidebar %}
 
 {% block contenido %}
-<div class="row">
-    ¡Bienvenido, {{user.rolname}}!
-</div>
-<div class="row">
-{% if messages %}
-{% for mensaje in messages %}
-    <div class="alert {{ mensaje.tags }}">{{ mensaje }}</div>
-{% endfor %}
-{% endif %}
-</div>
+
 {% endblock contenido %}
