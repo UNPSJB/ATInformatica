@@ -48,12 +48,26 @@ $.ajaxSetup({
 });
 
 function crearOrden(objs, context){
+    var inputcliente = $('input:checked[name=cliente]')[0]
+    var inputtecnico = $('input:checked[name=tecnico]')[0]
+    var inputservicio = $('input:checked[name=tipo_servicio]')[0]
+    var inputrubro = $('input:checked[name=rubro]')[0]
+    var inputequipo = $('input:checked[name=equipo]')[0]
+
+    var inputs = [inputcliente,inputtecnico,inputservicio, inputservicio,inputrubro,inputequipo]
+
+    for (var i in inputs){
+        if (!inputs[i]) {
+            return
+        }
+    }
+    
     var data = {
-        'cliente':$('input:checked[name=cliente]')[0].dataset['idcliente'],
-        'tecnico':$('input:checked[name=tecnico]')[0].dataset['idtecnico'],
-        'servicio':$('input:checked[name=tipo_servicio]')[0].dataset['idtiposervicio'],
-        'rubro':$('input:checked[name=rubro]')[0].dataset['idrubro'],
-        'equipo':$('input:checked[name=equipo]')[0].dataset['idequipo']
+        'cliente':inputcliente.dataset['idcliente'],
+        'tecnico':inputtecnico.dataset['idtecnico'],
+        'servicio':inputservicio.dataset['idtiposervicio'],
+        'rubro':inputrubro.dataset['idrubro'],
+        'equipo':inputequipo.dataset['idequipo']
     }
 
     console.log(data)
