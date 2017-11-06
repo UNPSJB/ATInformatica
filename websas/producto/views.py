@@ -16,7 +16,7 @@ class ProductoCreate(CreateView):
     form_class = ProductoForm
     success_url = reverse_lazy('producto:producto_listar')
 
-    @method_decorator(permission_required('producto.add_producto', login_url='producto:producto_listar'))
+    # @method_decorator(permission_required('producto.add_producto', login_url='producto:producto_listar'))
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
 

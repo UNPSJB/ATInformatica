@@ -2,12 +2,14 @@ from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import permission_required
 from django.http import JsonResponse
+from django.template.loader import render_to_string
 from django.views.generic import TemplateView, CreateView, ListView, UpdateView, DeleteView, DetailView
 from django.views import View
 from rubro.models import Rubro
 from .models import TipoTarea, Tarea
 from .forms import TipoTareaForm
 from orden.models import Orden
+from producto.models import Producto
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
 # Create your views here.
@@ -41,6 +43,17 @@ class TareaCreate(View):
         orden = Orden.objects.get(pk=request.POST['estado_orden'])
         orden.agregar_tarea(tipo_tarea, observacion)
         return JsonResponse({'data':'Todo mall'})
+
+class TareaDetail(DetailView):
+    model = Tarea
+    context_object_name = 'tarea'
+    template_name = 'tarea/tarea_ver.html'
+
+    def get_context_data(self, **kwargs):
+        # Llamar a super para recuperar el contexto original
+        contexto = super(self.__class__, self).get_context_data(**kwargs)
+        contexto['productos'] = Producto.objects.all()
+        return contexto
 
 class TipoTareaCreate(CreateView):
     model = TipoTarea

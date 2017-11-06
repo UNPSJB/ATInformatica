@@ -73,6 +73,21 @@ class Tarea(models.Model):
         """ Propiedad de sólo lectura que devuelve el rubro del tipo de tarea asociado a la tarea """
         return self.tipo_tarea.rubro
 
+    @property
+    def costo_repuestos(self):
+        if not self.reservas:
+            return 0
+        costo_repuestos = 0
+        for reserva in self.reservas.filter(activa=True):
+            costo_repuestos += reserva.precio_unitario * reserva.cantidad 
+        # por cada reserva multiplicar precio_unitario por cantidad
+        return costo_repuestos
+
+    @property
+    def subtotal(self):
+        return self.precio + self.costo_repuestos
+
+
     def estas_presupuestada(self):
         """ Método que consulta si la tarea está en estado TareaPresupuestada 
         

@@ -7,6 +7,7 @@ from tarea.models import Tarea, TipoTarea, TareaPresupuestada, TareaPendiente, T
 from servicio.models import TipoServicio
 from tarifa.models import Tarifa
 from decimal import Decimal
+from producto.models import Producto
 
 class OrdenTest(TestCase):
     def setUp(self):
@@ -148,6 +149,7 @@ class OrdenTareasTest(OrdenTest):
         self.assertEqual(len(self.orden2.tareas_realizadas), 6)
 
     def test_presupuestada_cancelar(self):
+
         # Agragamos las tareas con sus distintos tipos
         self.orden2.agregar_tarea(self.tipo_tarea1, self.observacion1)
         self.orden2.agregar_tarea(self.tipo_tarea2, self.observacion2)
@@ -167,8 +169,42 @@ class OrdenTareasTest(OrdenTest):
         self.assertEqual(len(self.orden2.tareas_presupuestadas), 0)
         self.assertEqual(len(self.orden2.tareas_canceladas), 6)
 
+class CancelarOrdenTest(OrdenTareasTest):
+
+    def setUp(self):
+        super().setUp()
+       
+    def test_cancelar_orden_lanza_excepcion(self):
+       
+        # Testeamos que la orden no se pueda concelar con tareas realizadas
+        # Agregamos un conjunto de tareas para probar
+        self.orden2.agregar_tarea(self.tipo_tarea1, self.observacion1)
+        self.orden2.agregar_tarea(self.tipo_tarea2, self.observacion2)
+        self.orden2.agregar_tarea(self.tipo_tarea3, self.observacion3)
+        self.orden2.agregar_tarea(self.tipo_tarea4, self.observacion4)
+        self.orden2.agregar_tarea(self.tipo_tarea5, self.observacion5)
+        self.orden2.agregar_tarea(self.tipo_tarea6, self.observacion6)
+                
+        ids_tareas = []
+        [ids_tareas.append(tarea.id) for tarea in self.orden2.tareas.all()]
+
+        # Transicionamos una tarea a estado TareaRealizada para comprobar que lanza excepcion
+        self.orden2.aceptar_tareas(ids_tareas[0])
+        self.orden2.finalizar_tareas(ids_tareas[0])
+        try:
+            self.orden2.cancelar()
+        except Exception as e:
+            #print(str(e))
+            self.assertTrue(e)
+
+        self.assertFalse(self.orden2.cancelada)
+        self.assertEqual(len(self.orden2.tareas_canceladas), 0)
+        self.assertEqual(len(self.orden2.tareas_presupuestadas), 5)
+        self.assertEqual(len(self.orden2.tareas_realizadas), 1)
+    
     def test_cancelar_orden(self):
-        # Agragamos las tareas con sus distintos tipos
+        # Testeamos el método cancelar y comprobamos que devuelva stock reservado
+        # Agregamos un conjunto de tareas para probar
         self.orden2.agregar_tarea(self.tipo_tarea1, self.observacion1)
         self.orden2.agregar_tarea(self.tipo_tarea2, self.observacion2)
         self.orden2.agregar_tarea(self.tipo_tarea3, self.observacion3)
@@ -176,9 +212,64 @@ class OrdenTareasTest(OrdenTest):
         self.orden2.agregar_tarea(self.tipo_tarea5, self.observacion5)
         self.orden2.agregar_tarea(self.tipo_tarea6, self.observacion6)
 
-        # Testeamos la propiedad tareas_presupuestadas. 
-        self.assertEqual(len(self.orden2.tareas_presupuestadas), 6)
+        # Creamos un producto para reservarle stock
+        self.producto = Producto(
+            nombre="SSD", 
+            descripcion="Disco de estado sólido",
+            marca="kingstong",
+            stock_minimo=10,
+            stock=20,
+            precio=600
+        )
+        self.producto.save()
 
+        # Reservamos stock para la tarea 1
+        self.orden2.tareas.get(tipo_tarea=self.tipo_tarea1
+            ).hacer("reservar_stock", self.producto, 10)
+
+        # Comprobamos que el stock reservado del producto es 10 y que tiene solo una reserva
+        self.assertEqual(self.producto.stock_reservado, 10)
+        self.assertEqual(self.producto.reservas.count(), 1)
+
+        # Verificamos que la orden tiene solo 6 tareas y todas en estado TareaPresupuestada
+        self.assertEqual(len(self.orden2.tareas_presupuestadas), 6)
+        self.assertEqual(self.orden2.tareas.count(), 6)
+
+        # Cancelamos la orden y chequeamos que el stock reservado del producto sea 0
         self.orden2.cancelar()
         self.assertTrue(self.orden2.cancelada)
-        self.assertEqual(len(self.orden2.tareas_canceladas), 6)
+        self.assertEqual(self.producto.stock_reservado, 0)
+
+class CerrarOrdenTest(OrdenTareasTest):
+
+    def setUp(self):
+        super().setUp()
+    
+    def test_cerrar_orden(self):
+
+        # Comprobamos que lance excepcion si se intenta cerrar con tareas pendientes 
+
+        # Agregamos un conjunto de tareas para probar
+        self.orden2.agregar_tarea(self.tipo_tarea1, self.observacion1)
+        self.orden2.agregar_tarea(self.tipo_tarea2, self.observacion2)
+        self.orden2.agregar_tarea(self.tipo_tarea3, self.observacion3)
+        self.orden2.agregar_tarea(self.tipo_tarea4, self.observacion4)
+        self.orden2.agregar_tarea(self.tipo_tarea5, self.observacion5)
+        self.orden2.agregar_tarea(self.tipo_tarea6, self.observacion6)
+
+        # Tomamos los ids de las tareas
+        ids_tareas = []
+        [ids_tareas.append(tarea.id) for tarea in self.orden2.tareas.all()]
+
+        # Aceptamos todas las tareas
+        self.orden2.aceptar_tareas(ids_tareas)
+        
+        # Chequeamos que tenga 6 tareas aceptadas
+        self.assertEqual(len(self.orden2.tareas_pendientes), 6)
+
+        # Transicionamos 3 tareas a estado TareaRealizada
+        self.orden2.finalizar_tareas(ids_tareas[3:6])
+        
+        # Comprobamos que ahora tenemos 3 tareas realizada y 3 pendientes
+        self.assertEqual(len(self.orden2.tareas_pendientes), 3)
+        self.assertEqual(len(self.orden2.tareas_realizadas), 3)

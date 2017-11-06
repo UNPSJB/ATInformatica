@@ -38,21 +38,17 @@ function crearTarea(objs, context){
         'estado_orden':$('#id-orden-tarea').text(),
     }
 
-    console.log(data)
     $.ajax({    
         url: $("#crearTarea").attr("ajax-url"),
         type: "POST",
         data: data,
         dataType: 'json',
         success: function(data){
-            console.log("en la success function");
-            console.log(data)
             $('#modalTarea').modal('toggle');    
         }
     })
 }
 
 $('#modalTarea').on('hidden.bs.modal', function () {
-    console.log('Fired when hide event has finished!');
     location.reload()
 });
