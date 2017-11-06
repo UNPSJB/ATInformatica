@@ -6,29 +6,34 @@
     {% endif %}
     <li><a><i class="fa fa-bar-chart-o"></i> Ordenes de trabajo <span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
+        {% if perms.orden.add_orden %}
         <li><a href="{% url 'orden:orden_crear' %}">Crear</a></li>
+        {% endif %}
         <li><a href="{% url 'orden:orden_listar' %}">Listar</a></li>
       </ul>
     </li>
     <li><a><i class="fa fa-cubes"></i> equipos<span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
-        <li><a href="{% url 'orden:equipo_crear' %}">agregar</a></li>
+          {% if perms.orden.add_equipo %}
+          <li><a href="{% url 'orden:equipo_crear' %}">agregar</a></li>
+          {% endif %}
         <li><a href="{% url 'orden:equipo_listar' %}">listar</a></li>
       </ul>
     </li>
     <li><a><i class="fa fa-desktop"></i>Productos<span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
-
-        <!-- Si ponemos 'producto' asi solo, funciona porque le pega a la url
-        cuyo name='producto'. Lo mismo con el detail-->
+        {% if perms.producto.add_producto %}
         <li><a href= "{% url 'producto:producto_crear' %}">Altas </a></li>
+        {% endif %}
         <li><a href= "{% url 'producto:producto_listar' %}">Listados</a></li>
       </ul>
         
     </li>
     <li><a><i class="fa fa-home"></i>Clientes<span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
+        {% if perms.persona.add_cliente %}
         <li><a href="{% url 'cliente:cliente_crear' %}">Altas </a></li>
+        {% endif %}
         <li><a href="{% url 'cliente:cliente_listar' %}">Listados</a></li>
       </ul>
     </li>
@@ -36,19 +41,25 @@
       <ul class="nav child_menu">
         <li><a>Tecnicos<span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
+            {% if perms.persona.add_tecnico %}
             <li><a href="{% url 'empleado:tecnico:tecnico_crear' %}">Altas</a></li>
+            {% endif %}
             <li><a href="{% url 'empleado:tecnico:tecnico_listar' %}">Listados</a></li>
           </ul>
         </li>
         <li><a>Jefes<span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
+            {% if perms.persona.add_jefetaller %}
             <li><a href="{% url 'empleado:jefe:jefe_crear' %}">Altas</a></li>
+            {% endif %}
             <li><a href="{% url 'empleado:jefe:jefe_listar' %}">Listados</a></li>
           </ul>            
         </li>
         <li><a>Gerentes<span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
+            {% if perms.persona.add_gerente %}
             <li><a href="{% url 'empleado:gerente:gerente_crear' %}">Altas</a></li>
+            {% endif %}
             <li><a href="{% url 'empleado:gerente:gerente_listar' %}">Listados</a></li>
           </ul>            
         </li>
@@ -63,13 +74,17 @@
     </li> -->
     <li><a><i class="fa fa-wrench"></i>Tipos de Servicio<span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
+        {% if perms.servicio.add_tiposervicio %}
         <li><a href="{% url 'servicio:servicio_crear' %}">Altas </a></li>
+        {% endif %}
         <li><a href="{% url 'servicio:servicio_listar' %}">Listados</a></li>
       </ul>
     </li>
     <li><a><i class="fa fa-clone"></i>Rubros<span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
+        {% if perms.rubro.add_rubro %}
         <li><a href="{% url 'rubro:rubro_crear'%}">Altas </a></li>
+        {% endif %}
         <li><a href="{% url 'rubro:rubro_listar'%}">Listados</a></li>          
       </ul>
     </li>

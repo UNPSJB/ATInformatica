@@ -22,10 +22,9 @@ from persona.forms import PersonaForm, PersonaUpdateForm, EmpleadoForm
 #         return Cliente.objects.all()
 
 
-class ClienteList(View):
-
-    def get(self, request):
-        return render(request, 'persona/clientes.html', {'tabla_botones': True})
+class ClienteList(ListView):
+    model = Cliente
+    template_name = 'persona/clientes.html'
 
 
 class ClienteListJSON(ListView):

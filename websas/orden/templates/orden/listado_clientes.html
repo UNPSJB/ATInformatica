@@ -1,4 +1,4 @@
-<table id="datatable-clientes" data-popup_url="{% url 'cliente:cliente_crear_popup' %}" class="table table-striped table-hover table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
+<table id="datatable-clientes" {% if perms.persona.add_cliente %}data-popup_url="{% url 'cliente:cliente_crear_popup' %}"{% endif %} class="table table-striped table-hover table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
     <thead>
     <tr>
     <th></th>

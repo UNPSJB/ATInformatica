@@ -108,7 +108,14 @@ footer_fixed
     {% endblock sidebar %}
 
     <div class="right_col" role="main" style="min-height: 3979px;">
-        <div class="">
+        <div class="" style="margin-top: 5em;">
+            {% if messages %}
+            {% for message in messages %}
+            <div style="margin-top: 1em;">
+                <div style="width: 80%;" class="alert alert-{{ message.tags }}"><strong>{{ message|safe }}</strong></div>
+            </div>
+            {% endfor %}
+            {% endif %}
             {% block contenido %}
             {% endblock contenido %}
         </div>

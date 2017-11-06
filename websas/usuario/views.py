@@ -8,6 +8,8 @@ from .models import Usuario
 from persona.models import Persona, Rol
 from django.views.generic import CreateView, UpdateView
 
+import datetime
+
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
@@ -53,8 +55,11 @@ class LoginView(FormView):
     def form_valid(self, form):
         user = Usuario.objects.get(username=form.get_user())
         if user.primer_login and not user.is_superuser:
-            messages.warning(self.request, "Se recomienda cambiar la contraseña predeterminada.")
+            messages.warning(self.request, 'Se recomienda cambiar la contraseña predeterminada.')
             self.success_url = reverse_lazy('usuario:password_change')
+        else:
+            if user.last_login is not None:
+                messages.info(self.request, '<i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;¡Bienvenido al sistema! - Último login: ' + user.last_login.strftime('%d/%m/%Y a las %H:%M:%S (hora del servidor)'))
         login(self.request, form.get_user())
         return super(LoginView, self).form_valid(form)
 
@@ -74,6 +79,6 @@ class CambiarContraseñaView(PasswordChangeView):
 
 class CambiarContraseñaOKView(PasswordChangeDoneView):
     def get(request, self):
-        volver_url = reverse_lazy('index:index')
-        messages.success(self, 'La contaseña se actualizó correctamente.', extra_tags='alert-success alert-dismissable')
+        volver_url = reverse_lazy('usuario:logout')
+        messages.success(self, '<i class="fa fa-check-circle fa-lg"></i>&nbsp;&nbsp;La contraseña se actualizó correctamente. Vuelva a iniciar sesión, por favor.')
         return HttpResponseRedirect(volver_url)
