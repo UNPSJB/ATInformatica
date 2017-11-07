@@ -87,7 +87,14 @@ class Tarea(models.Model):
     def subtotal(self):
         return self.precio + self.costo_repuestos
 
+    @property
+    def reservas_stock(self):
+        return self.reservas.filter(activa=True)
 
+    @property
+    def observaciones_tarea(self):
+        return self.observaciones.all()
+    
     def estas_presupuestada(self):
         """ Método que consulta si la tarea está en estado TareaPresupuestada 
         
@@ -226,6 +233,9 @@ class EstadoTarea(models.Model):
     def reservar_stock(self, producto, cantidad):
         self.tarea.reservas.create(tarea=self, producto=producto, cantidad=cantidad)
 
+    def agregar_observacion(self, usuario, contenido):
+        self.tarea.observaciones.create(tarea=self, usuario=usuario, contenido=contenido)
+    
     def cancelar_reserva(self, producto):
         reserva = self.tarea.reservas.get(producto=producto.id)
         if reserva:
@@ -275,3 +285,14 @@ class TareaCancelada(EstadoTarea):
 
 for Klass in EstadoTarea.__subclasses__():
     EstadoTarea.register(Klass)
+
+class ObservacionTarea(models.Model):
+
+    tarea = models.ForeignKey(
+        Tarea, related_name="observaciones"
+    )
+    usuario = models.ForeignKey(
+        Usuario
+    )
+    fecha = models.DateTimeField(auto_now=True)
+    contenido = models.TextField()

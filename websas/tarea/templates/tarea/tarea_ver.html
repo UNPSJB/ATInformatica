@@ -1,20 +1,27 @@
-{% extends "principal.html" %}
-{% load staticfiles %}
-
-{% block contenido %}
+{% extends "principal.html" %} {% load staticfiles %} {% block estilos %} {{ block.super}}
+<link href="{% static '/css/datos_tarea.css' %}" rel="stylesheet"> {% endblock estilos %} {% block contenido %}
 <div class="row">
   <div class="x_panel">
     <div class="x_title">
-      <h2>Tarea # {{ tarea.id }}<small>detalle de la tarea</small></h2>
+      <h2>Tarea # {{ tarea.id }}
+        <small>detalle de la tarea</small>
+      </h2>
       <ul class="nav navbar-right panel_toolbox">
-        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+        <li>
+          <a class="collapse-link">
+            <i class="fa fa-chevron-up"></i>
+          </a>
         </li>
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+            <i class="fa fa-wrench"></i>
+          </a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Settings 1</a>
+            <li>
+              <a href="#">Settings 1</a>
             </li>
-            <li><a href="#">Settings 2</a>
+            <li>
+              <a href="#">Settings 2</a>
             </li>
           </ul>
         </li>
@@ -22,37 +29,135 @@
       <div class="clearfix"></div>
     </div>
     <div class="x_content">
-        <div class="col-xs-9 ">
-            <!-- Tab panes -->
-            <div class="tab-content">
+      <div class="tab-pane" id="datosTarea">
 
-                <!-- Tab RESERVAR STOCK -->
-                {% include "tarea/reservar_stock.html" %}
+        <div class="col-md-8 col-sm-8 col-xs-12">
 
-                <!-- Tab DETALLES DE LA TAREA -->
-                {% include "tarea/datos_tarea_v2.html" %}
+          <ul class="stats-overview">
+            <li>
+              <span class="name"> Precio </span>
+              <span class="value text-success"> {{tarea.precio}} </span>
+            </li>
+            <li>
+              <span class="name"> Costo en repuestos </span>
+              <span class="value text-success"> {{tarea.costo_repuestos}} </span>
+            </li>
+            <li class="hidden-phone">
+              <span class="name"> Subtotal </span>
+              <span class="value text-success"> {{ tarea.subtotal }} </span>
+            </li>
+          </ul>
+          <br />
 
-            </div>
-        </div>
+          <!-- <div id="mainb" style="height:350px;"> -->
+          <div>
+            <p class="lead">Repuestos reservados</p>
+            <table class="table table-striped jambo_table">
+              <thead>
+                <tr class="headings">
+                  <th class="column-title">Producto </th>
+                  <th class="column-title">Cantidad </th>
+                  <th class="column-title">Precio unitario </th>
+                  <th class="column-title">Subtotal </th>
+                </tr>
+              </thead>
 
-        <div class="col-xs-3">
-            <!-- required for floating -->
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs tabs-right">
-                <li class="active"><a href="#reservaStock" data-toggle="tab">Reservar Stock.</a></li>
-                <li><a href="#datosTarea" data-toggle="tab">Detalles.</a></li>
+              <tbody>
+                {% if tarea.reservas_stock %} {% for reserva in tarea.reservas_stock %}
+                <tr class="even pointer">
+                  <td class=" ">{{ reserva.producto.nombre }}</td>
+                  <td class=" ">{{ reserva.cantidad }}</td>
+                  <td class=" ">{{ reserva.precio_unitario }}</td>
+                  <td class=" ">{{ reserva.subtotal }}</td>
+                </tr>
+                {% endfor %} {% endif %}
+              </tbody>
+            </table>
+          </div>
+          <div>
+
+            <p class="lead">Observaciones</p>
+
+            {% if tarea.observaciones_tarea %}
+            <ul class="list-unstyled timeline">
+              {% for observacion in tarea.observaciones_tarea %}
+              <li>
+                <div class="block">
+                  <div class="tags">
+
+                  </div>
+                  <div class="block_content">
+                    <h2 class="title">
+                      Observación hecha por: {{ observacion.usuario.first_name }}
+                    </h2>
+                    <div class="byline">
+                      <span>{{ observacion.fecha }}</span>
+                    </div>
+                    <p class="excerpt">{{ observacion.contenido }}
+                    </p>
+                  </div>
+                </div>
+              </li>
+              {% endfor %}
             </ul>
-            <a class="btn btn-primary" style="margin-top:3em; float:right" href="{% url 'orden:orden_ver' tarea.orden.id %}"><span style="font-weight:bold">Volver a la Orden</span></a>
+            {% else %}
+            <p>No hay observaciones para la tarea</p>
+            {% endif %}
+            <!-- end of user messages -->
+          </div>
         </div>
-        <br />
-        <div class="clearfix"></div>
-        <div>
-        </div>    
+
+        <!-- start project-detail sidebar -->
+        <div class="col-md-4 col-sm-4 col-xs-12">
+
+          <section class="panel">
+
+            <div class="x_title">
+              <h2>Orden nro: {{ tarea.orden.id }}</h2>
+              <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+              <h3 class="green">
+                <i class="fa fa-paint-brush"></i> {{ tarea.nombre}}</h3>
+
+              <p>{{ tarea.descripcion }}</p>
+              <br />
+
+              <div class="project_detail">
+
+                <p class="title">Cliente </p>
+                <p>{{ tarea.orden.cliente.nombre }}</p>
+                <p class="title">Equipo</p>
+                {% if terea.orden.equipo %}
+                <p>{{ tarea.orden.equipo }}</p>style="font-weight:bold" {% else %}
+                <p>No hay equipo vinculado</p>
+                {% endif %}
+
+              </div>
+
+
+              <br />
+
+              <div class="text-center mtop20">
+                <button class="btn btn-info" data-toggle="modal" data-target="#modalReserva" style="font-weight:bold">+ | Reserva</button>
+                {% include "tarea/reservar_stock.html" %}
+                <button class="btn btn-warning" data-toggle="modal" data-target="#modalObservacion" style="font-weight:bold">+ | Observación</button>
+                {% include "tarea/agregar_observacion.html" %}
+                <a href="{% url 'orden:orden_ver' tarea.orden.id %}">
+                  <button class="btn btn-primary" style="font-weight:bold">Volver a la Orden</button>
+                </a>
+
+              </div>
+            </div>
+          </section>
+        </div>
+        <!-- end project-detail sidebar -->
+      </div>
+
     </div>
   </div>
 </div>
-{% endblock contenido %}
-{% block scripts %}
+{% endblock contenido %} {% block scripts %}
 <script src="{% static 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
 <script src="{% static 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
 <script src="{% static 'vendors/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
@@ -67,4 +172,4 @@
 <script src="{% static 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
 <script src="/static/vendors/echarts/dist/echarts.min.js"></script>
 <script src="{% static '/js/reservar_stock.js' %}"></script>
-{% endblock scripts %}
+<script src="{% static '/js/agregar_observacion.js' %}"></script> {% endblock scripts %}

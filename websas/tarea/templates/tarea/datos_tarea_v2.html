@@ -1,6 +1,6 @@
 <div class="tab-pane" id="datosTarea">
 
-    <div class="col-md-9 col-sm-9 col-xs-12">
+    <div class="col-md-8 col-sm-8 col-xs-12">
 
         <ul class="stats-overview">
             <li>
@@ -20,64 +20,38 @@
 
         <!-- <div id="mainb" style="height:350px;"> -->
         <div>
-            {% include "tarea/datos_tarea.html"%}
+            <p class="lead">Repuestos reservados</p>
+            <table class="table table-striped jambo_table">
+            <thead>
+                <tr class="headings">
+                    <th class="column-title">Producto </th>
+                    <th class="column-title">Cantidad </th>
+                    <th class="column-title">Precio unitario </th>
+                    <th class="column-title">Subtotal </th>
+                </tr>
+            </thead>
+    
+            <tbody>
+                {% if tarea.reservas_stock %}
+                {% for reserva in tarea.reservas_stock %}
+                <tr class="even pointer">
+                    <td class=" ">{{ reserva.producto.nombre }}</td>
+                    <td class=" ">{{ reserva.cantidad }}</td>
+                    <td class=" ">{{ reserva.precio_unitario }}</td>
+                    <td class=" ">{{ reserva.subtotal }}</td>
+                </tr>
+                {% endfor %}
+                {% endif %} 
+            </tbody>
+            </table>
         </div>
         <div>
 
-            <h4>Recent Activity</h4>
-
-            <!-- end of user messages -->
-            <!-- <ul class="messages">
-    <li>
-        <img src="/static/images/img.jpg" class="avatar" alt="Avatar">
-        <div class="message_date">
-        <h3 class="date text-info">24</h3>
-        <p class="month">May</p>
-        </div>
-        <div class="message_wrapper">
-        <h4 class="heading">Desmond Davison</h4>
-        <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-        <br />
-        <p class="url">
-            <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-            <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-        </p>
-        </div>
-    </li>
-    <li>
-        <img src="/static/images/img.jpg" class="avatar" alt="Avatar">
-        <div class="message_date">
-        <h3 class="date text-error">21</h3>
-        <p class="month">May</p>
-        </div>
-        <div class="message_wrapper">
-        <h4 class="heading">Brian Michaels</h4>
-        <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-        <br />
-        <p class="url">
-            <span class="fs1" aria-hidden="true" data-icon=""></span>
-            <a href="#" data-original-title="">Download</a>
-        </p>
-        </div>
-    </li>
-    <li>
-        <img src="/static/images/img.jpg" class="avatar" alt="Avatar">
-        <div class="message_date">
-        <h3 class="date text-info">24</h3>
-        <p class="month">May</p>
-        </div>
-        <div class="message_wrapper">
-        <h4 class="heading">Desmond Davison</h4>
-        <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-        <br />
-        <p class="url">
-            <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-            <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-        </p>
-        </div>
-    </li>
-    </ul> -->
+            <p class="lead">Observaciones</p>
+            
+            {% if tarea.observaciones_tarea %}
             <ul class="list-unstyled timeline">
+                {% for observacion in tarea.observaciones_tarea %}
                 <li>
                     <div class="block">
                         <div class="tags">
@@ -85,55 +59,27 @@
                         </div>
                         <div class="block_content">
                             <h2 class="title">
-                                <a>Who Needs Sundance When You’ve Got&nbsp;Crowdfunding?</a>
+                                Observación hecha por: {{ observacion.usuario.first_name }}
                             </h2>
                             <div class="byline">
-                                <span>13 hours ago</span> by
-                                <a>Jane Smith</a>
+                                <span>{{ observacion.fecha }}</span>
                             </div>
-                            <p class="excerpt">Film festivals used to be do-or-die moments for movie makers. They were where you met the producers
-                                that could fund your project, and if the buyers liked your flick, they’d pay to Fast-forward
-                                and…
-                                <a>Read&nbsp;More</a>
+                            <p class="excerpt">{{ observacion.contenido }}
                             </p>
                         </div>
                     </div>
                 </li>
-
-
-                <li>
-                    <div class="block">
-                        <div class="tags">
-
-                            </a>
-                        </div>
-                        <div class="block_content">
-                            <h2 class="title">
-                                <a>Who Needs Sundance When You’ve Got&nbsp;Crowdfunding?</a>
-                            </h2>
-                            <div class="byline">
-                                <span>13 hours ago</span> by
-                                <a>Jane Smith</a>
-                            </div>
-                            <p class="excerpt">Film festivals used to be do-or-die moments for movie makers. They were where you met the producers
-                                that could fund your project, and if the buyers liked your flick, they’d pay to Fast-forward
-                                and…
-                                <a>Read&nbsp;More</a>
-                            </p>
-                        </div>
-                    </div>
-                </li>
+                {% endfor %}
             </ul>
+            {% else %}
+            <p>No hay observaciones para la tarea</p>
+            {% endif %}
             <!-- end of user messages -->
-
-
         </div>
-
-
     </div>
 
     <!-- start project-detail sidebar -->
-    <div class="col-md-3 col-sm-3 col-xs-12">
+    <div class="col-md-4 col-sm-4 col-xs-12">
 
         <section class="panel">
 
@@ -154,47 +100,26 @@
                     <p>{{ tarea.orden.cliente.nombre }}</p>
                     <p class="title">Equipo</p>
                     {% if terea.orden.equipo %}
-                        <p>{{ tarea.orden.equipo }}</p>
+                        <p>{{ tarea.orden.equipo }}</p>style="font-weight:bold"
                     {% else %}
                         <p>No hay equipo vinculado</p>
                     {% endif %}
 
                 </div>
 
-                <br />
-                <h5>Project files</h5>
-                <ul class="list-unstyled project_files">
-                    <li>
-                        <a href="">
-                            <i class="fa fa-file-word-o"></i> Functional-requirements.docx</a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <i class="fa fa-file-pdf-o"></i> UAT.pdf</a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <i class="fa fa-mail-forward"></i> Email-from-flatbal.mln</a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <i class="fa fa-picture-o"></i> Logo.png</a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <i class="fa fa-file-word-o"></i> Contract-10_12_2014.docx</a>
-                    </li>
-                </ul>
+
                 <br />
 
                 <div class="text-center mtop20">
-                    <a href="#" class="btn btn-sm btn-primary">Add files</a>
-                    <a href="#" class="btn btn-sm btn-warning">Report contact</a>
+                    <button class="btn btn-info" data-toggle="modal" data-target="#modalReserva" style="font-weight:bold">+ | Reserva</button>
+                    {% include "tarea/reservar_stock.html" %}    
+                    <button class="btn btn-warning" data-toggle="modal" data-target="#modalObservacion" style="font-weight:bold">+ | Observación</button>
+                    {% include "tarea/agregar_observacion.html" %}
+                    <a href="{% url 'orden:orden_ver' tarea.orden.id %}"><button class="btn btn-primary" style="font-weight:bold">Volver a la Orden</button></a>
+
                 </div>
             </div>
-
         </section>
-
     </div>
     <!-- end project-detail sidebar -->
 </div>
