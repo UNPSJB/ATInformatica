@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models import Sum
 from tarea.models import Tarea
 from decimal import Decimal
-# Create your models here.
+
 class Producto(models.Model):
     """ Modelo para la gestión de productos.
 

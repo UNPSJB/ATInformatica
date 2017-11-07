@@ -34,6 +34,15 @@ from django.core.urlresolvers import reverse_lazy
 #         print("TareaCreate RUBRO {}".format(id_rubro))
 #         return super().get(request, *args, **kwargs)
 
+class Reserva(View):
+    # TODO: sanitizar las cadenas
+    def post(self, request, *args, **kwargs):
+        tarea = Tarea.objects.get(pk=request.POST['tarea'])
+        producto = Producto.objects.get(pk=request.POST['producto'])
+        cantidad = request.POST['cantidad']
+        tarea.hacer("reservar_stock", producto=producto, cantidad=cantidad)
+        return JsonResponse({'data':'Todo mall'})
+
 class TareaCreate(View):    
     
     # TODO: sanitizar las cadenas
