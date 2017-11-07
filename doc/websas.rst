@@ -6,9 +6,10 @@ de reparación ofrecidos por AT-Informática. El sistema permite gestionar:
 
 * Clientes
 * Técnicos
-* Rubros
-* Productos
 * Tipos de servicio
+* Rubros
+* Tareas y tarifas
+* Productos y reservas
 * Órdenes de Trabajo
 
 .. toctree::
