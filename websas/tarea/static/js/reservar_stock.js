@@ -47,19 +47,22 @@ $.ajaxSetup({
 
 function reservarStock(){   
     var data = {
-        'tarea' : $('#reservaStock').attr("data-tarea-id"),
+        'tarea' : $('#modalReserva').attr("data-tarea-id"),
         'producto': $('input:checked[name=producto]')[0].dataset['idproducto'],
         'cantidad': $('#cantidad').val(),
     }
 
     $.ajax({    
-        url: $("#reservaStock").attr("ajax-url"),
+        url: $("#modalReserva").attr("ajax-url"),
         type: "POST",
         data: data,
         dataType: 'json',
         success: function(data){
-            console.log("en la success function");
-            console.log(data)
+            $('#modalReserva').modal('toggle');    
         }
     })
 }
+
+$('#modalReserva').on('hidden.bs.modal', function () {
+    location.reload()
+});
