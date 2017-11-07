@@ -20,3 +20,12 @@ function agregarObservacion(){
 $('#modalObservacion').on('hidden.bs.modal', function () {
     location.reload()
 });
+
+function texto_observacion(){
+  var texto = $('#editor-one').html().replace(/<br>/g,'')
+  .replace(/<div>/g,'\n').replace(/<\/div>/g, '')
+  .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+  .replace(/<code>/g,'').replace(/<\/code>/g,'')
+
+  return texto
+}
