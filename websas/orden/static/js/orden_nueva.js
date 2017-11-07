@@ -7,6 +7,7 @@ $('#creacion_ot').smartWizard({
     labelFinish:'Finalizar',
     onLeaveStep: function(obj, context){
         console.log("Leaving step " + context.fromStep + " to go to step " + context.toStep);
+
         return true;
     },
     onFinish: crearOrden,
@@ -58,7 +59,8 @@ function crearOrden(objs, context){
 
     for (var i in inputs){
         if (!inputs[i]) {
-            return
+            $('.ot_aviso').removeClass('hidden')
+            return 0
         }
     }
     

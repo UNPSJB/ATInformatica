@@ -68,7 +68,7 @@ function tabla_clientes(){
         var boton_agregar = [{
             text: "<b>Nuevo cliente</b>",
             action: function() {
-                location.href = tabla_html.attr('data-popup_url');
+popup = window.open(tabla_html.attr('data-popup_url'), 'Crear nuevo cliente', popup_attrs);
             },
             className: "btn-sm btn-info"
         }]
