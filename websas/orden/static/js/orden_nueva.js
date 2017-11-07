@@ -1,18 +1,23 @@
+
+
 // Inicializacion Smart Wizard
-
-
 $('#creacion_ot').smartWizard({
     labelNext:'Siguiente',
     labelPrevious:'Anterior',
     labelFinish:'Finalizar',
     onLeaveStep: function(obj, context){
         console.log("Leaving step " + context.fromStep + " to go to step " + context.toStep);
+        $('.ot_aviso').addClass('hidden')
+
         return true;
     },
     onFinish: crearOrden,
-    fixHeight: true
+    fixHeight: false
 
 });
+
+
+
 
 
 // using jQuery
@@ -58,7 +63,8 @@ function crearOrden(objs, context){
 
     for (var i in inputs){
         if (!inputs[i]) {
-            return
+            $('.ot_aviso').removeClass('hidden')
+            return 0
         }
     }
     

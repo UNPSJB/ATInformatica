@@ -1,45 +1,54 @@
-<div class="tab-pane active" id="reservaStock">
-    <p class="lead">Reservar Stock.</p>
 
-    <table id="datatable-productos" data-popup_url="{% url 'producto:producto_listar' %}" class="table table-striped table-hover table-bordered dt-responsive nowrap"
-        cellSpacing=0 width=100%>
-        <thead>
-            <tr>
-                <th></th>
-                <th>Nombre</th>
-                <th>Marca</th>
-                <th>Precio</th>
-                <th>Stock disponible</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if productos %} {% for producto in productos %}
-            <tr>
-                <td>
-                    &nbsp;
-                    <div class="radio">
-                        <input style="position:relative;" data-idproducto="{{ producto.id }}" type="radio" class="flat" name="producto">
-                    </div>
-                </td>
-                <td>{{ producto.nombre }}</td>
-                <td>{{ producto.marca }}</td>
-                <td>{{ producto.precio }}</td>
-                <td>{{ producto.stock_disponible }}</td>
-            </tr>
-
-            {% endfor %} {% else %}
-
-            <h1>No hay productos registrados</h1>
-            <!-- no importa si hay un <h1> en el body, DataTables lo saca de la tabla -->
-
-            {% endif %}
-        </tbody>
-    </table>
-    <div class="form-group">
-        <label for="cantidad">Cantidad</label>
-        <input name="cantidad" id="cantidad" type="number">
-    </div>
-    <div>
-        <button class="btn btn-info" style="float:right">Reservar</button>
+<div class="modal fade" id="modalReserva" ajax-url="{% url 'tarea:reserva_crear' %}" data-tarea-id="{{ tarea.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Reservar Stock.</h4>
+            </div>
+            <div class="modal-body">
+                    <table id="datatable-reservas" class="table table-striped table-hover table-bordered dt-responsive nowrap"
+                    cellSpacing=0 width=100%>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Nombre</th>
+                            <th>Marca</th>
+                            <th>Precio</th>
+                            <th>Stock disponible</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if productos %} {% for producto in productos %}
+                        <tr>
+                            <td>
+                                &nbsp;
+                                <div class="radio">
+                                    <input style="position:relative;" data-idproducto="{{ producto.id }}" type="radio" class="flat" name="producto">
+                                </div>
+                            </td>
+                            <td>{{ producto.nombre }}</td>
+                            <td>{{ producto.marca }}</td>
+                            <td>{{ producto.precio }}</td>
+                            <td>{{ producto.stock_disponible }}</td>
+                        </tr>
+            
+                        {% endfor %} {% else %}
+            
+                        <h1>No hay productos registrados</h1>
+            
+                        {% endif %}
+                    </tbody>
+                </table>
+                <div class="clearfix"></div>
+                <div class="form-group">
+                    <label for="cantidad">Cantidad</label>
+                    <input name="cantidad" id="cantidad" type="number">
+                </div>               
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-info" style="float:right" onclick="reservarStock()">Reservar</button>
+            </div>
+        </div>
     </div>
 </div>

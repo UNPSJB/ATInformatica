@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models import Sum
 from tarea.models import Tarea
 from decimal import Decimal
-# Create your models here.
+
 class Producto(models.Model):
     """ Modelo para la gestión de productos.
 
@@ -93,8 +93,8 @@ class ReservaStock(models.Model):
         unique_together = (("producto", "tarea"),)
 
     def save(self, *args, **kwagrs):
-        super(self.__class__, self).save(*args, **kwagrs)
         self.precio_unitario = self.producto.precio
+        super(self.__class__, self).save(*args, **kwagrs)
 
     @property
     def hay_stock(self):
