@@ -6,9 +6,9 @@
         <div class="x-panel">
             <form method="post">
                     {% csrf_token%}
-                    <h3>Eliminar el tipo de tarea {{ tipo_tarea.nombre }}?</h3>
+                    <h3>Eliminar el tipo de tarea "{{ tipo_tarea.nombre }}" del rubro "{{ rubro.nombre }}"?</h3>
                     <button class="btn btn-danger" type="submit">Eliminar</button>
-                    <a class="btn btn-default" href="{% url 'tarea:tipo_tarea_listar' %}">Cancelar</a>
+                    <a class="btn btn-default" href="{% url 'rubro:tipo_tarea_crear' pk_rubro=rubro.pk%}">Cancelar</a>
             </form>
         </div>
     </div>

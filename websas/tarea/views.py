@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import permission_required
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.template.loader import render_to_string
-from django.views.generic import TemplateView, CreateView, ListView, UpdateView, DeleteView, DetailView
+from django.views.generic import TemplateView, FormView, CreateView, ListView, UpdateView, DeleteView, DetailView
 from django.views import View
 from rubro.models import Rubro
 from .models import TipoTarea, Tarea
@@ -55,11 +55,34 @@ class TareaDetail(DetailView):
         contexto['productos'] = Producto.objects.all()
         return contexto
 
-class TipoTareaCreate(CreateView):
-    model = TipoTarea
-    template_name = 'tarea/tipo_tarea_form.html'
+class TipoTareaCreate(FormView):
+    # model = TipoTarea
+    template_name = 'tarea/tipo_tarea_detail.html'
     form_class =  TipoTareaForm
-    success_url = reverse_lazy('tarea:tipo_tarea_listar')
+    # success_url = reverse_lazy('tarea:tipo_tarea_listar')
+
+    def get(self, request, pk_rubro, *args, **kwargs):
+        print("TareaCreate: RUBRO {}".format(pk_rubro))
+        self.rubro = Rubro.objects.get(pk=pk_rubro)
+        return super().get(request, *args, **kwargs)
+
+
+    def post(self, request, pk_rubro, *args, **kwargs):
+        nombre = request.POST["nombre"]
+        descripcion = request.POST["descripcion"]
+        
+        tipo_tarea = TipoTarea(nombre=nombre, descripcion=descripcion, rubro=Rubro.objects.get(pk=pk_rubro))
+        tipo_tarea.save()
+
+        return redirect("rubro:tipo_tarea_crear", pk_rubro)
+
+    def get_context_data(self, **kwargs):
+        contexto = super().get_context_data(**kwargs)
+        print("get_context_data: RUBRO {}".format(self.rubro.id))
+        contexto["tareas"] = self.rubro.tipos_tareas.all()
+        contexto["rubro"] = self.rubro
+        return contexto
+        
 
 class TipoTareaList(ListView):
     model = TipoTarea
@@ -70,9 +93,39 @@ class TipoTareaUpdate(UpdateView):
     form_class = TipoTareaForm
     template_name = 'tarea/tipo_tarea_form.html'
     success_url = reverse_lazy('tarea:tipo_tarea_listar')
+
 class TipoTareaDelete(DeleteView):
+    model = TipoTarea
     template_name = 'tarea/tipo_tarea_delete.html'
-    success_url = reverse_lazy('tarea:tipo_tarea_listar')
+    # success_url = reverse_lazy('rubro:tipo_tarea_crear')
+
+    def get_success_url(self):
+        return reverse_lazy("rubro:tipo_tarea_crear", args=(self.pk_rubro,))
+
+    def get(self, request, *args, **kwargs):
+        #Guardamos la pk del rubro
+        self.pk_rubro = kwargs["pk_rubro"]
+        self.pk = kwargs["pk"]
+        return super().get(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+        contexto = super().get_context_data(**kwargs)
+        contexto["rubro"] = Rubro.objects.get(pk=self.pk_rubro)
+        contexto["tipo_tarea"] = TipoTarea.objects.get(pk=self.pk) 
+        return contexto
+
+    @method_decorator(permission_required('tarea.delete_tipo_tarea', login_url='rubro:rubro_listar'))
+    def post(self, request, *args, **kwargs):
+        pk_tarea = kwargs["pk"]
+        tarea = TipoTarea.objects.get(pk=pk_tarea)
+        
+        #si la tarea es la RDyP, lo mandamos al patio
+        if(tarea.nombre.lower() == "rdyp"):
+            raise Http404("No se puede eliminar la RDyP")
+
+        self.pk_rubro = kwargs["pk_rubro"]
+        return super().post(request, *args, **kwargs)
+
 
 class TipoTareaDetail(DetailView):
     model = TipoTarea
