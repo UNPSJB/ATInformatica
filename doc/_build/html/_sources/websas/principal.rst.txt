@@ -1,5 +1,0 @@
-Pantalla principal
-==================
-
-.. todo::
-    Todo.

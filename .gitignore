@@ -474,3 +474,6 @@ paket-files/
 # should be stored in the .pubxml.user file.
 
 # End of https://www.gitignore.io/api/vim,venv,linux,python,django,virtualenv,visualstudio,visualstudiocode
+
+# build de Sphinx
+doc/_*
