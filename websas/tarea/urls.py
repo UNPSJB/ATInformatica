@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.conf.urls import url
-from .views import ReservaCreate, ObservacionCreate, TareaCreate, TareaDetail, TipoTareaCreate, TipoTareaList, TipoTareaDelete, TipoTareaUpdate, TipoTareaDetail
+from .views import ReservaCreate, ObservacionCreate, TareaCreate, TareaDetail, TipoTareaCreate, TipoTareaDelete, TipoTareaUpdate
 urlpatterns = [
     url(r'^agregar$', TareaCreate.as_view(), name='tarea_crear'),
     url(r'^detalle/(?P<pk>\d+)$', TareaDetail.as_view(), name='tarea_ver'),

@@ -10,6 +10,7 @@ from .models import TipoTarea, Tarea
 from .forms import TipoTareaForm
 from orden.models import Orden
 from producto.models import Producto
+from servicio.models import TipoServicio
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
 # Create your views here.
@@ -79,7 +80,6 @@ class TipoTareaCreate(FormView):
     # success_url = reverse_lazy('tarea:tipo_tarea_listar')
 
     def get(self, request, pk_rubro, *args, **kwargs):
-        print("TareaCreate: RUBRO {}".format(pk_rubro))
         self.rubro = Rubro.objects.get(pk=pk_rubro)
         return super().get(request, *args, **kwargs)
 
@@ -95,26 +95,38 @@ class TipoTareaCreate(FormView):
 
     def get_context_data(self, **kwargs):
         contexto = super().get_context_data(**kwargs)
-        print("get_context_data: RUBRO {}".format(self.rubro.id))
         contexto["tareas"] = self.rubro.tipos_tareas.all()
         contexto["rubro"] = self.rubro
         return contexto
         
 
-class TipoTareaList(ListView):
-    model = TipoTarea
-    template_name = 'tarea/tipos_tareas.html'
-
 class TipoTareaUpdate(UpdateView):
     model = TipoTarea
     form_class = TipoTareaForm
-    template_name = 'tarea/tipo_tarea_form.html'
-    success_url = reverse_lazy('tarea:tipo_tarea_listar')
+    template_name = 'tarea/tipo_tarea_edit.html'
+
+    def get_context_data(self, **kwargs):
+        contexto = super().get_context_data(**kwargs)
+        contexto["tipo_servicios"] = TipoServicio.objects.all() 
+        contexto["tipo_tarea"] = TipoTarea.objects.get(pk=self.pk)
+        return contexto
+
+    def get(self, request, *args, **kwargs):
+        #Guardamos la pk del rubro
+        self.pk_rubro = kwargs["pk_rubro"]
+        self.pk = kwargs["pk"]
+        return super().get(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy("rubro:tipo_tarea_crear", args=(self.pk_rubro,))
+
+    def post(self, request, *args, **kwargs):
+        self.pk_rubro = kwargs["pk_rubro"]
+        return super().post(request, *args, **kwargs)
 
 class TipoTareaDelete(DeleteView):
     model = TipoTarea
     template_name = 'tarea/tipo_tarea_delete.html'
-    # success_url = reverse_lazy('rubro:tipo_tarea_crear')
 
     def get_success_url(self):
         return reverse_lazy("rubro:tipo_tarea_crear", args=(self.pk_rubro,))
