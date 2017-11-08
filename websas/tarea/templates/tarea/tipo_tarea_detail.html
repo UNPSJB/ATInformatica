@@ -81,7 +81,7 @@
                   <tr>
                     <th>Tarea</th>
                     <th>Descripción</th>
-                    <th>Tarifas</th>
+                    <th>Editar</th>
                     <th>Eliminar</th>
                   </tr>
                 </thead>
@@ -95,7 +95,7 @@
                       <td>{{ tarea.nombre }}</td>
                       <td>{{ tarea.descripcion }}</td>
                       <td>
-                        <a href="#">
+                        <a href="{% url 'rubro:tipo_tarea_editar' pk_rubro=rubro.pk pk=tarea.pk %}">
                           <i class="fa fa-edit"></i>
                         </a>
                       </td>

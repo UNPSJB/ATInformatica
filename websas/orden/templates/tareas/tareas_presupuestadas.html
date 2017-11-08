@@ -12,7 +12,7 @@
                 <th class="column-title">Tarifa </th>
                 <th class="column-title">Costo repuestos </th>
                 <th class="column-title">Subtotal </th>
-
+                <th></th>
                 <th class="bulk-actions" colspan="7">
                     <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
                 </th>
@@ -29,6 +29,7 @@
                 <td class=" ">{{ tarea.nombre }}</td>
                 <td class=" ">{{ tarea.precio }}</td>
                 <td class="a-right a-right ">{{ tarea.costo_repuestos }}</td>
+                <td class=" ">{{ tarea.subtotal }}</td>
                 <td class=" last"><a href="{% url 'tarea:tarea_ver' tarea.id %}"><i class="fa fa-eye"></i></a></td>
             </tr>
             {% endfor %}
