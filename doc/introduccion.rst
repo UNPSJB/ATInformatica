@@ -6,9 +6,9 @@ pensado principalmente como una plataforma Web para uso interno. No obstante, es
 de la empresa lo dicten, ofreciendo capacidad para manejar trabajos tercerizados, o cuentas de usuario de clientes
 para que puedan realizar el seguimiento del servicio contratado.
 
-.. image:: imagenes/AT-logo.jpg
+.. image:: /imagenes/AT-logo.jpg
     :align: center
-.. image:: imagenes/AT-titulo.gif
+.. image:: /imagenes/AT-titulo.gif
     :align: center
 
 

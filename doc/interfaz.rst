@@ -16,6 +16,7 @@ de reparación ofrecidos por AT-Informática. El sistema permite gestionar:
     :caption: Pantallas disponibles:
 
     interfaz/login
+    interfaz/primer_login
     interfaz/principal
     interfaz/clientes
     interfaz/tecnicos

@@ -10,11 +10,11 @@
     :align: center
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :numbered:
    :caption: Contenido:
 
    introduccion
-   websas
+   interfaz
    howto
    desarrollo
