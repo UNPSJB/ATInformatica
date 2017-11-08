@@ -21,16 +21,17 @@
             </thead>
 
             <tbody>
-                {% if tareas_presupuestadas %}
-                {% for tarea in tareas_presupuestadas %}
+                {% if tareas_pendientes %}
+                {% for tarea in tareas_pendientes %}
                 <tr class="even pointer">
                 <td class="a-center ">
                     <input type="checkbox" class="flat" name="table_records">
                 </td>
                 <td class=" ">{{ tarea.nombre }}</td>
                 <td class=" ">{{ tarea.precio }}</td>
-                <td class="a-right a-right ">$7.45</td>
-                <td class=" last"><a href="#">View</a>
+                <td class="a-right a-right ">{{ tarea.costo_repuestos }}</td>
+                <td class=" ">{{ tarea.subtotal }}</td>
+                <td class=" last"><a href="{% url 'tarea:tarea_ver' tarea.id %}"><i class="fa fa-eye"></i></a></td>
                 </td>
                 </tr>
                 {% endfor %}

@@ -129,8 +129,9 @@
                 <p>{{ tarea.orden.cliente.nombre }}</p>
                 <p class="title">Equipo</p>
                 {% if terea.orden.equipo %}
-                <p>{{ tarea.orden.equipo }}</p>style="font-weight:bold" {% else %}
-                <p>No hay equipo vinculado</p>
+                  <p>{{ tarea.orden.equipo }}</p>
+                {% else %}
+                  <p>No hay equipo vinculado</p>
                 {% endif %}
 
               </div>

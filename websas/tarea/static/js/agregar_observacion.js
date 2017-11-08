@@ -1,7 +1,7 @@
 function agregarObservacion(){   
     var data = {
         'tarea' : $('#modalObservacion').attr("data-tarea-id"),
-        'contenido': $('textarea').val(),
+        'contenido': texto_observacion(),
     }
 
     console.log(data);

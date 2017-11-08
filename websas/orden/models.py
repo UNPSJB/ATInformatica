@@ -28,11 +28,23 @@ class Orden(models.Model):
     usuario = models.ForeignKey(Usuario, null=True, blank=True, related_name="ordenes")
     tecnico = models.ForeignKey(Tecnico, null=True, blank=True, related_name="ordenes")
     descripcion = models.CharField(max_length=500, null=True, blank=True)
+    fecha = models.DateTimeField(auto_now=True)
     cerrada = models.BooleanField(default=False)
     cancelada = models.BooleanField(default=False)
 
     def __str__(self):
         return "{} {}".format(self.cliente, self.descripcion)
+
+    @property
+    def condicion(self):
+        condicion = ""
+        if self.cerrada:
+            condicion = "cerrada"
+        elif self.cancelada:
+            condicion = "cancelada"
+        else:
+            condicion = "abierta"
+        return condicion
 
     def agregar_tarea(self, tipo_tarea, observacion):
         
@@ -164,3 +176,6 @@ class Equipo(models.Model):
     nro_serie = models.IntegerField(unique=True)
     descripcion = models.CharField(max_length=250)
     rubro = models.ForeignKey(Rubro, null=True, blank=True, related_name = "equipos")
+
+    def __str__(self):
+        return "{}".format(self.descripcion)
