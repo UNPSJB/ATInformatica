@@ -27,7 +27,7 @@
         {% if user.is_superuser %}
         <li><a href="/admin/"><i class="fa fa-cog"></i>Administración</a></li>
         {% endif %}
-        <li><a><i class="fa fa-bar-chart-o"></i> Ordenes de trabajo <span class="fa fa-chevron-down"></span></a>
+        <li><a><i class="fa fa-bar-chart-o"></i> Órdenes de trabajo <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
             <li><a href="{% url 'orden:orden_crear' %}">Crear</a></li>
           </ul>

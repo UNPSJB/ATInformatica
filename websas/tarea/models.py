@@ -1,6 +1,8 @@
 from django.db import models
 from rubro.models import Rubro
 from usuario.models import Usuario
+from servicio.models import TipoServicio
+from tarifa.models import Tarifa
 from decimal import Decimal
 
 # Create your models here.
@@ -15,8 +17,19 @@ class TipoTarea(models.Model):
     nombre = models.CharField(max_length=30)
     descripcion = models.CharField(max_length=100, null=True, blank=True)
     rubro = models.ForeignKey(
-        Rubro, related_name="tipos_tareas"
+        Rubro, related_name="tipos_tareas",
+        on_delete=models.CASCADE
     )
+
+    def save(self, *args, **kwargs):
+        
+        is_new = self.pk is None
+
+        super(self.__class__, self).save(*args, **kwargs)
+
+        if is_new:
+            for ts in TipoServicio.objects.all():
+                Tarifa(tipo_tarea=self, tipo_servicio=ts).save()
 
     def __str__(self):
         return "{}".format(self.nombre)

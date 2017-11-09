@@ -9,23 +9,19 @@ from .models import Tarifa
 from .forms import TarifaForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
+from tarea.models import TipoTarea
+from decimal import Decimal
 # Create your views here.
 
 class TarifaCreate(View):
-    # username = request.GET.get('username', None)
-    # data = {
-    #     'is_taken': User.objects.filter(username__iexact=username).exists()
-    # }
-    # if data['is_taken']:
-    #     data['error_message'] = 'A user with this username already exists.'
     @method_decorator(permission_required('tarifa.add_tarifa', login_url='rubro:rubro_listar'))
     def post(self, request, *args, **kwargs):
-        print(request.POST.get("tipo_tarea"))
-        print(request.POST.get("tipo_servicio"))
-        print(request.POST.get("precio"))
-        
+        tarifa = int(request.POST["tarifa"])
+        precio = request.POST.get("precio")
+        Tarifa.objects.filter(pk=tarifa).update(precio=Decimal(precio))        
+
         data = {
-            "coso": "coseno"
+            "precio": precio,
         }
         return JsonResponse(data)
 
