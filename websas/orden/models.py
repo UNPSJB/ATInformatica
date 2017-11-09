@@ -27,7 +27,7 @@ class Orden(models.Model):
     tipo_servicio = models.ForeignKey(TipoServicio, null=True, blank=True, related_name="ordenes")
     usuario = models.ForeignKey(Usuario, null=True, blank=True, related_name="ordenes")
     tecnico = models.ForeignKey(Tecnico, null=True, blank=True, related_name="ordenes")
-    descripcion = models.CharField(max_length=500, null=True, blank=True)
+    descripcion = models.TextField(null=True, blank=True)
     fecha = models.DateTimeField(auto_now=True)
     cerrada = models.BooleanField(default=False)
     cancelada = models.BooleanField(default=False)

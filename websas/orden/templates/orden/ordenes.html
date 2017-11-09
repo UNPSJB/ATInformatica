@@ -43,7 +43,7 @@
           <tr>
             <td>{{ orden.fecha }}</td>
             <td>{{ orden.cliente.persona.nombre }}</td>
-            <td>{{ orden.descripcion }} </td>
+            <td>{% autoescape off %}{{ orden.descripcion }}{% endautoescape %} </td>
             <td> 
               {% if orden.equipo %} 
                 {{ orden.equipo }} 

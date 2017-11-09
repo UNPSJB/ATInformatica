@@ -64,7 +64,7 @@ function crearOrden(objs, context){
     var inputservicio = $('input:checked[name=tipo_servicio]')[0]
     var inputrubro = $('input:checked[name=rubro]')[0]
     var inputequipo = $('input:checked[name=equipo]')[0]
-    var observacion = texto_observacion()
+    var observacion = $('#editor-one').html()
 
     var inputs = [inputcliente,inputtecnico,inputservicio, inputservicio,inputrubro,inputequipo]
 
