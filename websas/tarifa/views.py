@@ -13,7 +13,7 @@ from tarea.models import TipoTarea
 from decimal import Decimal
 # Create your views here.
 
-class TarifaCreate(View):
+class TarifaUpdate(View):
     @method_decorator(permission_required('tarifa.add_tarifa', login_url='rubro:rubro_listar'))
     def post(self, request, *args, **kwargs):
         tarifa = int(request.POST["tarifa"])
@@ -31,22 +31,22 @@ class TarifaCreate(View):
 #     form_class =  TarifaForm
 #     success_url = reverse_lazy('tarifa:tarifa_listar')
 
-class TarifaList(ListView):
-    model = Tarifa
-    template_name = 'tarifa/tarifas.html'
+# class TarifaList(ListView):
+#     model = Tarifa
+#     template_name = 'tarifa/tarifas.html'
 
-class TarifaUpdate(UpdateView):
-    model = Tarifa
-    form_class = TarifaForm
-    template_name = 'tarifa/tarifa_form.html'
-    success_url = reverse_lazy('tarifa:tarifa_listar')
-class TarifaDelete(DeleteView):
-    model = Tarifa
-    template_name = 'tarifa/tarifa_delete.html'
-    success_url = reverse_lazy('tarifa:tarifa_listar')
+# class TarifaUpdate(UpdateView):
+#     model = Tarifa
+#     form_class = TarifaForm
+#     template_name = 'tarifa/tarifa_form.html'
+#     success_url = reverse_lazy('tarifa:tarifa_listar')
+# class TarifaDelete(DeleteView):
+#     model = Tarifa
+#     template_name = 'tarifa/tarifa_delete.html'
+#     success_url = reverse_lazy('tarifa:tarifa_listar')
 
-class TarifaDetail(DetailView):
-    model = Tarifa
-    context_object_name = 'tarifa'
-    template_name = 'tarifa/tarifa_detail.html'
-    success_url = reverse_lazy('tarifa:tarifa_listar')
+# class TarifaDetail(DetailView):
+#     model = Tarifa
+#     context_object_name = 'tarifa'
+#     template_name = 'tarifa/tarifa_detail.html'
+#     success_url = reverse_lazy('tarifa:tarifa_listar')
