@@ -10,7 +10,4 @@ Desde aquí, el sistema lo identificará y se encargará de presentarle las opci
 * En el campo "Usuario" deberá ingresar su nombre de usuario, asignado por el administrador.
 * En el campo "Contraseña" deberá ingresar su clave.
 * El botón "Ingresar" valida su nombre de usuario y contraseña, y finalmente le da acceso al sistema.
-
-.. todo::
-    Recortar las imagenes.
     
