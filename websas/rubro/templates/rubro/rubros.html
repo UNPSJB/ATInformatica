@@ -26,6 +26,9 @@
           <tr>
             <th>Nombre</th>
             <th>Descripción</th>
+
+            <th>Ver tipos de tarea</th>
+            
             {% if perms.rubro.change_rubro %}
             <th>Editar</th>
             {% endif %}
@@ -42,6 +45,17 @@
             <tr>
               <td>{{ rubro.nombre }}</td>
               <td>{{ rubro.descripcion }} </td>
+
+              {% if perms.rubro.change_rubro %}
+              <td>
+                <a href="{% url 'rubro:tipo_tarea_crear' rubro.id %}">
+                  <i class="fa fa-eye"></i>
+                </a>
+              </td>
+              {% endif %}
+
+
+
               {% if perms.rubro.change_rubro %}              
               <td>
                 <a href="{% url 'rubro:rubro_editar' rubro.id %}"><i class="fa fa-edit"></i></a>

@@ -1,4 +1,4 @@
-var tabla = $("#datatable-tipo-tarea-edit").DataTable({
+var tabla = $("#datatable-tipo-tarea-tarifar").DataTable({
     responsive: true,
     keys: true,
     dom: "Bfrtip",
@@ -17,38 +17,37 @@ var tabla = $("#datatable-tipo-tarea-edit").DataTable({
     },],
 });
 
-$('#datatable-tipo-tarea-edit tbody').on('change', 'td', function () {
+var tarifas_actualizadas = []
 
-    //recuperamos el tipo de servicio y el precio de la tarifa
+$('#datatable-tipo-tarea-tarifar tbody').on('change', 'td', function () {
+
+    //recuperamos el tipo de servicio
     var tipo_servicio = tabla.row(this).data()[0]
-    var id = "#tarifa_" + tipo_servicio.replace(/\s/g, '')
-    var precio = tabla.cell(this).$(id).val()
-
-    console.log("tipo_servicio: ", tipo_servicio)
-    console.log("id: ", id)
-    console.log(precio)
+    //armamos el id de la celda y recuperamos el valor de la tarifa
+    var id = "#tarifa_" + tipo_servicio.replace(/\s/g, '').toLowerCase()
+    var precio = parseInt(tabla.cell(this).$(id).val())
+    //recuperamos la pk de la tarifa
+    var tarifa = tabla.cell(this).$(id).attr("tarifa")
 
     //mandamos los datos al servidor
     $.ajax({
         //la url a donde hay que pegarle en el servidor esta en el html de la tabla
         //de esta forma, podemos tener el .js separado del .html
-        url: $("#datatable-tipo-tarea-edit").attr("ajax-url"),
+        url: $("#datatable-tipo-tarea-tarifar").attr("ajax-url"),
         type: "POST",
         data: {
-            "tipo_tarea": $("#datatable-tipo-tarea-edit").attr("tipo-tarea"),
-            "tipo_servicio": tipo_servicio,
+            "tarifa": tarifa,
             "precio": precio
         },
         dataType: 'json',
         success: function (data) {
-            console.log("en la success function");
-            console.log(data)
-        }
-    })
 
-    
+        }
+    }) 
+
 });
 
+$("form").submit(function(e){});
 
 
 

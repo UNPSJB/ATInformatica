@@ -4,7 +4,7 @@
     {% if user.is_superuser %}
     <li><a href="/admin/"><i class="fa fa-cog"></i>Administración</a></li>
     {% endif %}
-    <li><a><i class="fa fa-bar-chart-o"></i> Ordenes de trabajo <span class="fa fa-chevron-down"></span></a>
+    <li><a><i class="fa fa-bar-chart-o"></i> Órdenes de trabajo <span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
         {% if perms.orden.add_orden %}
         <li><a href="{% url 'orden:orden_crear' %}">Crear</a></li>
@@ -12,12 +12,12 @@
         <li><a href="{% url 'orden:orden_listar' %}">Listar</a></li>
       </ul>
     </li>
-    <li><a><i class="fa fa-cubes"></i> equipos<span class="fa fa-chevron-down"></span></a>
+    <li><a><i class="fa fa-cubes"></i> Equipos <span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
           {% if perms.orden.add_equipo %}
-          <li><a href="{% url 'orden:equipo_crear' %}">agregar</a></li>
+          <li><a href="{% url 'orden:equipo_crear' %}">Agregar</a></li>
           {% endif %}
-        <li><a href="{% url 'orden:equipo_listar' %}">listar</a></li>
+        <li><a href="{% url 'orden:equipo_listar' %}">Listar</a></li>
       </ul>
     </li>
     <li><a><i class="fa fa-desktop"></i>Productos<span class="fa fa-chevron-down"></span></a>

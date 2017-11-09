@@ -8,12 +8,10 @@ class TipoTareaForm(forms.ModelForm):
         fields = [
             'nombre',
             'descripcion',
-#            'rubro'
         ]
         labels = {
             'nombre':'Nombre',
             'descripcion':'Descripción',
- #           'rubro':'Rubro'          
         }
         widgets = {
             'nombre': forms.TextInput(attrs={'class':'form-control col-md-7 col-xs-12'}),

@@ -1,14 +1,14 @@
 from django.db import models
-from tarea.models import TipoTarea
-from servicio.models import TipoServicio
 from decimal import Decimal
 # Create your models here.
 class Tarifa(models.Model):
     tipo_tarea = models.ForeignKey(
-        TipoTarea, related_name="tarifas"
+        "tarea.TipoTarea", related_name="tarifas",
+        on_delete=models.CASCADE
     )
     tipo_servicio = models.ForeignKey(
-        TipoServicio, related_name="tarifas"
+        "servicio.TipoServicio", related_name="tarifas",
+        on_delete=models.CASCADE
     )
     precio = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0'))
 

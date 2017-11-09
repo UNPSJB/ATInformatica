@@ -5,7 +5,7 @@
         <div class="row">
           <div class="x_panel">
             <div class="x_title">
-              <h2>Tipos de Tarea del rubro <b>{{ rubro.nombre }}</b> <small>gestión de tipo de tarea</small></h2>
+              <h2>Tipos de tarea del rubro <b>{{ rubro.nombre }}</b> <small>gestión de tipo de tarea</small></h2>
               <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                 </li>
@@ -81,6 +81,7 @@
                   <tr>
                     <th>Tarea</th>
                     <th>Descripción</th>
+                    <th>Tarifar</th>
                     <th>Editar</th>
                     <th>Eliminar</th>
                   </tr>
@@ -94,12 +95,20 @@
                     <tr>
                       <td>{{ tarea.nombre }}</td>
                       <td>{{ tarea.descripcion }}</td>
+
                       <td>
-                        <a href="{% url 'rubro:tipo_tarea_editar' pk_rubro=rubro.pk pk=tarea.pk %}">
-                          <i class="fa fa-edit"></i>
+                        <a href="{% url 'rubro:tipo_tarea_tarifar' pk_rubro=rubro.pk pk=tarea.pk %}">
+                          <i class="fa fa-money"></i>
                         </a>
                       </td>
+
                       {% if tarea.nombre == "RDyP" %}
+                      <td>
+                        <a href="{% url 'rubro:tipo_tarea_editar' pk_rubro=rubro.pk pk=tarea.pk %}">
+                          <i class="fa fa-edit hidden"></i>
+                        </a>
+                      </td>
+
                       <td>
                         <a href="{% url 'rubro:tipo_tarea_eliminar' pk_rubro=rubro.pk pk=tarea.pk %}">
                           <i class="fa fa-trash hidden"></i>
@@ -107,11 +116,19 @@
                       </td>
                       {% else %}
                       <td>
+                        <a href="{% url 'rubro:tipo_tarea_editar' pk_rubro=rubro.pk pk=tarea.pk %}">
+                          <i class="fa fa-edit"></i>
+                        </a>
+                      </td>
+
+                      <td>
                         <a href="{% url 'rubro:tipo_tarea_eliminar' pk_rubro=rubro.pk pk=tarea.pk %}">
                           <i class="fa fa-trash"></i>
                         </a>
                       </td>
                       {% endif %}
+
+
                     </tr>       
                     {% endfor %}
                 </tbody>

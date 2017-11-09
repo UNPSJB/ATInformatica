@@ -21,11 +21,7 @@ class RubroCreate(CreateView):
 
     @method_decorator(permission_required('rubro.add_rubro', login_url='rubro:rubro_listar'))
     def post(self, request, *args, **kwargs):
-        res = super().post(request, *args, **kwargs)
-        rdyp = TipoTarea(
-            nombre="RDyP", descripcion="Revisión, Diagnóstico, y Presupuesto", rubro=self.object)
-        rdyp.save()
-        return res
+        return super().post(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse_lazy('rubro:tipo_tarea_crear', args=(self.object.id, ))
@@ -37,10 +33,8 @@ class RubroUpdate(UpdateView):
     model = Rubro
     template_name = 'rubro/rubro_detail.html'
     form_class = RubroForm
+    success_url = reverse_lazy("rubro:rubro_listar")
 
-    def get_success_url(self):
-        print("RubroUpdate RUBRO {}".format(self.object.id))
-        return reverse_lazy('rubro:tipo_tarea_crear', args=(self.object.id, ))
 
     @method_decorator(permission_required('rubro.change_rubro', login_url='rubro:rubro_listar'))
     def post(self, request, *args, **kwargs):
