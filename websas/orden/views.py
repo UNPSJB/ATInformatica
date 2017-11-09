@@ -36,10 +36,11 @@ class OrdenCreate(CreateView):
         servicio = TipoServicio.objects.get(pk=request.POST.get('servicio'))
         tecnico = Persona.objects.get(pk=request.POST.get('tecnico'))
         equipo = Equipo.objects.get(pk=request.POST.get('equipo'))
+        descripcion = request.POST.get('observacion')
         print(persona, rubro, servicio,tecnico)
         
         if persona.sos(Cliente):
-            orden = Orden(usuario=request.user, cliente=persona.como(Cliente), tecnico=tecnico.como(Tecnico), rubro=rubro, tipo_servicio=servicio, descripcion="Alto bolonqui",equipo=equipo) 
+            orden = Orden(usuario=request.user, cliente=persona.como(Cliente), tecnico=tecnico.como(Tecnico), rubro=rubro, tipo_servicio=servicio, descripcion=descripcion,equipo=equipo) 
             orden.save()
             
             return JsonResponse({'data':'Todo pioooola'})
