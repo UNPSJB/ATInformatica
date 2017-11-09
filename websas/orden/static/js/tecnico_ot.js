@@ -30,7 +30,5 @@ function tabla_tecnicos(){
         }, ],
     });
 
-    console.log('dtabla')
-    console.log(dtabla)
     return dtabla
 }

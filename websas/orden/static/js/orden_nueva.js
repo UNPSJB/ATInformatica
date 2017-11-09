@@ -17,8 +17,14 @@ $('#creacion_ot').smartWizard({
 });
 
 
+function texto_observacion(){
+  var texto = $('#editor-one').html().replace(/<br>/g,'')
+  .replace(/<div>/g,'\n').replace(/<\/div>/g, '')
+  .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+  .replace(/<code>/g,'').replace(/<\/code>/g,'')
 
-
+  return texto
+}
 
 // using jQuery
 function getCookie(name) {
@@ -58,6 +64,7 @@ function crearOrden(objs, context){
     var inputservicio = $('input:checked[name=tipo_servicio]')[0]
     var inputrubro = $('input:checked[name=rubro]')[0]
     var inputequipo = $('input:checked[name=equipo]')[0]
+    var observacion = texto_observacion()
 
     var inputs = [inputcliente,inputtecnico,inputservicio, inputservicio,inputrubro,inputequipo]
 
@@ -73,7 +80,8 @@ function crearOrden(objs, context){
         'tecnico':inputtecnico.dataset['idtecnico'],
         'servicio':inputservicio.dataset['idtiposervicio'],
         'rubro':inputrubro.dataset['idrubro'],
-        'equipo':inputequipo.dataset['idequipo']
+        'equipo':inputequipo.dataset['idequipo'],
+        'observacion':observacion
     }
 
     console.log(data)
@@ -87,6 +95,7 @@ function crearOrden(objs, context){
         success: function(data){
             console.log("en la success function");
             console.log(data)
+            location.href = '/orden/listar'
         }
     })
 }
