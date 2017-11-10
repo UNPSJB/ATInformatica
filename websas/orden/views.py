@@ -59,7 +59,7 @@ class OrdenDelete(DeleteView):
 
     @method_decorator(permission_required('orden.delete_orden', login_url='orden:orden_listar'))        
     def post(self, request, *args, **kwargs):
-        return super.post(request,*args, **kwargs)
+        return super(self.__class__, self).post(request,*args, **kwargs)
 
 class OrdenDetail(DetailView):
     model = Orden
