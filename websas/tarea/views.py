@@ -30,6 +30,23 @@ class ObservacionCreate(View):
         contenido = request.POST['contenido']
         tarea.hacer("agregar_observacion", usuario=request.user, contenido=contenido)
         return JsonResponse({'data':'Todo mall'})
+
+class TareaAceptar(View):
+
+    def post(self, request, *args, **kwargs):
+        orden = Orden.objects.get(pk=request.POST['orden_id'])
+        tareas = request.POST.getlist('tareas[]')
+        orden.aceptar_tareas(tareas)
+        return JsonResponse({'data':'Todo mall'})
+
+class TareaFinalizar(View):
+
+    def post(self, request, *args, **kwargs):
+        orden = Orden.objects.get(pk=request.POST['orden_id'])
+        tareas = request.POST.getlist('tareas[]')
+        orden.finalizar_tareas(tareas)
+        return JsonResponse({'data':'Todo mall'})
+
 class TareaCreate(View):    
     
     # TODO: sanitizar las cadenas

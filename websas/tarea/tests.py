@@ -85,10 +85,10 @@ class TareaTest(TestCase):
         except Exception as e:
             self.assertTrue(e)
 
-        # Testeamos que el tipo de tarea sigue sin tareas asociadas, con lo cual la tarea no se ha creado
+        # Testeamos que el tipo de tarea sigue sin tareas asociadas
         self.assertEqual(self.tipo_tarea.tareas.all().count(), 0)
 
-    def test_sos_estado_nombreEstado(self):
+    def test_sos_estado(self):
         # Test para los métodos que preguntan si una tarea está en un determinado estado
 
         # Creamos un tipo de tarea y una tarifa para la creación de la tarea
@@ -103,9 +103,6 @@ class TareaTest(TestCase):
             orden = self.orden,
             observacion="Guardar el disco viejo")
         
-        # Se crean las inscancias de cada estado asignandosele la tarea. De este modo se hacen las pruebas 
-        # sin poner de por medio los métodos que hacen transicionar la tarea (éstos últimos se testean mas adelante)
-
         tarea_presupuestada = TareaPresupuestada(self.tarea)
         self.assertTrue(self.tarea.estas_presupuestada)
 

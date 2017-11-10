@@ -1,44 +1,49 @@
 <!-- Tab TAREAS PRESUPUESTADAS -->
-<div class="tab-pane active" id="tareasPresupuestadas">
-    <p class="lead">Tareas Presupuestadas.</p>
-    <div class="table-responsive">
-        <table class="table table-striped jambo_table bulk_action">
-        <thead>
-            <tr class="headings">
-                <th>
-                    <input type="checkbox" id="check-all" class="flat">
-                </th>
-                <th class="column-title">Tarea </th>
-                <th class="column-title">Tarifa </th>
-                <th class="column-title">Costo repuestos </th>
-                <th class="column-title">Subtotal </th>
-                <th></th>
-                <th class="bulk-actions" colspan="7">
-                    <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
-                </th>
-            </tr>
-        </thead>
+<div class="tab-pane active" id="tareasPresupuestadas" ajax-url="{% url 'tarea:tarea_aceptar' %}" data-orden-id="{{ orden.id }}">
+  <p class="lead">Tareas Presupuestadas.</p>
+  <div class="table-responsive">
+    <table class="table table-striped jambo_table bulk_action">
+      <thead>
+        <tr class="headings">
+          <th>
+            <input type="checkbox" id="check-all" class="flat">
+          </th>
+          <th class="column-title">Tarea </th>
+          <th class="column-title">Tarifa </th>
+          <th class="column-title">Costo repuestos </th>
+          <th class="column-title">Subtotal </th>
+          <th></th>
+          <th class="bulk-actions" colspan="7">
+            <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions (
+              <span class="action-cnt"> </span> )
+              <i class="fa fa-chevron-down"></i>
+            </a>
+          </th>
+        </tr>
+      </thead>
 
-        <tbody>
-            {% if tareas_presupuestadas %}
-            {% for tarea in tareas_presupuestadas %}
-            <tr class="even pointer">
-                <td class="a-center ">
-                    <input type="checkbox" class="flat" name="table_records">
-                </td>
-                <td class=" ">{{ tarea.nombre }}</td>
-                <td class=" ">{{ tarea.precio }}</td>
-                <td class="a-right a-right ">{{ tarea.costo_repuestos }}</td>
-                <td class=" ">{{ tarea.subtotal }}</td>
-                <td class=" last"><a href="{% url 'tarea:tarea_ver' tarea.id %}"><i class="fa fa-eye"></i></a></td>
-            </tr>
-            {% endfor %}
-            {% endif %} 
-        </tbody>
-        </table>
-        <button class="btn btn-success">Aceptar tareas</button>
-        <button class="btn btn-primary" data-toggle="modal" data-target="#modalTarea">Agregar tareas</button>
-        {% include "tareas/agregar_tarea.html" %}
+      <tbody>
+        {% if tareas_presupuestadas %} {% for tarea in tareas_presupuestadas %}
+        <tr class="even pointer">
+          <td class="a-center ">
+            <input type="checkbox" data-tarea-id="{{ tarea.id }}" class="flat" name="table_records">
+          </td>
+          <td class=" ">{{ tarea.nombre }}</td>
+          <td class=" ">{{ tarea.precio }}</td>
+          <td class="a-right a-right ">{{ tarea.costo_repuestos }}</td>
+          <td class=" ">{{ tarea.subtotal }}</td>
+          <td class=" last">
+            <a href="{% url 'tarea:tarea_ver' tarea.id %}">
+              <i class="fa fa-eye"></i>
+            </a>
+          </td>
+        </tr>
+        {% endfor %} {% endif %}
+      </tbody>
+    </table>
+    <button class="btn btn-success" onclick="aceptarTareas()">Aceptar tareas</button>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#modalTarea">Agregar tareas</button>
+    {% include "tareas/agregar_tarea.html" %}
 
-    </div>                  
+  </div>
 </div>
