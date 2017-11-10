@@ -30,6 +30,7 @@ class OrdenCreate(CreateView):
         contexto['servicios'] = TipoServicio.objects.all()
         return contexto
 
+    @method_decorator(permission_required('orden.add_orden', login_url='orden:orden_listar'))        
     def post(self, request, *args, **kwargs):
         persona = Persona.objects.get(pk=request.POST.get('cliente'))
         rubro = Rubro.objects.get(pk=request.POST.get('rubro'))
@@ -56,6 +57,10 @@ class OrdenDelete(DeleteView):
     template_name = 'orden/orden_delete.html'
     success_url = reverse_lazy('orden:orden_listar')
 
+    @method_decorator(permission_required('orden.delete_orden', login_url='orden:orden_listar'))        
+    def post(self, request, *args, **kwargs):
+        return super(self.__class__, self).post(request,*args, **kwargs)
+
 class OrdenDetail(DetailView):
     model = Orden
     template_name = 'orden/orden_ver.html'
@@ -67,12 +72,18 @@ class OrdenDetail(DetailView):
         contexto['tipos_tareas'] = orden.rubro.tipos_tareas_related
         contexto['tareas_presupuestadas'] = orden.tareas_presupuestadas
         return contexto
+
+    @method_decorator(permission_required('orden.change_orden', login_url='orden:orden_listar'))        
+    def post(self, request, *args, **kwargs):
+        return super.post(request,*args, **kwargs)
 class ClienteListado(ListView):
     def get(self, request, *args, **kwargs):
         return JsonResponse({'data':render_to_string('orden/listado_clientes.html',{'clientes':Cliente.objects.all()})})
 
 class EquipoListado(ListView):
     def get(self, request, *args, **kwargs):
+        rubro = request.GET.get('rubro')
+
         return JsonResponse({'data':render_to_string('orden/listado_equipos.html',{'equipos':Equipo.objects.all()})})
 
 class EquipoCreate(CreateView):
@@ -80,6 +91,10 @@ class EquipoCreate(CreateView):
     template_name = 'equipo/equipo_form.html'
     form_class = EquipoForm
     success_url = reverse_lazy('orden:equipo_listar')
+
+    @method_decorator(permission_required('orden.add_equipo', login_url='orden:orden_listar'))        
+    def post(self, request, *args, **kwargs):
+        return super.post(request,*args, **kwargs)
 
 class EquipoList(ListView):
     model = Equipo
@@ -90,10 +105,18 @@ class EquipoUpdate(UpdateView):
     template_name = 'equipo/equipo_form.html'
     form_class = EquipoForm
     success_url = reverse_lazy('orden:equipo_listar')
+
+    @method_decorator(permission_required('orden.change_equipo', login_url='orden:orden_listar'))        
+    def post(self, request, *args, **kwargs):
+        return super.post(request,*args, **kwargs)
 class EquipoDelete(DeleteView):
     model = Equipo
     template_name = 'equipo/equipo_delete.html'
     success_url = reverse_lazy('orden:equipo_listar')
+
+    @method_decorator(permission_required('orden.delete_equipo', login_url='orden:orden_listar'))        
+    def post(self, request, *args, **kwargs):
+        return super.post(request,*args, **kwargs)
 
 class EquipoCreatePopUp(EquipoCreate):
     template_name ='equipo/equipo_form_popup.html'

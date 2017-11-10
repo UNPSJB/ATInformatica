@@ -17,7 +17,6 @@ class RubroCreate(CreateView):
     model = Rubro
     template_name = 'rubro/rubro_detail.html'
     form_class = RubroForm
-    # success_url = reverse_lazy('rubro:rubro_listar')
 
     @method_decorator(permission_required('rubro.add_rubro', login_url='rubro:rubro_listar'))
     def post(self, request, *args, **kwargs):

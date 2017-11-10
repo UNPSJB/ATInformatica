@@ -2,7 +2,7 @@ $("#datatable-equipo").DataTable({
     responsive: true,
     dom: "Bfrtip",
     buttons: [{
-        text: "<b>Nuevo producto</b>",
+        text: "<b>Nuevo equipo</b>",
         action: function() {
             // TODO: si es necesario generar el form de nuevo técnico
             // como modal, este botón puede dispararlo

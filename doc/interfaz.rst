@@ -18,6 +18,7 @@ de reparación ofrecidos por AT-Informática. El sistema permite gestionar:
     interfaz/login
     interfaz/primer_login
     interfaz/principal
+    interfaz/menu_admin
     interfaz/clientes
     interfaz/tecnicos
     interfaz/rubros

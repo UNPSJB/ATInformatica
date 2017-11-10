@@ -73,6 +73,7 @@ class TipoTareaCreate(FormView):
     template_name = 'tarea/tipo_tarea_detail.html'
     form_class =  TipoTareaForm
 
+    @method_decorator(permission_required('tarea.add_tipotarea', login_url='rubro:rubro_listar'))
     def dispatch(self, request, *args, **kwargs):
         #recuperamos el rubro
         #lo hacemos en el "dispatch" porque si no habia que hacerlo en el get,
@@ -99,12 +100,12 @@ class TipoTareaCreate(FormView):
         contexto["rubro"] = self.rubro
         return contexto
         
-
 class TipoTareaUpdate(UpdateView):
     model = TipoTarea
     form_class = TipoTareaForm
     template_name = 'tarea/tipo_tarea_edit.html'
 
+    @method_decorator(permission_required('tarea.change_tipotarea', login_url='rubro:rubro_listar'))
     def dispatch(self, request, *args, **kwargs):
         self.rubro = Rubro.objects.get(pk=kwargs["pk_rubro"])
         self.tipo_tarea = TipoTarea.objects.get(pk=kwargs["pk"])
@@ -129,7 +130,7 @@ class TipoTareaDelete(DeleteView):
     model = TipoTarea
     template_name = 'tarea/tipo_tarea_delete.html'
 
-    
+    @method_decorator(permission_required('tarea.delete_tipotarea', login_url='rubro:rubro_listar'))
     def dispatch(self, request, *args, **kwargs):
         self.rubro = Rubro.objects.get(pk=kwargs["pk_rubro"])
         self.tipo_tarea = TipoTarea.objects.get(pk=kwargs["pk"])
@@ -160,7 +161,6 @@ class TipoTareaDelete(DeleteView):
 class TipoTareaTarifar(TemplateView):
     template_name = 'tarea/tipo_tarea_tarifar.html'
 
-    
     def dispatch(self, request, *args, **kwargs):
         self.tipo_tarea = TipoTarea.objects.get(pk=kwargs["pk"])
         return super().dispatch(request, *args, **kwargs)
