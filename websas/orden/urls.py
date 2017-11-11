@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.conf.urls import url
 from .views import OrdenCreate, OrdenesList, OrdenDelete, OrdenDetail, ClienteListado,EquipoCreate, EquipoList, EquipoDelete,EquipoCreatePopUp,EquipoListado
 

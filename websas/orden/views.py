@@ -13,8 +13,8 @@ from persona.models import Cliente, Tecnico, Persona
 from rubro.models import Rubro
 
 from .forms import OrdenForm, EquipoForm
-# Create your views here.
 
+# Create your views here.
 class OrdenCreate(CreateView):
     model = Orden
     template_name = 'orden/orden_nueva.html'
@@ -47,10 +47,12 @@ class OrdenCreate(CreateView):
             return JsonResponse({'data':'Todo pioooola'})
 
         return JsonResponse({'data':'Todo mall'})
-        
+
+
 class OrdenesList(ListView):
     model = Orden
     template_name = 'orden/ordenes.html'
+
 
 class OrdenDelete(DeleteView):
     model = Orden
@@ -60,6 +62,7 @@ class OrdenDelete(DeleteView):
     @method_decorator(permission_required('orden.delete_orden', login_url='orden:orden_listar'))        
     def post(self, request, *args, **kwargs):
         return super(self.__class__, self).post(request,*args, **kwargs)
+
 
 class OrdenDetail(DetailView):
     model = Orden
@@ -75,16 +78,20 @@ class OrdenDetail(DetailView):
 
     @method_decorator(permission_required('orden.change_orden', login_url='orden:orden_listar'))        
     def post(self, request, *args, **kwargs):
-        return super.post(request,*args, **kwargs)
+        return super(self.__class__, self).post(request,*args, **kwargs)
+
+
 class ClienteListado(ListView):
     def get(self, request, *args, **kwargs):
         return JsonResponse({'data':render_to_string('orden/listado_clientes.html',{'clientes':Cliente.objects.all()})})
+
 
 class EquipoListado(ListView):
     def get(self, request, *args, **kwargs):
         rubro = request.GET.get('rubro')
 
         return JsonResponse({'data':render_to_string('orden/listado_equipos.html',{'equipos':Equipo.objects.all()})})
+
 
 class EquipoCreate(CreateView):
     model = Equipo
@@ -94,11 +101,13 @@ class EquipoCreate(CreateView):
 
     @method_decorator(permission_required('orden.add_equipo', login_url='orden:orden_listar'))        
     def post(self, request, *args, **kwargs):
-        return super.post(request,*args, **kwargs)
+        return super(self.__class__, self).post(request,*args, **kwargs)
+
 
 class EquipoList(ListView):
     model = Equipo
     template_name = 'equipo/equipos.html'
+
 
 class EquipoUpdate(UpdateView):
     model = Equipo
@@ -108,7 +117,9 @@ class EquipoUpdate(UpdateView):
 
     @method_decorator(permission_required('orden.change_equipo', login_url='orden:orden_listar'))        
     def post(self, request, *args, **kwargs):
-        return super.post(request,*args, **kwargs)
+        return super(self.__class__, self).post(request,*args, **kwargs)
+
+
 class EquipoDelete(DeleteView):
     model = Equipo
     template_name = 'equipo/equipo_delete.html'
@@ -116,7 +127,8 @@ class EquipoDelete(DeleteView):
 
     @method_decorator(permission_required('orden.delete_equipo', login_url='orden:orden_listar'))        
     def post(self, request, *args, **kwargs):
-        return super.post(request,*args, **kwargs)
+        return super(self.__class__, self).post(request,*args, **kwargs)
+
 
 class EquipoCreatePopUp(EquipoCreate):
     template_name ='equipo/equipo_form_popup.html'
