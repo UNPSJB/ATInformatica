@@ -1842,10 +1842,14 @@ function init_validator() {
     if (typeof(validator) === 'undefined') {
         return;
     }
-    console.log('init_validator');
+    console.log('init_validator (msjs aca)');
 
     // initialize the validator function
     validator.message.date = 'not a real date';
+    validator.message['empty'] = 'este campo es requerido';
+    validator.message['number'] = 'debe ser un número';
+    validator.message['email'] = 'debe ser un email';
+    validator.message['invalid'] = 'contenido invalido';
 
     // validate a field on "blur" event, a 'select' on 'change' event & a '.reuired' classed multifield on 'keyup':
     $('form')
