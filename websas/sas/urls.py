@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from .views import IndexView
+from .views import IndexView, SASAdminView
 from django.contrib.auth.decorators import login_required
 urlpatterns = [
     # Matches any html file - to be used for gentella
@@ -7,5 +7,6 @@ urlpatterns = [
     # Or create a separate django app.
 
     # The home page
-    url(r'^$', login_required(IndexView.as_view(), login_url='usuario:login'), name='index')
+    url(r'^$', login_required(IndexView.as_view(), login_url='usuario:login'), name='index'),
+    url(r'^sasadmin/$', login_required(SASAdminView.as_view(), login_url='usuario:login'), name='sasadmin'),
 ]
