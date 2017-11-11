@@ -36,17 +36,22 @@ class UsuarioCambiarPasswordForm(PasswordChangeForm):
     old_password = forms.CharField(label=("Contraseña anterior"),
                                    widget=forms.PasswordInput(attrs={
                                        'class': 'form-control',
-                                       'autofocus': 'True'
+                                       'autofocus': True
                                    }))
     
     new_password1 = forms.CharField(label=("Contraseña nueva"),
                                    widget=forms.PasswordInput(attrs={
+                                       'id': 'new_password1',
+                                       'name': 'new_password1',
                                        'class': 'form-control'
                                    }))
 
     new_password2 = forms.CharField(label=("Confirmar contraseña nueva"),
                                    widget=forms.PasswordInput(attrs={
-                                       'class': 'form-control'
+                                       'id': 'new_password2',
+                                       'name': 'new_password2',
+                                       'class': 'form-control',
+                                       'data-validate-linked': '#new_password1'
                                    }))
     
     def save(self, commit=True):

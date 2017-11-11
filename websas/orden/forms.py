@@ -24,6 +24,9 @@ class OrdenForm(forms.ModelForm):
 
 class EquipoForm(forms.ModelForm):
     rubro = forms.ModelChoiceField(queryset=Rubro.objects.all())
+    rubro.widget = forms.Select(attrs={
+        'class': 'form-control col-md-7 col-xs-12',
+    })
 
     class Meta:
         model = Equipo
@@ -38,7 +41,7 @@ class EquipoForm(forms.ModelForm):
             'descripcion':'Descripción'
         },
         widgets = {
-            'nro_serie': forms.TextInput(attrs={'class':'form-control col-md-7 col-xs-12'}),
-            'descripcion': forms.TextInput(attrs={'class':'form-control col-md-7 col-xs-12'}),
+            'nro_serie': forms.TextInput(attrs={'class':'form-control col-md-7 col-xs-12', 'pattern': 'numeric', 'autofocus': True}),
+            'descripcion': forms.TextInput(attrs={'class':'form-control'}),
         }
 

@@ -21,13 +21,13 @@
         </div>
         <div class="x_content">
             <br />
-            <form data-parsley-validate class="form-horizontal form-label-left">
+            <form novalidate class="form-horizontal form-label-left">
 
                 <!-- Comienzo del formulario - csrf_token para aceptar data POST en django -->
                 {% csrf_token %}
 
                 <!-- Campo de texto Nombre -->
-                <div class="form-group">
+                <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.nombre.label }}">{{ form.nombre.label }}
                         <span class="required">*</span>
                     </label>
@@ -37,7 +37,7 @@
                 </div>
 
                 <!--  Campo texto Descripción -->
-                <div class="form-group">
+                <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.descripcion.label }}">{{ form.descripcion.label }}
                         <span class="required">*</span>
                     </label>
@@ -53,7 +53,7 @@
 
                 <!-- (^) separador - grupo de botones (v) -->
 
-                <div class="form-group">
+                <div class="item form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                         <button class="btn btn-primary" type="button">Cancelar</button>
                         <button class="btn btn-primary" type="reset">Reiniciar</button>

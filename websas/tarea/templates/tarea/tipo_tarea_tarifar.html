@@ -21,7 +21,7 @@
         </div>
         <div class="x_content">
             <br />
-            <form data-parsley-validate class="form-horizontal form-label-left" action="{% url 'rubro:tipo_tarea_crear' tipo_tarea.rubro.pk%}">
+            <form novalidate class="form-horizontal form-label-left" action="{% url 'rubro:tipo_tarea_crear' tipo_tarea.rubro.pk%}">
 
                 <h2>Tarifas</h2>
 
@@ -59,7 +59,7 @@
 
                 <!-- (^) separador - grupo de botones (v) -->
 
-                <div class="form-group">
+                <div class="item form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                         <button type="submit" class="btn btn-success">Guardar</button>
                     </div>

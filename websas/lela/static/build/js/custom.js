@@ -1849,6 +1849,8 @@ function init_validator() {
     validator.message['empty'] = 'este campo es requerido';
     validator.message['number'] = 'debe ser un número';
     validator.message['email'] = 'debe ser un email';
+    validator.message['password_repeat'] = 'contraseñas no coinciden';
+    validator.message['repeat'] = 'los campos no coinciden';
     validator.message['invalid'] = 'contenido invalido';
 
     // validate a field on "blur" event, a 'select' on 'change' event & a '.reuired' classed multifield on 'keyup':
