@@ -46,10 +46,10 @@
                         <td>
                             {{ tarifa.tipo_servicio.nombre }}
                         </td>
-                        <td class="alert alert-danger">
+                        <td >
                             <input placeholder="Precio" min="0" id="tarifa_{{ tarifa.tipo_servicio.nombre|lower|cut:" " }}" value="{{ tarifa.precio.to_integral_value }}" tarifa={{ tarifa.pk }}>
-                            <div style="display:inline-block" class="alert-danger">
-                                ahre
+                            <div id="tarifa-error" style="display:inline-block" class="">
+                                
                             </div>
                         </td>
                     </tr>

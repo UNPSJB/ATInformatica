@@ -1,7 +1,8 @@
 <!-- Tab TAREAS PENDIENTES -->
 <div class="tab-pane" id="tareasPendientes" ajax-url="{% url 'tarea:tarea_finalizar' %}" data-orden-id="{{ orden.id }}">
-  <p class="lead">Tareas Pendientes.</p>
+  <p class="lead">Tareas pendientes</p>
   <div class="table-responsive">
+
     <table class="table table-striped jambo_table bulk_action">
       <thead>
         <tr class="headings">
@@ -37,7 +38,6 @@
             <a href="{% url 'tarea:tarea_ver' tarea.id %}">
               <i class="fa fa-eye"></i>
             </a>
-          </td>
           </td>
         </tr>
         {% endfor %} {% endif %}

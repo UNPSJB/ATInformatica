@@ -1,10 +1,17 @@
-{% extends "principal.html" %} {% load staticfiles %} {% block estilos %}
+{% extends "principal.html" %}
+{% load staticfiles %}
+{% block estilos %}
 <link href="/static/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
 <link href="/static/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
 <link href="/static/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
-<link href="{% static 'css/agregar_tarea.css' %}" rel="stylesheet" type="text/css"> {% endblock estilos %} {% block contenido %}
+<link href="{% static 'css/agregar_tarea.css' %}" rel="stylesheet" type="text/css"> 
+{% endblock estilos %}
 
+{% block contenido %}
+
+<div class="col-md-12 col-sm-12 col-xs-12">
 <div class="x_panel">
+  
   <div class="x_title">
     <h2>
       <i class="fa fa-bars"></i> Orden de Trabajo
@@ -12,8 +19,11 @@
     </h2>
     <div class="clearfix"></div>
   </div>
-  <div class="x_content ">
-    <div id="orden-abierta col-xs-12">
+
+  <div class="x_content col-xs-12">
+    <div id="orden-abierta">
+
+      
       <div class="col-xs-9">
         <!-- Tab panes -->
         <div class="tab-content">
@@ -27,35 +37,48 @@
           {% include "tareas/tareas_finalizadas.html" %}
         </div>
       </div>
+
+
       <div class="clearfix"></div>
-      <div class="col-xs-3" style="float:right">
+      
+      <div class="col-xs-3 " style="float:right">
         <ul class="nav nav-tabs tabs-right">
-          <li>
-            <a href="#datosOrden" data-toggle="tab">Datos Orden</a>
-          </li>
-          <li class="active">
-            <a href="#tareasPresupuestadas" data-toggle="tab">Tareas Presupuestadas.</a>
+          <li class="">
+            <a href="#datosOrden" data-toggle="tab">Datos de la orden</a>
           </li>
           <li>
-            <a href="#tareasPendientes" data-toggle="tab">Tareas Pendientes</a>
+            <a href="#tareasPresupuestadas" data-toggle="tab">Tareas presupuestadas</a>
           </li>
           <li>
-            <a href="#tareasFinalizadas" data-toggle="tab">Tareas Finalizadas</a>
+            <a href="#tareasPendientes" data-toggle="tab">Tareas pendientes</a>
+          </li>
+          <li>
+            <a href="#tareasFinalizadas" data-toggle="tab">Tareas finalizadas</a>
           </li>
         </ul>
+        
         <div style="padding-top:0.5em; float:right">
-          <button class="btn btn-danger">Cancelar Orden</button>
+          <button class="btn btn-danger">Cancelar orden</button>
         </div>
       </div>
-    </div>
+
+      </div>
+
   </div>
+  </div>
+  </div>
+  
   <div class="clearfix"></div>
 
-  {% endblock contenido %} {% block scripts %} {{block.super}}
+{% endblock contenido %}
+
+{% block scripts %}
+{{block.super}}
   <script type="text/javascript" src="{% static 'js/tarea/tarea.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/tarea/crear_tarea.js' %}"></script>
   <script>
 
     csrf_token = '{{ csrf_token }}';
 
-  </script> {% endblock scripts %}
+  </script>
+{% endblock scripts %}
