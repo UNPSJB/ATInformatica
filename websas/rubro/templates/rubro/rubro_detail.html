@@ -44,7 +44,7 @@
       </div>
       {% endif %}
 
-      <form id="am-rubro" class="form-horizontal form-label-left" novalidate>
+      <form id="am-rubro" method="POST" class="form-horizontal form-label-left" novalidate>
         <!-- Comienzo del formulario - csrf_token para aceptar data POST en django -->
         {% csrf_token %}
 
@@ -67,13 +67,6 @@
         </div>
 
         <div class="ln_solid"></div>
-
-
-
-
-
-
-        
 
         <!-- (^) separador - grupo de botones (v) -->
 
