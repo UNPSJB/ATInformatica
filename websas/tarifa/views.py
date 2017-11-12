@@ -17,6 +17,8 @@ class TarifaUpdate(View):
     @method_decorator(permission_required('tarifa.add_tarifa', login_url='rubro:rubro_listar'))
     def post(self, request, *args, **kwargs):
         tarifa = int(request.POST["tarifa"])
+        if(type(tarifa) != int):
+            tarifa = 0
         precio = request.POST.get("precio")
         Tarifa.objects.filter(pk=tarifa).update(precio=Decimal(precio))        
 

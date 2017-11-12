@@ -17,7 +17,6 @@ var tabla = $("#datatable-tipo-tarea-tarifar").DataTable({
     },],
 });
 
-var tarifas_actualizadas = []
 
 $('#datatable-tipo-tarea-tarifar tbody').on('change', 'td', function () {
 
@@ -28,7 +27,7 @@ $('#datatable-tipo-tarea-tarifar tbody').on('change', 'td', function () {
     var precio = parseInt(tabla.cell(this).$(id).val())
     //recuperamos la pk de la tarifa
     if (isNaN(precio)){
-        alert("No me ingresaste un precio maestro")
+        precio = 0
     }
     var tarifa = tabla.cell(this).$(id).attr("tarifa")
 
@@ -44,7 +43,6 @@ $('#datatable-tipo-tarea-tarifar tbody').on('change', 'td', function () {
         },
         dataType: 'json',
         success: function (data) {
-            console.log("enviado")
         }
     }) 
 
