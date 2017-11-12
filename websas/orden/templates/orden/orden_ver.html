@@ -1,97 +1,92 @@
-{% extends "principal.html" %}
-{% load staticfiles %}
-{% block estilos %}
+{% extends "principal.html" %} {% load staticfiles %} {% block estilos %}
 <link href="/static/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
 <link href="/static/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
 <link href="/static/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
-<link href="{% static 'css/agregar_tarea.css' %}" rel="stylesheet" type="text/css"> 
-{% endblock estilos %}
-
-{% block contenido %}
+<link href="{% static 'css/agregar_tarea.css' %}" rel="stylesheet" type="text/css"> {% endblock estilos %} {% block contenido %}
 
 <div class="col-md-12 col-sm-12 col-xs-12">
-<div class="x_panel">
-  
-  <div class="x_title">
-    <h2>
-      <i class="fa fa-bars"></i> Orden de Trabajo
-      <small>Orden Nro: {{ orden.id }}</small>
-    </h2>
-    <div class="clearfix"></div>
-  </div>
+  <div class="x_panel">
 
-  <div class="x_content col-xs-12">
-    <div id="orden-abierta">
+    <div class="x_title">
+      <h2>
+        <i class="fa fa-bars"></i> Orden de Trabajo
+        <small>Orden Nro: {{ orden.id }}</small>
+      </h2>
+      <div class="clearfix"></div>
+    </div>
 
-      
-      <div class="col-xs-9">
-        <!-- Tab panes -->
-        <div class="tab-content">
-          <!-- Tab DATOS ORDEN -->
-          {% include "tareas/datos_orden.html" %}
-          <!-- Tab TAREAS PRESUPUESTADAS -->
-          {% include "tareas/tareas_presupuestadas.html" %}
-          <!-- Tab TAREAS PENDIENTES -->
-          {% include "tareas/tareas_pendientes.html" %}
-          <!-- Tab TAREAS FINALIZADAS -->
-          {% include "tareas/tareas_finalizadas.html" %}
+    <div class="x_content col-xs-12">
+      {% if not orden.cerrada %}
+      <div id="orden-abierta">
+
+
+        <div class="col-xs-9">
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <!-- Tab DATOS ORDEN -->
+            {% include "tareas/datos_orden.html" %}
+            <!-- Tab TAREAS PRESUPUESTADAS -->
+            {% include "tareas/tareas_presupuestadas.html" %}
+            <!-- Tab TAREAS PENDIENTES -->
+            {% include "tareas/tareas_pendientes.html" %}
+            <!-- Tab TAREAS FINALIZADAS -->
+            {% include "tareas/tareas_finalizadas.html" %}
+          </div>
         </div>
-      </div>
 
-      <div class="col-xs-3">
-        <ul class="nav nav-tabs tabs-right">
-          <li class="">
-            <a href="#datosOrden" data-toggle="tab">Datos de la orden</a>
-          </li>
-          <li>
-            <a href="#tareasPresupuestadas" data-toggle="tab">Tareas presupuestadas</a>
-          </li>
-          <li>
-            <a href="#tareasPendientes" data-toggle="tab">Tareas pendientes</a>
-          </li>
-          <li>
-            <a href="#tareasFinalizadas" data-toggle="tab">Tareas finalizadas</a>
-          </li>
-        </ul>
-        
-        <div style="padding-top:0.5em; float:right">
-          <button class="btn btn-danger">Cancelar orden</button>
+        <div class="col-xs-3">
+          <ul class="nav nav-tabs tabs-right">
+            <li class="">
+              <a href="#datosOrden" data-toggle="tab">Datos de la orden</a>
+            </li>
+            <li>
+              <a href="#tareasPresupuestadas" data-toggle="tab">Tareas presupuestadas</a>
+            </li>
+            <li>
+              <a href="#tareasPendientes" data-toggle="tab">Tareas pendientes</a>
+            </li>
+            <li>
+              <a href="#tareasFinalizadas" data-toggle="tab">Tareas finalizadas</a>
+            </li>
+          </ul>
+
+          <div style="padding-top:0.5em; float:right">
+            <button id="boton-cancelar" class="btn btn-danger" onclick="cancelar()" data-orden-id="{{ orden.id }}" ajax-url="{% url 'orden:orden_cancelar' %}">Cancelar orden</button>
+          </div>
         </div>
-      </div>
 
       </div>
-
+      {% else %}
+      {% include "orden/cerrada.html" %}
+      {% endif %}
+    </div>
   </div>
-  </div>
-  </div>
-  
-  <div class="clearfix"></div>
+</div>
 
-{% endblock contenido %}
+<div class="clearfix"></div>
 
-{% block scripts %}
-  <!-- Datatables -->
-  <script src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-  <script src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-  <script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-  <script src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
-  <script src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
-  <script src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
-  <script src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
-  <script src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-  <script src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-  <script src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-  <script src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-  <script src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-  <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
-  <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
-  <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+{% endblock contenido %} {% block scripts %}
+<!-- Datatables -->
+<script src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+<script src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+<script src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+<script src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+<script src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+<script src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+<script src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+<script src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+<script src="/static/vendors/jszip/dist/jszip.min.js"></script>
+<script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
+<script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
 
-  <script type="text/javascript" src="{% static 'js/tarea/tarea.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/tarea/crear_tarea.js' %}"></script>
-  <script>
+<script type="text/javascript" src="{% static 'js/tarea/tarea.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/tarea/crear_tarea.js' %}"></script>
+<script>
 
-    csrf_token = '{{ csrf_token }}';
+  csrf_token = '{{ csrf_token }}';
 
-  </script>
-{% endblock scripts %}
+</script> {% endblock scripts %}

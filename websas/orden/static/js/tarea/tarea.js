@@ -23,18 +23,18 @@ function csrfSafeMethod(method) {
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 $.ajaxSetup({
-    beforeSend: function(xhr, settings) {
+    beforeSend: function (xhr, settings) {
         if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
             xhr.setRequestHeader("X-CSRFToken", csrftoken);
         }
     }
 });
 
-function aceptarTareas(){
-    
-    function getTareas(){
+function aceptarTareas() {
+
+    function getTareas() {
         var ids_tareas = [];
-        $('input[name=table_records]:checked').each(function(index, element){
+        $('input[name=table_records]:checked').each(function (index, element) {
             ids_tareas.push($(element).attr('data-tarea-id'))
         })
         console.log(ids_tareas)
@@ -42,68 +42,89 @@ function aceptarTareas(){
     }
 
     data = {
-        'tareas' : getTareas(),
-        'orden_id' : $("#tareasPresupuestadas").attr("data-orden-id"),
+        'tareas': getTareas(),
+        'orden_id': $("#tareasPresupuestadas").attr("data-orden-id"),
     }
 
     console.log(data)
 
-    $.ajax({    
+    $.ajax({
         url: $("#tareasPresupuestadas").attr("ajax-url"),
         type: "POST",
         data: data,
         dataType: 'json',
-        success: function(res){
-            location.reload();   
+        success: function (res) {
+            location.reload();
         }
-    })  
+    })
 }
 
-function finalizarTareas(){
-    
-    function getTareas(){
+function finalizarTareas() {
+
+    function getTareas() {
         var ids_tareas = [];
-        $('input[name=table_records]:checked').each(function(index, element){
+        $('input[name=table_records]:checked').each(function (index, element) {
             ids_tareas.push($(element).attr('data-tarea-id'))
         })
         return ids_tareas
     }
 
     data = {
-        'tareas' : getTareas(),
-        'orden_id' : $("#tareasPendientes").attr("data-orden-id"),
+        'tareas': getTareas(),
+        'orden_id': $("#tareasPendientes").attr("data-orden-id"),
     }
 
-    $.ajax({    
+    $.ajax({
         url: $("#tareasPendientes").attr("ajax-url"),
         type: "POST",
         data: data,
         dataType: 'json',
-        success: function(data){
-            alert(data.message);  
+        success: function (data) {
+            alert(data.message);
         },
-        error: function(data){
+        error: function (data) {
             alert(data.responseJSON.error);
-        } 
-    })  
+        }
+    })
 }
 
 function cerrar() {
 
     data = {
-        'orden_id' : $("#boton-cerrar").attr("data-orden-id"),
+        'orden_id': $("#boton-cerrar").attr("data-orden-id"),
     }
 
-    $.ajax({    
+    $.ajax({
         url: $("#boton-cerrar").attr("ajax-url"),
         type: "POST",
         data: data,
         dataType: 'json',
-        success: function(data){
-            alert(data.message);  
+        success: function (data) {
+            alert(data.message);
         },
-        error: function(data){
+        error: function (data) {
             alert(data.responseJSON.error);
-        } 
+        }
     })
-  }
+}
+
+
+function cancelar() {
+
+    data = {
+        'orden_id': $("#boton-cancelar").attr("data-orden-id"),
+    }
+
+    $.ajax({
+        url: $("#boton-cancelar").attr("ajax-url"),
+        type: "POST",
+        data: data,
+        dataType: 'json',
+        success: function (data) {
+            alert(data.message);
+        },
+        error: function (data) {
+            alert(data.responseJSON.error);
+        }
+    })
+}

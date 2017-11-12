@@ -1,10 +1,11 @@
 from django.contrib.auth.decorators import login_required, permission_required
 from django.conf.urls import url
-from .views import OrdenCreate, OrdenCerrar, OrdenesList, OrdenDelete, OrdenDetail, ClienteListado,EquipoCreate, EquipoList, EquipoDelete,EquipoCreatePopUp,EquipoListado
+from .views import OrdenCreate, OrdenCerrar, OrdenCancelar, OrdenesList, OrdenDelete, OrdenDetail, ClienteListado,EquipoCreate, EquipoList, EquipoDelete,EquipoCreatePopUp,EquipoListado
 
 urlpatterns = [
     url(r'^crear$', OrdenCreate.as_view(), name="orden_crear"),
     url(r'^cerrar$', OrdenCerrar.as_view(), name="orden_cerrar"),
+    url(r'^cancelar$', OrdenCancelar.as_view(), name="orden_cancelar"),
     url(r'^listar$', OrdenesList.as_view(), name="orden_listar"),
     url(r'^eliminar/(?P<pk>\d+)$', OrdenDelete.as_view(), name="orden_eliminar"),
     url(r'^ver/(?P<pk>\d+)$', OrdenDetail.as_view(), name="orden_ver"),

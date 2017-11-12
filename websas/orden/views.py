@@ -55,6 +55,13 @@ class OrdenCerrar(View):
         orden.cerrar()
         return JsonResponse({'data':'Todo pioooola'})
 
+class OrdenCancelar(View):
+
+    def post(self, request, *args, **kwargs):
+        orden = Orden.objects.get(pk=request.POST['orden_id'])
+        orden.cancelar()
+        return JsonResponse({'data':'Todo pioooola'})
+
 class OrdenesList(ListView):
     model = Orden
     template_name = 'orden/ordenes.html'
