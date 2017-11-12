@@ -72,9 +72,24 @@ class Rol(models.Model):
         null=True
     )
 
-    @property
-    def nombre(self):
+    def __str__(self):
         return str(self.persona)
+
+    @property
+    def doc(self):
+        return self.persona.doc
+    
+    @property
+    def domicilio(self):
+        return self.persona.domicilio
+
+    @property
+    def correo(self):
+        return self.persona.email
+
+    @property   
+    def telefono(self):
+        return self.persona.telefono 
 
     def save(self, *args, **kwargs):
         if self.pk is None:

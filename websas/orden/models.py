@@ -109,6 +109,14 @@ class Orden(models.Model):
             [<TareaCancelada:obj>..] """
         return self._tareas_en_estado(TareaCancelada)
 
+    @property
+    def precio_total(self):
+        """ Devuelve el precio total de la orden """
+        total = 0
+        for tarea in self.tareas_realizadas:
+            total += tarea.subtotal
+        return total 
+
     def _hacer_en_tareas(self, ids_tareas, accion):
         """ Método privado para realizar una acción en un conjunto de tareas
         
