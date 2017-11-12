@@ -7,8 +7,8 @@
     </tr>
     </thead>
     <tbody>
-        {% if tipos_tareas %}
-        {% for tipo_tarea in tipos_tareas %} <tr>
+        {% if orden.rubro.tipos_tareas_related %}
+        {% for tipo_tarea in orden.rubro.tipos_tareas_related %} <tr>
             <td>
                 &nbsp;
                 <div class="radio">

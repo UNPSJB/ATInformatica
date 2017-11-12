@@ -23,7 +23,8 @@
       </thead>
 
       <tbody>
-        {% if tareas_presupuestadas %} {% for tarea in tareas_presupuestadas %}
+        {% if tareas_presupuestadas %} 
+        {% for tarea in tareas_presupuestadas %}
         <tr class="even pointer">
           <td class="a-center ">
             <input type="checkbox" data-tarea-id="{{ tarea.id }}" class="flat" name="table_records">
@@ -38,12 +39,12 @@
             </a>
           </td>
         </tr>
-        {% endfor %} {% endif %}
+        {% endfor %} 
+        {% endif %}
       </tbody>
     </table>
     <button class="btn btn-success" onclick="aceptarTareas()">Aceptar tareas</button>
     <button class="btn btn-primary" data-toggle="modal" data-target="#modalTarea">Agregar tareas</button>
     {% include "tareas/agregar_tarea.html" %}
-
   </div>
 </div>

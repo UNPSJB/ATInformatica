@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import permission_required
 from django.template.loader import render_to_string
 
 from django.http import JsonResponse
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView, View
 from servicio.models import TipoServicio
 from .models import Orden, Equipo
 from persona.models import Cliente, Tecnico, Persona
@@ -48,6 +48,12 @@ class OrdenCreate(CreateView):
 
         return JsonResponse({'data':'Todo mall'})
 
+class OrdenCerrar(View):
+
+    def post(self, request, *args, **kwargs):
+        orden = Orden.objects.get(pk=request.POST['orden_id'])
+        orden.cerrar()
+        return JsonResponse({'data':'Todo pioooola'})
 
 class OrdenesList(ListView):
     model = Orden

@@ -69,7 +69,6 @@ class ProductoUpdateForm(ProductoForm):
                 }),
             'stock': forms.NumberInput(attrs={
                 'class':'form-control col-md-7 col-xs-12',
-                'readonly': 'True',
                 }),
             'precio': forms.NumberInput(attrs={
                 'class':'form-control col-md-7 col-xs-12'

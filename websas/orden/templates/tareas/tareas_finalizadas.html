@@ -20,8 +20,9 @@
           <td class="a-right a-right ">{{ tarea.costo_repuestos }}</td>
           <td class=" ">{{ tarea.subtotal }}</td>
         </tr>
-        {% endfor %} {% endif %}
+        {% endfor %} 
       </tbody>
     </table>
+    <button class="btn btn-info" id="boton-cerrar" data-orden-id="{{ orden.id }}" ajax-url="{% url 'orden:orden_cerrar' %}" onclick="cerrar()">Cerrar Orden</button>{% endif %}
   </div>
 </div>

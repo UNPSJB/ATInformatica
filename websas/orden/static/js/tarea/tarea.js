@@ -79,8 +79,31 @@ function finalizarTareas(){
         type: "POST",
         data: data,
         dataType: 'json',
-        success: function(res){
-            location.reload();   
-        }
+        success: function(data){
+            alert(data.message);  
+        },
+        error: function(data){
+            alert(data.responseJSON.error);
+        } 
     })  
 }
+
+function cerrar() {
+
+    data = {
+        'orden_id' : $("#boton-cerrar").attr("data-orden-id"),
+    }
+
+    $.ajax({    
+        url: $("#boton-cerrar").attr("ajax-url"),
+        type: "POST",
+        data: data,
+        dataType: 'json',
+        success: function(data){
+            alert(data.message);  
+        },
+        error: function(data){
+            alert(data.responseJSON.error);
+        } 
+    })
+  }

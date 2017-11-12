@@ -44,7 +44,12 @@ class TareaFinalizar(View):
     def post(self, request, *args, **kwargs):
         orden = Orden.objects.get(pk=request.POST['orden_id'])
         tareas = request.POST.getlist('tareas[]')
-        orden.finalizar_tareas(tareas)
+        try:
+            orden.finalizar_tareas(tareas)
+        except Exception as e:
+            response = JsonResponse({'error': str(e)})
+            response.status_code = 403  
+            return response
         return JsonResponse({'data':'Todo mall'})
 
 class TareaCreate(View):    
@@ -63,7 +68,6 @@ class TareaDetail(DetailView):
     template_name = 'tarea/tarea_ver.html'
 
     def get_context_data(self, **kwargs):
-        # Llamar a super para recuperar el contexto original
         contexto = super(self.__class__, self).get_context_data(**kwargs)
         contexto['productos'] = Producto.objects.all()
         return contexto
