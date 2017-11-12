@@ -24,7 +24,7 @@
     </div>
     <div class="x_content">
       <br />
-      <form id="am-servicio" novalidate class="form-horizontal form-label-left">
+      <form id="am-servicio" method="POST" novalidate class="form-horizontal form-label-left">
         
         <!-- Comienzo del formulario - csrf_token para aceptar data POST en django -->
         {% csrf_token %}
@@ -55,7 +55,7 @@
           <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
             <button class="btn btn-primary" type="button">Cancel</button>
             <button class="btn btn-primary" type="reset">Reset</button>
-            <button type="submit" formmethod="POST" class="btn btn-success">Submit</button>
+            <button type="submit" class="btn btn-success">Submit</button>
           </div>
         </div>
       </form>

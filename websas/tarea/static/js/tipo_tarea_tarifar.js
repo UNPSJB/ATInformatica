@@ -27,6 +27,9 @@ $('#datatable-tipo-tarea-tarifar tbody').on('change', 'td', function () {
     var id = "#tarifa_" + tipo_servicio.replace(/\s/g, '').toLowerCase()
     var precio = parseInt(tabla.cell(this).$(id).val())
     //recuperamos la pk de la tarifa
+    if (isNaN(precio)){
+        alert("No me ingresaste un precio maestro")
+    }
     var tarifa = tabla.cell(this).$(id).attr("tarifa")
 
     //mandamos los datos al servidor
@@ -41,7 +44,7 @@ $('#datatable-tipo-tarea-tarifar tbody').on('change', 'td', function () {
         },
         dataType: 'json',
         success: function (data) {
-
+            console.log("enviado")
         }
     }) 
 
