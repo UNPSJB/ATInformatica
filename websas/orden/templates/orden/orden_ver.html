@@ -38,10 +38,7 @@
         </div>
       </div>
 
-
-      <div class="clearfix"></div>
-      
-      <div class="col-xs-3 " style="float:right">
+      <div class="col-xs-3">
         <ul class="nav nav-tabs tabs-right">
           <li class="">
             <a href="#datosOrden" data-toggle="tab">Datos de la orden</a>
@@ -73,7 +70,23 @@
 {% endblock contenido %}
 
 {% block scripts %}
-{{block.super}}
+  <!-- Datatables -->
+  <script src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+  <script src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+  <script src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+  <script src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+  <script src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+  <script src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+  <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
+  <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
+  <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+
   <script type="text/javascript" src="{% static 'js/tarea/tarea.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/tarea/crear_tarea.js' %}"></script>
   <script>

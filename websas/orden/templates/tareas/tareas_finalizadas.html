@@ -13,16 +13,20 @@
       </thead>
 
       <tbody>
-        {% if orden.tareas_realizadas %} {% for tarea in orden.tareas_realizadas %}
+        {% if orden.tareas_realizadas %}
+        {% for tarea in orden.tareas_realizadas %}
         <tr class="even pointer">
           <td class=" ">{{ tarea.nombre }}</td>
           <td class=" ">{{ tarea.precio }}</td>
           <td class="a-right a-right ">{{ tarea.costo_repuestos }}</td>
           <td class=" ">{{ tarea.subtotal }}</td>
         </tr>
-        {% endfor %} 
+        {% endfor %}
+        {% endif %}
       </tbody>
     </table>
-    <button class="btn btn-info" id="boton-cerrar" data-orden-id="{{ orden.id }}" ajax-url="{% url 'orden:orden_cerrar' %}" onclick="cerrar()">Cerrar Orden</button>{% endif %}
+    {% if orden.tareas_realizadas %}
+    <button class="btn btn-info" id="boton-cerrar" data-orden-id="{{ orden.id }}" ajax-url="{% url 'orden:orden_cerrar' %}" onclick="cerrar()">Cerrar Orden</button>
+    {% endif %}
   </div>
 </div>
