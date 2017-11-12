@@ -53,16 +53,26 @@ class OrdenCerrar(View):
     @method_decorator(permission_required('orden.change_orden', login_url='orden:orden_listar'))
     def post(self, request, *args, **kwargs):
         orden = Orden.objects.get(pk=request.POST['orden_id'])
-        orden.cerrar()
-        return JsonResponse({'data':'Todo pioooola'})
+        try:
+            orden.cerrar()
+        except Exception as e:
+            response = JsonResponse({'error': str(e)})
+            response.status_code = 403  
+            return response
+        return JsonResponse({'data':'ok'})
 
 class OrdenCancelar(View):
-    
+
     @method_decorator(permission_required('orden.change_orden', login_url='orden:orden_listar'))
     def post(self, request, *args, **kwargs):
         orden = Orden.objects.get(pk=request.POST['orden_id'])
-        orden.cancelar()
-        return JsonResponse({'data':'Todo pioooola'})
+        try:
+            orden.cancelar()
+        except Exception as e:
+            response = JsonResponse({'error': str(e)})
+            response.status_code = 403  
+            return response
+        return JsonResponse({'data':'ok'})
 
 class OrdenesList(ListView):
     model = Orden

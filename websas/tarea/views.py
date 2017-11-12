@@ -31,7 +31,7 @@ class ObservacionCreate(View):
         tarea = Tarea.objects.get(pk=request.POST['tarea'])
         contenido = request.POST['contenido']
         tarea.hacer("agregar_observacion", usuario=request.user, contenido=contenido)
-        return JsonResponse({'data':'Todo mall'})
+        return JsonResponse({'data':'ok'})
 
 class TareaAceptar(View):
 
@@ -39,8 +39,13 @@ class TareaAceptar(View):
     def post(self, request, *args, **kwargs):
         orden = Orden.objects.get(pk=request.POST['orden_id'])
         tareas = request.POST.getlist('tareas[]')
-        orden.aceptar_tareas(tareas)
-        return JsonResponse({'data':'Todo mall'})
+        try:
+            orden.aceptar_tareas(tareas)
+        except Exception as e:
+            response = JsonResponse({'error': str(e)})
+            response.status_code = 403  
+            return response
+        return JsonResponse({'data':'ok'})
 
 class TareaFinalizar(View):
     @method_decorator(permission_required('tarea.change_tarea', login_url='orden:orden_listar'))
@@ -53,7 +58,7 @@ class TareaFinalizar(View):
             response = JsonResponse({'error': str(e)})
             response.status_code = 403  
             return response
-        return JsonResponse({'data':'Todo mall'})
+        return JsonResponse({'data':'ok'})
 
 class TareaCreate(View):    
     
