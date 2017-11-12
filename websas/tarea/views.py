@@ -15,6 +15,7 @@ from django.core.urlresolvers import reverse_lazy
 
 class ReservaCreate(View):
     # TODO: sanitizar las cadenas
+    @method_decorator(permission_required('producto.add_reserva', login_url='orden:orden_listar'))
     def post(self, request, *args, **kwargs):
         tarea = Tarea.objects.get(pk=request.POST['tarea'])
         producto = Producto.objects.get(pk=request.POST['producto'])
@@ -24,6 +25,7 @@ class ReservaCreate(View):
 
 class ObservacionCreate(View):
 
+    @method_decorator(permission_required('tarea.add_observacion', login_url='orden:orden_listar'))
     def post(self, request, *args, **kwargs):
         # TODO: sanitizar las cadenas
         tarea = Tarea.objects.get(pk=request.POST['tarea'])
@@ -33,6 +35,7 @@ class ObservacionCreate(View):
 
 class TareaAceptar(View):
 
+    @method_decorator(permission_required('tarea.change_tarea', login_url='orden:orden_listar'))
     def post(self, request, *args, **kwargs):
         orden = Orden.objects.get(pk=request.POST['orden_id'])
         tareas = request.POST.getlist('tareas[]')
@@ -40,7 +43,7 @@ class TareaAceptar(View):
         return JsonResponse({'data':'Todo mall'})
 
 class TareaFinalizar(View):
-
+    @method_decorator(permission_required('tarea.change_tarea', login_url='orden:orden_listar'))
     def post(self, request, *args, **kwargs):
         orden = Orden.objects.get(pk=request.POST['orden_id'])
         tareas = request.POST.getlist('tareas[]')
@@ -55,6 +58,7 @@ class TareaFinalizar(View):
 class TareaCreate(View):    
     
     # TODO: sanitizar las cadenas
+    @method_decorator(permission_required('tarea.add_tarea', login_url='orden:orden_listar'))
     def post(self, request, *args, **kwargs):
         tipo_tarea = TipoTarea.objects.get(pk=request.POST['tipo_tarea'])
         observacion = request.POST['observacion']
