@@ -96,5 +96,8 @@ popup = window.open(tabla_html.attr('data-popup_url'), 'Crear nuevo cliente', po
 
     console.log('dtabla')
     console.log(dtabla)
+    $('#cargando').fadeOut();
+    tabla_html.fadeIn();
+    $('#creacion_ot').smartWizard('fixHeight');
     return dtabla
 }

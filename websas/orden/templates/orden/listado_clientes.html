@@ -1,4 +1,4 @@
-<table id="datatable-clientes" 
+<table hidden id="datatable-clientes" 
 data-popup_url="{% url 'cliente:cliente_crear_popup' %}" 
 class="table table-striped table-hover table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
 
@@ -33,9 +33,6 @@ class="table table-striped table-hover table-bordered dt-responsive nowrap" cell
 
         {% endfor %}
         {% else %}
-
-        <h1>No hay clientes registrados</h1>
-        <!-- no importa si hay un <h1> en el body, DataTables lo saca de la tabla -->
 
         {% endif %}  
     </tbody>

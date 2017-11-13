@@ -16,6 +16,10 @@ $('#creacion_ot').smartWizard({
 
 });
 
+$(function() {
+    $('#creacion_ot').fadeIn();
+    $('#creacion_ot').smartWizard('fixHeight');
+});
 
 function texto_observacion(){
   var texto = $('#editor-one').html().replace(/<br>/g,'')

@@ -1,4 +1,7 @@
-{% extends "principal.html" %} {% load staticfiles %} {% block estilos %}
+{% extends "principal.html" %}
+{% load staticfiles %}
+
+{% block estilos %}
 <!-- Smart Wizard CSS -->
 <link href="{% static 'vendors/jQuery-Smart-Wizard/styles/smart_wizard.css' %}" rel="stylesheet" type="text/css">
 
@@ -7,11 +10,12 @@
 <link href="{% static 'vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css' %}" rel="stylesheet">
 
 <link href="{% static 'css/orden_nueva.css' %}" rel="stylesheet" type="text/css"> 
-{% endblock estilos %} {% block contenido %}
+{% endblock estilos %}
+
+{% block title_left %}Nueva Orden de Trabajo{% endblock title_left %}
+
+{% block contenido %}
 <div class="x-panel">
-    <div class="x_title">
-        <h2>Nueva orden de trabajo</h2>
-    </div>
     <div class="x_content">
         <!-- Smart Wizard -->
         <div class="alert alert-danger alert-dismissible fade in hidden ot_aviso" role="alert">
@@ -19,7 +23,7 @@
             </button>
             <strong>Error!</strong> no dispongo de información suficienta para poder crear una Orden de Trabajo de forma satisfactoria.
         </div>
-        <div id="creacion_ot" ajax-url="{% url 'orden:orden_crear' %}" class="form_wizard wizard_horizontal">
+        <div id="creacion_ot" hidden ajax-url="{% url 'orden:orden_crear' %}" class="form_wizard wizard_horizontal">
             <!-- Lista de pasos / cabecera -->
             <ul class="wizard_steps anchor">
                 <li>
@@ -28,7 +32,7 @@
                         <span class="step_descr">
                             CLIENTE
                             <br>
-                            <small>Cliente asignado a la OT</small>
+                            <small>Solicitante del servicio</small>
                         </span>
                     </a>
                 </li>
@@ -48,7 +52,7 @@
                         <span class="step_descr">
                             RUBRO
                             <br>
-                            <small>Rubro/equipo asignado a la OT</small>
+                            <small>Selección de rubro</small>
                         </span>
                     </a>
                 </li>
@@ -58,7 +62,7 @@
                         <span class="step_descr">
                             EQUIPO
                             <br>
-                            <small>Equipo incluído en la OT</small>
+                            <small>Equipo vinculado a la orden</small>
                         </span>
                     </a>
                 </li>
@@ -68,7 +72,7 @@
                         <span class="step_descr">
                             TECNICO
                             <br>
-                            <small>Técnico asignado a la OT</small>
+                            <small>Selección de técnico a asignar</small>
                         </span>
                     </a>
                 </li>
@@ -78,7 +82,7 @@
                         <span class="step_descr">
                             Observacion
                             <br>
-                            <small>Técnico asignado a la OT</small>
+                            <small>Descripción general del problema</small>
                         </span>
                     </a>
                 </li>
@@ -89,6 +93,9 @@
 
                 <div id="step-1">
                     <div id="clientes" >
+                        <div id="cargando" class="col-xs-offset-3">
+                            <span style="font-size: 16px;"><img src="{% static 'img/cargando.gif' %}" alt="espere...">&nbsp;&nbsp;Cargando desde la base de datos...</span>
+                        </div>
                         {% include "orden/listado_clientes.html" %}
                     </div>
                 </div>
@@ -187,12 +194,12 @@
                 </div>
 
 
-            <div class="actionBar">
+            {% comment %} <div class="actionBar">
                 <div class="msgBox">
                     <div class="content"></div>
                     <a href="#" class="close">X</a>
                 </div>
-            </div>
+            </div> {% endcomment %}
         </div>
         <!-- End SmartWizard Content -->
     </div>
