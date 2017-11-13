@@ -52,7 +52,7 @@ function crearTarea(objs, context){
     var data = {
         'tipo_tarea':$('input:checked[name=tipo_tarea]')[0].dataset['idtipotarea'],
         'observacion':$('#observaciontarea').val(),
-        'estado_orden':$('#id-orden-tarea').text(),
+        'orden_id':$('#id-orden-tarea').text(),
     }
 
     $.ajax({    

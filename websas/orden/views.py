@@ -53,6 +53,8 @@ class OrdenCerrar(View):
     @method_decorator(permission_required('orden.change_orden', login_url='orden:orden_listar'))
     def post(self, request, *args, **kwargs):
         orden = Orden.objects.get(pk=request.POST['orden_id'])
+        if not orden:
+            return JsonResponse({'error': 'no existe la orden de trabajo'})
         try:
             orden.cerrar()
         except Exception as e:
@@ -66,6 +68,8 @@ class OrdenCancelar(View):
     @method_decorator(permission_required('orden.change_orden', login_url='orden:orden_listar'))
     def post(self, request, *args, **kwargs):
         orden = Orden.objects.get(pk=request.POST['orden_id'])
+        if not orden:
+            return JsonResponse({'error': 'no existe la orden de trabajo'})
         try:
             orden.cancelar()
         except Exception as e:

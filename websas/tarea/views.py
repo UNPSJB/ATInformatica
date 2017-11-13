@@ -6,7 +6,7 @@ from django.views.generic import TemplateView, FormView, CreateView, ListView, U
 from django.views import View
 from rubro.models import Rubro
 from .models import TipoTarea, Tarea
-from .forms import TipoTareaForm
+from .forms import TipoTareaForm, ReservaForm, ObservacionForm, CrearTareaForm, AceptarTareaForm
 from orden.models import Orden
 from producto.models import Producto
 from servicio.models import TipoServicio
@@ -14,22 +14,33 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, Http40
 from django.core.urlresolvers import reverse_lazy
 
 class ReservaCreate(View):
-    # TODO: sanitizar las cadenas
+
     @method_decorator(permission_required('producto.add_reserva', login_url='orden:orden_listar'))
     def post(self, request, *args, **kwargs):
-        tarea = Tarea.objects.get(pk=request.POST['tarea'])
-        producto = Producto.objects.get(pk=request.POST['producto'])
-        cantidad = request.POST['cantidad']
+        form = ReservaForm(request.POST or None)
+        if form.is_valid():
+            tarea = Tarea.objects.get(pk=form.cleaned_data['tarea'])    
+            producto = Producto.objects.get(pk=form.cleaned_data['producto'])
+            cantidad = form.cleaned_data['cantidad']
+        if tarea is None or producto is None:
+            response = JsonResponse({'error': 'no es posible realizar la operación'})
+            response.status_code = 403 
+            return response
         tarea.hacer("reservar_stock", producto=producto, cantidad=cantidad)
-        return JsonResponse({'data':'Todo mall'})
+        return JsonResponse({'data':'ok'})
 
 class ObservacionCreate(View):
 
     @method_decorator(permission_required('tarea.add_observacion', login_url='orden:orden_listar'))
     def post(self, request, *args, **kwargs):
-        # TODO: sanitizar las cadenas
-        tarea = Tarea.objects.get(pk=request.POST['tarea'])
-        contenido = request.POST['contenido']
+        form = ObservacionForm(request.POST or None)
+        if form.is_valid():
+            tarea = Tarea.objects.get(pk=form.cleaned_data['tarea'])
+            contenido = form.cleaned_data['contenido']
+        if tarea is None:
+            response = JsonResponse({'error': 'no es posible realizar la operación'})
+            response.status_code = 403 
+            return response     
         tarea.hacer("agregar_observacion", usuario=request.user, contenido=contenido)
         return JsonResponse({'data':'ok'})
 
@@ -37,39 +48,62 @@ class TareaAceptar(View):
 
     @method_decorator(permission_required('tarea.change_tarea', login_url='orden:orden_listar'))
     def post(self, request, *args, **kwargs):
+        # form = AceptarTareaForm(request.POST or None)
+        # if form.is_valid():
+        #     orden = Orden.objects.get(pk=form.cleaned_data['orden_id'])
+        #     tareas = form.cleaned_data['tareas[]']
         orden = Orden.objects.get(pk=request.POST['orden_id'])
         tareas = request.POST.getlist('tareas[]')
-        try:
-            orden.aceptar_tareas(tareas)
-        except Exception as e:
-            response = JsonResponse({'error': str(e)})
+        if orden is not None:
+            try:
+                orden.aceptar_tareas(tareas)
+            except Exception as e:
+                response = JsonResponse({'error': str(e)})
+                response.status_code = 403  
+                return response
+            return JsonResponse({'data':'ok'})
+        else:
+            response = JsonResponse({'error': 'no es posible realizar la operación'})
             response.status_code = 403  
-            return response
-        return JsonResponse({'data':'ok'})
+            return response         
 
 class TareaFinalizar(View):
     @method_decorator(permission_required('tarea.change_tarea', login_url='orden:orden_listar'))
     def post(self, request, *args, **kwargs):
         orden = Orden.objects.get(pk=request.POST['orden_id'])
         tareas = request.POST.getlist('tareas[]')
-        try:
-            orden.finalizar_tareas(tareas)
-        except Exception as e:
-            response = JsonResponse({'error': str(e)})
+        if orden is not None:
+            try:
+                orden.finalizar_tareas(tareas)
+            except Exception as e:
+                response = JsonResponse({'error': str(e)})
+                response.status_code = 403  
+                return response
+            return JsonResponse({'data':'ok'})
+        else:
+            response = JsonResponse({'error': 'no es posible realizar la operación'})
             response.status_code = 403  
-            return response
-        return JsonResponse({'data':'ok'})
-
+            return response  
 class TareaCreate(View):    
     
-    # TODO: sanitizar las cadenas
     @method_decorator(permission_required('tarea.add_tarea', login_url='orden:orden_listar'))
     def post(self, request, *args, **kwargs):
-        tipo_tarea = TipoTarea.objects.get(pk=request.POST['tipo_tarea'])
-        observacion = request.POST['observacion']
-        orden = Orden.objects.get(pk=request.POST['estado_orden'])
-        orden.agregar_tarea(tipo_tarea, observacion)
-        return JsonResponse({'data':'Todo mall'})
+        form = CrearTareaForm(request.POST or None)
+        if form.is_valid():
+            tipo_tarea = TipoTarea.objects.get(pk=form.cleaned_data['tipo_tarea'])
+            observacion = form.cleaned_data['observacion']
+            orden = Orden.objects.get(pk=form.cleaned_data['orden_id'])
+        if orden is None or tipo_tarea is None:
+            response = JsonResponse({'error': 'no es posible realizar la operación'})
+            response.status_code = 403  
+            return response 
+        try:
+            orden.agregar_tarea(tipo_tarea, observacion)
+        except Exception as e:
+                response = JsonResponse({'error': str(e)})
+                response.status_code = 403  
+                return response           
+        return JsonResponse({'data':'ok'})
 
 class TareaDetail(DetailView):
     model = Tarea
