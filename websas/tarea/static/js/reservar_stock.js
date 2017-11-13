@@ -46,21 +46,41 @@ $.ajaxSetup({
 });
 
 function reservarStock(){   
-    var data = {
-        'tarea' : $('#modalReserva').attr("data-tarea-id"),
-        'producto': $('input:checked[name=producto]')[0].dataset['idproducto'],
-        'cantidad': $('#cantidad').val(),
-    }
-
-    $.ajax({    
-        url: $("#modalReserva").attr("ajax-url"),
-        type: "POST",
-        data: data,
-        dataType: 'json',
-        success: function(data){
-            $('#modalReserva').modal('toggle');    
+    try {
+        try {
+            var data = {
+                'tarea' : $('#modalReserva').attr("data-tarea-id"),
+                'producto': $('input:checked[name=producto]')[0].dataset['idproducto'],
+                'cantidad_disp': parseInt($('input:checked[name=producto]')[0].dataset['stock_disp']),
+                'cantidad': parseInt($('#cantidad').val()),
+            }
         }
-    })
+        catch (err) {
+            throw "Debe seleccionar un producto para esta tarea";
+        }
+
+        if (isNaN(data['cantidad'])) {
+            throw "Debe ingresar una cantidad válida";
+        } else if (data['cantidad'] <= 0) {
+            throw "No puede ingresar una cantidad negativa";
+        } else if (data['cantidad'] > data['cantidad_disp']) {
+            throw "No hay stock suficiente para realizar la reserva";
+        }
+
+        $.ajax({    
+            url: $("#modalReserva").attr("ajax-url"),
+            type: "POST",
+            data: data,
+            dataType: 'json',
+            success: function(data){
+                $('#modalReserva').modal('toggle');    
+            }
+        });
+    }
+    catch (e) {
+        $('#errormsg').html(e);
+        $('#error-elem').fadeIn();
+    }
 }
 
 $('#modalReserva').on('hidden.bs.modal', function () {

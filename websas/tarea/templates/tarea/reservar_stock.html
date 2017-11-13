@@ -23,7 +23,7 @@
                             <td>
                                 &nbsp;
                                 <div class="radio">
-                                    <input style="position:relative;" data-idproducto="{{ producto.id }}" type="radio" class="flat" name="producto">
+                                    <input style="position:relative;" data-idproducto="{{ producto.id }}" data-stock_disp="{{ producto.stock_disponible }}" type="radio" class="flat" name="producto">
                                 </div>
                             </td>
                             <td>{{ producto.nombre }}</td>
@@ -46,6 +46,7 @@
                 </div>               
             </div>
             <div class="modal-footer">
+                    <span class="text-danger" hidden id="error-elem"><strong><i class="fa fa-warning fa-lg"></i>&nbsp;&nbsp;<span id="errormsg">Error</span>&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
                 <button class="btn btn-info" style="float:right" onclick="reservarStock()">Reservar</button>
             </div>
         </div>
