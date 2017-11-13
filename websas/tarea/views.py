@@ -18,6 +18,9 @@ class ReservaCreate(View):
     @method_decorator(permission_required('producto.add_reserva', login_url='orden:orden_listar'))
     def post(self, request, *args, **kwargs):
         form = ReservaForm(request.POST or None)
+        tarea = None
+        producto = None
+        
         if form.is_valid():
             tarea = Tarea.objects.get(pk=form.cleaned_data['tarea'])    
             producto = Producto.objects.get(pk=form.cleaned_data['producto'])
