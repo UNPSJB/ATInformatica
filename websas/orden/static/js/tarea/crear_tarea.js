@@ -16,8 +16,6 @@ function getCookie(name) {
 }
 var csrftoken = getCookie('csrftoken');
 
-
-
 function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
@@ -29,6 +27,7 @@ $.ajaxSetup({
         }
     }
 });
+
 
 $("#datatable-tipo-tarea").DataTable({
     responsive: true,
@@ -49,21 +48,45 @@ $("#datatable-tipo-tarea").DataTable({
 });
 
 function crearTarea(objs, context){
-    var data = {
-        'tipo_tarea':$('input:checked[name=tipo_tarea]')[0].dataset['idtipotarea'],
-        'observacion':$('#observaciontarea').val(),
-        'estado_orden':$('#id-orden-tarea').text(),
+    try {
+        try {
+            var data = {
+                'tipo_tarea':$('input:checked[name=tipo_tarea]')[0].dataset['idtipotarea'],
+                'observacion':$('#observaciontarea').val(),
+                'estado_orden':$('#id-orden-tarea').text(),
+            };
+        }
+        catch (err) {
+            throw "Debe seleccionar una tarea";
+        }
+        
+        if (data['observacion'] == '') {
+            throw "No puede dejar la observación en blanco";
+        }
+
+    
+        $.ajax({    
+            url: $("#crearTarea").attr("ajax-url"),
+            type: "POST",
+            data: data,
+            dataType: 'json',
+            success: function(data){
+                $('#modalTarea').modal('toggle');    
+            },
+            statusCode: {
+                500: manejador_500(data)
+                }
+            });
+
+        function manejador_500(e) {
+            throw "La tarea seleccionada ya fue agregada a la Orden de Trabajo";
+        };
     }
 
-    $.ajax({    
-        url: $("#crearTarea").attr("ajax-url"),
-        type: "POST",
-        data: data,
-        dataType: 'json',
-        success: function(data){
-            $('#modalTarea').modal('toggle');    
-        }
-    })
+    catch (e) {
+        $('#errormsg').html(e);
+        $('#error-elem').fadeIn();
+    }
 }
 
 $('#modalTarea').on('hidden.bs.modal', function () {

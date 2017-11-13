@@ -3,7 +3,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Agregar Tarea</h4>
+        <h4 class="modal-title" id="myModalLabel">Agregar Tarea</h4><br>
+        <p>Seleccione la tarea a agregar en la tabla y luego ingrese una observación.</p>
       </div>
       <div class="modal-body">
             <div id="crearTarea" ajax-url="{% url 'tarea:tarea_crear' %}">
@@ -11,8 +12,9 @@
             </div>
      </div>
       <div class="modal-footer">
+          <span class="text-danger" hidden id="error-elem"><strong><i class="fa fa-warning fa-lg"></i>&nbsp;&nbsp;<span id="errormsg">Error</span>&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
           <button class="btn btn-primary" onclick="crearTarea()">Guardar</button>
-          <button class="btn btn-default">Cancelar</button>
+          <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
       </div>
     </div>
   </div>
