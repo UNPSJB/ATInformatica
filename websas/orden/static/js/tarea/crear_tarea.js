@@ -49,6 +49,7 @@ $("#datatable-tipo-tarea").DataTable({
 
 function crearTarea(objs, context){
     try {
+        $('#error-elem').fadeOut();
         try {
             var data = {
                 'tipo_tarea':$('input:checked[name=tipo_tarea]')[0].dataset['idtipotarea'],
@@ -79,7 +80,8 @@ function crearTarea(objs, context){
             });
 
         function manejador_500(e) {
-            throw "La tarea seleccionada ya fue agregada a la Orden de Trabajo";
+            $('#errormsg').html("La tarea seleccionada ya fue agregada a la Orden de Trabajo");
+            $('#error-elem').fadeIn();
         };
     }
     catch (e) {
@@ -92,4 +94,7 @@ $('#modalTarea').on('hidden.bs.modal', function () {
     location.reload()
 });
 
-
+// $("input:checked[name=tipo_tarea]:radio").change(function () {
+//     console.log("ea")
+//     // alert(this.value)
+// })

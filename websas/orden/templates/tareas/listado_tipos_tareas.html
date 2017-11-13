@@ -12,7 +12,7 @@
             <td>
                 &nbsp;
                 <div class="radio">
-                    <input  style="position:relative;" data-idtipotarea="{{ tipo_tarea.id }}" type="radio" class="flat" name="tipo_tarea">
+                    <input style="position:relative;" data-idtipotarea="{{ tipo_tarea.id }}" type="radio" class="flat" name="tipo_tarea">
                 </div>
             </td>
             <td>{{ tipo_tarea.nombre }} </td>
@@ -28,6 +28,14 @@
 </table>
 <div class="clearfix"></div>
 <span hidden id="id-orden-tarea">{{ orden.id }}</span>
+
+<div style="">
+    <span>{{ orden.tipo_servicio.nombre }}</span>
+    <br/>
+    <label for="precio-tarea">Precio</label>
+    <input type="number" name="Precio" id="precio-tarea">    
+</div>
+
 <div>
     <label for="observacion">Observaciones</label>
     <textarea class="form-control" name="observacion" id="observaciontarea" rows="5" style="resize:vertical;"></textarea>
