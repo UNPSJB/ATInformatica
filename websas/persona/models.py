@@ -72,9 +72,6 @@ class Rol(models.Model):
         null=True
     )
 
-    def __str__(self):
-        return str(self.persona)
-
     @property
     def doc(self):
         return self.persona.doc

@@ -50,9 +50,10 @@ class LoginView(FormView):
         if user.is_authenticated(): 
             return HttpResponseRedirect(self.get_success_url())
         else:
-            return super(LoginView, self).dispatch(request, *args, **kwargs)
+            return super(self.__class__, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
+        
         user = Usuario.objects.get(username=form.get_user())
         if user.primer_login and not user.is_superuser:
             messages.warning(self.request, 'Se recomienda cambiar la contraseña predeterminada.')
