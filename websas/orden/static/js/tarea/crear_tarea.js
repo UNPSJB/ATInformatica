@@ -49,23 +49,39 @@ $("#datatable-tipo-tarea").DataTable({
 
 function crearTarea(objs, context){
     try {
-        $('#error-elem').fadeOut();
+        $('#error-elem').hide();
         try {
+            var precio_coma = $('#precio-tarea').val().replace(',', '.')
+
             var data = {
                 'tipo_tarea':$('input:checked[name=tipo_tarea]')[0].dataset['idtipotarea'],
                 'observacion':$('#observaciontarea').val(),
+                'precio':parseFloat(precio_coma),
                 'orden_id':$('#id-orden-tarea').text(),
             };
         }
         catch (err) {
             throw "Debe seleccionar una tarea";
         }
-        
+
+        // Precio parseado... a ver qué tenemos: inválido || negativo?
+        if (isNaN(data['precio']) || data['precio'] < 0) {
+            $('#precio-tarea').select();
+            throw "El precio ingresado no es válido";
+        }
+        // Precio OK, luego comparamos si hubo que reemplazar coma por punto
+        // Pero primero, la observación:
         if (data['observacion'] == '') {
+            $('#observaciontarea').select();
             throw "No puede dejar la observación en blanco";
         }
+        // Reemplazar el campo precio con lo parseado si es necesario
+        if ($('#precio-tarea').val() != data['precio'].toString()) {
+            $('#precio-tarea').val(data['precio'].toString());
+            $('#precio-tarea').select();
+            throw '<span class="text-info">Confirme el precio ingresado y presione "Guardar" nuevamente</span>';
+        }
 
-    
         $.ajax({    
             url: $("#crearTarea").attr("ajax-url"),
             type: "POST",
@@ -75,14 +91,14 @@ function crearTarea(objs, context){
                 $('#modalTarea').modal('toggle');    
             },
             statusCode: {
-                500: manejador_500(data)
+                500: function(data) {
+                    throw "La tarea seleccionada ya fue agregada a la Orden de Trabajo";
+                },
+                403: function(data) {
+                    console.log(data);
                 }
-            });
-
-        function manejador_500(e) {
-            $('#errormsg').html("La tarea seleccionada ya fue agregada a la Orden de Trabajo");
-            $('#error-elem').fadeIn();
-        };
+            }
+        });
     }
     catch (e) {
         $('#errormsg').html(e);
