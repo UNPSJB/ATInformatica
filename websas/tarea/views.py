@@ -92,6 +92,8 @@ class TareaCreate(View):
     @method_decorator(permission_required('tarea.add_tarea', login_url='orden:orden_listar'))
     def post(self, request, *args, **kwargs):
         form = CrearTareaForm(request.POST or None)
+        orden = None
+        tipo_tarea = None
         if form.is_valid():
             tipo_tarea = TipoTarea.objects.get(pk=form.cleaned_data['tipo_tarea'])
             observacion = form.cleaned_data['observacion']

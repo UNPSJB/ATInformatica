@@ -80,7 +80,7 @@ function finalizarTareas() {
         data: data,
         dataType: 'json',
         success: function (data) {
-            alert(data.message);
+            location.reload();
         },
         error: function (data) {
             alert(data.responseJSON.error);
@@ -100,7 +100,7 @@ function cerrar() {
         data: data,
         dataType: 'json',
         success: function (data) {
-            alert(data.message);
+            location.reload();
         },
         error: function (data) {
             alert(data.responseJSON.error);
@@ -121,7 +121,7 @@ function cancelar() {
         data: data,
         dataType: 'json',
         success: function (data) {
-            alert(data.message);
+            location.reload();
         },
         error: function (data) {
             alert(data.responseJSON.error);
