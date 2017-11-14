@@ -37,8 +37,7 @@ $('#form_cliente').submit(function(){
         type: "POST",
         success: function(data){
             console.log("en la success function");
-            window.opener.get_clientes()
-            window.close()
+            window.opener.close_popup()
         }
     })
 })
