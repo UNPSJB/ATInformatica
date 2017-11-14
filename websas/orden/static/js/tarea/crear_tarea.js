@@ -51,12 +51,12 @@ function crearTarea(objs, context){
     try {
         $('#error-elem').hide();
         try {
-            var precio_coma = $('#precio-tarea').val().replace(',', '.')
+            // var precio_coma = $('#precio-tarea').val().replace(',', '.')
 
             var data = {
                 'tipo_tarea':$('input:checked[name=tipo_tarea]')[0].dataset['idtipotarea'],
                 'observacion':$('#observaciontarea').val(),
-                'precio':parseFloat(precio_coma),
+                // 'precio':parseFloat(precio_coma),
                 'orden_id':$('#id-orden-tarea').text(),
             };
         }
@@ -64,23 +64,23 @@ function crearTarea(objs, context){
             throw "Debe seleccionar una tarea";
         }
 
-        // Precio parseado... a ver qué tenemos: inválido || negativo?
-        if (isNaN(data['precio']) || data['precio'] < 0) {
-            $('#precio-tarea').select();
-            throw "El precio ingresado no es válido";
-        }
-        // Precio OK, luego comparamos si hubo que reemplazar coma por punto
-        // Pero primero, la observación:
-        if (data['observacion'] == '') {
-            $('#observaciontarea').select();
-            throw "No puede dejar la observación en blanco";
-        }
-        // Reemplazar el campo precio con lo parseado si es necesario
-        if ($('#precio-tarea').val() != data['precio'].toString()) {
-            $('#precio-tarea').val(data['precio'].toString());
-            $('#precio-tarea').select();
-            throw '<span class="text-info">Confirme el precio ingresado y presione "Guardar" nuevamente</span>';
-        }
+        // // Precio parseado... a ver qué tenemos: inválido || negativo?
+        // if (isNaN(data['precio']) || data['precio'] < 0) {
+        //     $('#precio-tarea').select();
+        //     throw "El precio ingresado no es válido";
+        // }
+        // // Precio OK, luego comparamos si hubo que reemplazar coma por punto
+        // // Pero primero, la observación:
+        // if (data['observacion'] == '') {
+        //     $('#observaciontarea').select();
+        //     throw "No puede dejar la observación en blanco";
+        // }
+        // // Reemplazar el campo precio con lo parseado si es necesario
+        // if ($('#precio-tarea').val() != data['precio'].toString()) {
+        //     $('#precio-tarea').val(data['precio'].toString());
+        //     $('#precio-tarea').select();
+        //     throw '<span class="text-info">Confirme el precio ingresado y presione "Guardar" nuevamente</span>';
+        // }
 
         $.ajax({    
             url: $("#crearTarea").attr("ajax-url"),
