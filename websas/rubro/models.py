@@ -12,9 +12,13 @@ class Rubro(models.Model):
         return '{}'.format(self.nombre)
 
     def save(self, *args, **kwargs):
+        is_new = self.pk is None
+        
         super(self.__class__, self).save(*args, **kwargs)
-        TipoTarea = apps.get_model("tarea", "TipoTarea")
-        rdyp = TipoTarea(nombre="RDyP", descripcion="Revisión, Diagnóstico, y Presupuesto", rubro=self).save()
+        
+        if is_new:
+            TipoTarea = apps.get_model("tarea", "TipoTarea")
+            rdyp = TipoTarea(nombre="RDyP", descripcion="Revisión, Diagnóstico, y Presupuesto", rubro=self).save()
 
     @property
     def tipos_tareas_related(self):
