@@ -1,7 +1,7 @@
 {% extends "principal.html" %}
 
 {% block contenido %}
-<div class="row">
+<div class="row" style="margin-left: 10px; margin-right: 10px;">
   <div class="x_panel">
     <div class="x_title">
       <h2>Técnico #{{tecnico.id}} <small>gestión de técnicos</small></h2>
@@ -26,9 +26,10 @@
       <h1>{{ tecnico.apellido }}</h1>
       <h1>{{ tecnico.dni }}</h1>
       <h1>{{ tecnico.email }}</h1>
-      <a class="btn btn-info" href="{% url 'usuario:usuario_crear' tecnico.id %}">Crear usuario</a>
-      <a class="btn btn-info" href="{% url 'empleado:tecnico:tecnico_listar' %}">Volver</a>
     </div>
   </div>
+  <div class="ln_solid"></div>
+  <a class="btn btn-default" href="{% url 'empleado:tecnico:tecnico_listar' %}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Volver al listado</a>
+  <a class="btn btn-info" href="{% url 'usuario:usuario_crear' tecnico.id %}">Crear usuario</a>
 </div>
 {% endblock contenido %}

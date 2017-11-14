@@ -1,7 +1,8 @@
 {% extends "principal.html" %}
 
 {% block contenido %}
-<div class="row">
+<div class="clearfix"></div>
+<div class="row" style="margin-left: 10px; margin-right: 10px;">
   <div class="x_panel">
     <div class="x_title">
       <h2>Producto #{{ producto.id }}<small>gestión de productos </small></h2>
@@ -30,8 +31,9 @@
       <h2>{{ producto.stock_minimo }}</h2>
       <h2>{{ producto.stock }}</h2>
       <h2>{{ producto.precio }}</h2>
-      <a class="btn btn-info" href="{% url 'producto:producto_listar' %}">Volver</a>
     </div>
   </div>
+  <div class="ln_solid"></div>
+  <a class="btn btn-default" href="{% url 'producto:producto_listar' %}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Volver al listado</a>
 </div>
 {% endblock contenido %}

@@ -1,11 +1,14 @@
 {% extends "principal.html" %}
 {% load staticfiles %}
 
+{% block title_left %}
+Cliente #{{cliente.id}} <small>gestión de clientes</small>
+{% endblock title_left %}
+
 {% block contenido %}
-<div class="row">
+<div class="row" style="margin-left: 10px; margin-right: 10px">
   <div class="x_panel">
     <div class="x_title">
-      <h2>Cliente #{{cliente.id}} <small>gestión de clientes</small></h2>
       <!-- <ul class="nav navbar-right panel_toolbox">
         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
         </li>
@@ -19,16 +22,16 @@
           </ul>
         </li>
       </ul> -->
-      <div class="clearfix"></div>
+      <h4>Datos personales</h4>
     </div>
     <div class="x_content">
       <br />
-      <h1>{{ cliente.nombre }}</h1>
-      <h1>{{ cliente.apellido }}</h1>
-      <h1>{{ cliente.dni }}</h1>
-      <h1>{{ cliente.email }}</h1>
-        <a class="btn btn-info" href="{% url 'cliente:cliente_listar' %}">Volver</a>
+      <p><span>Nombre completo: <strong>{{ cliente.nombre }} {{ cliente.apellido }}</strong></span></p>
+      <p><span>DNI: <strong>{{ cliente.doc }}</strong></span></p>
+      <p><span>e-mail: <strong>{{ cliente.email }}</strong></span></p>
     </div>
   </div>
+  <div class="ln_solid"></div>
+  <a class="btn btn-default" href="{% url 'cliente:cliente_listar' %}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Volver al listado</a>
 </div>
 {% endblock contenido %}

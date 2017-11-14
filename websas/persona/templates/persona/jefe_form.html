@@ -88,9 +88,9 @@
         <div class="ln_solid"></div>
         <div class="item form-group">
           <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-            <button class="btn btn-primary" type="button">Cancel</button>
-          <button class="btn btn-primary" type="reset">Reset</button>
-            <button type="submit" class="btn btn-success">Submit</button>
+            <a class="btn btn-default" href="{% url 'empleado:jefe:jefe_listar' %}">Volver al listado</a>
+            <button class="btn btn-primary" type="reset">Reiniciar</button>
+            <button type="submit" class="btn btn-success">Aceptar</button>
           </div>
         </div>
       </form>
@@ -98,8 +98,3 @@
   </div>
 </div>
 {% endblock contenido %}
-
-{% block javascripts %}
-<!-- validator -->
-<script src="/static/vendors/validator/validator.js"></script>
-{% endblock javascripts %}
