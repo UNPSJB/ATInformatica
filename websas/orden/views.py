@@ -130,7 +130,7 @@ class EquipoCreate(CreateView):
 
     @method_decorator(permission_required('orden.add_equipo', login_url='orden:orden_listar'))        
     def post(self, request, *args, **kwargs):
-        return super(self.__class__, self).post(request,*args, **kwargs)
+        return super().post(request, *args, **kwargs)
 
 
 class EquipoList(ListView):
