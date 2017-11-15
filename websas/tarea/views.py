@@ -1,3 +1,4 @@
+from django.db.utils import IntegrityError
 from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import permission_required
@@ -99,15 +100,20 @@ class TareaCreate(View):
             observacion = form.cleaned_data['observacion']
             orden = Orden.objects.get(pk=form.cleaned_data['orden_id'])
         if orden is None or tipo_tarea is None:
-            response = JsonResponse({'error': 'no es posible realizar la operación'})
+            response = JsonResponse({'error': 'No es posible realizar la operacion para esta tarea u orden.'})
             response.status_code = 403  
             return response 
         try:
             orden.agregar_tarea(tipo_tarea, observacion)
+        except IntegrityError as err:
+            print(err)
+            response = JsonResponse({'error': 'La tarea no se puede agregar a la orden. Ya existe.'})
+            response.status_code = 403
+            return response
         except Exception as e:
-                response = JsonResponse({'error': str(e)})
-                response.status_code = 403  
-                return response           
+            response = JsonResponse({'error': str(e)})
+            response.status_code = 403  
+            return response           
         return JsonResponse({'data':'ok'})
 
 class TareaDetail(DetailView):

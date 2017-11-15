@@ -70,11 +70,11 @@ function crearTarea(objs, context){
         //     throw "El precio ingresado no es válido";
         // }
         // // Precio OK, luego comparamos si hubo que reemplazar coma por punto
-        // // Pero primero, la observación:
-        // if (data['observacion'] == '') {
-        //     $('#observaciontarea').select();
-        //     throw "No puede dejar la observación en blanco";
-        // }
+        // Pero primero, la observación:
+        if (data['observacion'] == '') {
+            $('#observaciontarea').select();
+            throw "No puede dejar la observación en blanco";
+        }
         // // Reemplazar el campo precio con lo parseado si es necesario
         // if ($('#precio-tarea').val() != data['precio'].toString()) {
         //     $('#precio-tarea').val(data['precio'].toString());
@@ -91,19 +91,22 @@ function crearTarea(objs, context){
                 $('#modalTarea').modal('toggle');    
             },
             statusCode: {
-                500: function(data) {
-                    throw "La tarea seleccionada ya fue agregada a la Orden de Trabajo";
-                },
                 403: function(data) {
-                    console.log(data);
+                    // Mensaje del servidor
+                    mostrarError(data.responseJSON.error);
                 }
             }
         });
     }
     catch (e) {
-        $('#errormsg').html(e);
-        $('#error-elem').fadeIn();
+        // Mensaje del front
+        mostrarError(e);
     }
+}
+
+function mostrarError(mensaje) {
+    $('#errormsg').html(mensaje);
+    $('#error-elem').fadeIn();
 }
 
 $('#modalTarea').on('hidden.bs.modal', function () {

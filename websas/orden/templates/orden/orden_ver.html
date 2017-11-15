@@ -4,6 +4,74 @@
 <link href="/static/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
 <link href="{% static 'css/agregar_tarea.css' %}" rel="stylesheet" type="text/css"> {% endblock estilos %} {% block contenido %}
 
+<!-- Modal confirmación CANCELAR - btns Si-No -->
+<div id="modal-confirmacion" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+        </button>
+        <h3 class="modal-title" style="color: darkorange;"><i class="fa fa-exclamation-circle fa-lg"></i>&nbsp;&nbsp;Cancelar Orden de Trabajo</h3>
+      </div>
+      <div class="modal-body">
+        <h4>¿Confirma cancelación de Orden de Trabajo?</h4>
+        <p><strong>ATENCIÓN</strong>: Esta acción no se puede deshacer.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Volver</button>
+        <button onclick="cancelar()" type="button" class="btn btn-primary">Confirmar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal confirmación CERRAR - btns Si-No -->
+<div id="modal-cerrarorden" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+        </button>
+        <h3 class="modal-title" style="color: lightblue;"><i class="fa fa-exclamation-circle fa-lg"></i>&nbsp;&nbsp;Cerrar Orden de Trabajo</h3>
+      </div>
+      <div class="modal-body">
+        <h4>¿Confirma cerrar de Orden de Trabajo?</h4>
+        <p {% if not orden.tareas_presupuestadas %}hidden{% endif %}><strong>NOTA</strong>: Hay tareas presupuestadas y no aceptadas.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Volver</button>
+        <button onclick="cerrar()" type="button" class="btn btn-primary">Confirmar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal error - sólo btn Aceptar -->
+<div id="modal-error" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title" style="color: red;"><i class="fa fa-times-circle fa-lg"></i><span id="modal-error-titulo"></span></h4>
+      </div>
+      <div class="modal-body">
+        <h4><span id="modal-error-subtitulo"></span></h4>
+        <p id="modal-error-texto"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class="col-md-12 col-sm-12 col-xs-12">
   <div class="x_panel">
 
@@ -18,8 +86,6 @@
     <div class="x_content col-xs-12">
       {% if not orden.cerrada %}
       <div id="orden-abierta">
-
-
         <div class="col-xs-9">
           <!-- Tab panes -->
           <div class="tab-content">
@@ -51,18 +117,18 @@
           </ul>
 
           <div style="padding-top:0.5em; float:right">
-            <button id="boton-cancelar" class="btn btn-danger" onclick="cancelar()" data-orden-id="{{ orden.id }}" ajax-url="{% url 'orden:orden_cancelar' %}">Cancelar orden</button>
+            <button id="boton-cancelar" class="btn btn-danger" data-toggle="modal" data-target="#modal-confirmacion" data-orden-id="{{ orden.id }}" ajax-url="{% url 'orden:orden_cancelar' %}">Cancelar orden</button>
           </div>
         </div>
 
       </div>
       {% else %}
-      {% include "orden/cerrada.html" %}
+        {% include "orden/cerrada.html" %}
       {% endif %}
     </div>
   </div>
   <div class="ln_solid"></div>
-  <a class="btn btn-default" href="{% url 'orden:orden_listar' %}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Volver al listado</a>
+  <a id="btn-volver-listado" class="btn btn-default" href="{% url 'orden:orden_listar' %}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Volver al listado</a>
 </div>
 
 <div class="clearfix"></div>

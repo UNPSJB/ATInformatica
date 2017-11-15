@@ -47,16 +47,20 @@ function aceptarTareas() {
     }
 
     console.log(data)
-
-    $.ajax({
-        url: $("#tareasPresupuestadas").attr("ajax-url"),
-        type: "POST",
-        data: data,
-        dataType: 'json',
-        success: function (res) {
-            location.reload();
-        }
-    })
+    if (data.tareas.length > 0) {
+        $.ajax({
+            url: $("#tareasPresupuestadas").attr("ajax-url"),
+            type: "POST",
+            data: data,
+            dataType: 'json',
+            success: function (res) {
+                location.reload();
+            },
+            error: function (data) {
+                modalError("Error en la operación", "El servidor no pudo procesar la solicitud", data.responseJSON.error);
+            }
+        });
+    }
 }
 
 function finalizarTareas() {
@@ -74,18 +78,38 @@ function finalizarTareas() {
         'orden_id': $("#tareasPendientes").attr("data-orden-id"),
     }
 
-    $.ajax({
-        url: $("#tareasPendientes").attr("ajax-url"),
-        type: "POST",
-        data: data,
-        dataType: 'json',
-        success: function (data) {
-            location.reload();
-        },
-        error: function (data) {
-            alert(data.responseJSON.error);
-        }
-    })
+    if (data.tareas.length > 0) {
+        $.ajax({
+            url: $("#tareasPendientes").attr("ajax-url"),
+            type: "POST",
+            data: data,
+            dataType: 'json',
+            success: function (data) {
+                location.reload();
+            },
+            error: function (data) {
+                modalError("Error en la operación", "El servidor no pudo procesar la solicitud", data.responseJSON.error);
+            }
+        });
+    }
+}
+
+function modalError(titulo, subtitulo, texto) {
+    {
+        $('.modal').each(function(index, element) {
+            $(element).hide();
+        });
+    }
+    var modal_html = $('#modal-error');
+    var modal_titulo = $('#modal-error-titulo');
+    var modal_subtitulo = $('#modal-error-subtitulo');
+    var modal_texto = $('#modal-error-texto');
+
+    modal_titulo.html(titulo);
+    modal_subtitulo.html(subtitulo);
+    modal_texto.html(texto);
+
+    modal_html.modal();
 }
 
 function cerrar() {
@@ -93,6 +117,8 @@ function cerrar() {
     data = {
         'orden_id': $("#boton-cerrar").attr("data-orden-id"),
     }
+
+    // TODO: mostrar confirmación si tareas pendientes
 
     $.ajax({
         url: $("#boton-cerrar").attr("ajax-url"),
@@ -103,11 +129,10 @@ function cerrar() {
             location.reload();
         },
         error: function (data) {
-            alert(data.responseJSON.error);
+            modalError("Error en la operación", "El servidor no pudo procesar la solicitud", data.responseJSON.error);
         }
     })
 }
-
 
 function cancelar() {
 
@@ -121,10 +146,10 @@ function cancelar() {
         data: data,
         dataType: 'json',
         success: function (data) {
-            location.reload();
+            location.assign($('#btn-volver-listado').attr('href'));
         },
         error: function (data) {
-            alert(data.responseJSON.error);
+            modalError("Error en la operación", "El servidor no pudo procesar la solicitud", data.responseJSON.error);
         }
     })
 }
