@@ -1,7 +1,13 @@
-{% extends "principal.html" %} {% load staticfiles %} {% block estilos %}
+{% extends "principal.html" %}
+{% load staticfiles %}
+
+{% block estilos %}
 <!-- DataTables CSS -->
 <link href="{% static 'vendors/datatables.net-bs/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
-<link href="{% static 'vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css' %}" rel="stylesheet"> {% endblock estilos %} {% block contenido %}
+<link href="{% static 'vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css' %}" rel="stylesheet">
+{% endblock estilos %}
+
+{% block contenido %}
 <div class="row">
   <div class="x_panel">
     <div class="x_title">
@@ -12,15 +18,15 @@
       <table id="datatable-ordenes" class="table table-striped table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
         <thead>
           <tr>
-            <th>Fecha Creación</th>
-            <th>Cliente</th>
+            <th data-width="10%" data-priority=1>Fecha Creación</th>
+            <th data-priority=2>Cliente</th>
             <th>Descripción</th>
             <th>Rubro</th>
             <th>Tipo de servicio</th>
             <th>Equipo</th>
-            <th>Estado</th>
-            <th>Ver</th>
-            <th>Eliminar</th>
+            <th data-width="10%" data-priority=2>Estado</th>
+            <th data-width="8%" data-priority=1>Ver</th>
+            <th data-width="8%" data-priority=1>Eliminar</th>
           </tr>
         </thead>
         <tbody>
@@ -28,7 +34,7 @@
           <tr>
             <td>{{ orden.fecha }}</td>
             <td>{{ orden.cliente.persona.nombre }}</td>
-            <td>{% autoescape off %}{{ orden.descripcion }}{% endautoescape %} </td>
+            <td>{% autoescape off %}{{ orden.descripcion }}{% endautoescape %}</td>
             <td>{{ orden.rubro.nombre }}</td>
             <td>{{ orden.tipo_servicio.nombre }}</td>
             <td> 
@@ -38,17 +44,17 @@
                 - 
               {% endif %} 
             </td>
-            <td>
+            <td align="center">
               {{ orden.condicion }}
             </td>
-            <td>
+            <td align="center">
               <a href="{% url 'orden:orden_ver' orden.id %}">
-                <i class="fa fa-eye"></i>
+                <i class="fa fa-eye fa-lg"></i>
               </a>
             </td>
-            <td>
+            <td align="center">
               <a href="{% url 'orden:orden_eliminar' orden.id %}">
-                <i class="fa fa-trash"></i>
+                <i class="fa fa-trash fa-lg"></i>
               </a>
             </td>
           </tr>
@@ -60,6 +66,26 @@
           {% endif %}
         </tbody>
       </table>
+    </div>
+  </div>
+</div>
+
+<div id="modal-observacion" class="modal fade in" tabindex="-1" role="dialog" aria-hidden="true" style="display: none; padding-right: 17px;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title">Observación</h4>
+      </div>
+      <div class="modal-body">
+        <p id="texto-observacion-completa" style="overflow-wrap: break-word;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui vero sit non, itaque maxime delectus rem cupiditate accusantium accusamus quasi molestias nesciunt! Officiis, natus doloremque dolor dignissimos sunt reiciendis eius. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Doloribus impedit recusandae, sint debitis minus eum animi fugit aspernatur, reiciendis ea architecto veritatis eveniet sunt ullam error veniam dolorum maiores atque?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+      </div>
+
     </div>
   </div>
 </div>
