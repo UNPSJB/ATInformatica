@@ -19,15 +19,6 @@ class RegistrarUsuarioForm(UserCreationForm):
             user.save()
         return user
 
-class UsuarioUpdateForm(UserChangeForm):
-
-    class Meta(UserChangeForm.Meta):
-        model = Usuario
-        fields = [
-            'username',
-            'password',
-        ]
-
 class UsuarioCambiarPasswordForm(PasswordChangeForm):
     """
     Form que hereda de PasswordChangeForm para agregar clases al widget

@@ -30,6 +30,10 @@
   </div>
   <div class="ln_solid"></div>
   <a class="btn btn-default" href="{% url 'empleado:tecnico:tecnico_listar' %}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Volver al listado</a>
-  <a class="btn btn-info" href="{% url 'usuario:usuario_crear' tecnico.id %}">Crear usuario</a>
+  <a class="btn btn-info" id="btn-crear-usuario" ajax-url="{% url 'usuario:usuario_crear' %}" data-persona-id="{{ tecnico.id }}" onclick="crearUsuario()">Crear usuario</a>
 </div>
 {% endblock contenido %}
+{% block scripts %}
+<script src="/static/persona/js/crear_usuario.js"></script>
+<script>'{{ csrf_token }}'</script>
+{% endblock scripts %}

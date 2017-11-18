@@ -1,12 +1,8 @@
-from django.shortcuts import render, redirect
-from .forms import UsuarioUpdateForm, RegistrarUsuarioForm, UsuarioCambiarPasswordForm
+from .forms import RegistrarUsuarioForm, UsuarioCambiarPasswordForm
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_protect
 from .models import Usuario
 from persona.models import Persona, Rol
-from django.views.generic import CreateView, UpdateView
 
 import datetime
 
@@ -17,24 +13,31 @@ from django.views.decorators.debug import sensitive_post_parameters
 
 
 from django.core.urlresolvers import reverse_lazy
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
+
 from django.contrib.auth import authenticate, login, logout
-from django.views.generic import FormView, TemplateView, RedirectView
+from django.views.generic import FormView, TemplateView, RedirectView, View
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView
 
-class RegistrarUsuario(TemplateView):
-    model = Usuario
-    template_name = 'usuario_crear.html'
+class RegistrarUsuario(View):
     
+    def generate_username(self, persona):
+        return str.lower(persona.nombre[0]) + str.lower(persona.apellido)
+
     def post(self, request, *args, **kwargs):
-        pk = self.kwargs.get('pk', 0)
-        persona = Persona.objects.get(pk=pk)
-        user = Usuario.objects.crear_usuario(username=persona.doc,password=persona.doc, persona=persona)
-        if user:
-            persona.agregar_rol(Usuario())
-            return HttpResponseRedirect(reverse_lazy('cliente:cliente_listar'))
-        return HttpResponseRedirect(reverse_lazy('empleado:tecnico:tecnico_listar'))
+        persona = Persona.objects.get(pk=request.POST['persona_id'])
+        try:
+            user = Usuario.objects.crear_usuario(username=self.generate_username(persona), 
+                                        password=persona.doc,
+                                        persona=persona)
+        except Exception as e:
+            response = JsonResponse({'error': str(e)})
+            response.status_code = 403  
+            return response
+
+        persona.agregar_rol(Usuario())
+        return JsonResponse({'data':'joya'})
 
 
 class LoginView(FormView):
