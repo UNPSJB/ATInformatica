@@ -16,36 +16,39 @@ function getCookie(name) {
 }
 var csrftoken = getCookie('csrftoken');
 
-
-
 function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 $.ajaxSetup({
-    beforeSend: function (xhr, settings) {
+    beforeSend: function(xhr, settings) {
         if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
             xhr.setRequestHeader("X-CSRFToken", csrftoken);
         }
     }
 });
 
-function crearUsuario(){
+
+function crearGrupo(){
 
     data = {
-        'persona_id': $("#btn-crear-usuario").attr("data-persona-id"),
+        'name':'Gerente'
     }
 
-    $.ajax({
-        url: $("#btn-crear-usuario").attr("ajax-url"),
+    $.ajax({    
+        url: $('#btn-crear-grupo').attr('ajax-url'),
         type: "POST",
         data: data,
         dataType: 'json',
-        success: function (res) {
-            alert("Usuario creado con éxito");
+        success: function(data){
+            alert("Todo piola");    
         },
-        error: function (data) {
-            alert("Error en la operación", "El servidor no pudo procesar la solicitud", data.responseJSON.error);
+        statusCode: {
+            403: function(data) {
+                // Mensaje del servidor
+                alert("todo mal");
+            }
         }
     });
+
 }

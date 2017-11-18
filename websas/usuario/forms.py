@@ -2,22 +2,11 @@ from django.contrib.auth.forms import forms, UserChangeForm, UserCreationForm, P
 from django.contrib.auth import password_validation
 from django.contrib import messages
 from .models import Usuario
+from django.contrib.auth.models import Group
 
-class RegistrarUsuarioForm(UserCreationForm):
+class RegistrarUsuarioForm(forms.ModelForm):
 
-    class Meta():
-        model = Usuario
-        fields = [
-            'username',
-            'password1',
-            'password2', 
-        ]
-
-    def save(self, commit=True):
-        user = super(UserCreationForm, self).save(commit=False)
-        if commit:
-            user.save()
-        return user
+    persona_id = forms.IntegerField()
 
 class UsuarioCambiarPasswordForm(PasswordChangeForm):
     """
@@ -54,3 +43,20 @@ class UsuarioCambiarPasswordForm(PasswordChangeForm):
             self.user.primer_login = False
             self.user.save()
         return self.user
+
+class CrearGrupoForm(forms.ModelForm):
+   
+    class Meta:
+        model = Group
+        fields = ['name']
+    
+    def clean(self):
+        cleaned_data = super(CrearGrupoForm, self).clean()
+        nombre = cleaned_data.get('name')
+        if Group.objects.filter(name=nombre).exists():
+            raise forms.ValidationError(
+                "El nombre del grupo no es válido"
+            )
+
+
+

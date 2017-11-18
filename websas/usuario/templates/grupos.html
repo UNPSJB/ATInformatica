@@ -1,0 +1,24 @@
+{% extends 'principal.html' %}
+{% load staticfiles %}
+
+{% block estilos %}
+  <!-- Animate.css -->
+  <link href="{% static 'vendors/animate.css/animate.min.css' %}" rel="stylesheet">
+{% endblock estilos %}
+
+{% block contenido %}
+<ul>
+  {% if grupos %}
+  {% for grupo in grupos %}
+  <li>{{ grupo.name }}</li>
+  {% endfor %}
+  {% else %}
+    <h1>No hay grupos </h1>
+  {% endif %}
+</ul>
+<button class="btn btn-primary" id="btn-crear-grupo" ajax-url="{% url 'usuario:grupos' %}" onclick="crearGrupo()">Crear grupo</button>
+{% endblock contenido %}
+
+{% block scripts %}
+<script src="{% static '/js/crear_grupo.js' %}"></script>
+{% endblock scripts %}
