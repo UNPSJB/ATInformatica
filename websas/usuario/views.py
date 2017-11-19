@@ -16,7 +16,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect, JsonResponse
 
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, Permission
 from django.views.generic import FormView, TemplateView, RedirectView, View
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView
@@ -57,7 +57,7 @@ class LogoutView(RedirectView):
         return super(LogoutView, self).get(request, *args, **kwargs)
 
 class RegistrarUsuario(View):
-¿
+
     def post(self, request, *args, **kwargs):
         persona_id = request.POST['persona_id']
         form = registrarUsuarioFormFactory(persona_id)
@@ -69,7 +69,7 @@ class RegistrarUsuario(View):
         response = JsonResponse({'error': 'todo mal'})
         response.status_code = 403  
         return response
-    
+
 class CambiarContraseñaView(PasswordChangeView):
     form_class = UsuarioCambiarPasswordForm
     success_url = reverse_lazy('usuario:password_change_done')
@@ -99,4 +99,6 @@ class GroupView(TemplateView):
     def get_context_data(self, **kwargs):
         contexto = super(GroupView, self).get_context_data(**kwargs)
         contexto['grupos'] = Group.objects.all()
+        contexto['permisos'] = Permission.objects.all()
+        contexto['usuarios'] = Usuario.objects.all()
         return contexto

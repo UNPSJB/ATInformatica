@@ -7,15 +7,43 @@
 {% endblock estilos %}
 
 {% block contenido %}
-<ul>
-  {% if grupos %}
-  {% for grupo in grupos %}
-  <li>{{ grupo.name }}</li>
-  {% endfor %}
-  {% else %}
-    <h1>No hay grupos </h1>
-  {% endif %}
-</ul>
+<div class="row">
+  <div class="col-md-4">
+    <ul>
+      {% if grupos %}
+      {% for grupo in grupos %}
+      <li>{{ grupo.name }}</li>
+      {% endfor %}
+      {% else %}
+        <h1>No hay grupos </h1>
+      {% endif %}
+    </ul>
+  </div> 
+  <div class="col-md-4">
+    <ul>
+      {% if permisos %}
+      {% for permiso in permisos %}
+      <li>{{ permiso.name }}</li>
+      {% endfor %}
+      {% else %}
+        <h1>No hay permisos </h1>
+      {% endif %}
+    </ul>
+  </div> 
+  <div class="col-md-4">
+    <ul>
+        {% if usuarios %}
+        {% for usuario in usuarios %}
+        <li>{{ usuario.persona }}</li>
+        {% endfor %}
+        {% else %}
+          <h1>No hay usuarios </h1>
+        {% endif %}
+      </ul>
+  </div>
+</div>
+
+
 <button class="btn btn-primary" id="btn-crear-grupo" ajax-url="{% url 'usuario:grupos' %}" onclick="crearGrupo()">Crear grupo</button>
 {% endblock contenido %}
 
