@@ -44,8 +44,8 @@ function crearUsuario(){
         success: function (res) {
             alert("Usuario creado con éxito");
         },
-        error: function (data) {
-            alert("Error en la operación", "El servidor no pudo procesar la solicitud", data.responseJSON.error);
+        error: function (res) {
+            alert(res);
         }
     });
 }

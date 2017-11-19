@@ -2,11 +2,35 @@ from django.contrib.auth.forms import forms, UserChangeForm, UserCreationForm, P
 from django.contrib.auth import password_validation
 from django.contrib import messages
 from .models import Usuario
+from persona.models import Persona
 from django.contrib.auth.models import Group
 
-class RegistrarUsuarioForm(forms.ModelForm):
+def registrarUsuarioFormFactory(persona_id):
 
-    persona_id = forms.IntegerField()
+    # TODO: reescribir _generate_username para asegurar unicidad (NO ATAJADA
+    # EXCEPCION AL CREAR EL USUARIO, se debe asegurar en éste método)
+    class RegistrarUsuarioForm(forms.Form):
+
+        persona_id = forms.IntegerField()
+
+        def _generate_username(self, persona):
+            return str.lower(persona.nombre[0]) + str.lower(persona.apellido)
+
+        def clean(self):
+            cleaned_data = super(RegistrarUsuarioForm, self).clean()
+            if not Persona.objects.filter(pk=cleaned_data.get('persona_id')).exists():
+                raise forms.ValidationError(
+                    "No existe la persona"
+                )
+
+        def save(self, commit=True):
+            persona = Persona.objects.get(pk=self.cleaned_data['persona_id'])
+            Usuario.objects.crear_usuario(username=self._generate_username(persona), 
+                                        password=persona.doc, persona=persona)
+            persona.agregar_rol(Usuario())
+
+    return RegistrarUsuarioForm({'persona_id':persona_id})
+
 
 class UsuarioCambiarPasswordForm(PasswordChangeForm):
     """
