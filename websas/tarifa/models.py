@@ -2,6 +2,14 @@ from django.db import models
 from decimal import Decimal
 # Create your models here.
 class Tarifa(models.Model):
+    """ Modelo para la gestión de las tarifas de los tipos de tarea
+
+    Attributes:
+        tipo_tarea(:obj:TipoTarea): tipo de tarea a la cual pertenece la tarifa
+        tipo_servicio(:obj:TipoServicio): tipo de servicio al cual pertenece la tarifa
+        precio(:obj: Decimal): precio de la tarifa """
+
+
     tipo_tarea = models.ForeignKey(
         "tarea.TipoTarea", related_name="tarifas",
         on_delete=models.CASCADE
