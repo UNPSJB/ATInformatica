@@ -1,6 +1,5 @@
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import permission_required
-
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views import View
@@ -10,17 +9,16 @@ from .forms import TarifaForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
 from tarea.models import TipoTarea
-from decimal import Decimal
 # Create your views here.
 
 class TarifaUpdate(View):
     @method_decorator(permission_required('tarifa.add_tarifa', login_url='rubro:rubro_listar'))
     def post(self, request, *args, **kwargs):
-        tarifa = int(request.POST["tarifa"])
-        if(type(tarifa) != int):
-            tarifa = 0
+        pk = int(request.POST["tarifa"])
         precio = request.POST.get("precio")
-        Tarifa.objects.filter(pk=tarifa).update(precio=Decimal(precio))        
+
+        tarifa = Tarifa.objects.get(pk=pk)
+        tarifa.actualizar_precio(precio)
 
         data = {
             "precio": precio,

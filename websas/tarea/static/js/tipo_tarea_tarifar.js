@@ -22,16 +22,19 @@ $('#datatable-tipo-tarea-tarifar tbody').on('change', 'td', function () {
 
     //recuperamos el tipo de servicio
     var tipo_servicio = tabla.row(this).data()[0]
+    
     //armamos el id de la celda y recuperamos el valor de la tarifa
     var id = "#tarifa_" + tipo_servicio.replace(/\s/g, '').toLowerCase()
-    var precio = parseInt(tabla.cell(this).$(id).val())
+    
     //recuperamos la pk de la tarifa
-    if (isNaN(precio)){
+    var tarifa = tabla.cell(this).$(id).attr("tarifa")
+    
+    //recuperamos el precio de la tarifa
+    var precio = parseInt(tabla.cell(this).$(id).val())
+    if (isNaN(precio) || precio < 0){
         precio = 0
     }
-    var tarifa = tabla.cell(this).$(id).attr("tarifa")
 
-    //mandamos los datos al servidor
     $.ajax({
         //la url a donde hay que pegarle en el servidor esta en el html de la tabla
         //de esta forma, podemos tener el .js separado del .html
