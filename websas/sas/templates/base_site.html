@@ -28,7 +28,10 @@
   <link href="{% static 'vendors/jqvmap/dist/jqvmap.min.css' %}" rel="stylesheet" />
   <!-- Custom theme style -->
   <link href="{% static 'build/css/custom.css' %}" rel="stylesheet">
-  
+  <!-- JQuery - UI -->
+  <link href="{% static 'vendors/jquery-ui-1.12.1/jquery-ui.css' %}" rel="stylesheet">
+  <!-- JQuery - UI Base Theme-->
+  <link href="{% static 'vendors/jquery-ui-1.12.1/jquery-ui.theme.css' %}" rel="stylesheet">
   {% block estilos %}
   {% endblock estilos %}
 </head>
@@ -55,6 +58,8 @@
 
 <!-- jQuery -->
 <script src="{% static 'vendors/jquery/dist/jquery.min.js' %}"></script>
+<!-- JQuery - UI -->
+<script src="/static/vendors/jquery-ui-1.12.1/jquery-ui.js"></script>
 <!-- Bootstrap -->
 <script src="{% static 'vendors/bootstrap/dist/js/bootstrap.min.js' %}"></script>
 <!-- FastClick -->

@@ -87,7 +87,7 @@ class GroupView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         form = CrearGrupoForm(request.POST or None)
-        
+       
         if form.is_valid():
             form.save()
             return JsonResponse({'data':'todo piola'})

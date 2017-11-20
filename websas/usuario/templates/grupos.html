@@ -1,52 +1,78 @@
-{% extends 'principal.html' %}
-{% load staticfiles %}
-
+{% extends 'principal.html' %} 
+{% load staticfiles %} 
 {% block estilos %}
-  <!-- Animate.css -->
-  <link href="{% static 'vendors/animate.css/animate.min.css' %}" rel="stylesheet">
-{% endblock estilos %}
+<!-- Animate.css -->
+<link href="{% static 'vendors/animate.css/animate.min.css' %}" rel="stylesheet">
 
+{% endblock estilos %} 
 {% block contenido %}
-<div class="row">
+<div class="row x_panel">
+
   <div class="col-md-4">
-    <ul>
-      {% if grupos %}
-      {% for grupo in grupos %}
-      <li>{{ grupo.name }}</li>
-      {% endfor %}
-      {% else %}
-        <h1>No hay grupos </h1>
+    <p class="lead">Permisos</p>
+    <ul id="draggable" style="list-style:none">
+      {% if permisos %} {% for permiso in permisos %}
+      <li><span class="btn btn-default">{{ permiso.name }}</span></li>
+      {% endfor %} {% else %}
+      <h1>No hay permisos </h1>
       {% endif %}
     </ul>
-  </div> 
+  </div>
   <div class="col-md-4">
-    <ul>
-      {% if permisos %}
-      {% for permiso in permisos %}
-      <li>{{ permiso.name }}</li>
-      {% endfor %}
-      {% else %}
-        <h1>No hay permisos </h1>
+      <div class="x_content">
+  
+        <!-- start accordion -->
+        <div class="accordion" id="accordion" role="tab" aria-multiselectable="true">
+          <p class="lead">Grupos<p>
+          {% if grupos %} {% for grupo in grupos %}
+          <div class="panel">
+            <a class="panel-heading" role="tab" id="heading{{grupo.id}}" data-toggle="collapse" data-parent="#accordion" href="#collapse{{grupo.id}}" aria-expanded="true"
+              aria-controls="collapse{{grupo.id}}">
+              <h4 class="panel-title">{{ grupo.name }}</h4>
+            </a>
+            <div id="collapse{{grupo.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{grupo.id}}">
+              <div class="panel-body">
+                  <h5>Permisos</h5>
+                  <div class="panel-body">
+                    
+                  </div>
+              </div>
+              <div class="panel-body">
+                  <h5>Usuarios</h5>
+                  <div>
+                    
+                  </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %} {% else %}
+          <h1>No hay grupos </h1>
+          {% endif %}
+        </div>
+        <button style="float:right" class="btn btn-primary" data-toggle="modal" data-target="#modalGrupo">Crear grupo</button>
+        {% include "modal-add-grupo.html" %}
+        <!-- end of accordion -->
+  
+  
+      </div>
+    </div>
+  <div class="col-md-4">
+    <p class="lead">Usuarios</p>
+    <ul id="draggable" style="list-style:none">
+      {% if usuarios %} {% for usuario in usuarios %}
+      <li><span class="btn btn-default">{{ usuario.persona }}</span></li>
+      {% endfor %} {% else %}
+      <h1>No hay usuarios </h1>
       {% endif %}
     </ul>
-  </div> 
-  <div class="col-md-4">
-    <ul>
-        {% if usuarios %}
-        {% for usuario in usuarios %}
-        <li>{{ usuario.persona }}</li>
-        {% endfor %}
-        {% else %}
-          <h1>No hay usuarios </h1>
-        {% endif %}
-      </ul>
   </div>
 </div>
-
-
-<button class="btn btn-primary" id="btn-crear-grupo" ajax-url="{% url 'usuario:grupos' %}" onclick="crearGrupo()">Crear grupo</button>
-{% endblock contenido %}
-
-{% block scripts %}
+{% endblock contenido %} {% block scripts %}
+<!-- prueba jquery ui -->
+<script>
+  $( function() {
+    $( "#draggable li" ).draggable({ revert: true, helper: "clone" });
+  });
+</script>
 <script src="{% static '/js/crear_grupo.js' %}"></script>
 {% endblock scripts %}
