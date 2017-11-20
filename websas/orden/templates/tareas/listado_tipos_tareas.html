@@ -7,8 +7,8 @@
     </tr>
     </thead>
     <tbody>
-        {% if orden.rubro.tipos_tareas_related %}
-        {% for tipo_tarea in orden.rubro.tipos_tareas_related %} <tr>
+        {% for tipo_tarea in orden.tipos_tarea_agregables %} <tr>
+
             <td>
                 &nbsp;
                 <div class="radio">
@@ -19,11 +19,11 @@
             <td>{{ tipo_tarea.descripcion }}</td>
         </tr>
 
+        {% empty %}        
+        
+        <h1>No hay tipos de tarea para agregar</h1>    
+        
         {% endfor %}
-        {% else %}
-
-        <h1>No hay tipos de tarea registrados</h1>    
-        {% endif %}  
     </tbody>
 </table>
 <div class="clearfix"></div>
