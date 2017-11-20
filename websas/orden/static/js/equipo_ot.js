@@ -5,7 +5,6 @@ $(document).ready(function(){
     console.log('tabla_clientes')
     tabla = tabla_equipos()
 
-
 })
 
 function get_equipos(){
@@ -19,6 +18,7 @@ function get_equipos(){
         success:function(data){
             console.log(data)
             $('#equipos').html(data['data'])
+            $(document).trigger('icheck')
             tabla_equipos()
         }
     })
@@ -40,6 +40,7 @@ function tabla_equipos(){
     var dtabla = tabla_html.DataTable({
         "responsive": true,
         // "ajax": {'url':'localhost:8000/orden/lista_clientes'},//tabla_html.attr('data-ajax_url'),
+        "autoWidth": false,
         "columns": [
             {"data":""},
             {"data": "nro_serie"},
@@ -50,9 +51,6 @@ function tabla_equipos(){
         "buttons": [{
             text: "<b>Nuevo Equipo</b>",
             action: function() {
-                // TODO: si es necesario generar el form de nuevo técnico
-                // como modal, este botón puede dispararlo
-                // Por ahora sólo pega a crear técnico
                 popup = window.open(tabla_html.attr('data-popup_url'), 'Agregar nuevo Equipo', popup_attrs);
             },
             className: "btn-sm btn-info"

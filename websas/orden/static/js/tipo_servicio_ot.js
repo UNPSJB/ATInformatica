@@ -14,6 +14,7 @@ function tabla_tipo_servicio(){
     var dtabla = tabla_html.DataTable({
         "responsive": true,
         // "ajax": {'url':'localhost:8000/orden/lista_clientes'},//tabla_html.attr('data-ajax_url'),
+        "autoWidth": false,
         "columns": [
             {"data":""},
             {"data": "nombre"},

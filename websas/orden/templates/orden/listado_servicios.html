@@ -1,18 +1,16 @@
-<table id="datatable-servicios" class="table table-striped table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
+<table id="datatable-servicios" class="table table-striped table-hover table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
   <thead>
     <tr>
       <th></th>
-      <th>Nombre</th>
-      <th>Descripcion</th>
+      <th data-width="30%">Nombre</th>
+      <th data-width="70%">Descripcion</th>
     </tr>
   </thead>
   <tbody>
     {% if servicios %} {% for servicio in servicios %}
     <tr>
-      <td>
-        <div class="radio">
-          <input data-idtiposervicio="{{ servicio.id }}" type="radio" class="flat" name="tipo_servicio">
-        </div>
+      <td align="center">
+        <input data-idtiposervicio="{{ servicio.id }}" type="radio" class="flat" name="tipo_servicio">
       </td>
       <td>{{ servicio.nombre }}</td>
       <td>{{ servicio.descripcion }}</td>

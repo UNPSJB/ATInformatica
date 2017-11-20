@@ -10,6 +10,7 @@ function tabla_rubros(){
     // Inicializacion y referencia al DataTable, con la config ajax de cada columna
     var dtabla = tabla_html.DataTable({
         "responsive": true,
+        "autoWidth": false,
         "columns": [
             {"data": ""},
             {"data": "nombre"},

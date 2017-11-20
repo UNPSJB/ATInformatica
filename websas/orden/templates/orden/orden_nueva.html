@@ -21,7 +21,7 @@
         <div class="alert alert-danger alert-dismissible fade in hidden ot_aviso" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
             </button>
-            <strong>Error!</strong> no dispongo de información suficienta para poder crear una Orden de Trabajo de forma satisfactoria.
+            <p><strong>Error!</strong> no dispongo de información suficiente para poder crear una Orden de Trabajo de forma satisfactoria.</p>
         </div>
         <div id="creacion_ot" hidden ajax-url="{% url 'orden:orden_crear' %}" class="form_wizard wizard_horizontal">
             <!-- Lista de pasos / cabecera -->
@@ -89,109 +89,133 @@
             </ul>
 
             <!-- Contenedor de los pasos / CONTENIDO -->
-
-
-                <div id="step-1">
-                    <div id="clientes" >
-                        <div id="cargando" class="col-xs-offset-3">
-                            <span style="font-size: 16px;"><img src="{% static 'img/cargando.gif' %}" alt="espere...">&nbsp;&nbsp;Cargando desde la base de datos...</span>
-                        </div>
-                        {% include "orden/listado_clientes.html" %}
+            <div id="step-1" style="height: 10em;">
+                <div id="infostep-clientes">
+                    <p>Seleccione el cliente titular de la orden de trabajo. Puede utilizar el cuadro de búsqueda en la parte superior derecha de la tabla para encontrarlo por cualquiera de sus atributos.</p>
+                    <p>Si el cliente no está cargado, utilice el botón <strong>Nuevo cliente</strong> para ingresar sus datos.</p>
+                    <br>
+                </div>
+                <div id="clientes" >
+                    <div id="cargando" class="col-xs-offset-3">
+                        <span style="font-size: 16px;"><img src="{% static 'img/cargando.gif' %}" alt="espere...">&nbsp;&nbsp;Cargando desde la base de datos...</span>
                     </div>
+                    {% include "orden/listado_clientes.html" %}
                 </div>
-
-                <div id="step-2">
-                    {% include "orden/listado_servicios.html" %}
-                </div>
-
-                <div id="step-3">
-                    <!-- Que quisiste decir con este template -->
-                    {% include "orden/listado_rubros.html" %}
-                </div>
-
-                <div id="step-4">
-                    <!-- Que quisiste decir con este template -->
-                    <div id="equipos">
-                        {% include "orden/listado_equipos.html" %}
-                    </div>
-                </div>
-
-                <div id="step-5">
-                    {% include "orden/listado_tecnicos.html" %}
-                </div>
-
-                <div id="step-6">
- <!-- Editor wysiwyg -->
-            <div id="alerts"></div>
-            <div class="btn-toolbar editor" data-role="editor-toolbar" data-target="#editor-one">
-              <div class="btn-group">
-                <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font"><i class="fa fa-font"></i><b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                </ul>
-              </div>
-      
-              <div class="btn-group">
-                <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font Size"><i class="fa fa-text-height"></i>&nbsp;<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li>
-                    <a data-edit="fontSize 5">
-                      <p style="font-size:17px">Huge</p>
-                    </a>
-                  </li>
-                  <li>
-                    <a data-edit="fontSize 3">
-                      <p style="font-size:14px">Normal</p>
-                    </a>
-                  </li>
-                  <li>
-                    <a data-edit="fontSize 1">
-                      <p style="font-size:11px">Small</p>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-      
-              <div class="btn-group">
-                <a class="btn" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="fa fa-bold"></i></a>
-                <a class="btn" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i class="fa fa-italic"></i></a>
-                <a class="btn" data-edit="strikethrough" title="Strikethrough"><i class="fa fa-strikethrough"></i></a>
-                <a class="btn" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i class="fa fa-underline"></i></a>
-              </div>
-      
-              <div class="btn-group">
-                <a class="btn" data-edit="insertunorderedlist" title="Bullet list"><i class="fa fa-list-ul"></i></a>
-                <a class="btn" data-edit="insertorderedlist" title="Number list"><i class="fa fa-list-ol"></i></a>
-                <a class="btn" data-edit="outdent" title="Reduce indent (Shift+Tab)"><i class="fa fa-dedent"></i></a>
-                <a class="btn" data-edit="indent" title="Indent (Tab)"><i class="fa fa-indent"></i></a>
-              </div>
-      
-              <div class="btn-group">
-                <a class="btn" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i class="fa fa-align-left"></i></a>
-                <a class="btn" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i class="fa fa-align-center"></i></a>
-                <a class="btn" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i class="fa fa-align-right"></i></a>
-                <a class="btn" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i class="fa fa-align-justify"></i></a>
-              </div>
-      
-              <div class="btn-group">
-                <a class="btn dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><i class="fa fa-link"></i></a>
-                <div class="dropdown-menu input-append">
-                  <input class="span2" placeholder="URL" type="text" data-edit="createLink" />
-                  <button class="btn" type="button">Add</button>
-                </div>
-                <a class="btn" data-edit="unlink" title="Remove Hyperlink"><i class="fa fa-cut"></i></a>
-              </div>
-      
-              <div class="btn-group">
-                <a class="btn" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="fa fa-undo"></i></a>
-                <a class="btn" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="fa fa-repeat"></i></a>
-              </div>
             </div>
-      
-            <div id="editor-one" class="editor-wrapper"></div>
-      
-            <textarea name="descr" id="descr" style="display:none;"></textarea>
-       </div>
+
+            <div id="step-2">
+                <div id="infostep-servicios">
+                    <p>Seleccione el tipo de servicio para esta orden de trabajo.</p>
+                    <br>
                 </div>
+                {% include "orden/listado_servicios.html" %}
+            </div>
+
+            <div id="step-3">
+                <div id="infostep-rubro">
+                    <p>Seleccione el rubro para esta orden de trabajo.</p>
+                    <br>
+                </div>
+                <!-- Que quisiste decir con este template -->
+                {% include "orden/listado_rubros.html" %}
+            </div>
+
+            <div id="step-4">
+                <div id="infostep-equipos">
+                    <p>Seleccione el equipo para el que se presta el servicio. Puede utilizar el cuadro de búsqueda en la parte superior derecha de la tabla para encontrarlo por número de serie o descripción.</p>
+                    <br>
+                </div>
+                </div>
+                <div id="equipos">
+                    {% include "orden/listado_equipos.html" %}
+                </div>
+            </div>
+
+            <div id="step-5">
+                <div id="infostep-tecnicos">
+                    <p>Seleccione el técnico asignado a la orden de trabajo. Puede utilizar el cuadro de búsqueda en la parte superior derecha de la tabla para encontrarlo por nombre.</p>
+                    <br>
+                </div>
+                {% include "orden/listado_tecnicos.html" %}
+            </div>
+
+            <div id="step-6">
+                <div id="infostep-descripcion">
+                    <p>Ingrese una descripción del problema para agregar como observación a la nueva orden de trabajo.</p>
+                    <p>Puede dejar este campo en blanco, pero se recomienda siempre describir el origen del servicio lo más detalladamente posible.</p>
+                    <br>
+                </div>
+                <!-- Editor wysiwyg -->
+                <div id="alerts"></div>
+                <div class="btn-toolbar editor" data-role="editor-toolbar" data-target="#editor-one">
+                    <div class="btn-group">
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font"><i class="fa fa-font"></i><b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        </ul>
+                    </div>
+            
+                    <div class="btn-group">
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font Size"><i class="fa fa-text-height"></i>&nbsp;<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        <li>
+                            <a data-edit="fontSize 5">
+                            <p style="font-size:17px">Huge</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-edit="fontSize 3">
+                            <p style="font-size:14px">Normal</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-edit="fontSize 1">
+                            <p style="font-size:11px">Small</p>
+                            </a>
+                        </li>
+                        </ul>
+                    </div>
+            
+                    <div class="btn-group">
+                        <a class="btn" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="fa fa-bold"></i></a>
+                        <a class="btn" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i class="fa fa-italic"></i></a>
+                        <a class="btn" data-edit="strikethrough" title="Strikethrough"><i class="fa fa-strikethrough"></i></a>
+                        <a class="btn" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i class="fa fa-underline"></i></a>
+                    </div>
+            
+                    <div class="btn-group">
+                        <a class="btn" data-edit="insertunorderedlist" title="Bullet list"><i class="fa fa-list-ul"></i></a>
+                        <a class="btn" data-edit="insertorderedlist" title="Number list"><i class="fa fa-list-ol"></i></a>
+                        <a class="btn" data-edit="outdent" title="Reduce indent (Shift+Tab)"><i class="fa fa-dedent"></i></a>
+                        <a class="btn" data-edit="indent" title="Indent (Tab)"><i class="fa fa-indent"></i></a>
+                    </div>
+            
+                    <div class="btn-group">
+                        <a class="btn" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i class="fa fa-align-left"></i></a>
+                        <a class="btn" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i class="fa fa-align-center"></i></a>
+                        <a class="btn" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i class="fa fa-align-right"></i></a>
+                        <a class="btn" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i class="fa fa-align-justify"></i></a>
+                    </div>
+            
+                    <div class="btn-group">
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><i class="fa fa-link"></i></a>
+                        <div class="dropdown-menu input-append">
+                        <input class="span2" placeholder="URL" type="text" data-edit="createLink" />
+                        <button class="btn" type="button">Add</button>
+                        </div>
+                        <a class="btn" data-edit="unlink" title="Remove Hyperlink"><i class="fa fa-cut"></i></a>
+                    </div>
+            
+                    <div class="btn-group">
+                        <a class="btn" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="fa fa-undo"></i></a>
+                        <a class="btn" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="fa fa-repeat"></i></a>
+                    </div>
+                </div>
+        
+                <div id="editor-one" class="editor-wrapper"></div>
+        
+                <textarea name="descr" id="descr" style="display:none;"></textarea>
+            </div>
+        </div>
 
 
             {% comment %} <div class="actionBar">
@@ -200,9 +224,8 @@
                     <a href="#" class="close">X</a>
                 </div>
             </div> {% endcomment %}
-        </div>
-        <!-- End SmartWizard Content -->
     </div>
+    <!-- End SmartWizard Content -->
 </div>
 <style>
     .stepContainer {

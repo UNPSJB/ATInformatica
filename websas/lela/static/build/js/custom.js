@@ -204,9 +204,13 @@ $(document).ready(function() {
 // /Switchery
 
 // iCheck
-$(document).ready(function() {
+$(document).on('icheck', function() {
     if ($("input.flat")[0]) {
         $(document).ready(function() {
+            // Limpiar iCheck
+            $('input.flat').iCheck('destroy');
+
+            // Inicializar iCheck
             $('input.flat').iCheck({
                 checkboxClass: 'icheckbox_flat-green',
                 radioClass: 'iradio_flat-green'
@@ -214,6 +218,8 @@ $(document).ready(function() {
         });
     }
 });
+
+$(document).ready().trigger('icheck');
 // /iCheck
 
 // Table
@@ -251,10 +257,11 @@ $('.bulk_action input#check-all').on('ifUnchecked', function() {
 
 function countChecked() {
     if (checkState === 'all') {
-        $(".bulk_action input[name='table_records']").iCheck('check');
+        $(".bulk_action input[name='table_records']").iCheck('checked');
+        
     }
     if (checkState === 'none') {
-        $(".bulk_action input[name='table_records']").iCheck('uncheck');
+        $(".bulk_action input[name='table_records']").iCheck('unchecked');
     }
 
     var checkCount = $(".bulk_action input[name='table_records']:checked").length;
@@ -262,7 +269,7 @@ function countChecked() {
     if (checkCount) {
         $('.column-title').hide();
         $('.bulk-actions').show();
-        $('.action-cnt').html(checkCount + ' Records Selected');
+        $('.action-cnt').html(checkCount + ' registros');
     } else {
         $('.column-title').show();
         $('.bulk-actions').hide();
