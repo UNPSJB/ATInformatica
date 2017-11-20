@@ -36,9 +36,10 @@ class OrdenCreate(CreateView):
         rubro = Rubro.objects.get(pk=request.POST.get('rubro'))
         servicio = TipoServicio.objects.get(pk=request.POST.get('servicio'))
         tecnico = Persona.objects.get(pk=request.POST.get('tecnico'))
-        equipo = Equipo.objects.get(pk=request.POST.get('equipo'))
+        equipo = None
+        if request.POST.get('equipo') != 'sin':
+            equipo = Equipo.objects.get(pk=request.POST.get('equipo'))
         descripcion = request.POST.get('observacion')
-        print(persona, rubro, servicio,tecnico)
         
         if persona.sos(Cliente):
             orden = Orden(usuario=request.user, cliente=persona.como(Cliente), tecnico=tecnico.como(Tecnico), rubro=rubro, tipo_servicio=servicio, descripcion=descripcion,equipo=equipo) 

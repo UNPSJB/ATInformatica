@@ -123,9 +123,14 @@
             <div id="step-4">
                 <div id="infostep-equipos">
                     <p>Seleccione el equipo para el que se presta el servicio. Puede utilizar el cuadro de búsqueda en la parte superior derecha de la tabla para encontrarlo por número de serie o descripción.</p>
+                    <p>Si la orden de trabajo no lleva equipo, marque la casilla <strong>La orden de trabajo no lleva equipo</strong>.</p>
                     <br>
                 </div>
+                <div style="margin-left: 20px;">
+                    <input type="checkbox" name="sinequipo" id="sinequipo" class="flat">
+                    <label for="sinequipo">La orden de trabajo no lleva equipo</label>
                 </div>
+                <div class="ln_solid"></div>
                 <div id="equipos">
                     {% include "orden/listado_equipos.html" %}
                 </div>
