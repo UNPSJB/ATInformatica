@@ -75,6 +75,8 @@ class ClienteCreatePopup(ClienteCreate):
     template_name = 'persona/cliente_form_popup.html'
     success_url = '#'
 
+class ClienteCreateAjax(ClienteCreate):
+    pass
 
 class ClienteUpdate(UpdateView):
     model = Persona

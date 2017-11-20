@@ -1,0 +1,71 @@
+<form id="form_cliente" method="post" class="form-horizontal form-label-left" novalidate>  
+{% csrf_token %}
+<!-- MOSTRAR LOS ERRORES DEL SERVIDOR -->
+{% if form.errors %}
+<div class="clearfix">
+{% for field in form %}
+    {% for error in field.errors %}
+        <div class="alert alert-error col-md-6 col-sm-6 col-xs-12 col-md-offset-3 col-sm-offset-3 col-xs-12">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endfor %}
+{% for error in form.non_field_errors %}
+    <div class="alert alert-error col-md-6 col-sm-6 col-xs-12 col-md-offset-3 col-sm-offset-3 col-xs-12">
+        <strong>{{ error|escape }}</strong>
+    </div>
+{% endfor %}
+</div>
+{% endif %}
+<div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.nombre.label }}">{{ form.nombre.label }}
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+    {{ form.nombre }}
+    </div>
+</div>
+<div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.apellido.label }}">{{ form.apellido.label }}
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {{ form.apellido }}
+    </div>
+    </div>
+<div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.doc.label }}">{{ form.doc.label }} 
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+    {{ form.doc }}
+    </div>
+</div>
+<div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.domicilio.label }}"> {{ form.domicilio.label }}
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+    {{ form.domicilio }}
+    </div>
+</div>
+<div class="item form-group">
+    <label for="{{ form.telefono.label }}" class="control-label col-md-3 col-sm-3 col-xs-12">{{ form.telefono.label }}</label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {{ form.telefono }}
+    </div>
+</div>
+
+<div class="item form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.email.label }}">{{ form.email.label }}
+    </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {{ form.email }}
+    </div>
+</div>
+
+<div class="ln_solid"></div>
+<div class="item form-group">
+    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+    <a href="{% url 'cliente:cliente_listar' %}" class="btn btn-primary" type="button">Volver a listado</a>
+    <!-- <button class="btn btn-primary" type="reset">Reset</button> -->
+    <button id="btn_guardar" type="submit" class="btn btn-success">Guardar cambios</button>
+    </div>
+</div>
+</form>

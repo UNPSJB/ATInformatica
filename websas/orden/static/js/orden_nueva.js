@@ -1,5 +1,5 @@
-
-
+$(document).ready(function(){
+})
 // Inicializacion Smart Wizard
 $('#creacion_ot').smartWizard({
     labelNext:'Siguiente',
@@ -9,11 +9,14 @@ $('#creacion_ot').smartWizard({
         console.log("Leaving step " + context.fromStep + " to go to step " + context.toStep);
         $('.ot_aviso').addClass('hidden')
 
+        if(context.toStep == '4'){
+            init_equipos()
+        }
+ 
         return true;
     },
     onFinish: crearOrden,
-    fixHeight: false
-
+    fixHeight: 800
 });
 
 $(function() {

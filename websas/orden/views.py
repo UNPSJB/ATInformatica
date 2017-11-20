@@ -18,7 +18,7 @@ from .forms import OrdenForm, EquipoForm
 class OrdenCreate(CreateView):
     model = Orden
     template_name = 'orden/orden_nueva.html'
-    form_class = OrdenForm
+    form_class =OrdenForm
     success_url = reverse_lazy('/')
 
     def get_context_data(self, **kwargs):
@@ -118,8 +118,7 @@ class ClienteListado(ListView):
 class EquipoListado(ListView):
     def get(self, request, *args, **kwargs):
         rubro = request.GET.get('rubro')
-
-        return JsonResponse({'data':render_to_string('orden/listado_equipos.html',{'equipos':Equipo.objects.all()})})
+        return JsonResponse({'data':render_to_string('orden/listado_equipos.html',{'equipos':Equipo.objects.filter(rubro=rubro)})})
 
 
 class EquipoCreate(CreateView):
@@ -162,3 +161,26 @@ class EquipoDelete(DeleteView):
 class EquipoCreatePopUp(EquipoCreate):
     template_name ='equipo/equipo_form_popup.html'
     success_url = '#'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.rubro = Rubro.objects.get(id=kwargs['pk'])
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = self.form_class(initial={'rubro':self.rubro})
+        context['form'].fields['rubro'].widget.attrs['disabled'] = 'disabled'
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+
+
+        nro_serie = request.POST.get('nro_serie')
+        descripcion = request.POST.get('descripcion')
+
+        # Si no utilizo el self.object. Se creaba dos veces el equipo y
+        # daba un error en la DB sobre duplicación de Primary Key
+        self.object = Equipo(rubro=self.rubro, nro_serie=nro_serie, descripcion=descripcion)
+
+        return super().post(request,*args,**kwargs)

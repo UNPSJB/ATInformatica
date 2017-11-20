@@ -16,6 +16,6 @@ urlpatterns = [
     url(r'^equipo/eliminar/(?P<pk>\d+)$', login_required(EquipoDelete.as_view(), login_url='usuario:login'),name='equipo_eliminar'),
     url(r'^equipo/ver/(?P<pk>\d+)$', login_required(EquipoList.as_view(), login_url='usuario:login'), name='equipo_ver'),
     url(r'^equipo/editar/(?P<pk>\d+)$', login_required(EquipoList.as_view(), login_url='usuario:login'), name='equipo_editar'),
-    url(r'^equipo/crear_popup$', login_required(EquipoCreatePopUp.as_view(), login_url='usuario:login'), name='equipo_crear_popup')
+    url(r'^equipo/crear_popup/(?P<pk>\d+)$', login_required(EquipoCreatePopUp.as_view(), login_url='usuario:login'), name='equipo_crear_popup')
 ]
 

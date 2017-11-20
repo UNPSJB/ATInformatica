@@ -33,9 +33,10 @@ $('#form_cliente').submit(function(){
     $.ajax({    
         //la url a donde hay que pegarle en el servidor esta en el html de la tabla
         //de esta forma, podemos tener el .js separado del .html
-        url: '/cliente/crear',
+        url: '/cliente/crear_popup',
         type: "POST",
         success: function(data){
+            window.opener.console.log('sdhol')
             console.log("en la success function");
             window.opener.close_popup()
         }

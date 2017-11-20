@@ -7,8 +7,8 @@ $(document).ready(function(){
 })
 
 function close_popup(){
-    get_clientes()
     popup.close()
+    get_clientes()
 }
 
 function get_clientes(){
@@ -68,7 +68,7 @@ function tabla_clientes(){
         var boton_agregar = [{
             text: "<b>Nuevo cliente</b>",
             action: function() {
-popup = window.open(tabla_html.attr('data-popup_url'), 'Crear nuevo cliente', popup_attrs);
+                popup = window.open(tabla_html.attr('data-popup_url'), 'Crear nuevo cliente', popup_attrs);
             },
             className: "btn-sm btn-info"
         }]

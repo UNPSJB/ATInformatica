@@ -1,0 +1,18 @@
+<div class="modal fade" id="modalCliente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Crear Cliente</h4><br>
+      </div>
+      <div class="modal-body">
+            {% include "orden/cliente_form_modal.html" %}
+     </div>
+      <div class="modal-footer">
+          <span class="text-danger" hidden id="error-elem"><strong><i class="fa fa-warning fa-lg"></i>&nbsp;&nbsp;<span id="errormsg">Error</span>&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
+          <button class="btn btn-primary" onclick="crearTarea()">Guardar</button>
+          <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
