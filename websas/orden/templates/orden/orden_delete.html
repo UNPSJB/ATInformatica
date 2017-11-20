@@ -21,7 +21,7 @@
                     {% csrf_token%}
                     <h3>¿Eliminar la Orden de Trabajo {{ ordentrabajo.nombre }}?</h3>
                     <button class="btn btn-danger" type="submit">Eliminar</button>
-                    <a class="btn btn-default" href="{% url 'servicio:servicio_listar' %}">Cancelar</a>
+                    <a class="btn btn-default" href="{% url 'orden:orden_listar' %}">Cancelar</a>
             </form>
         </div>
     </div>

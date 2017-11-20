@@ -6,26 +6,6 @@
       <h2>Tarea # {{ tarea.id }}
         <small>detalle de la tarea</small>
       </h2>
-      <!-- <ul class="nav navbar-right panel_toolbox">
-        <li>
-          <a class="collapse-link">
-            <i class="fa fa-chevron-up"></i>
-          </a>
-        </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-            <i class="fa fa-wrench"></i>
-          </a>
-          <ul class="dropdown-menu" role="menu">
-            <li>
-              <a href="#">Settings 1</a>
-            </li>
-            <li>
-              <a href="#">Settings 2</a>
-            </li>
-          </ul>
-        </li>
-      </ul> -->
       <div class="clearfix"></div>
     </div>
     <div class="x_content">
@@ -88,12 +68,12 @@
                   </div>
                   <div class="block_content">
                     <h2 class="title">
-                      Observación hecha por: {{ observacion.usuario.first_name }}
+                      Observación hecha por: {{ observacion.usuario }}
                     </h2>
                     <div class="byline">
                       <span>{{ observacion.fecha }}</span>
                     </div>
-                    <p class="excerpt">{{ observacion.contenido }}
+                    <p class="excerpt">{{ observacion.contenido|safe }}
                     </p>
                   </div>
                 </div>
@@ -126,7 +106,9 @@
               <div class="project_detail">
 
                 <p class="title">Cliente </p>
-                <p>{{ tarea.orden.cliente.nombre }}</p>
+                <p> 
+                  <b>{{ tarea.orden.cliente.persona.apellido|upper }}</b>, {{ tarea.orden.cliente.persona.nombre }}
+                </p>
                 <p class="title">Equipo</p>
                 {% if terea.orden.equipo %}
                   <p>{{ tarea.orden.equipo }}</p>
@@ -142,8 +124,15 @@
               <div class="text-center mtop20">
                 <button class="btn btn-info" data-toggle="modal" data-target="#modalReserva" style="font-weight:bold">+ | Reserva</button>
                 {% include "tarea/reservar_stock.html" %}
+
                 <button class="btn btn-warning" data-toggle="modal" data-target="#modalObservacion" style="font-weight:bold">+ | Observación</button>
                 {% include "tarea/agregar_observacion.html" %}
+
+                <!-- Se deshabilita el botón para cambiar el precio 
+                  si la tarea no está en estado presupuestada -->
+                <button {% if tarea.estado.TIPO != 1%} disabled {% endif %} class="btn btn-success" data-toggle="modal" data-target="#modalCambiarPrecio" style="font-weight:bold">$ | Modificar precio de la tarea</button>
+                {% include "tarea/cambiar_precio.html" %}
+
                 <a href="{% url 'orden:orden_ver' tarea.orden.id %}">
                   <button class="btn btn-primary" style="font-weight:bold">Volver a la Orden</button>
                 </a>
@@ -173,4 +162,7 @@
 <script src="{% static 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
 <script src="/static/vendors/echarts/dist/echarts.min.js"></script>
 <script src="{% static '/js/reservar_stock.js' %}"></script>
-<script src="{% static '/js/agregar_observacion.js' %}"></script> {% endblock scripts %}
+<script src="{% static '/js/agregar_observacion.js' %}"></script>
+<script src="{% static '/js/cambiar_precio.js' %}"></script>
+
+{% endblock scripts %}

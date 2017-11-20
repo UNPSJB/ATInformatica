@@ -21,8 +21,10 @@ function get_clientes(){
         type: "GET",
         dataType: 'json',
         success:function(data){
+            console.log('clientes=success')
             console.log(data)
             $('#clientes').html(data['data'])
+            $(document).trigger('icheck')
             tabla_clientes()
         }
     })
@@ -82,6 +84,7 @@ function tabla_clientes(){
     var dtabla = tabla_html.DataTable({
         "responsive": true,
         // "ajax": {'url':'localhost:8000/orden/lista_clientes'},//tabla_html.attr('data-ajax_url'),
+        "autoWidth": false,
         "columns": [
             {"data":"radio"},
             {"data": "nombre"},

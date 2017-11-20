@@ -1,0 +1,30 @@
+<div class="modal fade" id="modalCambiarPrecio" ajax-url="{% url 'tarea:cambiar_precio' %}" data-tarea-id="{{ tarea.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          
+          
+          <h4 class="modal-title" id="myModalLabel">Cambiar precio para la tarea <b>{{ tarea.nombre }} </b></h4>
+        </div>
+
+
+        <!-- INICIO CUERPO MODAL -->
+        <div class="modal-body">
+
+          <input type="number" min="0" id="precio" value="{{ tarea.precio.to_integral }}">
+          <div style="display:inline-block" class="">
+            <strong id="precio-error"></strong>
+          </div>            
+        <!-- FINAL CUERPO MODAL -->
+        </div>
+
+
+        <div class="modal-footer">
+            <button class="btn btn-info" onclick="cambiarPrecio()" style="margin-top:1em; float:right">Actualizar</button>
+        </div>
+      </div>
+    </div>
+  </div> 
+
+

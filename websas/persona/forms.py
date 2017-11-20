@@ -45,6 +45,7 @@ class PersonaForm (forms.ModelForm):
             'nombre': forms.TextInput(attrs={
                 'class':'form-control col-md-7 col-xs-12',
                 'required':'required',
+                'autofocus': True
                 }), 
             'apellido': forms.TextInput(attrs={
                 'class':'form-control col-md-7 col-xs-12',

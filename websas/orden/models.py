@@ -110,6 +110,19 @@ class Orden(models.Model):
         return self._tareas_en_estado(TareaCancelada)
 
     @property
+    def tipos_tarea_agregables(self):
+        """Devuelve los tipos de tarea que todavía no se hayan agregado a la Orden
+        
+        Returns:
+            [<TipoTarea:obj>..]"""
+        tipos_tareas = list(self.rubro.tipos_tareas.all())
+        tipos_tareas_orden = list()
+
+        for tarea in self.tareas.all():
+            tipos_tareas_orden.append(tarea.tipo_tarea)
+
+        return set(tipos_tareas) - set(tipos_tareas_orden)
+    @property
     def precio_total(self):
         """ Devuelve el precio total de la orden """
         total = 0

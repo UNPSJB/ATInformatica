@@ -66,12 +66,19 @@ $.ajaxSetup({
 });
 
 function crearOrden(objs, context){
+    // Validaciones para crear OT
     var inputcliente = $('input:checked[name=cliente]')[0]
     var inputtecnico = $('input:checked[name=tecnico]')[0]
     var inputservicio = $('input:checked[name=tipo_servicio]')[0]
     var inputrubro = $('input:checked[name=rubro]')[0]
     var inputequipo = $('input:checked[name=equipo]')[0]
     var observacion = $('#editor-one').html()
+
+    // Si marcó que va sin equipo
+    if ($('#sinequipo').is(':checked')) {
+        // Objeto auxiliar para pasar data "sin equipo"
+        inputequipo = {'dataset': {'idequipo': 'sin'}}
+    }
 
     var inputs = [inputcliente,inputtecnico,inputservicio, inputservicio,inputrubro,inputequipo]
 

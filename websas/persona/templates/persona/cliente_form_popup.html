@@ -88,8 +88,7 @@
         <div class="ln_solid"></div>
         <div class="item form-group">
           <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-            <a href="{% url 'cliente:cliente_listar' %}" class="btn btn-primary" type="button">Volver a listado</a>
-            <!-- <button class="btn btn-primary" type="reset">Reset</button> -->
+            <button class="btn btn-primary" type="reset">Reiniciar</button>
             <button id="btn_guardar" type="submit" class="btn btn-success">Guardar cambios</button>
           </div>
         </div>
@@ -100,7 +99,5 @@
 {% endblock contenido %}
 
 {% block scripts %}
-<!-- validator -->
-<script src="{% static 'vendors/validator/validator.js' %}"></script>
 <script src="{% static 'persona/js/cliente_popup.js' %}"></script>
 {% endblock scripts %}
