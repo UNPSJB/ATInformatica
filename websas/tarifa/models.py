@@ -13,7 +13,11 @@ class Tarifa(models.Model):
     precio = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0'))
 
     def actualizar_precio(self, precio):
+        """Método para actualizar el precio de una tarifa
         
+        Args:
+            precio(str): nuevo precio para la tarifa"""
+            
         if not precio.isdigit() or int(precio) < 0:
             precio = 0
 
