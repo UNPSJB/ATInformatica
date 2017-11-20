@@ -4,7 +4,7 @@ from .views import TarifaUpdate
 #  TarifaList, TarifaDelete, TarifaDetail, TarifaUpdate
 
 urlpatterns = [
-    url(r'^crear/', TarifaUpdate.as_view(), name='tarifa_crear'),
+    url(r'^crear/', TarifaUpdate.as_view(), name='tarifa_actualizar'),
     # url(r'^listar$', TarifaList.as_view(), name='tarifa_listar'),
     # url(r'^editar/(?P<pk>\d+)$', TarifaUpdate.as_view(), name='tarifa_editar'),
     # url(r'^eliminar/(?P<pk>\d+)$$', TarifaDelete.as_view(), name='tarifa_eliminar'),

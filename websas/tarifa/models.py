@@ -12,5 +12,14 @@ class Tarifa(models.Model):
     )
     precio = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0'))
 
+    def actualizar_precio(self, precio):
+        
+        if not precio.isdigit() or int(precio) < 0:
+            precio = 0
+
+        self.precio=Decimal(precio)
+        self.save()
+            
+             
     class Meta:
         unique_together = (("tipo_tarea", "tipo_servicio"),)
