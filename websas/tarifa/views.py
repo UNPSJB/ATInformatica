@@ -14,7 +14,7 @@ from tarea.models import TipoTarea
 class TarifaUpdate(View):
     @method_decorator(permission_required('tarifa.add_tarifa', login_url='rubro:rubro_listar'))
     def post(self, request, *args, **kwargs):
-        pk = int(request.POST["tarifa"])
+        pk = int(request.POST.get("tarifa"))
         precio = request.POST.get("precio")
 
         tarifa = Tarifa.objects.get(pk=pk)

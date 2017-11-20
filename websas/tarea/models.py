@@ -211,6 +211,18 @@ class Tarea(models.Model):
         else:
             raise Exception("***ORDEN DE TRABAJO: no se pudo realizar la accion***")
 
+    def actualizar_precio(self, precio):
+        """Método para actualizar el precio de una tarea
+
+        Args:
+            precio(str): nuevo precio para la tarea"""
+
+        if not precio.isdigit() or int(precio) < 0:
+            precio = 0
+
+        self.precio=Decimal(precio)
+        self.save()
+
 
 class EstadoTarea(models.Model):
     """Modelo de Estado para la Tarea"""

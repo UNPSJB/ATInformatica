@@ -126,6 +126,23 @@ class TareaDetail(DetailView):
         contexto['productos'] = Producto.objects.all()
         return contexto
 
+
+class TareaCambiarPrecio(View):
+    @method_decorator(permission_required('tarea.change_tarea', login_url="orden:orden_listar"))
+    def post(self, request, *args, **kwargs):
+        pk = int(request.POST.get("tarea"))
+        precio = request.POST.get("precio")
+
+        tarea = Tarea.objects.get(pk=pk)
+        tarea.actualizar_precio(precio)
+
+        data = {
+            "precio" : precio
+        }
+
+        return JsonResponse(data)
+        
+        
 class TipoTareaCreate(FormView):
     # model = TipoTarea
     template_name = 'tarea/tipo_tarea_detail.html'
