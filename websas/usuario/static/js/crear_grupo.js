@@ -32,9 +32,9 @@ $.ajaxSetup({
 function crearGrupo(){
 
     data = {
-        'name':'Gerente'
+        'name': $("input:text[name=nombre-grupo]").val()
     }
-
+     
     $.ajax({    
         url: $('#btn-crear-grupo').attr('ajax-url'),
         type: "POST",

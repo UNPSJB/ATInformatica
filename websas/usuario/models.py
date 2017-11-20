@@ -1,10 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group
 from persona.models import Rol
-
+from django.template import defaultfilters
 from django.contrib.auth.models import BaseUserManager
 
 # Create your models here.
+
 class CustomUserManager(BaseUserManager):
 
     def crear_usuario(self, username, password, persona):
