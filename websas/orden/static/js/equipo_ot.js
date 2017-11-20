@@ -1,16 +1,8 @@
 var popup
 var tabla
-<<<<<<< HEAD
 
 $(document).ready(function(){
     init_equipos()
-=======
-$(document).ready(function(){
-    get_equipos()   
-    console.log('tabla_clientes')
-    tabla = tabla_equipos()
-
->>>>>>> 3fc989a943360d7ffedc224fe294afe3914bdf45
 })
 
 function init_equipos(){
