@@ -40,11 +40,6 @@ $('#form_equipo').submit(function(){
 
     var rubro = data['rubro']
     
-
-
-
-    
-    
     $.ajax({    
         //la url a donde hay que pegarle en el servidor esta en el html de la tabla
         //de esta forma, podemos tener el .js separado del .html
@@ -54,7 +49,6 @@ $('#form_equipo').submit(function(){
         success: function(data){
         },
         error: function(err){
-            alert(rubro)
             window.opener.get_equipos(rubro)
             window.close()
 

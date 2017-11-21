@@ -35,9 +35,7 @@ $('#form_cliente').submit(function(){
         //de esta forma, podemos tener el .js separado del .html
         url: '/cliente/crear_popup',
         type: "POST",
-        success: function(data){
-            window.opener.console.log('sdhol')
-            console.log("en la success function");
+        error: function(data){
             window.opener.close_popup()
         }
     })
