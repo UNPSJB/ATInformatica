@@ -3,7 +3,7 @@ var tabla
 
 $(document).ready(function(){
     init_equipos()
-})
+});
 
 function init_equipos(){
     var inputrubro = $('input:checked[name=rubro]')[0]
@@ -15,6 +15,7 @@ function init_equipos(){
         console.log('tabla_clientes')
     }
 }
+
 function get_equipos(rubro){
 
     $.ajax({    
@@ -62,7 +63,6 @@ function tabla_equipos(){
         "buttons": [{
             text: "<b>Nuevo Equipo</b>",
             action: function() {
-<<<<<<< HEAD
                 // TODO: si es necesario generar el form de nuevo técnico
                 // como modal, este botón puede dispararlo
                 // Por ahora sólo pega a crear técnico
@@ -70,9 +70,6 @@ function tabla_equipos(){
                 var rubro = inputrubro.dataset['idrubro']
 
                 popup = window.open('/orden/equipo/crear_popup/'+parseInt(rubro), 'Agregar nuevo Equipo', popup_attrs);
-=======
-                popup = window.open(tabla_html.attr('data-popup_url'), 'Agregar nuevo Equipo', popup_attrs);
->>>>>>> 3fc989a943360d7ffedc224fe294afe3914bdf45
             },
             className: "btn-sm btn-info"
         }, {
