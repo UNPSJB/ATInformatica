@@ -11,11 +11,11 @@
   <div class="col-md-4">
     <p class="lead">Permisos</p>
     <ul id="draggable" style="list-style:none">
-      {% if permisos %} {% for permiso in permisos %}
-      <li><span class="btn btn-default">{{ permiso.name }}</span></li>
-      {% endfor %} {% else %}
-      <h1>No hay permisos </h1>
-      {% endif %}
+      {% for permiso in permisos %}
+        <li><span class="btn btn-default">{{ permiso.name }}</span></li>
+      {% empty %}
+        <h1>No hay permisos </h1>
+      {% endfor %} 
     </ul>
   </div>
   <div class="col-md-4">
@@ -24,30 +24,46 @@
         <!-- start accordion -->
         <div class="accordion" id="accordion" role="tab" aria-multiselectable="true">
           <p class="lead">Grupos<p>
-          {% if grupos %} {% for grupo in grupos %}
+          {% for grupo in grupos %}
           <div class="panel">
-            <a class="panel-heading" role="tab" id="heading{{grupo.id}}" data-toggle="collapse" data-parent="#accordion" href="#collapse{{grupo.id}}" aria-expanded="true"
-              aria-controls="collapse{{grupo.id}}">
+            <a class="panel-heading" role="tab" id="heading{{grupo.id}}" data-toggle="collapse" data-parent="#accordion" href="#collapse_{{grupo.id}}" aria-expanded="true"
+              aria-controls="collapse_{{grupo.id}}">
               <h4 class="panel-title">{{ grupo.name }}</h4>
             </a>
-            <div id="collapse{{grupo.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{grupo.id}}">
+            <div id="collapse_{{grupo.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{grupo.id}}">
               <div class="panel-body">
                   <h5>Permisos</h5>
                   <div class="panel-body">
+
+                    {% comment %} aca tenemos que mostrar los permisos 
+                    que tiene asignado el grupo {% endcomment %}
                     
+                    {% for coso in cosos %}
+                    
+                    {% empty %}
+                    <span>no hay cosos</span>
+                    {% endfor %}
                   </div>
               </div>
               <div class="panel-body">
                   <h5>Usuarios</h5>
                   <div>
+
+                    {% comment %} aca tenemos que mostra los usuarios 
+                    que tiene asignado el grupo {% endcomment %}
                     
+                     {% for coso in cosos %} 
+                     
+                     {% empty %} 
+                        <span>aca tampoco hay cosos</span>
+                     {% endfor %}
                   </div>
               </div>
             </div>
           </div>
-          {% endfor %} {% else %}
-          <h1>No hay grupos </h1>
-          {% endif %}
+          {% empty %}
+            <h1>No hay grupos </h1>
+          {% endfor %}
         </div>
         <button style="float:right" class="btn btn-primary" data-toggle="modal" data-target="#modalGrupo">Crear grupo</button>
         {% include "modal-add-grupo.html" %}
@@ -59,19 +75,30 @@
   <div class="col-md-4">
     <p class="lead">Usuarios</p>
     <ul id="draggable" style="list-style:none">
-      {% if usuarios %} {% for usuario in usuarios %}
-      <li><span class="btn btn-default">{{ usuario.persona }}</span></li>
-      {% endfor %} {% else %}
-      <h1>No hay usuarios </h1>
-      {% endif %}
+      {% for usuario in usuarios %}
+        <li><span class="btn btn-default">{{ usuario.username }}</span></li>
+      {% empty %}
+        <h1>No hay usuarios </h1>
+      {% endfor %}
     </ul>
   </div>
 </div>
-{% endblock contenido %} {% block scripts %}
+{% endblock contenido %} 
+
+{% block scripts %}
 <!-- prueba jquery ui -->
 <script>
   $( function() {
-    $( "#draggable li" ).draggable({ revert: true, helper: "clone" });
+    $( "#draggable li" ).draggable({ revert: true, helper: "clone",
+    });
+    {% for grupo in grupos %}
+      $("#collapse_{{grupo.id}}").droppable({
+        drop: function (event, ui) {
+          console.log(this)
+          console.log(ui.draggable[0].innerText)
+        }
+      })
+    {% endfor %}
   });
 </script>
 <script src="{% static '/js/crear_grupo.js' %}"></script>

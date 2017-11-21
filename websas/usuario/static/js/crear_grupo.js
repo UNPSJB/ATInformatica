@@ -41,7 +41,9 @@ function crearGrupo(){
         data: data,
         dataType: 'json',
         success: function(data){
-            alert("Todo piola");    
+            // alert("Todo piola");
+            $("#modalGrupo").modal("toggle")
+            location.reload()    
         },
         statusCode: {
             403: function(data) {
