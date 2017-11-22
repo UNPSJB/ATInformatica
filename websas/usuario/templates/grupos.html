@@ -12,7 +12,7 @@
     <p class="lead">Permisos</p>
     <ul id="draggable" style="list-style:none">
       {% for permiso in permisos %}
-        <li><span class="btn btn-default">{{ permiso.name }}</span></li>
+        <li data-tipo="permiso"><span class="btn btn-default">{{ permiso.name }}</span></li>
       {% empty %}
         <h1>No hay permisos </h1>
       {% endfor %} 
@@ -76,7 +76,7 @@
     <p class="lead">Usuarios</p>
     <ul id="draggable" style="list-style:none">
       {% for usuario in usuarios %}
-        <li><span class="btn btn-default">{{ usuario.username }}</span></li>
+        <li data-tipo="usuario"><span  class="btn btn-default">{{ usuario.username }}</span></li>
       {% empty %}
         <h1>No hay usuarios </h1>
       {% endfor %}
@@ -89,12 +89,11 @@
 <!-- prueba jquery ui -->
 <script>
   $( function() {
-    $( "#draggable li" ).draggable({ revert: true, helper: "clone",
-    });
+    $( "#draggable li" ).draggable({ revert: true, helper: "clone", });
     {% for grupo in grupos %}
       $("#collapse_{{grupo.id}}").droppable({
         drop: function (event, ui) {
-          console.log(this)
+          console.log(ui.draggable[0].dataset['tipo'])
           console.log(ui.draggable[0].innerText)
         }
       })
