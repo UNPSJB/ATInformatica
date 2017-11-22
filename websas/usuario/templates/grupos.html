@@ -93,8 +93,9 @@
     {% for grupo in grupos %}
       $("#collapse_{{grupo.id}}").droppable({
         drop: function (event, ui) {
-          console.log(ui.draggable[0].dataset['tipo'])
-          console.log(ui.draggable[0].innerText)
+          var tipo = ui.draggable[0].dataset['tipo']
+          var item = ui.draggable[0].innerText
+          console.log('Se dropeó el '+tipo+' de nombre \"'+item+'\" en el grupo {{grupo.id}}')
         }
       })
     {% endfor %}
