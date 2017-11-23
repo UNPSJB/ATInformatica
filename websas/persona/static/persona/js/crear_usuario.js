@@ -42,10 +42,12 @@ function crearUsuario(){
         data: data,
         dataType: 'json',
         success: function (res) {
-            alert("Usuario creado con éxito");
+            console.log(res);
+            location.href(res.responseJSON.successurl);
         },
-        error: function (res) {
-            alert(res);
+        error: function (data) {
+            console.log(data)
+            
         }
     });
 }

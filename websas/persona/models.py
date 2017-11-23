@@ -64,7 +64,6 @@ class Rol(models.Model):
         (0, "rol")
     ]
     tipo = models.PositiveSmallIntegerField(choices=TIPOS)
-    rolname = models.CharField(max_length=20, null=True, blank=True)
     persona = models.ForeignKey(
         Persona,
         related_name="roles",
@@ -106,9 +105,6 @@ class Rol(models.Model):
 class Tecnico(Rol):
     """ Modelo de rol Técnico. """
     TIPO = 1
-    def __init__(self, *args, **kwargs):
-        super(self.__class__, self).__init__(*args, **kwargs)
-        self.rolname = "Tecnico" 
     
 
 class Cliente(Rol):

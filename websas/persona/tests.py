@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import Persona, Rol, Cliente, Tecnico, JefeTaller
+from .models import Persona, Rol, Cliente, Tecnico, JefeTaller, Gerente
 from orden.models import Orden
 from orden.tests import OrdenTest
 # Create your tests here.
@@ -24,6 +24,9 @@ class PersonasTest(TestCase):
         self.persona.agregar_rol(Tecnico())
         es_tecnico = self.persona.sos(Tecnico)
         self.assertTrue(es_tecnico)
+
+        self.persona.agregar_rol(Gerente())
+        self.assertTrue(self.persona.sos(Gerente))
     
     def test_como(self):
         self.persona.agregar_rol(Tecnico())

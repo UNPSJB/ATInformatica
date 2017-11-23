@@ -19,12 +19,12 @@ class TecnicoCreate(EmpleadoCreate):
         return super().post(request, *args, **kwargs)
 
 class TecnicoList(EmpleadoList):
-    
+    model = Tecnico
     template_name = 'persona/tecnicos.html' 
     success_url = reverse_lazy('empleado:tecnico:tecnico_listar')
     
-    def get_queryset(self):
-        return Tecnico.objects.all()
+    # def get_queryset(self):
+    #     return Tecnico.objects.all()
 
 class TecnicoUpdate(EmpleadoUpdate):
 

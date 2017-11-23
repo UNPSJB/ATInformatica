@@ -19,12 +19,12 @@ class GerenteCreate(EmpleadoCreate):
         return super().post(request, *args, **kwargs)
 
 class GerenteList(EmpleadoList):
-
+    model = Gerente
     template_name = 'persona/gerentes.html' 
     success_url = reverse_lazy('empleado:gerente:gerente_listar')
     
-    def get_queryset(self):
-        return Gerente.objects.all()
+    # def get_queryset(self):
+    #     return Gerente.objects.all()
 
 class GerenteUpdate(EmpleadoUpdate):
 

@@ -63,8 +63,8 @@ class ClienteCreate(CreateView):
         form = self.form_class(request.POST)
         if form.is_valid() and request.user.has_perm('persona.add_cliente'):
             persona = form.save()
-            cliente = Cliente(persona=persona)
-            cliente.save()
+            persona.agregar_rol(Cliente())
+            persona.save()
             return HttpResponseRedirect(self.get_success_url())
         else:
             return self.render_to_response(self.get_context_data(form=form))

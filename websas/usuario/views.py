@@ -61,12 +61,12 @@ class RegistrarUsuario(View):
     def post(self, request, *args, **kwargs):
         persona_id = request.POST['persona_id']
         form = registrarUsuarioFormFactory(persona_id)
-
+        # import ipdb; ipdb.set_trace()
         if form.is_valid():
             form.save()
-            return JsonResponse({'data':'joya'})
+            return JsonResponse({'data':'joya', 'successurl':reverse_lazy('usuario:grupos')})
 
-        response = JsonResponse({'error': 'todo mal'})
+        response = JsonResponse({'data': form.errors})
         response.status_code = 403  
         return response
 
