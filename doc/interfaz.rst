@@ -1,16 +1,18 @@
 Interfaz de usuario
 ===================
 
-WebSaS fue pensado como un sistema de gestión de órdenes de trabajo para los servicios
-de reparación ofrecidos por AT-Informática. El sistema permite gestionar:
+Esta parte de la documentación presenta información sobre cada una de
+las pantallas de la interfaz, con explicaciones de cada parte.
 
-* Clientes
-* Técnicos
-* Tipos de servicio
-* Rubros
-* Tareas y tarifas
-* Productos y reservas
-* Órdenes de Trabajo
+.. note::
+    Puede acceder a estas páginas desde el propio sistema, utilizando el botón
+    Ayuda en la parte superior derecha de la pantalla.
+
+    .. image:: /imagenes/ayuda_online.png
+        :align: center
+        
+
+-----------------
 
 .. toctree::
     :caption: Pantallas disponibles:
@@ -26,3 +28,4 @@ de reparación ofrecidos por AT-Informática. El sistema permite gestionar:
     interfaz/productos
     interfaz/servicios
     interfaz/ordenes
+

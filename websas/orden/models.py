@@ -7,19 +7,20 @@ from decimal import Decimal
 from tarea.models import Tarea, TareaPendiente, TareaPresupuestada, TareaRealizada, TareaCancelada
 
 class Orden(models.Model):
-    
-    """ Orden de Trabajo. Entidad fundamental del sistema
+    """
+    Orden de Trabajo. Entidad fundamental del sistema
 
-    Attributes:
-        cliente(:obj:Cliente): 
-        rubro(:obj:Rubro):
-        equipo(:obj:Equipo, opcional):
-        tipo_servicio(:obj:TipoServicio):
-        usuario(:obj:Usuario):
-        tecnico(:obj:Tecnico):
-        descripcion(str):
-        cerrada(bool):
-        cancelada(bool): """
+    Atributos:
+        - cliente(:obj: Cliente): Cliente titular de la Orden de trabajo.
+        - rubro(:obj: Rubro): Rubro al que pertenecen la Orden de trabajo y sus tareas.
+        - equipo(:obj: Equipo, opcional): Equipo asociado a la Orden de trabajo. Puede ser *null* si la Orden no lleva equipo.
+        - tipo_servicio(:obj: TipoServicio): Tipo de servicio de la Orden de trabajo.
+        - usuario(:obj: Usuario): Usuario que creó la Orden de trabajo.
+        - tecnico(:obj: Tecnico): Técnico asignado a la Orden de trabajo.
+        - descripcion(str): Descripción inicial del problema al momento de la creación. Puede estar en blanco.
+        - cerrada(bool): Bandera - Verdadero si la Orden de trabajo está finalizada.
+        - cancelada(bool): Bandera - Verdadero si la Orden de trabajo fue cancelada.
+    """
 
     cliente = models.ForeignKey(Cliente, null=True,related_name="ordenes")
     rubro = models.ForeignKey(Rubro, related_name="ordenes")
@@ -47,28 +48,31 @@ class Orden(models.Model):
         return condicion
 
     def agregar_tarea(self, tipo_tarea, observacion):
-        
-        """ Crea una tarea para la orden. 
+        """
+        Crea una tarea para la orden. 
 
         Args:
-            tipo_tarea(:obj:TipoTarea): tipo de la tarea a crear 
-            observacion(str): observacion
+            tipo_tarea(:obj: TipoTarea): Tipo de la tarea a crear.
+            observacion(str): Observación del técnico sobre esta tarea al momento de la creación.
         
-        Raise:
-            Exeption si el rubro del tipo de tarea es distinto del rubro de la Orden """
+        Excepciones:
+            Exception si el rubro del tipo de tarea es distinto del rubro de la Orden
+        """
 
         if(self.rubro != tipo_tarea.rubro):
             raise Exception("***TAREAS EN ESTADO: no se pudo realizar la accion***")
         Tarea.crear(tipo_tarea=tipo_tarea, orden=self, observacion=observacion)
 
     def _tareas_en_estado(self, estado):
-        """Método privado que devuelve un subconjunto de tareas de la Oreden en un determinado estado
+        """
+        Método privado que devuelve un subconjunto de tareas de la Oreden en un determinado estado.
         
         Args: 
-            estado(:cls: TareaEstado): denominación de una subclase de TareaEstado
+            estado(:cls: TareaEstado): denominación de una subclase de TareaEstado.
         
         Returns:
-            [<TareaEstado:obj>..] """
+            [<TareaEstado: obj>..]
+        """
 
         tareas_en_estado = []
         for tarea in self.tareas.all():
@@ -78,26 +82,31 @@ class Orden(models.Model):
 
     @property
     def tareas_presupuestadas(self):
-        """Propiedad de solo lectura que un subconjunto de tareas de la Oreden en estado TareaPresupuestada 
+        """
+        Propiedad de solo lectura que un subconjunto de tareas de la Oreden en estado TareaPresupuestada 
         
         Returns:
-            [<TareaPresupuestada:obj>..] """
+            [<TareaPresupuestada: obj>..]
+        """
         return self._tareas_en_estado(TareaPresupuestada)
 
     @property
     def tareas_pendientes(self):
-        """Propiedad de solo lectura que un subconjunto de tareas de la Oreden en estado TareaPendiente 
+        """
+        Propiedad de solo lectura que un subconjunto de tareas de la Oreden en estado TareaPendiente 
         
         Returns:
-            [<TareaPendiente:obj>..] """
+            [<TareaPendiente: obj>..]
+        """
         return self._tareas_en_estado(TareaPendiente)
 
     @property
     def tareas_realizadas(self):
-        """Propiedad de solo lectura que un subconjunto de tareas de la Oreden en estado TareaRealizada 
+        """
+        Propiedad de solo lectura que un subconjunto de tareas de la Oreden en estado TareaRealizada 
         
         Returns:
-            [<TareaRealizada:obj>..] """
+            [<TareaRealizada: obj>..] """
         return self._tareas_en_estado(TareaRealizada)
 
     @property
@@ -106,7 +115,7 @@ class Orden(models.Model):
         """Propiedad de solo lectura que un subconjunto de tareas de la Oreden en estado TareaCancelada 
         
         Returns:
-            [<TareaCancelada:obj>..] """
+            [<TareaCancelada: obj>..] """
         return self._tareas_en_estado(TareaCancelada)
 
     @property
@@ -114,7 +123,7 @@ class Orden(models.Model):
         """Devuelve los tipos de tarea que todavía no se hayan agregado a la Orden
         
         Returns:
-            [<TipoTarea:obj>..]"""
+            [<TipoTarea: obj>..]"""
         tipos_tareas = list(self.rubro.tipos_tareas.all())
         tipos_tareas_orden = list()
 
@@ -194,6 +203,14 @@ class Orden(models.Model):
         self.save()
 
 class Equipo(models.Model):
+    """
+    Modelo de Equipo para asociar a Ordenes de Trabajo y llevar registro de las mismas.
+
+    Atributos:
+        - nro_serie(int): Número de serie del equipo. Debe ser único.
+        - descripcion(str): Descripción del equipo.
+        - rubro(:obj: Rubro): Rubro bajo el que está categorizado el equipo.
+    """
     nro_serie = models.IntegerField(unique=True)
     descripcion = models.CharField(max_length=250)
     rubro = models.ForeignKey(Rubro, null=True, blank=True, related_name = "equipos")

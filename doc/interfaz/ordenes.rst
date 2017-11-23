@@ -8,14 +8,15 @@ todas las órdenes de trabajo abiertas, cerradas o canceladas.
     :align: center
 
 Las columnas de las tabla son las siguientes:
-* Fecha de creación
-* Cliente
-* Descripción
-* Rubro
-* Tipo de servicio
-* Equipo
-* Ver
-* Eliminar
+
+- Fecha de creación
+- Cliente
+- Descripción
+- Rubro
+- Tipo de servicio
+- Equipo
+- Ver
+- Eliminar
 
 
 Puede ordenar las órdenes de trabajo como deseé haciendo click en la columna
