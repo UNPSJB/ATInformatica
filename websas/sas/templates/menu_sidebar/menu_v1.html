@@ -2,7 +2,7 @@
   <h3>General</h3>
   <ul class="nav side-menu">
     {% if user.is_superuser %}
-    <li><a href="{% url 'index:sasadmin' %}"><i class="fa fa-cog"></i>Administración</a></li>
+    <li><a href="{% url 'usuario:grupos' %}"><i class="fa fa-cog"></i>Control de acceso</a></li>
     {% endif %}
     <li><a><i class="fa fa-bar-chart-o"></i> Órdenes de trabajo <span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
