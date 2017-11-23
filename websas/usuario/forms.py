@@ -3,7 +3,7 @@ from django.contrib.auth import password_validation
 from django.contrib import messages
 from .models import Usuario
 from persona.models import Persona
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, Permission
 
 def registrarUsuarioFormFactory(persona_id):
 
@@ -31,7 +31,49 @@ def registrarUsuarioFormFactory(persona_id):
 
     return RegistrarUsuarioForm({'persona_id':persona_id})
 
+class UserAddGroupForm(forms.Form):
+    grupo_id = forms.IntegerField()
+    usuario_id = forms.IntegerField()
 
+    def clean(self):
+        cleaned_data = super(UserAddGroupForm, self).clean()
+
+        if not Group.objects.filter(pk=cleaned_data['grupo_id']).exists():
+            raise forms.ValidationError(
+                "No existe el grupo"
+            ) 
+
+        if not Usuario.objects.filter(pk=cleaned_data['usuario_id']).exists():
+            raise forms.ValidationError(
+                "No existe el usuario"
+            )
+    
+    def save(self, commit=True):
+        grupo = Group.objects.get(pk=self.cleaned_data['grupo_id'])
+        usuario = Usuario.objects.get(pk=self.cleaned_data['usuario_id'])
+        usuario.groups.add(grupo)
+
+class GroupAddPermissionForm(forms.Form):
+    grupo_id = forms.IntegerField()
+    permiso_id = forms.IntegerField()
+
+    def clean(self):
+        cleaned_data = super(GroupAddPermissionForm, self).clean()
+
+        if not Group.objects.filter(pk=cleaned_data['grupo_id']).exists():
+            raise forms.ValidationError(
+                "No existe el grupo"
+            ) 
+
+        if not Permission.objects.filter(pk=cleaned_data['permiso_id']).exists():
+            raise forms.ValidationError(
+                "No existe el permiso"
+            )
+    
+    def save(self, commit=True):
+        grupo = Group.objects.get(pk=self.cleaned_data['grupo_id'])
+        permiso = Permission.objects.get(pk=self.cleaned_data['permiso_id'])
+        grupo.permissions.add(permiso)
 class UsuarioCambiarPasswordForm(PasswordChangeForm):
     """
     Form que hereda de PasswordChangeForm para agregar clases al widget

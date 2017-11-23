@@ -1,4 +1,4 @@
-from .forms import registrarUsuarioFormFactory, UsuarioCambiarPasswordForm, CrearGrupoForm
+from .forms import registrarUsuarioFormFactory, UserAddGroupForm, GroupAddPermissionForm, UsuarioCambiarPasswordForm, CrearGrupoForm
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from django.contrib import messages
 from .models import Usuario
@@ -96,9 +96,36 @@ class GroupView(TemplateView):
         response.status_code = 403  
         return response
 
+
     def get_context_data(self, **kwargs):
         contexto = super(GroupView, self).get_context_data(**kwargs)
         contexto['grupos'] = Group.objects.all()
         contexto['permisos'] = Permission.objects.all()
         contexto['usuarios'] = Usuario.objects.all()
         return contexto
+
+class UserAddGroup(View):
+
+    def post(self, request, *args, **kwargs):
+        
+        form = UserAddGroupForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'data':'todo piola'})
+
+        response = JsonResponse({'error': 'se pudrió todo'})
+        response.status_code = 403  
+        return response
+
+class GroupAddPermission(View):
+
+    def post(self, request, *args, **kwargs):
+
+        form = GroupAddPermissionForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'data':'todo piola'})
+
+        response = JsonResponse({'error': 'se pudrió todo'})
+        response.status_code = 403  
+        return response

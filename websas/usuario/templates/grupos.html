@@ -12,7 +12,7 @@
     <p class="lead">Permisos</p>
     <ul id="draggable" style="list-style:none">
       {% for permiso in permisos %}
-        <li data-tipo="permiso"><span class="btn btn-default">{{ permiso.name }}</span></li>
+        <li data-tipo="permiso" data-grupo="{{ grupo.id }}" data-permiso="{{ permiso.id }}" data-ajax="{url 'usuario:grupo_add_permiso'}"><span class="btn btn-default">{{ permiso.name }}</span></li>
       {% empty %}
         <h1>No hay permisos </h1>
       {% endfor %} 
@@ -38,8 +38,8 @@
                     {% comment %} aca tenemos que mostrar los permisos 
                     que tiene asignado el grupo {% endcomment %}
                     
-                    {% for coso in cosos %}
-                    
+                    {% for permiso in grupo.permissions.all %}
+                      <p>{{ permiso.name }}</p>
                     {% empty %}
                     <span>no hay cosos</span>
                     {% endfor %}
@@ -47,13 +47,13 @@
               </div>
               <div class="panel-body">
                   <h5>Usuarios</h5>
-                  <div>
+                  <div class="panel-body">
 
                     {% comment %} aca tenemos que mostra los usuarios 
                     que tiene asignado el grupo {% endcomment %}
                     
-                     {% for coso in cosos %} 
-                     
+                     {% for usuario in grupo.user_set.all %} 
+                        <p>{{ usuario.username }}</p>
                      {% empty %} 
                         <span>aca tampoco hay cosos</span>
                      {% endfor %}
@@ -76,7 +76,7 @@
     <p class="lead">Usuarios</p>
     <ul id="draggable" style="list-style:none">
       {% for usuario in usuarios %}
-        <li data-tipo="usuario"><span  class="btn btn-default">{{ usuario.username }}</span></li>
+        <li data-tipo="usuario" data-grupo="{{ grupo.id }}" data-usuario="{{ usuario.id }}" data-ajax="{url 'usuario:usuario_add_grupo'}"><span  class="btn btn-default">{{ usuario.username }}</span></li>
       {% empty %}
         <h1>No hay usuarios </h1>
       {% endfor %}
@@ -95,7 +95,44 @@
         drop: function (event, ui) {
           var tipo = ui.draggable[0].dataset['tipo']
           var item = ui.draggable[0].innerText
+          
+          if (tipo == "permiso") {
+            var permiso_id = ui.draggable[0].dataset['permiso']
+            var ajaxurl = 'add_permiso'
+            data = {
+              'permiso_id' : permiso_id,
+              'grupo_id' : {{grupo.id}}
+            }
+          }
+          if (tipo == "usuario") {
+            var usuario_id = ui.draggable[0].dataset['usuario']
+            var ajaxurl = 'add_grupo'
+            data = {
+              'usuario_id': usuario_id,
+              'grupo_id': {{grupo.id}}
+            }
+          }
+
+          console.log(data)
           console.log('Se dropeó el '+tipo+' de nombre \"'+item+'\" en el grupo {{grupo.id}}')
+        
+          $.ajax({    
+            url: ajaxurl,
+            type: "POST",
+            data: data,
+            dataType: 'json',
+            success: function(data){
+                alert("Todo piola");
+                location.reload()    
+            },
+            statusCode: {
+                403: function(data) {
+                    // Mensaje del servidor
+                    alert("todo mal");
+                }
+            }
+        });
+
         }
       })
     {% endfor %}
