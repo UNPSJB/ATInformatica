@@ -59,6 +59,29 @@ class UserAddGroupForm(forms.Form):
         usuario = Usuario.objects.get(pk=self.cleaned_data['usuario_id'])
         usuario.groups.add(grupo)
 
+
+class UserRemoveGroupForm(forms.Form):
+    grupo_id = forms.IntegerField()
+    valor = forms.IntegerField()
+
+    def clean(self):
+        cleaned_data = super(self.__class__, self).clean()
+
+        if not Group.objects.filter(pk=cleaned_data['grupo_id']).exists():
+            raise forms.ValidationError(
+                "No existe el grupo"
+            )
+
+        if not Usuario.objects.filter(pk=cleaned_data['valor']).exists():
+            raise forms.ValidationError(
+                "No existe el usuario"
+            )
+
+    def save(self, commit=True):
+        grupo = Group.objects.get(pk=self.cleaned_data['grupo_id'])
+        usuario = Usuario.objects.get(pk=self.cleaned_data['valor'])
+        usuario.groups.remove(grupo)
+
 class GroupAddPermissionForm(forms.Form):
     grupo_id = forms.IntegerField()
     permiso_id = forms.IntegerField()
@@ -80,6 +103,30 @@ class GroupAddPermissionForm(forms.Form):
         grupo = Group.objects.get(pk=self.cleaned_data['grupo_id'])
         permiso = Permission.objects.get(pk=self.cleaned_data['permiso_id'])
         grupo.permissions.add(permiso)
+
+
+class GroupRemovePermissionForm(forms.Form):
+    grupo_id = forms.IntegerField()
+    valor = forms.IntegerField()
+
+    def clean(self):
+        cleaned_data = super(self.__class__, self).clean()
+
+        if not Group.objects.filter(pk=cleaned_data['grupo_id']).exists():
+            raise forms.ValidationError(
+                "No existe el grupo"
+            )
+
+        if not Permission.objects.filter(pk=cleaned_data['valor']).exists():
+            raise forms.ValidationError(
+                "No existe el permiso"
+            )
+
+    def save(self, commit=True):
+        grupo = Group.objects.get(pk=self.cleaned_data['grupo_id'])
+        permiso = Permission.objects.get(pk=self.cleaned_data['valor'])
+        grupo.permissions.remove(permiso)
+
 class UsuarioCambiarPasswordForm(PasswordChangeForm):
     """
     Form que hereda de PasswordChangeForm para agregar clases al widget
