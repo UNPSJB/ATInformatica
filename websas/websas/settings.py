@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'servicio',
     'usuario',
     'orden',
-    'django_extensions'
+    'django_extensions',
+    'docs'
 ]
 
 MIDDLEWARE = [
@@ -70,6 +71,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'websas.processors.websasdbinfo',
+                'websas.processors.ayuda',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -143,3 +145,6 @@ LOGIN_URL = '/usuario/login/'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+DOCS_ROOT = os.path.join(BASE_DIR, '..', 'doc', '_build', 'html')
+DOCS_ACCESS = 'public'
