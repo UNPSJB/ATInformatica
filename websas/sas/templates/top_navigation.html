@@ -19,6 +19,11 @@
         <a href="{% url 'usuario:password_change' %}" class="bg-danger"><i class="fa fa-key fa-lg"></i>&nbsp;&nbsp;<strong>Cambiar contraseña</strong></a>
       </li>
       {% endif %}
+      {% if ayuda_pagina %}
+      <li class="">
+        <a href="{{ ayuda_pagina }}" target="_blank"><i class="fa fa-question-circle fa-lg"></i>&nbsp;&nbsp;Ayuda</a>
+      </li>
+      {% endif %}
     </ul>
   </nav>
 </div>
