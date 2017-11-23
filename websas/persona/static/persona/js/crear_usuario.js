@@ -31,7 +31,6 @@ $.ajaxSetup({
 });
 
 function crearUsuario(){
-
     data = {
         'persona_id': $("#btn-crear-usuario").attr("data-persona-id"),
     }
@@ -42,8 +41,7 @@ function crearUsuario(){
         data: data,
         dataType: 'json',
         success: function (res) {
-            console.log(res);
-            location.href(res.responseJSON.successurl);
+            location.href = res.successurl;
         },
         error: function (data) {
             console.log(data)

@@ -24,8 +24,8 @@ def registrarUsuarioFormFactory(persona_id):
                 )
             if Usuario.objects.filter(username=self._generate_username(
                     Persona.objects.get(pk=cleaned_data['persona_id'])
-                ).exists()):
-                raise ValidationError(
+                )).exists():
+                raise forms.ValidationError(
                     "el nombre de usuario ya existe"
                 )
 
