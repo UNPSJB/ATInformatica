@@ -22,6 +22,7 @@ de reparación ofrecidos por AT-Informática. El sistema permite gestionar:
     interfaz/clientes
     interfaz/tecnicos
     interfaz/rubros
+    interfaz/equipos
     interfaz/productos
     interfaz/servicios
     interfaz/ordenes
