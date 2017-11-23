@@ -12,8 +12,8 @@ urlpatterns = [
     url(r'^editar/(?P<pk>\d+)$', login_required(RubroUpdate.as_view(), login_url='usuario:login'), name="rubro_editar"),
     url(r'^eliminar/(?P<pk>\d+)$', login_required(RubroDelete.as_view(), login_url='usuario:login'),name="rubro_eliminar"),
     #URLs de TipoTarea para el Rubro
-    url(r'^tareas/(?P<pk_rubro>\d+)/crear$', TipoTareaCreate.as_view(), name='tipo_tarea_crear'),
-    url(r'^tareas/(?P<pk_rubro>\d+)/editar/(?P<pk>\d+)$', TipoTareaUpdate.as_view(), name='tipo_tarea_editar'),
-    url(r'^tareas/(?P<pk_rubro>\d+)/tarifar/(?P<pk>\d+)$', TipoTareaTarifar.as_view(), name='tipo_tarea_tarifar'),
-    url(r'^tareas/(?P<pk_rubro>\d+)/eliminar/(?P<pk>\d+)$', TipoTareaDelete.as_view(), name='tipo_tarea_eliminar'),
+    url(r'^tareas/(?P<pk_rubro>\d+)/crear$', login_required(TipoTareaCreate.as_view(),login_url='usuario:login'), name='tipo_tarea_crear'),
+    url(r'^tareas/(?P<pk_rubro>\d+)/editar/(?P<pk>\d+)$', login_required(TipoTareaUpdate.as_view(),login_url='usuario:login'), name='tipo_tarea_editar'),
+    url(r'^tareas/(?P<pk_rubro>\d+)/tarifar/(?P<pk>\d+)$', login_required(TipoTareaTarifar.as_view(),login_url='usuario:login'), name='tipo_tarea_tarifar'),
+    url(r'^tareas/(?P<pk_rubro>\d+)/eliminar/(?P<pk>\d+)$', login_required(TipoTareaDelete.as_view(),login_url='usuario:login'), name='tipo_tarea_eliminar'),
 ]
