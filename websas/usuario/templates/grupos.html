@@ -12,7 +12,7 @@
     <p class="lead">Permisos</p>
     <ul id="draggable" style="list-style:none">
       {% for permiso in permisos %}
-        <li data-tipo="permiso" data-grupo="{{ grupo.id }}" data-permiso="{{ permiso.id }}" data-ajax="{url 'usuario:grupo_add_permiso'}"><span class="btn btn-default">{{ permiso.name }}</span></li>
+        <li data-tipo="permiso" data-grupo="{{ grupo.id }}" data-permiso="{{ permiso.id }}" data-ajax="{% url 'usuario:grupo_add_permiso' %}"><span class="btn btn-default">{{ permiso.name }}</span></li>
       {% empty %}
         <h1>No hay permisos </h1>
       {% endfor %} 
@@ -39,9 +39,9 @@
                     que tiene asignado el grupo {% endcomment %}
                     
                     {% for permiso in grupo.permissions.all %}
-                      <p>{{ permiso.name }}</p>
+                      <div>{{ permiso.name }} | <a href="#"><i class="fa fa-trash" data-grupo="{{grupo.id}}" data-valor="{{permiso.id}}" data-ajax="{% url 'usuario:grupo_delete_permiso' %}"></i></a> </div>
                     {% empty %}
-                    <span>no hay cosos</span>
+                      <b><p>No hay permisos asignados a este grupos</p></b>
                     {% endfor %}
                   </div>
               </div>
@@ -53,9 +53,9 @@
                     que tiene asignado el grupo {% endcomment %}
                     
                      {% for usuario in grupo.user_set.all %} 
-                        <p>{{ usuario.username }}</p>
+                        <div>{{ usuario.username }} | <a href="#"><i class="fa fa-trash" data-grupo="{{grupo.id}}" data-valor="{{usuario.id}}" data-ajax="{% url 'usuario:usuario_delete_grupo' %}"></i></a></div>
                      {% empty %} 
-                        <span>aca tampoco hay cosos</span>
+                        <b><p>No hay usuarios asignados a este grupo</p></b>
                      {% endfor %}
                   </div>
               </div>
@@ -76,7 +76,7 @@
     <p class="lead">Usuarios</p>
     <ul id="draggable" style="list-style:none">
       {% for usuario in usuarios %}
-        <li data-tipo="usuario" data-grupo="{{ grupo.id }}" data-usuario="{{ usuario.id }}" data-ajax="{url 'usuario:usuario_add_grupo'}"><span  class="btn btn-default">{{ usuario.username }}</span></li>
+        <li data-tipo="usuario" data-grupo="{{ grupo.id }}" data-usuario="{{ usuario.id }}" data-ajax="{% url 'usuario:usuario_add_grupo' %}"><span  class="btn btn-default">{{ usuario.username }}</span></li>
       {% empty %}
         <h1>No hay usuarios </h1>
       {% endfor %}
@@ -98,18 +98,20 @@
           
           if (tipo == "permiso") {
             var permiso_id = ui.draggable[0].dataset['permiso']
-            var ajaxurl = 'add_permiso'
+            var ajaxurl = ui.draggable[0].dataset['ajax'] 
+            //'add_permiso'
             data = {
               'permiso_id' : permiso_id,
-              'grupo_id' : {{grupo.id}}
+              'grupo_id' : "{{grupo.id}}"
             }
           }
           if (tipo == "usuario") {
             var usuario_id = ui.draggable[0].dataset['usuario']
-            var ajaxurl = 'add_grupo'
+            var ajaxurl = ui.draggable[0].dataset['ajax']
+            //'add_grupo'
             data = {
               'usuario_id': usuario_id,
-              'grupo_id': {{grupo.id}}
+              'grupo_id': "{{grupo.id}}"
             }
           }
 
@@ -135,6 +137,26 @@
         }
       })
     {% endfor %}
+    $(" .fa-trash ").on("click", function() {
+      console.log(this)
+      var data = {
+        "grupo_id": this.dataset["grupo"],
+        "valor": this.dataset["valor"],
+      }
+      $.ajax({
+        url: this.dataset["ajax"],
+        type: "POST",
+        data: data,
+        dataType: 'json',
+        success: function(data){
+          console.log("ahre success")
+          location.reload()
+        },
+        error: function(data){
+          console.log("ahre fallazo culiadazo")
+        }
+      })
+    })
   });
 </script>
 <script src="{% static '/js/crear_grupo.js' %}"></script>
