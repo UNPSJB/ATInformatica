@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models import Sum
 from tarea.models import Tarea
 from decimal import Decimal
-
+from sas.models import BajasLogicasManagerFactory
 class Producto(models.Model):
     """ Modelo para la gestión de productos.
 
@@ -40,7 +40,7 @@ class Producto(models.Model):
     
         Returns: 
             int """
-        stock_reservado = self.reservas.filter(activa=True
+        stock_reservado = self.reservas.all(
                                 ).values_list('producto'
                                 ).aggregate(Sum('cantidad')
                                 ).get('cantidad__sum')
@@ -66,6 +66,7 @@ class Producto(models.Model):
             True si stock_minimo >= stock_disponible, False si no """
         return self.stock_minimo >= self.stock_disponible
 
+
 class ReservaStock(models.Model):
     """ Modelo para la gestión de reservas de stock
 
@@ -89,8 +90,13 @@ class ReservaStock(models.Model):
     precio_unitario = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0'))
     cantidad = models.PositiveIntegerField()
 
+    objects = BajasLogicasManagerFactory(True)
+    eliminados = BajasLogicasManagerFactory(False)
+    todos = models.Manager()
+
     class Meta:
         unique_together = (("producto", "tarea"),)
+
 
     def save(self, *args, **kwagrs):
         self.precio_unitario = self.producto.precio
