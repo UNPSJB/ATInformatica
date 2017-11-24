@@ -261,8 +261,8 @@ class EstadoTarea(models.Model):
     def agregar_observacion(self, usuario, contenido):
         self.tarea.observaciones.create(tarea=self, usuario=usuario, contenido=contenido)
     
-    def cancelar_reserva(self, producto):
-        reserva = self.tarea.reservas.get(producto=producto.id)
+    def cancelar_reserva(self, reserva):
+        reserva = self.tarea.reservas.get(pk=reserva.id)
         if reserva:
             reserva.eliminar()
             return self
@@ -278,10 +278,16 @@ class TareaPendiente(EstadoTarea):
     """ Fue aceptada la tarea y ahora hay que realizarla """
     TIPO = 2
     def finalizar(self):
-        if any(map(lambda reserva: not reserva.hay_stock, self.tarea.reservas.filter(activa=True))):
-            raise Exception("No hay stock suficiente para completar la tarea")
-        map(lambda reserva: reserva.usar_repuestos(), self.tarea.reservas.filter(activa=True))
+        for reserva in self.tarea.reservas.filter(activa=True):
+            if not reserva.hay_stock:
+                raise Exception("No hay stock suficiente para completar la tarea")
+        for reserva in self.tarea.reservas.filter(activa=True):
+            reserva.usar_repuestos()
         return TareaRealizada(tarea=self.tarea)
+
+        # if any(map(lambda reserva: not reserva.hay_stock, self.tarea.reservas.filter(activa=True))):
+        #     raise Exception("No hay stock suficiente para completar la tarea")
+        # map(lambda reserva: reserva.usar_repuestos(), self.tarea.reservas.filter(activa=True))
 
 class TareaRealizada(EstadoTarea):
     TIPO = 3

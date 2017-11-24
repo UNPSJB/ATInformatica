@@ -63,9 +63,10 @@ function reservarStock(){
             throw "Debe ingresar una cantidad válida";
         } else if (data['cantidad'] <= 0) {
             throw "No puede ingresar una cantidad negativa";
-        } else if (data['cantidad'] > data['cantidad_disp']) {
-            throw "No hay stock suficiente para realizar la reserva";
-        }
+        } 
+        // else if (data['cantidad'] > data['cantidad_disp']) {
+        //     throw "No hay stock suficiente para realizar la reserva";
+        // }
 
         $.ajax({    
             url: $("#modalReserva").attr("ajax-url"),
