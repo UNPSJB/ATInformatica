@@ -36,7 +36,7 @@
                         </td>
                         <td >
                             <input placeholder="Precio" min="0" id="tarifa_{{ tarifa.tipo_servicio.nombre|lower|cut:" " }}" value="{{ tarifa.precio.to_integral_value }}" tarifa={{ tarifa.pk }}>
-                            <div id="tarifa-error" style="display:inline-block" class="">
+                            <div id="tarifa-error" style="display:inline-block" class="red">
                                 
                             </div>
                         </td>

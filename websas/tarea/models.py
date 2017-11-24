@@ -218,7 +218,7 @@ class Tarea(models.Model):
             precio(str): nuevo precio para la tarea"""
 
         if not precio.isdigit() or int(precio) < 0:
-            precio = 0
+            return
 
         self.precio=Decimal(precio)
         self.save()
