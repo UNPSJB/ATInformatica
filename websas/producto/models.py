@@ -2,8 +2,8 @@ from django.db import models
 from django.db.models import Sum
 from tarea.models import Tarea
 from decimal import Decimal
-from sas.models import BajasLogicasManagerFactory
-class Producto(models.Model):
+from sas.models import ModeloBase, BajasLogicasManagerFactory
+class Producto(ModeloBase):
     """ Modelo para la gestión de productos.
 
     El modelo establece la restriccion unique_together para nombre y marca. Ademas por ser estos
@@ -18,17 +18,12 @@ class Producto(models.Model):
         stock (int): cantidad de unidades en stock
         precio (:obj: `Decimal`): precio del producto """
     
-    activo = models.BooleanField(default=True)
     nombre = models.CharField(max_length=20)
     descripcion = models.CharField(max_length=50, null=True, blank=True)
     marca = models.CharField(max_length=20)
     stock_minimo = models.IntegerField()
     stock = models.IntegerField()
     precio = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0'))
-
-    objects = BajasLogicasManagerFactory(True)
-    eliminados = BajasLogicasManagerFactory(False)
-    todos = models.Manager()
 
     class Meta:
         unique_together = (("nombre", "marca"),)
@@ -37,11 +32,6 @@ class Producto(models.Model):
         self.nombre = str.title(self.nombre)
         self.marca = str.title(self.marca)
         super(self.__class__, self).save(*args, **kwagrs)
-
-    def eliminar(self):
-        """ Método para dar de baja una reserva (baja lógica) """
-        self.activo = False
-        self.save()
 
     @property
     def stock_reservado(self): 
@@ -90,7 +80,6 @@ class ReservaStock(models.Model):
         precio_unitario(:obj, Decimal): precio del producto al momento de crearse la reserva (valor histórico)
         cantidad(int): cantidad de unidades reservadas
     """
-    activo = models.BooleanField(default=True)
     producto = models.ForeignKey(
         Producto, related_name="reservas"
     )
@@ -100,9 +89,6 @@ class ReservaStock(models.Model):
     precio_unitario = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0'))
     cantidad = models.PositiveIntegerField()
 
-    objects = BajasLogicasManagerFactory(True)
-    eliminados = BajasLogicasManagerFactory(False)
-    todos = models.Manager()
 
     class Meta:
         unique_together = (("producto", "tarea"),)
@@ -129,13 +115,8 @@ class ReservaStock(models.Model):
         """
         return self.precio_unitario * self.cantidad
 
-    def eliminar(self):
-        """ Método para dar de baja una reserva (baja lógica) """
-        self.activo = False
-        self.save()
-
     def usar_repuestos(self):
         """ Método para consumir los repuestos reservados """
         self.producto.stock -= self.cantidad
         self.producto.save()
-        self.eliminar()
+        self.delete()

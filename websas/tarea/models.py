@@ -264,7 +264,7 @@ class EstadoTarea(models.Model):
     def cancelar_reserva(self, reserva):
         reserva = self.tarea.reservas.get(pk=reserva.id)
         if reserva:
-            reserva.eliminar()
+            reserva.delete()
             return self
         raise Exception("***TAREA: no existe la reserva indicada***")
 
