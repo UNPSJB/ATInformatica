@@ -1,4 +1,4 @@
-from .forms import registrarUsuarioFormFactory, UserAddGroupForm, UserRemoveGroupForm, GroupAddPermissionForm, GroupRemovePermissionForm, UsuarioCambiarPasswordForm, CrearGrupoForm
+from .forms import registrarUsuarioFormFactory, UserAddGroupForm, UserRemoveGroupForm, GroupAddPermissionForm, GroupRemovePermissionForm, UsuarioCambiarPasswordForm, CrearGrupoForm, EliminarGrupoForm
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from django.contrib import messages
 from .models import Usuario
@@ -104,6 +104,19 @@ class GroupView(TemplateView):
         contexto['usuarios'] = Usuario.objects.all()
         return contexto
 
+class EliminarGrupo(View):
+    def post(self, request, *args, **kwargs):
+        
+        form = EliminarGrupoForm(request.POST or None)
+
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'data': 'todo piola'})
+
+        response = JsonResponse({'error': 'se pudrió todo'})
+        response.status_code = 403
+        return response
+
 class UserAddGroup(View):
 
     def post(self, request, *args, **kwargs):
@@ -126,8 +139,6 @@ class UserRemoveGroup(View):
             form.save()
             return JsonResponse({"data": "todo joyeli"})        
 
-        # print(request.POST)
-        # return JsonResponse({})
 
         response = JsonResponse({})
         response.status_code = 403
@@ -159,5 +170,3 @@ class GroupRemovePermission(View):
         response = JsonResponse({})
         response.status_code = 403
         return response
-        # print(request.POST)
-        # return JsonResponse({})

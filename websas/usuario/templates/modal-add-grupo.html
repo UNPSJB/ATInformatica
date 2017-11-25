@@ -16,11 +16,14 @@
         </div>
       </div>
       <div class="modal-footer">
+
         <span class="text-danger" hidden id="error-elem">
           <strong>
-            <i class="fa fa-warning fa-lg"></i>&nbsp;&nbsp;
-            <span id="errormsg">Error</span>&nbsp;&nbsp;&nbsp;&nbsp;</strong>
+            <i class="fa fa-warning fa-lg"></i>
+            <span id="errormsg">Error</span>
+          </strong>
         </span>
+
         <button class="btn btn-primary" id="btn-crear-grupo" ajax-url="{% url 'usuario:grupos' %}" onclick="crearGrupo()">Guardar</button>
         <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
       </div>

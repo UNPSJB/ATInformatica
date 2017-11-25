@@ -3,7 +3,7 @@ function cambiarPrecio() {
     var precio = parseInt($("#precio").val())
 
     if(isNaN(precio) || precio < 0){
-        $("#precio-error").html("Debe ingresar un válido")
+        $("#precio-error").html("Debe ingresar un precio válido")
         return
     }
 
@@ -12,7 +12,7 @@ function cambiarPrecio() {
         'precio': precio
     }
 
-
+    $("#precio-error").html("")
     $.ajax({
         url: $("#modalCambiarPrecio").attr("ajax-url"),
         type: "POST",

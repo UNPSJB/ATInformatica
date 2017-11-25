@@ -27,9 +27,9 @@
           {% for grupo in grupos %}
           <div class="panel">
             <a class="panel-heading" role="tab" id="heading{{grupo.id}}" data-toggle="collapse" data-parent="#accordion" href="#collapse_{{grupo.id}}" aria-expanded="true"
-              aria-controls="collapse_{{grupo.id}}">
-              <h4 class="panel-title">{{ grupo.name }}</h4>
-            </a>
+              aria-controls="collapse_{{grupo.id}}">                
+                <h4 class="panel-title">{{ grupo.name }}</h4>                  
+              </a>
             <div id="collapse_{{grupo.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{grupo.id}}">
               <div class="panel-body">
                   <h5>Permisos</h5>
@@ -39,7 +39,7 @@
                     que tiene asignado el grupo {% endcomment %}
                     
                     {% for permiso in grupo.permissions.all %}
-                      <div>{{ permiso.name }} | <a href="#"><i class="fa fa-trash" data-grupo="{{grupo.id}}" data-valor="{{permiso.id}}" data-ajax="{% url 'usuario:grupo_delete_permiso' %}"></i></a> </div>
+                      <div>{{ permiso.name }} | <a href="#"><i id="eliminar-permiso-grupo" class="fa fa-trash" data-grupo="{{grupo.id}}" data-valor="{{permiso.id}}" data-ajax="{% url 'usuario:grupo_delete_permiso' %}"></i></a> </div>
                     {% empty %}
                       <b><p>No hay permisos asignados a este grupos</p></b>
                     {% endfor %}
@@ -53,11 +53,15 @@
                     que tiene asignado el grupo {% endcomment %}
                     
                      {% for usuario in grupo.user_set.all %} 
-                        <div>{{ usuario.username }} | <a href="#"><i class="fa fa-trash" data-grupo="{{grupo.id}}" data-valor="{{usuario.id}}" data-ajax="{% url 'usuario:usuario_delete_grupo' %}"></i></a></div>
+                        <div>{{ usuario.username }} | <a href="#"><i id="eliminar-usuario-grupo" class="fa fa-trash" data-grupo="{{grupo.id}}" data-valor="{{usuario.id}}" data-ajax="{% url 'usuario:usuario_delete_grupo' %}"></i></a></div>
                      {% empty %} 
                         <b><p>No hay usuarios asignados a este grupo</p></b>
                      {% endfor %}
                   </div>
+              </div>
+              <div style="overflow: hidden">
+                <button style="float: right;" id="eliminar-grupo"  class="btn btn-danger" data-toggle="modal" data-target="#modalEliminarGrupo" >Eliminar</button>
+                 {% include "modal-delete-grupo.html" %}
               </div>
             </div>
           </div>
@@ -86,6 +90,13 @@
 {% endblock contenido %} 
 
 {% block scripts %}
+
+
+
+
+
+
+
 <!-- prueba jquery ui -->
 <script>
   $( function() {
@@ -99,7 +110,6 @@
           if (tipo == "permiso") {
             var permiso_id = ui.draggable[0].dataset['permiso']
             var ajaxurl = ui.draggable[0].dataset['ajax'] 
-            //'add_permiso'
             data = {
               'permiso_id' : permiso_id,
               'grupo_id' : "{{grupo.id}}"
@@ -108,15 +118,12 @@
           if (tipo == "usuario") {
             var usuario_id = ui.draggable[0].dataset['usuario']
             var ajaxurl = ui.draggable[0].dataset['ajax']
-            //'add_grupo'
             data = {
               'usuario_id': usuario_id,
               'grupo_id': "{{grupo.id}}"
             }
           }
 
-          console.log(data)
-          console.log('Se dropeó el '+tipo+' de nombre \"'+item+'\" en el grupo {{grupo.id}}')
         
           $.ajax({    
             url: ajaxurl,
@@ -137,27 +144,9 @@
         }
       })
     {% endfor %}
-    $(" .fa-trash ").on("click", function() {
-      console.log(this)
-      var data = {
-        "grupo_id": this.dataset["grupo"],
-        "valor": this.dataset["valor"],
-      }
-      $.ajax({
-        url: this.dataset["ajax"],
-        type: "POST",
-        data: data,
-        dataType: 'json',
-        success: function(data){
-          console.log("ahre success")
-          location.reload()
-        },
-        error: function(data){
-          console.log("ahre fallazo culiadazo")
-        }
-      })
-    })
   });
 </script>
 <script src="{% static '/js/crear_grupo.js' %}"></script>
+<script src="{% static '/js/eliminar_permiso_usuario_grupo.js' %}"></script>
+<script src="{% static '/js/eliminar_grupo.js' %}"></script>
 {% endblock scripts %}

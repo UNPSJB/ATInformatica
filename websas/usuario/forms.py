@@ -30,7 +30,7 @@ def registrarUsuarioFormFactory(persona_id):
                 )
 
         def save(self, commit=True):
-            persona = Persona.objects.get(pk=self.cleaned_data['persona_id'])
+            persona = Persona.objects.get(pk=self.cleaned_data.get('persona_id'))
             Usuario.objects.crear_usuario(username=self._generate_username(persona), 
                                         password=persona.doc, persona=persona)
             persona.agregar_rol(Usuario())
@@ -55,8 +55,8 @@ class UserAddGroupForm(forms.Form):
             )
     
     def save(self, commit=True):
-        grupo = Group.objects.get(pk=self.cleaned_data['grupo_id'])
-        usuario = Usuario.objects.get(pk=self.cleaned_data['usuario_id'])
+        grupo = Group.objects.get(pk=self.cleaned_data.get('grupo_id'))
+        usuario = Usuario.objects.get(pk=self.cleaned_data.get('usuario_id'))
         usuario.groups.add(grupo)
 
 
@@ -78,8 +78,8 @@ class UserRemoveGroupForm(forms.Form):
             )
 
     def save(self, commit=True):
-        grupo = Group.objects.get(pk=self.cleaned_data['grupo_id'])
-        usuario = Usuario.objects.get(pk=self.cleaned_data['valor'])
+        grupo = Group.objects.get(pk=self.cleaned_data.get('grupo_id'))
+        usuario = Usuario.objects.get(pk=self.cleaned_data.get('valor'))
         usuario.groups.remove(grupo)
 
 class GroupAddPermissionForm(forms.Form):
@@ -100,8 +100,8 @@ class GroupAddPermissionForm(forms.Form):
             )
     
     def save(self, commit=True):
-        grupo = Group.objects.get(pk=self.cleaned_data['grupo_id'])
-        permiso = Permission.objects.get(pk=self.cleaned_data['permiso_id'])
+        grupo = Group.objects.get(pk=self.cleaned_data.get('grupo_id'))
+        permiso = Permission.objects.get(pk=self.cleaned_data.get('permiso_id'))
         grupo.permissions.add(permiso)
 
 
@@ -123,8 +123,8 @@ class GroupRemovePermissionForm(forms.Form):
             )
 
     def save(self, commit=True):
-        grupo = Group.objects.get(pk=self.cleaned_data['grupo_id'])
-        permiso = Permission.objects.get(pk=self.cleaned_data['valor'])
+        grupo = Group.objects.get(pk=self.cleaned_data.get('grupo_id'))
+        permiso = Permission.objects.get(pk=self.cleaned_data.get('valor'))
         grupo.permissions.remove(permiso)
 
 class UsuarioCambiarPasswordForm(PasswordChangeForm):
@@ -170,12 +170,26 @@ class CrearGrupoForm(forms.ModelForm):
         fields = ['name']
     
     def clean(self):
-        cleaned_data = super(CrearGrupoForm, self).clean()
+        cleaned_data = super(self.__class__, self).clean()
         nombre = cleaned_data.get('name')
-        if Group.objects.filter(name=nombre).exists():
+        if Group.objects.filter(name__icontains=nombre).exists():
             raise forms.ValidationError(
                 "El nombre del grupo no es válido"
             )
 
+class EliminarGrupoForm(forms.Form):
+       
 
-
+    grupo_id = forms.IntegerField()
+    
+    def clean(self):
+        cleaned_data = super(self.__class__, self).clean()
+        
+        if not Group.objects.filter(id=cleaned_data.get("grupo_id")).exists():
+            raise forms.ValidationError(
+                "El nombre del grupo no es válido"
+            )
+    
+    def save(self, commit=True):
+        grupo = Group.objects.get(id=self.cleaned_data.get('grupo_id'))
+        grupo.delete()

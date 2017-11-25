@@ -1,0 +1,26 @@
+<div class="modal fade" id="modalEliminarGrupo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Eliminar grupo</h4>
+        <br>
+      </div>
+      <div class="modal-body">
+        <h2>¿Confirma eliminar el grupo "{{grupo.name}}"?</h2>
+      </div>
+      <div class="modal-footer">
+
+        <span class="text-danger" hidden id="error-elem">
+          <strong>
+            <i class="fa fa-warning fa-lg"></i>
+            <span id="errormsg">Error</span>
+          </strong>
+        </span>
+
+        <button class="btn btn-primary" id="btn-eliminar-grupo" data-grupo="{{grupo.id}}" data-ajax="{% url 'usuario:eliminar_grupo' %}">Confirmar</button>
+        <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -20,6 +20,7 @@ var tabla = $("#datatable-tipo-tarea-tarifar").DataTable({
 
 $('#datatable-tipo-tarea-tarifar tbody').on('change', 'td', function () {
 
+    // console.log(this.lastElementChild)
     //recuperamos el tipo de servicio
     var tipo_servicio = tabla.row(this).data()[0]
     
@@ -29,11 +30,24 @@ $('#datatable-tipo-tarea-tarifar tbody').on('change', 'td', function () {
     //recuperamos la pk de la tarifa
     var tarifa = tabla.cell(this).$(id).attr("tarifa")
     
+    //recuperamos elementos html
+    var msg = $(this).find("#errormsg")
+    var elem = $(this).find("#error-elem")
+    var icon = $(this).find("#status-icon")
+    
     //recuperamos el precio de la tarifa
     var precio = parseInt(tabla.cell(this).$(id).val())
     if (isNaN(precio) || precio < 0){
-        precio = 0
+        msg.html("Valor incorrecto. No se actualizará la tarifa.")
+        elem.removeClass("text-success")
+        elem.addClass("text-danger")
+        icon.removeClass("fa-thumbs-up")
+        icon.addClass("fa-warning")
+        elem.fadeIn()
+        return 
     }
+
+
 
     $.ajax({
         //la url a donde hay que pegarle en el servidor esta en el html de la tabla
@@ -46,6 +60,12 @@ $('#datatable-tipo-tarea-tarifar tbody').on('change', 'td', function () {
         },
         dataType: 'json',
         success: function (data) {
+            msg.html("Tarifa actualizada con éxito")
+            elem.removeClass("text-danger")
+            elem.addClass("text-success")
+            icon.removeClass("fa-warning")
+            icon.addClass("fa-thumbs-up")
+            elem.fadeIn()
         }
     }) 
 
