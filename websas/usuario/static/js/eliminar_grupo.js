@@ -21,7 +21,7 @@ function csrfSafeMethod(method) {
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 $.ajaxSetup({
-    beforeSend: function(xhr, settings) {
+    beforeSend: function (xhr, settings) {
         if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
             xhr.setRequestHeader("X-CSRFToken", csrftoken);
         }
@@ -29,37 +29,25 @@ $.ajaxSetup({
 });
 
 
-function crearGrupo(){
 
-    var nombre = $("input:text[name=nombre-grupo]").val() 
-    if(!Boolean(nombre)){
-        console.log("ahre")
-        $("#errormsg").html("Debe ingresar un nombre")
-        $("#error-elem").fadeIn()
-        return
+
+$(" #btn-eliminar-grupo ").on("click", function () {
+    var grupo_id = this.dataset["grupo"]
+
+    var data = {
+        'grupo_id': grupo_id
     }
 
-    $("error-elem").fadeOut()
-    data = {
-        'name': nombre
-    }
-     
-    $.ajax({    
-        url: $('#btn-crear-grupo').attr('ajax-url'),
+    $.ajax({
+        url: this.dataset["ajax"],
         type: "POST",
         data: data,
         dataType: 'json',
-        success: function(data){
-            $("#modalGrupo").modal("toggle")
-            location.reload()    
-        },
-        statusCode: {
-            403: function(data) {
-                // Mensaje del servidor
-                $("#errormsg").html("Error al crear el grupo " + "\"" + nombre + "\"")
-                $("#error-elem").fadeIn()
-            }
+        success: function (data) {
+            $("#modalEliminarGrupo").modal("toggle")
+            location.reload()
+        },  
+        error: function (data) {
         }
-    });
-
-}
+    })
+})
