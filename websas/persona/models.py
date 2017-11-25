@@ -1,5 +1,5 @@
 from django.db import models
-
+from sas.models import BajasLogicasManagerFactory
 class Persona(models.Model):
     """ Modelo genérico para la gestión de personas. """
     TIPO_DOC = (
@@ -63,6 +63,8 @@ class Rol(models.Model):
     TIPOS = [
         (0, "rol")
     ]
+
+    activo = models.BooleanField(default=True)
     tipo = models.PositiveSmallIntegerField(choices=TIPOS)
     persona = models.ForeignKey(
         Persona,
@@ -70,6 +72,10 @@ class Rol(models.Model):
         on_delete=models.CASCADE,
         null=True
     )
+
+    objects = BajasLogicasManagerFactory(True)
+    eliminados = BajasLogicasManagerFactory(False)
+    todos = models.Manager()
 
     @property
     def doc(self):
@@ -91,7 +97,11 @@ class Rol(models.Model):
         if self.pk is None:
             self.tipo = self.__class__.TIPO
         super(Rol, self).save(*args, **kwargs)
-        
+
+    def eliminar(self):
+        """ Método para dar de baja una reserva (baja lógica) """
+        self.activo = False
+        self.save()
 
     def related(self):
         """ Retorna una instancia de una subclase de Rol """

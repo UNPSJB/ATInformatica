@@ -285,9 +285,9 @@ class TareaPendiente(EstadoTarea):
             reserva.usar_repuestos()
         return TareaRealizada(tarea=self.tarea)
 
-        # if any(map(lambda reserva: not reserva.hay_stock, self.tarea.reservas.filter(activa=True))):
+        # if any(map(lambda reserva: not reserva.hay_stock, self.tarea.reservas.all())):
         #     raise Exception("No hay stock suficiente para completar la tarea")
-        # map(lambda reserva: reserva.usar_repuestos(), self.tarea.reservas.filter(activa=True))
+        # map(lambda reserva: reserva.usar_repuestos(), self.tarea.reservas.all())
 
 class TareaRealizada(EstadoTarea):
     TIPO = 3

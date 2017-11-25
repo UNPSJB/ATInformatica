@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.template import loader
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import permission_required
 
@@ -42,6 +42,12 @@ class ProductoDelete(DeleteView):
     @method_decorator(permission_required('producto.delete_producto', login_url='producto:producto_listar'))
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
+
+    @method_decorator(permission_required('producto.delete_producto', login_url='producto:producto_listar'))
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.eliminar()
+        return HttpResponseRedirect(self.get_success_url())
 
 class ProductoDetail(DetailView):
     model = Producto

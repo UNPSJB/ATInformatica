@@ -17,7 +17,8 @@ class Producto(models.Model):
         stock_minimo (int): cantidad mínima requerida en stock
         stock (int): cantidad de unidades en stock
         precio (:obj: `Decimal`): precio del producto """
-
+    
+    activo = models.BooleanField(default=True)
     nombre = models.CharField(max_length=20)
     descripcion = models.CharField(max_length=50, null=True, blank=True)
     marca = models.CharField(max_length=20)
@@ -25,13 +26,22 @@ class Producto(models.Model):
     stock = models.IntegerField()
     precio = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0'))
 
+    objects = BajasLogicasManagerFactory(True)
+    eliminados = BajasLogicasManagerFactory(False)
+    todos = models.Manager()
+
     class Meta:
         unique_together = (("nombre", "marca"),)
-
+        
     def save(self, *args, **kwagrs):
         self.nombre = str.title(self.nombre)
         self.marca = str.title(self.marca)
         super(self.__class__, self).save(*args, **kwagrs)
+
+    def eliminar(self):
+        """ Método para dar de baja una reserva (baja lógica) """
+        self.activo = False
+        self.save()
 
     @property
     def stock_reservado(self): 
@@ -80,7 +90,7 @@ class ReservaStock(models.Model):
         precio_unitario(:obj, Decimal): precio del producto al momento de crearse la reserva (valor histórico)
         cantidad(int): cantidad de unidades reservadas
     """
-    activa = models.BooleanField(default=True)
+    activo = models.BooleanField(default=True)
     producto = models.ForeignKey(
         Producto, related_name="reservas"
     )
@@ -96,7 +106,6 @@ class ReservaStock(models.Model):
 
     class Meta:
         unique_together = (("producto", "tarea"),)
-
 
     def save(self, *args, **kwagrs):
         self.precio_unitario = self.producto.precio
@@ -122,7 +131,7 @@ class ReservaStock(models.Model):
 
     def eliminar(self):
         """ Método para dar de baja una reserva (baja lógica) """
-        self.activa = False
+        self.activo = False
         self.save()
 
     def usar_repuestos(self):

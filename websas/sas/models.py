@@ -2,9 +2,13 @@ from django.db import models
 
 # Create your models here.
 
-def BajasLogicasManagerFactory(activa):
-    class ManagerBajasLogicas(models.Manager):
-        def get_queryset(self):
-            return super(ManagerBajasLogicas, self).get_queryset().filter(activa=activa)
+def BajasLogicasManagerFactory(activo):
 
-    return ManagerBajasLogicas
+    class ManagerBajasLogicas(models.Manager):
+        
+        use_for_related_fields = True
+        
+        def get_queryset(self):
+            return super(ManagerBajasLogicas, self).get_queryset().filter(activo=activo)
+
+    return ManagerBajasLogicas()
