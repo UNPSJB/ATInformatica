@@ -91,7 +91,7 @@ class Tarea(models.Model):
         if not self.reservas:
             return 0
         costo_repuestos = 0
-        for reserva in self.reservas.filter(activa=True):
+        for reserva in self.reservas.all():
             costo_repuestos += reserva.precio_unitario * reserva.cantidad 
         # por cada reserva multiplicar precio_unitario por cantidad
         return costo_repuestos
@@ -102,7 +102,7 @@ class Tarea(models.Model):
 
     @property
     def reservas_stock(self):
-        return self.reservas.filter(activa=True)
+        return self.reservas.all()
 
     @property
     def observaciones_tarea(self):
@@ -264,7 +264,7 @@ class EstadoTarea(models.Model):
     def cancelar_reserva(self, reserva):
         reserva = self.tarea.reservas.get(pk=reserva.id)
         if reserva:
-            reserva.eliminar()
+            reserva.delete()
             return self
         raise Exception("***TAREA: no existe la reserva indicada***")
 
@@ -278,16 +278,16 @@ class TareaPendiente(EstadoTarea):
     """ Fue aceptada la tarea y ahora hay que realizarla """
     TIPO = 2
     def finalizar(self):
-        for reserva in self.tarea.reservas.filter(activa=True):
+        for reserva in self.tarea.reservas.all():
             if not reserva.hay_stock:
                 raise Exception("No hay stock suficiente para completar la tarea")
-        for reserva in self.tarea.reservas.filter(activa=True):
+        for reserva in self.tarea.reservas.all():
             reserva.usar_repuestos()
         return TareaRealizada(tarea=self.tarea)
 
-        # if any(map(lambda reserva: not reserva.hay_stock, self.tarea.reservas.filter(activa=True))):
+        # if any(map(lambda reserva: not reserva.hay_stock, self.tarea.reservas.all())):
         #     raise Exception("No hay stock suficiente para completar la tarea")
-        # map(lambda reserva: reserva.usar_repuestos(), self.tarea.reservas.filter(activa=True))
+        # map(lambda reserva: reserva.usar_repuestos(), self.tarea.reservas.all())
 
 class TareaRealizada(EstadoTarea):
     TIPO = 3

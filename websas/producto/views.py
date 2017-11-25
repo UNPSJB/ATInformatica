@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.template import loader
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import permission_required
 
