@@ -25,10 +25,11 @@ class Producto(ModeloBase):
     stock = models.IntegerField()
     precio = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0'))
 
-    class Meta:
-        unique_together = (("nombre", "marca"),)
-        
     def save(self, *args, **kwagrs):
+
+        if self.__class__.objects.filter(nombre=self.nombre, marca=self.marca).exists():
+            raise Exception("El producto ya se encuentra registrado")
+
         self.nombre = str.title(self.nombre)
         self.marca = str.title(self.marca)
         super(self.__class__, self).save(*args, **kwagrs)
@@ -89,11 +90,11 @@ class ReservaStock(models.Model):
     precio_unitario = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0'))
     cantidad = models.PositiveIntegerField()
 
-
-    class Meta:
-        unique_together = (("producto", "tarea"),)
-
     def save(self, *args, **kwagrs):
+        
+        if self.__class__.objects.filter(producto=self.producto, tarea=self.tarea).exists():
+            raise Exception("El producto {} ya se encuentra reservado para la tarea {}".format(self.producto, self.tarea))
+        
         self.precio_unitario = self.producto.precio
         super(self.__class__, self).save(*args, **kwagrs)
 
