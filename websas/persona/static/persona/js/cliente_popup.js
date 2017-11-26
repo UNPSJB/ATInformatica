@@ -36,6 +36,11 @@ $('#form_cliente').submit(function(){
         url: location.href,
         type: "POST",
         success: function(data){
+            alert('success')
+            var opnr = window.opener
+            opnr.close_popup()
+        },
+        error:function(err){
             window.opener.close_popup()
         }
     })
