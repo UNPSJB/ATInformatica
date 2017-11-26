@@ -46,8 +46,6 @@ AYUDA_URLS = {
 
     # 'servicio_crear': '/docs/interfaz/servicio_nuevo.html',
     'servicio_listar': '/docs/interfaz/servicios.html',
-
-    
 }
 
 def ayuda(request):

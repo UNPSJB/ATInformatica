@@ -20,20 +20,29 @@
   <link href="{% static 'vendors/nprogress/nprogress.css' %}" rel="stylesheet">
   <!-- bootstrap-daterangepicker -->
   <link href="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+  <!-- Switchery -->
+  <link href="{% static 'vendors/switchery/dist/switchery.min.css' %}" rel="stylesheet">
   <!-- iCheck -->
   <link href="{% static 'vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
   <!-- bootstrap-progressbar -->
   <link href="{% static 'vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css' %}" rel="stylesheet">
   <!-- JQVMap -->
   <link href="{% static 'vendors/jqvmap/dist/jqvmap.min.css' %}" rel="stylesheet" />
-  <!-- Custom theme style -->
-  <link href="{% static 'build/css/custom.css' %}" rel="stylesheet">
+  
   <!-- JQuery - UI -->
   <link href="{% static 'vendors/jquery-ui-1.12.1/jquery-ui.css' %}" rel="stylesheet">
   <!-- JQuery - UI Base Theme-->
   <link href="{% static 'vendors/jquery-ui-1.12.1/jquery-ui.theme.css' %}" rel="stylesheet">
   {% block estilos %}
   {% endblock estilos %}
+
+  {% if request.session.lela_estilo %}
+  <!-- Custom theme style -->
+  <link href="{% static 'css/sas.css' %}" rel="stylesheet">  
+  {% else %}
+  <!-- Custom theme style -->
+  <link href="{% static 'build/css/custom.css' %}" rel="stylesheet">  
+  {% endif %}  
 </head>
 
 <body class="nav-md {% block clase_body %}{% endblock clase_body %}">
@@ -99,4 +108,18 @@
 
 <!-- Custom Theme Scripts -->
 <script src="{% static 'build/js/custom.js' %}"></script>
+<script>
+  // Escuchar cambio de config de estilo
+  $('#check-lela_estilo').on('change', function() {
+    // Armar data del request
+    var datos = {
+      'csrfmiddlewaretoken': getCookie('csrftoken'),
+      'lela_estilo': $('#check-lela_estilo').is(':checked')
+    };
+    // POST, y si success, recargar
+    $.post('/config', datos).success(function() {
+      location.reload();
+    });
+  });
+</script>
 </html>
