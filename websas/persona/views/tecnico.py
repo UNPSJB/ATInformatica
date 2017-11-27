@@ -39,7 +39,7 @@ class TecnicoDelete(EmpleadoDelete):
     
     template_name = 'persona/tecnico_delete.html' 
     success_url = reverse_lazy('empleado:tecnico:tecnico_listar')
-    
+
     @method_decorator(permission_required('persona.delete_tecnico', login_url='empleado:tecnico:tecnico_listar'))    
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)

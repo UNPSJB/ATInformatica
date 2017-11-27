@@ -6,7 +6,7 @@
         <div class="x-panel">
             <form method="post">
                     {% csrf_token%}
-                    <h3>Eliminar el tecnico {{ tenico.persona.nombre }}?</h3>
+                    <h3>Eliminar el técnico <b>{{ persona }}</b>?</h3>
                     <button class="btn btn-danger" type="submit">Eliminar</button>
                     <a class="btn btn-default" href="{% url 'empleado:tecnico:tecnico_listar' %}">Cancelar</a>
             </form>
