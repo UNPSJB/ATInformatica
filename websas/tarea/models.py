@@ -3,10 +3,11 @@ from rubro.models import Rubro
 from usuario.models import Usuario
 from servicio.models import TipoServicio
 from tarifa.models import Tarifa
+from sas.models import ModeloBase
 from decimal import Decimal
 
 # Create your models here.
-class TipoTarea(models.Model):
+class TipoTarea(ModeloBase):
     """ Modelo para la gestión de tipos de tarea
 
     Attributes:

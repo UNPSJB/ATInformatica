@@ -1,7 +1,8 @@
 from django.db import models
 from django.apps import apps
+from sas.models import ModeloBase
 # Create your models here.
-class TipoServicio(models.Model):
+class TipoServicio(ModeloBase):
     nombre = models.CharField(max_length=30)
     descripcion = models.TextField(max_length=100)
 
