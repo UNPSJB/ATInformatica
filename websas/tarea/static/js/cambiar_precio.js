@@ -3,7 +3,7 @@ function cambiarPrecio() {
     var precio = parseInt($("#precio").val())
 
     if(isNaN(precio) || precio < 0){
-        $("#precio-error").html("Debe ingresar un precio válido")
+        $("#precio-error").fadeIn()
         return
     }
 
@@ -12,13 +12,13 @@ function cambiarPrecio() {
         'precio': precio
     }
 
-    $("#precio-error").html("")
     $.ajax({
         url: $("#modalCambiarPrecio").attr("ajax-url"),
         type: "POST",
         data: data,
         dataType: 'json',
         success: function (data) {
+            $("#precio-error").fadeOut()
             $('#modalCambiarPrecio').modal('toggle');            
         }
     })

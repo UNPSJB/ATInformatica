@@ -13,8 +13,11 @@
         <div class="modal-body">
 
           <input type="number" min="0" id="precio" value="{{ tarea.precio.to_integral }}">
-          <div style="display:inline-block" class="">
-            <strong id="precio-error" class="red"></strong>
+
+          <div style="display:inline-block"  class="">
+            <strong id="precio-error" hidden class="red">
+              Debe ingresar un precio válido
+            </strong>
           </div>            
         <!-- FINAL CUERPO MODAL -->
         </div>
