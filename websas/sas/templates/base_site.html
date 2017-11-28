@@ -104,10 +104,12 @@
 <!-- Validator -->
 <script src="{% static 'vendors/validator/validator.js' %}"></script>
 
-{% block scripts %} {% endblock scripts %}
 
 <!-- Custom Theme Scripts -->
 <script src="{% static 'build/js/custom.js' %}"></script>
+
+{% block scripts %} {% endblock scripts %}
+
 <script>
   // Escuchar cambio de config de estilo
   $('#check-lela_estilo').on('change', function() {

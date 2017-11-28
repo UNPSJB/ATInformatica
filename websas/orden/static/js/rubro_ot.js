@@ -9,7 +9,6 @@ function tabla_rubros(){
 
     // Inicializacion y referencia al DataTable, con la config ajax de cada columna
     var dtabla = tabla_html.DataTable({
-        "responsive": true,
         "autoWidth": false,
         "columns": [
             {"data": ""},
@@ -34,5 +33,16 @@ function tabla_rubros(){
 
     console.log('dtabla')
     console.log(dtabla)
+
+    // Click en la fila para seleccionar
+    tabla_html.on('click', 'tr', function() {
+        var radio = $(this).find('input');
+        if (radio[0]) {
+            dtabla.$('tr.row_selected').removeClass('row_selected');
+            $(this).addClass('row_selected');
+            radio.iCheck('checked');
+        }
+    });
+    
     return dtabla
 }

@@ -1,7 +1,8 @@
-
 var popup
 var tabla
-$(document).ready(function(){
+var dtabla
+
+$(document).ready(function() {
     get_clientes()
     console.log('tabla_clientes')
 })
@@ -39,14 +40,10 @@ function listado_clientes(clientes){
 
 }
 
-var tabla_html = $("#datatable-clientes")
-var popup_attrs = "location=no,menubar=no,resizable=no,scrollbars=no";
-
-
 // Inicializacion y referencia al DataTable, con la config ajax de cada columna
 function tabla_clientes(){
-    tabla_html = $("#datatable-clientes")
-    popup_attrs = "location=no,menubar=no,resizable=no,scrollbars=no";
+    var tabla_html = $("#datatable-clientes")
+    var popup_attrs = "location=no,menubar=no,resizable=no,scrollbars=no";
 
     var botones_default = [{
         extend: "copy",
@@ -81,8 +78,7 @@ function tabla_clientes(){
     }
 
     // Inicializacion y referencia al DataTable, con la config ajax de cada columna
-    var dtabla = tabla_html.DataTable({
-        "responsive": true,
+    dtabla = tabla_html.DataTable({
         // "ajax": {'url':'localhost:8000/orden/lista_clientes'},//tabla_html.attr('data-ajax_url'),
         "autoWidth": false,
         "columns": [
@@ -102,5 +98,16 @@ function tabla_clientes(){
     $('#cargando').fadeOut();
     tabla_html.fadeIn();
     $('#creacion_ot').smartWizard('fixHeight');
+
+    // Click en la fila para seleccionar
+    tabla_html.on('click', 'tr', function() {
+        var radio = $(this).find('input');
+        if (radio[0]) {
+            dtabla.$('tr.row_selected').removeClass('row_selected');
+            $(this).addClass('row_selected');
+            radio.iCheck('checked');
+        }
+    });
+
     return dtabla
 }

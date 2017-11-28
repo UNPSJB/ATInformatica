@@ -4303,3 +4303,14 @@ background-color: #fff;
 .buttonFinish:not([disabled]) {
     font-weight: bold;
 }
+table.tableselect tbody tr {
+    cursor: pointer;
+}
+table.tableselect tr.even.row_selected {
+    background-color: rgb(110, 245, 214);
+    font-weight: bold;
+}
+table.tableselect tr.odd.row_selected {
+    background-color: rgb(110, 245, 214);
+    font-weight: bold;
+}

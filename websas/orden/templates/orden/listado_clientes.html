@@ -1,6 +1,6 @@
 <table hidden id="datatable-clientes" 
 data-popup_url="{% url 'cliente:cliente_crear_popup' %}" 
-class="table table-striped table-hover table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
+class="table table-striped table-hover tableselect table-bordered nowrap" cellSpacing=0 width=100%>
     <thead>
     <tr>
         <th data-width="1%" data-priority=1></th>
@@ -13,7 +13,8 @@ class="table table-striped table-hover table-bordered dt-responsive nowrap" cell
     </thead>
     <tbody>
         {% if clientes %}
-        {% for cliente in clientes %} <tr>
+        {% for cliente in clientes %}
+        <tr>
             <td align="center">
                 <input data-idcliente="{{ cliente.persona.id }}" type="radio" class="flat" name="cliente">
             </td>
