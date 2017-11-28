@@ -75,6 +75,9 @@ class ClienteCreatePopup(ClienteCreate):
     template_name = 'persona/cliente_form_popup.html'
     success_url = '#'
 
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
 class ClienteCreateAjax(ClienteCreate):
     pass
 
