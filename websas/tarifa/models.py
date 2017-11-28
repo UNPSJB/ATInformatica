@@ -24,12 +24,12 @@ class Tarifa(models.Model):
         """Método para actualizar el precio de una tarifa
         
         Args:
-            precio(str): nuevo precio para la tarifa"""
+            precio(:obj: Decimal): nuevo precio para la tarifa"""
             
-        if not precio.isdigit() or int(precio) < 0:
+        if not isinstance(precio, Decimal) or precio < 0:
             return
 
-        self.precio=Decimal(precio)
+        self.precio = precio
         self.save()
             
              

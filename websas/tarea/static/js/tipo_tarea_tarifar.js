@@ -55,7 +55,7 @@ $('#datatable-tipo-tarea-tarifar tbody').on('change', 'td', function () {
         url: $("#datatable-tipo-tarea-tarifar").attr("ajax-url"),
         type: "POST",
         data: {
-            "tarifa": tarifa,
+            "tarifa_id": tarifa,
             "precio": precio
         },
         dataType: 'json',
@@ -65,6 +65,14 @@ $('#datatable-tipo-tarea-tarifar tbody').on('change', 'td', function () {
             elem.addClass("text-success")
             icon.removeClass("fa-warning")
             icon.addClass("fa-thumbs-up")
+            elem.fadeIn()
+        },
+        error: function (data) {
+            msg.html("Valor incorrecto. No se actualizará la tarifa.")
+            elem.removeClass("text-success")
+            elem.addClass("text-danger")
+            icon.removeClass("fa-thumbs-up")
+            icon.addClass("fa-warning")
             elem.fadeIn()
         }
     }) 
