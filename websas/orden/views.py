@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core.urlresolvers import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import permission_required
@@ -128,10 +128,22 @@ class EquipoCreate(CreateView):
     form_class = EquipoForm
     success_url = reverse_lazy('orden:equipo_listar')
 
+class EquipoCreateJson(CreateView):
+    
+    model = Equipo
+    form_class = EquipoForm
+
     @method_decorator(permission_required('orden.add_equipo', login_url='orden:orden_listar'))        
     def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
+        form = self.form_class(request.POST)
 
+        if form.is_valid():
+            
+            form.save()
+
+            return JsonResponse({'data':'creado correctamente'})
+
+        return JsonResponse({'data':'todo mal'}) 
 
 class EquipoList(ListView):
     model = Equipo
