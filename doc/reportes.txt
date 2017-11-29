@@ -1,0 +1,24 @@
+Listados para WebSAS
+
+1) Generar columnas con agregaciones (desde el servidor)
+2) Clientes con cantidad de ordenes
+3) Productos con stock
+
+
+Asegurar con datos > 1000 | 500 entradas (en el cliente)
+
+
+Reportes para WebSAS
+
+Todos los Reportes con posibilidades de filtrado, algún gráfico y una salida en pdf. 
+
+El mínimo de filtrado son: 
+ 1) rago de tiempo
+ 2) opcionalmente filtrados por: técnico, producto, cliente, rubro, etc...
+
+1) Total facturado de OTs en un período de tiempo
+2) Producto más utilizado en servicios
+3) Técnicos que mayormente realizan determinadas tareas. (el que filnaliza)// Tecnicos por estados tareas
+4) Cantidad de RdyPs pagadas por órdenes canceladas. (y otras cosas parecidas) 
+5) Algo con tareas y rubros y tipo de servicio 
+

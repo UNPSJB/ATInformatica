@@ -1,0 +1,14 @@
+{% extends "principal.html" %}
+{% load staticfiles %}
+
+{% block contenido %}
+  <h1>Indique las fechas</h1>
+  <input type="text" name="daterangepicker" id="daterangepicker">
+
+</div>
+
+{% endblock contenido %}
+
+{% block scripts %}
+  <script src="{% static 'reportes/js/reportes.js' %}"></script>
+{% endblock scripts %}

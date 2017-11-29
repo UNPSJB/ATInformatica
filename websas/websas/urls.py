@@ -29,5 +29,6 @@ urlpatterns = [
     url(r'^servicio/', include('servicio.urls', namespace="servicio")),
     url(r'^usuario/', include('usuario.urls', namespace="usuario")),
     url(r'^orden/', include('orden.urls', namespace="orden")),
+    url(r'^reportes/', include('reportes.urls', namespace="reportes")),
     url(r'^docs/', include('docs.urls'))
 ]

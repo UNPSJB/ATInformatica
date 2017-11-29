@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'servicio',
     'usuario',
     'orden',
+    'reportes',
     'django_extensions',
     'docs'
 ]
