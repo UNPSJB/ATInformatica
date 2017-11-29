@@ -48,12 +48,7 @@ $('#form_equipo').submit(function(){
         data:data,
         success: function(data){
         },
-        success: function(data){
-            alert('Success')
-
-        },
         error: function(err){
-            alert('error')
             window.opener.get_equipos(rubro)
             window.close()
 
