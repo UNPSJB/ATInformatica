@@ -43,7 +43,7 @@ $('#form_equipo').submit(function(){
     $.ajax({    
         //la url a donde hay que pegarle en el servidor esta en el html de la tabla
         //de esta forma, podemos tener el .js separado del .html
-        url: location.pathname,
+        url: '/orden/equipo/crear_json',
         type: "POST",
         data:data,
         success: function(data){
