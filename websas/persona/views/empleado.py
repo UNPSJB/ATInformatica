@@ -22,7 +22,7 @@ class EmpleadoCreate(CreateView):
         self.object = self.get_object
         form = self.form_class(request.POST)
         if form.is_valid():
-            persona = form.save()
+            persona = form.save(commit=False)
             persona.agregar_rol(self._rol)
             persona.save()
             return HttpResponseRedirect(self.get_success_url())
