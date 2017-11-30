@@ -5,8 +5,8 @@ from servicio.models import TipoServicio
 from usuario.models import Usuario
 from decimal import Decimal
 from tarea.models import Tarea, TareaPendiente, TareaPresupuestada, TareaRealizada, TareaCancelada
-
-class Orden(models.Model):
+from sas.models import ModeloBase
+class Orden(ModeloBase):
     """
     Orden de Trabajo. Entidad fundamental del sistema
 

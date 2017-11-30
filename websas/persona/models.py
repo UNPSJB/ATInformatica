@@ -1,6 +1,6 @@
 from django.db import models
-from sas.models import BajasLogicasManagerFactory
-class Persona(models.Model):
+from sas.models import ModeloBase
+class Persona(ModeloBase):
     """ Modelo genérico para la gestión de personas. """
     TIPO_DOC = (
         ('DU', 'DNI'),
@@ -57,14 +57,13 @@ class Persona(models.Model):
         return any([isinstance(rol, Klass) for rol in self.roles_related()])
 
 
-class Rol(models.Model):
+class Rol(ModeloBase):
     """ Modelo genérico para la gestión de roles de personas. """
     TIPO = 0
     TIPOS = [
         (0, "rol")
     ]
 
-    activo = models.BooleanField(default=True)
     tipo = models.PositiveSmallIntegerField(choices=TIPOS)
     persona = models.ForeignKey(
         Persona,
@@ -72,10 +71,6 @@ class Rol(models.Model):
         on_delete=models.CASCADE,
         null=True
     )
-
-    objects = BajasLogicasManagerFactory(True)
-    eliminados = BajasLogicasManagerFactory(False)
-    todos = models.Manager()
 
     @property
     def doc(self):
