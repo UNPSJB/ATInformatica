@@ -12,6 +12,7 @@
           <th class="column-title">Tarifa </th>
           <th class="column-title">Costo repuestos </th>
           <th class="column-title">Subtotal </th>
+          <th class="column-title">Modificar precio </th>
           <th class="column-title">Ver</th>
           <th class="bulk-actions" colspan="7">
             <a class="antoo" style="color:#fff; font-weight:500;">Aplicar acciones a 
@@ -33,6 +34,14 @@
           <td class=" ">{{ tarea.precio }}</td>
           <td class="a-right a-right ">{{ tarea.costo_repuestos }}</td>
           <td class=" ">{{ tarea.subtotal }}</td>
+          <td class=" ">
+            <div class="text-center mtop20">
+              <a href="#">
+                <i class="fa fa-money" data-toggle="modal" data-target="#modalCambiarPrecio"></i>
+                {% include "tarea/cambiar_precio.html" %}
+              </a>
+            </div>
+          </td>
           <td class=" last">
             <a href="{% url 'tarea:tarea_ver' tarea.id %}">
               <i class="fa fa-eye"></i>
