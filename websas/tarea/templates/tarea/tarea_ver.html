@@ -131,7 +131,7 @@
                 <!-- Se deshabilita el botón para cambiar el precio 
                   si la tarea no está en estado presupuestada -->
                 {% if tarea.estado.TIPO == 1%}
-                  <button   class="btn btn-success" data-toggle="modal" data-target="#modalCambiarPrecio" style="font-weight:bold">$ | Modificar precio de la tarea</button>
+                <button   class="btn btn-success" data-toggle="modal" data-target="#modalCambiarPrecio" style="font-weight:bold">$ | Modificar precio de la tarea</button>
                   {% include "tarea/cambiar_precio.html" %}
                 {% endif %}
 
