@@ -54,9 +54,11 @@ $(document).ready( function() {
 
     }
 
+    // generamos cada función para utilizar en cada elemento
     var b_usuario = buscar(busqueda_usuario)
     var b_permiso = buscar(busqueda_permiso)
 
+    // Apply!
     $(titulo_usuario).each(b_usuario);
     $(titulo_permiso).each(b_permiso);
 });
