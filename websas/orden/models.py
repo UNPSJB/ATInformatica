@@ -6,6 +6,8 @@ from usuario.models import Usuario
 from decimal import Decimal
 from tarea.models import Tarea, TareaPendiente, TareaPresupuestada, TareaRealizada, TareaCancelada
 from sas.models import ModeloBase
+from django.utils import timezone
+import pytz
 class Orden(ModeloBase):
     """
     Orden de Trabajo. Entidad fundamental del sistema
@@ -29,9 +31,12 @@ class Orden(ModeloBase):
     usuario = models.ForeignKey(Usuario, null=True, blank=True, related_name="ordenes")
     tecnico = models.ForeignKey(Tecnico, null=True, blank=True, related_name="ordenes")
     descripcion = models.TextField(null=True, blank=True)
-    fecha = models.DateTimeField(auto_now=True)
+    fecha_creacion = models.DateTimeField(auto_now=True)
+    fecha_fin = models.DateTimeField(null=True, blank=True)
     cerrada = models.BooleanField(default=False)
     cancelada = models.BooleanField(default=False)
+    precio_final = models.DecimalField(
+        decimal_places=2, max_digits=10, default=Decimal('0'))
 
     def __str__(self):
         return "{} {}".format(self.cliente, self.descripcion)
@@ -40,11 +45,11 @@ class Orden(ModeloBase):
     def condicion(self):
         condicion = ""
         if self.cerrada:
-            condicion = "cerrada"
+            condicion = "Cerrada"
         elif self.cancelada:
-            condicion = "cancelada"
+            condicion = "Cancelada"
         else:
-            condicion = "abierta"
+            condicion = "Abierta"
         return condicion
 
     def agregar_tarea(self, tipo_tarea, observacion):
@@ -190,6 +195,7 @@ class Orden(ModeloBase):
         
         [tarea.hacer("cancelar") for tarea in self.tareas.all()]
         self.cancelada = True
+        self.fecha_fin = timezone.now()
         self.save()
 
     def cerrar(self):
@@ -199,7 +205,10 @@ class Orden(ModeloBase):
             Exception, si la orden de trabajo tiene tareas pendientes """
         if self.tareas_pendientes:
             raise Exception("La orden de trabajo nro: {} tiene tareas pendientes y no se puede cerrar".format(self.id))
+        
+        self.precio_final = self.precio_total 
         self.cerrada = True
+        self.fecha_fin = timezone.now()
         self.save()
 
 class Equipo(models.Model):

@@ -51,8 +51,12 @@ function(start, end, label){
      */
     console.log("NUEVA FECHA: " + start.format("DD-MM-YYYY") + " a " + end.format("DD-MM-YYYY"))
     console.log(label);
+    $("#ahre").show()
 });
-
+$("#daterangepicker").on("show.daterangepicker", function(ev, picker) {
+    $("#ahre").hide()
+    
+})
 $("#daterangepicker").on("apply.daterangepicker", function(ev, picker){
 
     /**

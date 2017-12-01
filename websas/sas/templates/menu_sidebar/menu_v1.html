@@ -15,7 +15,7 @@
     <li><a><i class="fa fa-cubes"></i> Equipos <span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
           {% if perms.orden.add_equipo %}
-          <li><a href="{% url 'orden:equipo_crear' %}">Agregar</a></li>
+          <li><a href="{% url 'orden:equipo_crear' %}">Crear</a></li>
           {% endif %}
         <li><a href="{% url 'orden:equipo_listar' %}">Listar</a></li>
       </ul>
@@ -23,7 +23,7 @@
     <li><a><i class="fa fa-desktop"></i>Productos<span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
         {% if perms.producto.add_producto %}
-        <li><a href= "{% url 'producto:producto_crear' %}">Altas </a></li>
+        <li><a href= "{% url 'producto:producto_crear' %}">Crear </a></li>
         {% endif %}
         <li><a href= "{% url 'producto:producto_listar' %}">Listados</a></li>
       </ul>
@@ -32,7 +32,7 @@
     <li><a><i class="fa fa-home"></i>Clientes<span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
         {% if perms.persona.add_cliente %}
-        <li><a href="{% url 'cliente:cliente_crear' %}">Altas </a></li>
+        <li><a href="{% url 'cliente:cliente_crear' %}">Crear </a></li>
         {% endif %}
         <li><a href="{% url 'cliente:cliente_listar' %}">Listados</a></li>
       </ul>
@@ -42,7 +42,7 @@
         <li><a>Tecnicos<span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
             {% if perms.persona.add_tecnico %}
-            <li><a href="{% url 'empleado:tecnico:tecnico_crear' %}">Altas</a></li>
+            <li><a href="{% url 'empleado:tecnico:tecnico_crear' %}">Crear</a></li>
             {% endif %}
             <li><a href="{% url 'empleado:tecnico:tecnico_listar' %}">Listados</a></li>
           </ul>
@@ -50,7 +50,7 @@
         <li><a>Jefes<span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
             {% if perms.persona.add_jefetaller %}
-            <li><a href="{% url 'empleado:jefe:jefe_crear' %}">Altas</a></li>
+            <li><a href="{% url 'empleado:jefe:jefe_crear' %}">Crear</a></li>
             {% endif %}
             <li><a href="{% url 'empleado:jefe:jefe_listar' %}">Listados</a></li>
           </ul>            
@@ -58,7 +58,7 @@
         <li><a>Gerentes<span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
             {% if perms.persona.add_gerente %}
-            <li><a href="{% url 'empleado:gerente:gerente_crear' %}">Altas</a></li>
+            <li><a href="{% url 'empleado:gerente:gerente_crear' %}">Crear</a></li>
             {% endif %}
             <li><a href="{% url 'empleado:gerente:gerente_listar' %}">Listados</a></li>
           </ul>            
@@ -75,7 +75,7 @@
     <li><a><i class="fa fa-wrench"></i>Tipos de Servicio<span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
         {% if perms.servicio.add_tiposervicio %}
-        <li><a href="{% url 'servicio:servicio_crear' %}">Altas </a></li>
+        <li><a href="{% url 'servicio:servicio_crear' %}">Crear </a></li>
         {% endif %}
         <li><a href="{% url 'servicio:servicio_listar' %}">Listados</a></li>
       </ul>
@@ -83,7 +83,7 @@
     <li><a><i class="fa fa-clone"></i>Rubros<span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
         {% if perms.rubro.add_rubro %}
-        <li><a href="{% url 'rubro:rubro_crear'%}">Altas </a></li>
+        <li><a href="{% url 'rubro:rubro_crear'%}">Crear </a></li>
         {% endif %}
         <li><a href="{% url 'rubro:rubro_listar'%}">Listados</a></li>          
       </ul>

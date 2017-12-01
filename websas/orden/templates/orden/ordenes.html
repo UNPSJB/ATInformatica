@@ -32,8 +32,8 @@
         <tbody>
           {% if object_list %} {% for orden in object_list %}
           <tr>
-            <td>{{ orden.fecha }}</td>
-            <td>{{ orden.cliente.persona.nombre }}</td>
+            <td>{{ orden.fecha_creacion }}</td>
+            <td><b>{{ orden.cliente.persona.apellido|upper }}</b>, {{ orden.cliente.persona.nombre }}</td>
             <td>{% autoescape off %}{{ orden.descripcion }}{% endautoescape %}</td>
             <td>{{ orden.rubro.nombre }}</td>
             <td>{{ orden.tipo_servicio.nombre }}</td>
