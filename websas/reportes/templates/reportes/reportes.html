@@ -2,24 +2,23 @@
 {% load staticfiles %}
 
 {% block contenido %}
-  <h1>Indique las fechas</h1>
-  <input type="text" name="daterangepicker" id="daterangepicker">
+    <div class="">
+        <h1>Indique las fechas</h1>
+        <input type="text" name="daterangepicker" id="daterangepicker">
+    </div>
 
-
-  <h2 hidden id="ahre">ahre</h2>
+    <div class="ln_solid"></div>
   
-  {% comment %}
-    <div id="daterangepicker" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-      <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-      <span>Calendario</span>
-      <b class="caret"></b>
-    </div> 
-  {% endcomment %}
+    <div id="chart-container" class="chart-container" hidden style="position: relative; height: 60vh; width: 60vh">
+        <canvas id="chart-ots-clientes" width="400" height="400"></canvas>
+    </div>
 
-</div>
+  
+
 
 {% endblock contenido %}
 
 {% block scripts %}
-  <script src="{% static 'reportes/js/reportes.js' %}"></script>
+    <script src="{% static 'reportes/js/reportes.js' %}"></script>
+    <script src="{% static 'reportes/js/chart.js' %}"></script>
 {% endblock scripts %}

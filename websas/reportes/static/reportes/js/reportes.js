@@ -43,6 +43,7 @@ $("#daterangepicker").daterangepicker(
     "alwaysShowCalendars": true,
     "showCustomRangeLabel": false,
     "linkedCalendars": false,
+
 }, 
 function(start, end, label){
     /**
@@ -50,23 +51,39 @@ function(start, end, label){
      * o cuando se elige alguno de los rangos predefinidos ("Hoy", "Ayer", "Últimos 7 días", ...)
      */
     console.log("NUEVA FECHA: " + start.format("DD-MM-YYYY") + " a " + end.format("DD-MM-YYYY"))
-    console.log(label);
-    $("#ahre").show()
 });
 $("#daterangepicker").on("show.daterangepicker", function(ev, picker) {
     $("#ahre").hide()
     
 })
+
 $("#daterangepicker").on("apply.daterangepicker", function(ev, picker){
 
     /**
      * Esta es otra forma de manejar el mismo evento que con el callback que se le paso en el constructor
      */
-    console.log("EN EL EVENTO");
-    console.log(picker.startDate.format("DD/MM/YYYY"))
-    console.log(picker.endDate.format("DD/MM/YYYY"))
 
-    // console.log("");
-    // console.log(Date.parse(picker.startDate));
+    chart.destroy()
+    init_chart()
 
+    $.ajax({
+        url: $(location).attr("href"),
+        type: "POST",
+        data: {
+            "fecha_ini": picker.startDate.format("DD/MM/YYYY"),
+            "fecha_fin": picker.endDate.format("DD/MM/YYYY"),
+        },
+        dataType: "json",
+        success: function(data){
+            $("#chart-container").show()
+            for (let i = 0; i < data.ordenes.length; i++) {
+                const ot = data.ordenes[i];
+                chart.data.labels.push(ot.propietario)
+                chart.data.datasets[0].data.push(ot.total)
+                chart.update()
+                console.log(ot.propietario, ot.total);
+            }
+        },
+    })
 })
+
