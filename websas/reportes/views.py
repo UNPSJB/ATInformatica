@@ -16,16 +16,14 @@ class ReporteTotalOrdenesClientesRangoTiempo(TemplateView):
 
 
     def get(self, request, *args, **kwargs):
-        total_ordenes_por_cliente = Orden.objects.values(
-            propietario=Concat(Upper(F("cliente__persona__apellido")),
-                               Value(", "),
-                               F("cliente__persona__nombre"))).annotate(
-                               total=Sum("precio_final"))
+        
+        if(request.is_ajax()):
+            return self.ajax_get(request, *args, **kwargs)
 
         return super().get(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):        
-        form = ReporteTotalOrdenesClientesRangoTiempoForm(request.POST or None)
+    def ajax_get(self, request, *args, **kwargs):        
+        form = ReporteTotalOrdenesClientesRangoTiempoForm(request.GET or None)
 
         if form.is_valid():
             

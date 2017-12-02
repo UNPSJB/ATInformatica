@@ -53,8 +53,9 @@ function(start, end, label){
     console.log("NUEVA FECHA: " + start.format("DD-MM-YYYY") + " a " + end.format("DD-MM-YYYY"))
 });
 $("#daterangepicker").on("show.daterangepicker", function(ev, picker) {
-    $("#ahre").hide()
-    
+    /**
+     * Evento que se dispara cuando se muestra el datepicker
+     */    
 })
 
 
@@ -69,14 +70,22 @@ $("#daterangepicker").on("apply.daterangepicker", function(ev, picker){
 
     $.ajax({
         url: $(location).attr("href"),
-        type: "POST",
+        type: "GET",
         data: {
             "fecha_ini": picker.startDate.format("DD/MM/YYYY"),
             "fecha_fin": picker.endDate.format("DD/MM/YYYY"),
         },
         dataType: "json",
         success: function(data){
-            $("#chart-container").show()
+            //Si la lista de ordenes viene vacia, mostramos el error
+            if(data.ordenes.length == 0){
+                $("#chart-error").addClass("alert-warning")                
+                $("#chart-error").html("<strong >Su consulta no ha generado resultados</strong>")
+                $("#chart-error").fadeIn()
+                return
+            }
+            //Si no, no mostramos error y cargamos los datos en el grafico
+            $("#chart-error").hide()
             for (let i = 0; i < data.ordenes.length; i++) {
                 const ot = data.ordenes[i];
                 chart.data.labels.push(ot.propietario)
@@ -84,6 +93,8 @@ $("#daterangepicker").on("apply.daterangepicker", function(ev, picker){
                 chart.update()
                 console.log(ot.propietario, ot.total);
             }
+            //mostramos el grafico
+            $("#chart-container").show()
         },
     })
 })
