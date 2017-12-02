@@ -18,13 +18,14 @@
       <table id="datatable-ordenes" class="table table-striped table-hover table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
         <thead>
           <tr>
-            <th data-width="10%" data-priority=1>Fecha Creación</th>
+            <th data-width="10%" data-priority=1>Fecha creación</th>
             <th data-priority=2>Cliente</th>
             <th>Descripción</th>
             <th>Rubro</th>
             <th>Tipo de servicio</th>
             <th>Equipo</th>
             <th data-width="10%" data-priority=2>Estado</th>
+            <th data-width="10%" data-priority=2>Fecha fin</th>
             <th data-width="8%" data-priority=1>Ver</th>
             <th data-width="8%" data-priority=1>Eliminar</th>
           </tr>
@@ -46,6 +47,13 @@
             </td>
             <td align="center">
               {{ orden.condicion }}
+            </td>
+            <td>
+            {% if orden.fecha_fin %}
+               {{ orden.fecha_fin }}
+            {% else %}
+                -
+            {% endif %}
             </td>
             <td align="center">
               <a href="{% url 'orden:orden_ver' orden.id %}">
