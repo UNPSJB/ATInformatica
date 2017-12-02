@@ -1,34 +1,11 @@
 {% extends "principal.html" %}
 {% load staticfiles %}
 
-{% block estilos %}
-<link href="{% static 'vendors/datatables.net-bs/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
-<link href="{% static 'vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css' %}" rel="stylesheet">
-<link href="{% static 'vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css' %}" rel="stylesheet">
-<link href="{% static 'vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css' %}" rel="stylesheet">
-
-<!-- Adicional de DataTables para marcar seleccionados en el table-hover -->
-<link href="{% static 'vendors/datatables.net/css/jquery.dataTables.css' %}" rel="stylesheet">
-{% endblock estilos %}
-
 {% block contenido %}
-<div class="col-md-12 col-sm-12 col-xs-12">
+<div class="row">
   <div class="x_panel">
     <div class="x_title">
-      <h2>Gestión de clientes<small>Clientes</small></h2>
-      <!-- <ul class="nav navbar-right panel_toolbox">
-        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-        </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Settings 1</a>
-            </li>
-            <li><a href="#">Settings 2</a>
-            </li>
-          </ul>
-        </li>
-      </ul> -->
+      <h2>Clientes</h2>
       <div class="clearfix"></div>
     </div>
     
@@ -36,7 +13,36 @@
       <span style="display: table; margin:0 auto;"><img src="{% static 'img/cargando.gif' %}" alt="cargando clientes">&nbsp;&nbsp;Cargando...</span>
     </div>
     <div hidden class="x_content" id="contenido_tabla">
-      {% include "persona/tabla_clientes.html" %}
+      <table id="datatable-clientes" {% if perms.persona.add_cliente %}data-url_agregar="{% url 'cliente:cliente_crear' %}"{% endif %} class="table table-striped tableclick table-hover table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
+        <thead>
+          <tr>
+            <th data-width="10%" data-priority=1>DNI/CUIT/CUIL</th>
+            <th data-priority=1>Nombre</th>
+            <th data-priority=4>Domicilio</th>
+            <th data-width="10%" data-priority=3>Teléfono</th>
+            <th data-priority=2>e-mail</th>
+          </tr>
+        </thead>
+      
+        <tbody>
+          {% if object_list %}
+          {% for cliente in object_list %}
+          <tr data-tableclick="{% url 'cliente:cliente_ver' cliente.persona.id %}">
+            <td class="celda_control">{{ cliente.persona.doc }}</td>
+            <td>{{ cliente.persona.nombre }} {{ cliente.persona.apellido }}</td>
+            <td>{{ cliente.persona.domicilio }}</td>
+            <td>{{ cliente.persona.telefono }}</td>
+            <td>{{ cliente.persona.email }}</td>
+          </tr>
+          
+          {% endfor %}
+          {% else %}
+      
+          <h1>No hay clientes registrados</h1>
+      
+          {% endif %} 
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

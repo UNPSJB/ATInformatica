@@ -1,4 +1,6 @@
-$("#datatable-tecnicos").DataTable({
+var tabla_html = $("#datatable-tecnicos");
+
+tabla_html.DataTable({
     responsive: true,
     dom: "Bfrtip",
     buttons: [{

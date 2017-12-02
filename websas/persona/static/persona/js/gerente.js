@@ -1,4 +1,6 @@
-$("#datatable-gerentes").DataTable({
+var tabla_html = $("#datatable-gerentes");
+
+tabla_html.DataTable({
     responsive: true,
     dom: "Bfrtip",
     buttons: [{

@@ -2,61 +2,33 @@
 {% load staticfiles %}
 
 {% block contenido %}
-<div class="col-md-12 col-sm-12 col-xs-12">
+<div class="row">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Gestión de gerentes<small>Gerentes</small></h2>
-        <!-- <ul class="nav navbar-right panel_toolbox">
-          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-          </li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="#">Settings 1</a>
-              </li>
-              <li><a href="#">Settings 2</a>
-              </li>
-            </ul>
-          </li>
-        </ul> -->
+        <h2>Gerentes</h2>
         <div class="clearfix"></div>
       </div>
       <div class="x_content">
-
-        <table id="datatable-gerentes" class="table table-striped table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
+        <table id="datatable-gerentes" class="table table-striped tableclick table-hover table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
           <thead>
             <tr>
-              <th>Nombre</th>
-              <th>Apellido</th>
-              <th>DNI/CUIT/CUIL</th>
-              <th>Domicilio</th>
-              <th>Teléfono</th>
-              <th>e-mail</th>
-              <th></th>
-              <th></th>
-              <th></th>
+              <th data-priority=1>DNI/CUIT/CUIL</th>
+              <th data-priority=1>Nombre</th>
+              <th data-priority=3>Domicilio</th>
+              <th data-priority=3>Teléfono</th>
+              <th data-priority=2>e-mail</th>
             </tr>
           </thead>
 
           <tbody>
             {% if object_list %}
             {% for gerente in object_list %}
-            <tr>
-              <td>{{ gerente.persona.nombre }}</td>
-              <td>{{ gerente.persona.apellido }}</td>
-              <td>{{ gerente.persona.doc }}</td>
+            <tr data-tableclick="{% url 'empleado:gerente:gerente_ver' gerente.persona.id %}">
+              <td class="celda_control">{{ gerente.persona.doc }}</td>
+              <td>{{ gerente.persona.apellido|upper }}, {{ gerente.persona.nombre }}</td>
               <td>{{ gerente.persona.domicilio }}</td>
               <td>{{ gerente.persona.telefono }}</td>
               <td>{{ gerente.persona.email }}</td>
-              <td>
-                <a href="{% url 'empleado:gerente:gerente_ver' gerente.persona.id %}"><i class="fa fa-eye"></i></a>
-              </td>
-              <td>
-                <a href="{% url 'empleado:gerente:gerente_editar' gerente.persona.id %}"><i class="fa fa-edit"></i></a>
-              </td>
-              <td>
-                <a href="{% url 'empleado:gerente:gerente_eliminar' gerente.persona.id %}"><i class="fa fa-trash"></i></a>
-              </td>
             </tr>
             {% endfor %}
             {% else %}

@@ -1,12 +1,6 @@
 {% extends "principal.html" %}
 {% load staticfiles %}
 
-{% block estilos %}
-<!-- DataTables CSS -->
-<link href="{% static 'vendors/datatables.net-bs/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
-<link href="{% static 'vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css' %}" rel="stylesheet">
-{% endblock estilos %}
-
 {% block contenido %}
 <div class="row">
   <div class="x_panel">
@@ -32,7 +26,7 @@
           {% if object_list %} {% for orden in object_list %}
           <tr data-tableclick="{% url 'orden:orden_ver' orden.id %}">
             <td class="celda_control">{{ orden.fecha_creacion }}</td>
-            <td><b>{{ orden.cliente.persona.apellido|upper }}</b>, {{ orden.cliente.persona.nombre }}</td>
+            <td>{{ orden.cliente.persona.apellido|upper }}, {{ orden.cliente.persona.nombre }}</td>
             <td>{% autoescape off %}{{ orden.descripcion }}{% endautoescape %}</td>
             <td>{{ orden.rubro.nombre }}</td>
             <td>{{ orden.tipo_servicio.nombre }}</td>
@@ -70,20 +64,21 @@
 
 {% block scripts %} 
 <!-- Datatables -->
-<script src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-<script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-<script src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
-<script src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
-<script src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
-<script src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
-<script src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-<script src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-<script src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-<script src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-<script src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-<script src="/static/vendors/jszip/dist/jszip.min.js"></script>
-<script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
-<script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+<script src="{% static 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
+<script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
+<script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
+<script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
+
 <script src="{% static '/js/ordenes.js' %}"></script> 
 {% endblock scripts %}

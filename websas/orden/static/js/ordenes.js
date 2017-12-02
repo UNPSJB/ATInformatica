@@ -44,22 +44,3 @@ tabla_html.DataTable({
         className: "btn-sm"
     }, ],
 });
-
-// Registrar el onclick para la fila, excepto si no hay data, o si es
-// la primera celda, que es la que expande las columnas ocultas por el
-// comportamiento responsive del DataTable, el cual está bueno.
-tabla_html.on(
-    'click',
-    'tbody tr td:not(".celda_control"):not(".dataTables_empty")',
-    function(e) {
-        var fila = $(this).parent();
-
-        // Si la fila que clickeé es la expansión (child), no voy a encontrar la
-        // URL en ella, sino en su inmediatamente anterior, lo cual está bueno.
-        if (fila.hasClass("child")) {
-            location.href = fila.prev().attr('data-tableclick');
-        } else {    // Si no es child el dato está acá, lo cual está bueno también.
-            location.href = fila.attr('data-tableclick');
-        }
-    }
-);

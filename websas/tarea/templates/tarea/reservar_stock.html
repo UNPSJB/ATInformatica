@@ -7,7 +7,7 @@
                 <h4 class="modal-title" id="myModalLabel">Reservar Stock.</h4>
             </div>
             <div class="modal-body">
-                    <table id="datatable-reservas" class="table table-striped table-hover table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
+                <table id="datatable-reservas" class="table table-striped tableselect table-hover table-bordered" cellSpacing=0 width=100%>
                     <thead>
                         <tr>
                             <th></th>
@@ -21,10 +21,7 @@
                         {% if productos %} {% for producto in productos %}
                         <tr>
                             <td>
-                                &nbsp;
-                                <div class="radio">
-                                    <input style="position:relative;" data-idproducto="{{ producto.id }}" data-stock_disp="{{ producto.stock_disponible }}" type="radio" class="flat" name="producto">
-                                </div>
+                                <input style="position:relative;" data-idproducto="{{ producto.id }}" data-stock_disp="{{ producto.stock_disponible }}" type="radio" class="flat" name="producto">
                             </td>
                             <td>{{ producto.nombre }}</td>
                             <td>{{ producto.marca }}</td>

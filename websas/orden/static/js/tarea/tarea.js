@@ -154,17 +154,15 @@ function cancelar() {
     })
 }
 
-
-
 // Table
 $('table input').on('ifChecked', function() {
     checkState = '';
-    $(this).parent().parent().parent().addClass('selected');
+    $(this).parent().parent().parent().addClass('row_selected');
     countChecked();
 });
 $('table input').on('ifUnchecked', function() {
     checkState = '';
-    $(this).parent().parent().parent().removeClass('selected');
+    $(this).parent().parent().parent().removeClass('row_selected');
     countChecked();
 });
 
@@ -172,12 +170,12 @@ var checkState = '';
 
 $('.bulk_action input').on('ifChecked', function() {
     checkState = '';
-    $(this).parent().parent().parent().addClass('selected');
+    $(this).parent().parent().parent().addClass('row_selected');
     countChecked();
 });
 $('.bulk_action input').on('ifUnchecked', function() {
     checkState = '';
-    $(this).parent().parent().parent().removeClass('selected');
+    $(this).parent().parent().parent().removeClass('row_selected');
     countChecked();
 });
 $('.bulk_action input#check-all').on('ifChecked', function() {
@@ -191,10 +189,10 @@ $('.bulk_action input#check-all').on('ifUnchecked', function() {
 
 function countChecked() {
     if (checkState === 'all') {
-        $(".bulk_action input[name='table_records']").iCheck('check');
+        $(".bulk_action input[name='table_records']").iCheck('checked');
     }
     if (checkState === 'none') {
-        $(".bulk_action input[name='table_records']").iCheck('uncheck');
+        $(".bulk_action input[name='table_records']").iCheck('unchecked');
     }
 
     var checkCount = $(".bulk_action input[name='table_records']:checked").length;
@@ -202,7 +200,7 @@ function countChecked() {
     if (checkCount) {
         $('.column-title').hide();
         $('.bulk-actions').show();
-        $('.action-cnt').html(checkCount + ' Records Selected');
+        $('.action-cnt').html(checkCount + ' tareas seleccionadas');
     } else {
         $('.column-title').show();
         $('.bulk-actions').hide();

@@ -1,14 +1,13 @@
-<table id="datatable-tipo-tarea" class="table table-striped table-hover table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
+<table id="datatable-tipo-tarea" class="table table-striped tableselect table-hover table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
     <thead>
     <tr>
-    <th></th>
-    <th>Nombre</th>
+    <th data-width="1%"></th>
+    <th data-width="30%">Nombre</th>
     <th>Descripcion</th>
     </tr>
     </thead>
     <tbody>
         {% for tipo_tarea in orden.tipos_tarea_agregables %} <tr>
-
             <td>
                 &nbsp;
                 <div class="radio">

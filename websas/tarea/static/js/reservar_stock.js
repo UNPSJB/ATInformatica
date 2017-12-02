@@ -1,5 +1,6 @@
-$("#datatable-reservas").DataTable({
-    responsive: true,
+var tabla_html_reserva = $("#datatable-reservas");
+
+var dtabla = tabla_html_reserva.DataTable({
     dom: "Bfrtip",
     buttons: [{
         extend: "copy",
@@ -14,6 +15,16 @@ $("#datatable-reservas").DataTable({
         text: "Imprimir tabla",
         className: "btn-sm"
     }, ],
+});
+
+// Click en la fila para seleccionar
+tabla_html_reserva.on('click', 'tr', function() {
+    var radio = $(this).find('input');
+    if (radio[0]) {
+        dtabla.$('tr.row_selected').removeClass('row_selected');
+        $(this).addClass('row_selected');
+        radio.iCheck('checked');
+    }
 });
 
 function getCookie(name) {
@@ -83,6 +94,8 @@ function reservarStock(){
         $('#error-elem').fadeIn();
     }
 }
+
+
 
 $('#modalReserva').on('hidden.bs.modal', function () {
     location.reload()

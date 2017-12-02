@@ -487,7 +487,7 @@ body .container.body .right_col {
     background: #D9DEE4
 }
 body {
-    color: rgb(80, 130, 168);
+    color: rgb(60, 100, 134);
     background: rgb(32, 50, 68);
     font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
     font-size: 15px;
@@ -4306,30 +4306,31 @@ color: #5bc0de;
 background-color: #fff;
 }
 
-.buttonFinish:not([disabled]) {
-    font-weight: bold;
-}
-table.tableselect tbody tr {
-    cursor: pointer;
-}
-table.tableselect tr.even.row_selected {
-    background-color: rgb(110, 245, 214);
-    font-weight: bold;
-}
-table.tableselect tr.odd.row_selected {
-    background-color: rgb(110, 245, 214);
+.buttonFinish:not(.buttonDisabled) {
     font-weight: bold;
 }
 
-table.dataTable.tableclick > tbody > tr {
+table.tableselect tbody tr {
     cursor: pointer;
 }
-table.dataTable.dtr-inline > tbody > tr > td.celda_control {
+table tbody tr.row_selected {
+    background-color: rgb(110, 245, 214);
+    font-weight: bold;
+    color: rgb(0, 60, 30);
+}
+
+table.tableclick > tbody > tr {
+    cursor: pointer;
+}
+
+table.tableclick > tbody > tr > td.celda_control {
     cursor: default;
 }
-table.dataTable.dtr-inline.collapsed > tbody > tr > td.celda_control {
-  cursor: zoom-in;
+
+table.tableclick.collapsed > tbody > tr > td.celda_control {
+    cursor: zoom-in;
 }
-table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td.celda_control {
+table.tableclick > tbody > tr.parent > td.celda_control {
     cursor: zoom-out;
 }
+

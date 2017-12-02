@@ -33,6 +33,11 @@
   <link href="{% static 'vendors/jquery-ui-1.12.1/jquery-ui.css' %}" rel="stylesheet">
   <!-- JQuery - UI Base Theme-->
   <link href="{% static 'vendors/jquery-ui-1.12.1/jquery-ui.theme.css' %}" rel="stylesheet">
+
+  <!-- DataTables CSS -->
+  <link href="{% static 'vendors/datatables.net-bs/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css' %}" rel="stylesheet">
+
   {% block estilos %}
   {% endblock estilos %}
 
@@ -116,6 +121,9 @@
 
 {% block scripts %} {% endblock scripts %}
 
+<!-- TableClick (C) 2017 Desarrollo del Sour ahrrecualquiera-->
+<script src="{% static 'js/tableclick.js' %}"></script>
+
 <script>
   // Escuchar cambio de config de estilo
   $('#check-lela_estilo').on('change', function() {
@@ -124,9 +132,9 @@
       'csrfmiddlewaretoken': getCookie('csrftoken'),
       'lela_estilo': $('#check-lela_estilo').is(':checked')
     };
-    // POST, y si success, recargar
+    // POST, y si success, avisar... no sea cosa que el usuario pierda el contexto
     $.post('/config', datos).success(function() {
-      location.reload();
+      alert("¡Éxito! Se aplicará cuando recargue la página.")
     });
   });
 </script>
