@@ -18,15 +18,9 @@ tabla_html.DataTable({
             'targets': 2,
             'render': function(data, type, full, meta){
                 if (data.length > 50){
-                    var obs_corta = strtrunc(data, 50);
-                    var fila = meta.row;
-                    observaciones_truncadas[fila] = data;
-                    var prefijo = '<a href=# onclick="mostrar_observacion(\'' + fila + '\')">';
-                    var sufijo = '</a>';
-                    data = prefijo + obs_corta + sufijo;
+                    return strtrunc(data, 50);
                 }
-                
-                return data;
+                return data;                
             }
         }
     ],
