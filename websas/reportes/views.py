@@ -9,14 +9,13 @@ from datetime import datetime
 from orden.models import Orden
 from .forms import ReporteTotalOrdenesClientesRangoTiempoForm
 
-FORMATO_FECHA = "%d/%m/%Y"
 
 class ReporteTotalOrdenesClientesRangoTiempo(TemplateView):
     template_name = "reportes/reportes.html"
 
 
     def get(self, request, *args, **kwargs):
-        
+
         if(request.is_ajax()):
             return self.ajax_get(request, *args, **kwargs)
 
