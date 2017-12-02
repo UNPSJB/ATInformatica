@@ -4,6 +4,11 @@ function init_chart(){
     var blue = "rgba(54, 162, 255, 0.5)"
     var blue_line = "rgba(23, 45, 68, 1)"
 
+
+    if(chart){
+        chart.destroy()
+    }
+
     chart = new Chart($("#chart-ots-clientes"), {
         type: 'bar',
         data: {

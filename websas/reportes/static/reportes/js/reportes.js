@@ -57,13 +57,14 @@ $("#daterangepicker").on("show.daterangepicker", function(ev, picker) {
     
 })
 
+
+
 $("#daterangepicker").on("apply.daterangepicker", function(ev, picker){
 
     /**
      * Esta es otra forma de manejar el mismo evento que con el callback que se le paso en el constructor
      */
 
-    chart.destroy()
     init_chart()
 
     $.ajax({
