@@ -4320,8 +4320,12 @@ table.tableselect tr.odd.row_selected {
     background-color: rgb(110, 245, 214);
     font-weight: bold;
 }
+
 table.dataTable.tableclick > tbody > tr {
     cursor: pointer;
+}
+table.dataTable.dtr-inline > tbody > tr > td.celda_control {
+    cursor: default;
 }
 table.dataTable.dtr-inline.collapsed > tbody > tr > td.celda_control {
   cursor: zoom-in;
