@@ -13,11 +13,11 @@ class Producto(ModeloBase):
     Attributes:
         nombre (str): nombre del producto
         descripcion (str, opcional): descripción del producto
-        marca (str): marca del producto 
+        marca (str): marca del producto
         stock_minimo (int): cantidad mínima requerida en stock
         stock (int): cantidad de unidades en stock
         precio (:obj: `Decimal`): precio del producto """
-    
+
     nombre = models.CharField(max_length=20)
     descripcion = models.CharField(max_length=50, null=True, blank=True)
     marca = models.CharField(max_length=20)
@@ -26,20 +26,24 @@ class Producto(ModeloBase):
     precio = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0'))
 
     def save(self, *args, **kwagrs):
+        # Si es la primera vez que se va a guardar el producto
+        is_new = self.pk is None
 
-        if self.__class__.objects.filter(nombre=self.nombre, marca=self.marca).exists():
-            raise Exception("El producto ya se encuentra registrado")
+        if is_new:
+            # este checkeo es solamente para la primera vez que se guarda, no siempre
+            if self.__class__.objects.filter(nombre=self.nombre, marca=self.marca).exists():
+                raise Exception("El producto ya se encuentra registrado")
 
         self.nombre = str.title(self.nombre)
         self.marca = str.title(self.marca)
         super(self.__class__, self).save(*args, **kwagrs)
 
     @property
-    def stock_reservado(self): 
-        """ Propiedad de solo lectura que indica la cantidad de unidades reservadas 
-        para tareas a realizar. 
-    
-        Returns: 
+    def stock_reservado(self):
+        """ Propiedad de solo lectura que indica la cantidad de unidades reservadas
+        para tareas a realizar.
+
+        Returns:
             int """
         stock_reservado = self.reservas.all(
                                 ).values_list('producto'
@@ -52,17 +56,17 @@ class Producto(ModeloBase):
 
     @property
     def stock_disponible(self):
-        """ Propiedad de solo lectura que indica la cantidad de unidades disponibles 
-        
+        """ Propiedad de solo lectura que indica la cantidad de unidades disponibles
+
         Returns:
             int """
         return self.stock - self.stock_reservado
 
     @property
     def stock_es_bajo(self):
-        """ Propiedad de solo lectura que indica si el stock disponible está por debajo del 
+        """ Propiedad de solo lectura que indica si el stock disponible está por debajo del
         mínimo establecido.
-        
+
         Returns:
             True si stock_minimo >= stock_disponible, False si no """
         return self.stock_minimo >= self.stock_disponible
@@ -71,8 +75,8 @@ class Producto(ModeloBase):
 class ReservaStock(models.Model):
     """ Modelo para la gestión de reservas de stock
 
-    Las instancias del modelo Tarea pueden necesitar reservar stock. Esta clase tiene la 
-    responsabilidad de gestionar ese aspecto del dominio. 
+    Las instancias del modelo Tarea pueden necesitar reservar stock. Esta clase tiene la
+    responsabilidad de gestionar ese aspecto del dominio.
 
     Attributes:
         activa (bool, default True): indica si la reserva esta activa o fue cancelada (baja lógica)
@@ -91,26 +95,26 @@ class ReservaStock(models.Model):
     cantidad = models.PositiveIntegerField()
 
     def save(self, *args, **kwagrs):
-        
+
         if self.__class__.objects.filter(producto=self.producto, tarea=self.tarea).exists():
             raise Exception("El producto {} ya se encuentra reservado para la tarea {}".format(self.producto, self.tarea))
-        
+
         self.precio_unitario = self.producto.precio
         super(self.__class__, self).save(*args, **kwagrs)
 
     @property
     def hay_stock(self):
         """ Propiedad de solo lectura que indica si el producto tiene stock para ser consumido
-        por la reserva. 
-        
+        por la reserva.
+
         Returns:
             True si stock_disponible >= 0, False si no """
         return self.producto.stock_disponible >= 0
 
     @property
     def subtotal(self):
-        """ Propiedad de solo lectura que devuelve el costo de la reserva 
-        
+        """ Propiedad de solo lectura que devuelve el costo de la reserva
+
         Returns:
             float
         """
