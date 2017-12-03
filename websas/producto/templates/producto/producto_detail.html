@@ -27,13 +27,35 @@
       <hr>
       <div class="pull-right">
         {% if perms.producto.delete_producto %}
-        <a href="{% url 'producto:producto_eliminar' producto.id %}" class="btn btn-danger"><i class="fa fa-trash fa-lg"></i>&nbsp;&nbsp;Eliminar producto</a>
+        <a data-toggle="modal" data-target="#modal-confirmacion-delete" class="btn btn-danger"><i class="fa fa-trash fa-lg"></i>&nbsp;&nbsp;Eliminar producto</a>
         {% endif %}
 
         {% if perms.producto.change_producto %}
         <a href="{% url 'producto:producto_editar' producto.id %}" class="btn btn-info"><i class="fa fa-pencil fa-lg"></i>&nbsp;&nbsp;Editar producto</a>
         {% endif %}
       </div>
+      {% if perms.producto.delete_producto %}
+      <div id="modal-confirmacion-delete" class="modal fade">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">×</span></button>
+              <h3><span class="text-warning"><i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;&nbsp;Confirmar eliminación</span></h3>
+            </div>
+            <div class="modal-body">
+              <p>¿Está seguro de que desea eliminar el producto "{{ producto.nombre }}"?</p>
+            </div>
+            <div class="modal-footer">
+              <form action="{% url 'producto:producto_eliminar' producto.id %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button class="btn btn-danger" type="submit">Confirmar eliminar producto</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
       {% endif %}
     </div>
   </div>
