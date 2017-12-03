@@ -5,32 +5,36 @@
 <div class="row" style="margin-left: 10px; margin-right: 10px;">
   <div class="x_panel">
     <div class="x_title">
-      <h2>Producto #{{ producto.id }}<small>gestión de productos </small></h2>
-      <!-- <ul class="nav navbar-right panel_toolbox">
-        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-        </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Settings 1</a>
-            </li>
-            <li><a href="#">Settings 2</a>
-            </li>
-          </ul>
-        </li>
-        <li><a class="close-link"><i class="fa fa-close"></i></a>
-        </li>
-      </ul> -->
+      <h2>Producto #{{ producto.id }}</h2>
       <div class="clearfix"></div>
     </div>
     <div class="x_content">
-      <br />
-      <h2>{{ producto.nombre }}</h2>
-      <h2>{{ producto.descripcion }}</h2>
-      <h2>{{ producto.marca }}</h2>
-      <h2>{{ producto.stock_minimo }}</h2>
-      <h2>{{ producto.stock }}</h2>
-      <h2>{{ producto.precio }}</h2>
+      <table width="100%">
+        <tr>
+          <td><h1>{{ producto.nombre }}</h1></td>
+          <td><h2>Stock mínimo: </h2>{{ producto.stock_minimo }}</td>
+        </tr>
+        <tr>
+          <td><h2>Descripción: </h2>{{ producto.descripcion }}</td>
+          <td><h2>Stock actual: </h2>{{ producto.stock }}</td>
+        </tr>
+        <tr>
+          <td><h2>Marca: </h2>{{ producto.marca }}</td>
+          <td><h2>Precio: </h2>{{ producto.precio }}</td>
+        </tr>
+      </table>
+      {% if perms.producto.change_producto or perms.producto.delete_producto %}
+      <hr>
+      <div class="pull-right">
+        {% if perms.producto.delete_producto %}
+        <a href="{% url 'producto:producto_eliminar' producto.id %}" class="btn btn-danger"><i class="fa fa-trash fa-lg"></i>&nbsp;&nbsp;Eliminar producto</a>
+        {% endif %}
+
+        {% if perms.producto.change_producto %}
+        <a href="{% url 'producto:producto_editar' producto.id %}" class="btn btn-info"><i class="fa fa-pencil fa-lg"></i>&nbsp;&nbsp;Editar producto</a>
+        {% endif %}
+      </div>
+      {% endif %}
     </div>
   </div>
   <div class="ln_solid"></div>
