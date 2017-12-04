@@ -31,7 +31,7 @@ class Orden(ModeloBase):
     usuario = models.ForeignKey(Usuario, null=True, blank=True, related_name="ordenes")
     tecnico = models.ForeignKey(Tecnico, null=True, blank=True, related_name="ordenes")
     descripcion = models.TextField(null=True, blank=True)
-    fecha_creacion = models.DateTimeField(auto_now=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha_fin = models.DateTimeField(null=True, blank=True)
     cerrada = models.BooleanField(default=False)
     cancelada = models.BooleanField(default=False)
