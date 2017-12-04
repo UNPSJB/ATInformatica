@@ -34,12 +34,17 @@ class EquipoForm(forms.ModelForm):
             'nro_serie',
             'rubro',
             'descripcion'
-        ]  
+        ]
         labels = {
             'nro_serie':'Número de Serie',
             'rubro':'Rubro',
             'descripcion':'Descripción'
-        },
+        }
+        error_messages = {
+            'nro_serie': {
+                'unique' : ("Ya existe un Equipo con el mismo Número de Serie"),
+            },
+        }
         widgets = {
             'nro_serie': forms.TextInput(attrs={'class':'form-control col-md-7 col-xs-12', 'pattern': 'numeric', 'autofocus': True}),
             'descripcion': forms.TextInput(attrs={'class':'form-control'}),

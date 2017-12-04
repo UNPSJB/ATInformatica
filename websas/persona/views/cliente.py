@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import redirect
 from django.core.urlresolvers import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import permission_required
@@ -74,12 +75,23 @@ class ClienteCreate(CreateView):
 class ClienteCreatePopup(ClienteCreate):
     template_name = 'persona/cliente_form_popup.html'
     success_url = '#'
-
-    def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
+        
+        
 
 class ClienteCreateAjax(ClienteCreate):
-    pass
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+
+        print(request.POST)
+
+        if form.is_valid():
+            persona = form.save()
+            persona.agregar_rol(Cliente())
+            persona.save()
+            return JsonResponse(data={'data':'cliente creado'},status=200)
+        else:
+            return JsonResponse(data={'data':'fallo letal'}, status=403)
 
 class ClienteUpdate(UpdateView):
     model = Persona

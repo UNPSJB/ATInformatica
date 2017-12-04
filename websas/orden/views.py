@@ -32,11 +32,7 @@ class OrdenCreate(CreateView):
         contexto['servicios'] = TipoServicio.objects.all()
         return contexto
 
-        
-    def get_success_url(self):
-        return reverse_lazy("orden:orden_ver", args=(self.object.id, ))
-
-    @method_decorator(permission_required('orden.add_orden', login_url='orden:orden_listar'))        
+    @method_decorator(permission_required('orden.add_orden', login_url='orden:orden_listar'))
     def post(self, request, *args, **kwargs):
         persona = Persona.objects.get(pk=request.POST.get('cliente'))
         rubro = Rubro.objects.get(pk=request.POST.get('rubro'))
@@ -46,9 +42,9 @@ class OrdenCreate(CreateView):
         if request.POST.get('equipo') != 'sin':
             equipo = Equipo.objects.get(pk=request.POST.get('equipo'))
         descripcion = request.POST.get('observacion')
-        
+
         if persona.sos(Cliente):
-            orden = Orden(usuario=request.user, cliente=persona.como(Cliente), tecnico=tecnico.como(Tecnico), rubro=rubro, tipo_servicio=servicio, descripcion=descripcion,equipo=equipo) 
+            orden = Orden(usuario=request.user, cliente=persona.como(Cliente), tecnico=tecnico.como(Tecnico), rubro=rubro, tipo_servicio=servicio, descripcion=descripcion,equipo=equipo)
             orden.save()
             
             return JsonResponse({"data": reverse_lazy("orden:orden_ver", args=(orden.id, ))})
@@ -135,21 +131,20 @@ class EquipoCreate(CreateView):
     success_url = reverse_lazy('orden:equipo_listar')
 
 class EquipoCreateJson(CreateView):
-    
+
     model = Equipo
     form_class = EquipoForm
 
-    @method_decorator(permission_required('orden.add_equipo', login_url='orden:orden_listar'))        
-    def post(self, request, *args, **kwargs):
+    @method_decorator(permission_required('orden.add_equipo', login_url='orden:orden_listar'))
+    def post(self,request,*args,**kwargs):
+
         form = self.form_class(request.POST)
 
         if form.is_valid():
-            
             form.save()
+            return JsonResponse(data={'data':'todo bien'},status=200)
 
-            return JsonResponse({'data':'creado correctamente'})
-
-        return JsonResponse({'data':'todo mal'}) 
+        return JsonResponse(data={'data':'No se ha podido crear'},status=403)
 
 class EquipoList(ListView):
     model = Equipo
@@ -162,7 +157,7 @@ class EquipoUpdate(UpdateView):
     form_class = EquipoForm
     success_url = reverse_lazy('orden:equipo_listar')
 
-    @method_decorator(permission_required('orden.change_equipo', login_url='orden:orden_listar'))        
+    @method_decorator(permission_required('orden.change_equipo', login_url='orden:orden_listar'))
     def post(self, request, *args, **kwargs):
         return super(self.__class__, self).post(request,*args, **kwargs)
 
@@ -172,7 +167,7 @@ class EquipoDelete(DeleteView):
     template_name = 'equipo/equipo_delete.html'
     success_url = reverse_lazy('orden:equipo_listar')
 
-    @method_decorator(permission_required('orden.delete_equipo', login_url='orden:orden_listar'))        
+    @method_decorator(permission_required('orden.delete_equipo', login_url='orden:orden_listar'))
     def post(self, request, *args, **kwargs):
         return super(self.__class__, self).post(request,*args, **kwargs)
 
@@ -185,21 +180,17 @@ class EquipoCreatePopUp(EquipoCreate):
         self.rubro = Rubro.objects.get(id=kwargs['pk'])
         return super().dispatch(request, *args, **kwargs)
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, *args,**kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = self.form_class(initial={'rubro':self.rubro})
         context['form'].fields['rubro'].widget.attrs['disabled'] = 'disabled'
-
         return context
 
     def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        form.is_valid()
+        return HttpResponseRedirect('/orden/equipo/crear_popup/{}'.format(self.rubro.id),form.errors)
 
 
-        nro_serie = request.POST.get('nro_serie')
-        descripcion = request.POST.get('descripcion')
 
-        # Si no utilizo el self.object. Se creaba dos veces el equipo y
-        # daba un error en la DB sobre duplicación de Primary Key
-        self.object = Equipo(rubro=self.rubro, nro_serie=nro_serie, descripcion=descripcion)
 
-        return super().post(request,*args,**kwargs)

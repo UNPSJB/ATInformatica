@@ -30,8 +30,8 @@ $.ajaxSetup({
     }
 });
 
-$('#form_equipo').submit(function(){
-    console.log('bieno')
+$('#form_equipo').submit(function(e){
+    var could
     var data = {
         'nro_serie':$('#id_nro_serie').val(),
         'rubro':$('select#id_rubro').val(),
@@ -40,20 +40,21 @@ $('#form_equipo').submit(function(){
 
     var rubro = data['rubro']
     
+    console.log('lsdkfjsad')
     $.ajax({    
+
         //la url a donde hay que pegarle en el servidor esta en el html de la tabla
         //de esta forma, podemos tener el .js separado del .html
         url: '/orden/equipo/crear_json',
-        type: "POST",
+        method: "POST",
         data:data,
         success: function(data){
-        },
-        error: function(err){
             window.opener.get_equipos(rubro)
             window.close()
-
+            could = true
         }
     })
+    return could
 })
 
 
