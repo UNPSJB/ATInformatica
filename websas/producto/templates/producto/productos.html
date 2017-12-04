@@ -24,7 +24,7 @@
         <tbody>
             {% if object_list %}
             {% for producto in object_list %}
-          <tr data-tableclick="{% url 'producto:producto_ver' producto.id %}">
+          <tr data-tableclick="{% url 'producto:producto_editar' producto.id %}">
             <td class="celda_control">{{ producto.nombre }}</td>
             <td>{{ producto.descripcion }}</td>
             <td>{{ producto.marca }}</td>

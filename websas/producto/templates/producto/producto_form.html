@@ -8,10 +8,11 @@
         <div class="clearfix"></div>
       </div>
       <div class="x_content">
+        {% if perms.producto.add_producto or perms.producto.change_producto %}
         <form method="post" class="form-horizontal form-label-left" novalidate>  
           {% csrf_token %}
           {% if form.errors %}
-          <div class="clearfix">
+          <div class="clearfix"></div>
           {% for field in form %}
               {% for error in field.errors %}
                   <div class="alert alert-error col-md-6 col-sm-6 col-xs-12 col-md-offset-3 col-sm-offset-3 col-xs-12">
@@ -24,7 +25,6 @@
                   <strong>{{ error|escape }}</strong>
               </div>
           {% endfor %}
-          </div>
           {% endif %}
           <div class="item form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.nombre.label }}">{{ form.nombre.label }}
@@ -72,16 +72,54 @@
           <div class="ln_solid"></div>
           <div class="item form-group">
             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-              {% if producto.id %}
-              <a class="btn btn-default" href="{% url 'producto:producto_ver' producto.id %}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Volver al producto</a>
-              {% else %}
-              <a class="btn btn-default" href="{% url 'producto:producto_listar' %}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Volver al listado</a>
-              {% endif %}
               <button class="btn btn-primary" type="reset">Reiniciar</button>
               <button type="submit" class="btn btn-success">Aceptar</button>
             </div>
           </div>
         </form>
+        {% else %}
+        <table width="100%">
+          <col width="60%">
+          <col width="40%">
+          <tr>
+            <td><h1>{{ form.nombre.value }}</h1></td>
+            <td><h2>Stock mínimo: </h2>{{ form.stock_minimo.value }}</td>
+          </tr>
+          <tr>
+            <td><h2>Descripción: </h2>{{ form.descripcion.value }}</td>
+            <td><h2>Stock actual: </h2>{{ form.stock.value }}</td>
+          </tr>
+          <tr>
+            <td><h2>Marca: </h2>{{ form.marca.value }}</td>
+            <td><h2>Precio: </h2>{{ form.precio.value }}</td>
+          </tr>
+        </table>
+        {% endif %}
+        <hr>
+        <a class="btn btn-default pull-left" href="{% url 'producto:producto_listar' %}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Volver al listado</a>
+        {% if perms.producto.delete_producto and form.instance.id %}
+        <a data-toggle="modal" data-target="#modal-confirmacion-delete" class="btn btn-danger pull-right"><i class="fa fa-trash fa-lg"></i>&nbsp;&nbsp;Eliminar producto</a>
+        <div id="modal-confirmacion-delete" class="modal fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">×</span></button>
+                <h3><span class="text-warning"><i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;&nbsp;Confirmar eliminación</span></h3>
+              </div>
+              <div class="modal-body">
+                <p>¿Está seguro de que desea eliminar el producto "{{ producto.nombre }}"?</p>
+              </div>
+              <div class="modal-footer">
+                <form action="{% url 'producto:producto_eliminar' form.instance.id %}" method="post">
+                  {% csrf_token %}
+                  <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                  <button class="btn btn-danger" type="submit">Confirmar eliminar producto</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}    
       </div>
     </div>
   </div>
