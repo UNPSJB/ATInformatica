@@ -107,9 +107,7 @@ function crearOrden(objs, context){
         data: data,
         dataType: 'json',
         success: function(data){
-            console.log("en la success function");
-            console.log(data)
-            location.href = '/orden/listar'
+            location.href = data.data
         }
     })
 }

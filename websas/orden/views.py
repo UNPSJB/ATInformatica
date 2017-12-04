@@ -1,4 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import redirect
+
 from django.core.urlresolvers import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import permission_required
@@ -19,7 +21,7 @@ class OrdenCreate(CreateView):
     model = Orden
     template_name = 'orden/orden_nueva.html'
     form_class =OrdenForm
-    success_url = reverse_lazy('/')
+    # success_url = reverse_lazy('/')
 
     def get_context_data(self, **kwargs):
         # Llamar a super para recuperar el contexto original
@@ -29,6 +31,10 @@ class OrdenCreate(CreateView):
         contexto['tecnicos'] = Tecnico.objects.all()
         contexto['servicios'] = TipoServicio.objects.all()
         return contexto
+
+        
+    def get_success_url(self):
+        return reverse_lazy("orden:orden_ver", args=(self.object.id, ))
 
     @method_decorator(permission_required('orden.add_orden', login_url='orden:orden_listar'))        
     def post(self, request, *args, **kwargs):
@@ -45,7 +51,7 @@ class OrdenCreate(CreateView):
             orden = Orden(usuario=request.user, cliente=persona.como(Cliente), tecnico=tecnico.como(Tecnico), rubro=rubro, tipo_servicio=servicio, descripcion=descripcion,equipo=equipo) 
             orden.save()
             
-            return JsonResponse({'data':'Todo pioooola'})
+            return JsonResponse({"data": reverse_lazy("orden:orden_ver", args=(orden.id, ))})
 
         return JsonResponse({'data':'Todo mall'})
 
