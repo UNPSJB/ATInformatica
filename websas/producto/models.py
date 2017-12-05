@@ -2,8 +2,9 @@ from django.db import models
 from django.db.models import Sum
 from tarea.models import Tarea
 from decimal import Decimal
-from sas.models import ModeloBase, BajasLogicasManagerFactory
-class Producto(ModeloBase):
+from safedelete.models import SafeDeleteModel, SOFT_DELETE
+
+class Producto(SafeDeleteModel):
     """ Modelo para la gestión de productos.
 
     El modelo establece la restriccion unique_together para nombre y marca. Ademas por ser estos
@@ -17,6 +18,8 @@ class Producto(ModeloBase):
         stock_minimo (int): cantidad mínima requerida en stock
         stock (int): cantidad de unidades en stock
         precio (:obj: `Decimal`): precio del producto """
+
+    _safedelete_policy = SOFT_DELETE
 
     nombre = models.CharField(max_length=20)
     descripcion = models.CharField(max_length=50, null=True, blank=True)
@@ -72,7 +75,7 @@ class Producto(ModeloBase):
         return self.stock_minimo >= self.stock_disponible
 
 
-class ReservaStock(models.Model):
+class ReservaStock(SafeDeleteModel):
     """ Modelo para la gestión de reservas de stock
 
     Las instancias del modelo Tarea pueden necesitar reservar stock. Esta clase tiene la

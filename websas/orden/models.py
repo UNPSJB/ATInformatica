@@ -5,10 +5,11 @@ from servicio.models import TipoServicio
 from usuario.models import Usuario
 from decimal import Decimal
 from tarea.models import Tarea, TareaPendiente, TareaPresupuestada, TareaRealizada, TareaCancelada
-from sas.models import ModeloBase
 from django.utils import timezone
+from safedelete.models import SafeDeleteModel, SOFT_DELETE
 import pytz
-class Orden(ModeloBase):
+
+class Orden(SafeDeleteModel):
     """
     Orden de Trabajo. Entidad fundamental del sistema
 
@@ -23,6 +24,7 @@ class Orden(ModeloBase):
         - cerrada(bool): Bandera - Verdadero si la Orden de trabajo está finalizada.
         - cancelada(bool): Bandera - Verdadero si la Orden de trabajo fue cancelada.
     """
+    _safedelete_policy = SOFT_DELETE
 
     cliente = models.ForeignKey(Cliente, null=True,related_name="ordenes")
     rubro = models.ForeignKey(Rubro, related_name="ordenes")
@@ -54,12 +56,12 @@ class Orden(ModeloBase):
 
     def agregar_tarea(self, tipo_tarea, observacion):
         """
-        Crea una tarea para la orden. 
+        Crea una tarea para la orden.
 
         Args:
             tipo_tarea(:obj: TipoTarea): Tipo de la tarea a crear.
             observacion(str): Observación del técnico sobre esta tarea al momento de la creación.
-        
+
         Excepciones:
             Exception si el rubro del tipo de tarea es distinto del rubro de la Orden
         """
@@ -71,10 +73,10 @@ class Orden(ModeloBase):
     def _tareas_en_estado(self, estado):
         """
         Método privado que devuelve un subconjunto de tareas de la Oreden en un determinado estado.
-        
-        Args: 
+
+        Args:
             estado(:cls: TareaEstado): denominación de una subclase de TareaEstado.
-        
+
         Returns:
             [<TareaEstado: obj>..]
         """
@@ -88,8 +90,8 @@ class Orden(ModeloBase):
     @property
     def tareas_presupuestadas(self):
         """
-        Propiedad de solo lectura que un subconjunto de tareas de la Oreden en estado TareaPresupuestada 
-        
+        Propiedad de solo lectura que un subconjunto de tareas de la Oreden en estado TareaPresupuestada
+
         Returns:
             [<TareaPresupuestada: obj>..]
         """
@@ -98,8 +100,8 @@ class Orden(ModeloBase):
     @property
     def tareas_pendientes(self):
         """
-        Propiedad de solo lectura que un subconjunto de tareas de la Oreden en estado TareaPendiente 
-        
+        Propiedad de solo lectura que un subconjunto de tareas de la Oreden en estado TareaPendiente
+
         Returns:
             [<TareaPendiente: obj>..]
         """
@@ -108,17 +110,17 @@ class Orden(ModeloBase):
     @property
     def tareas_realizadas(self):
         """
-        Propiedad de solo lectura que un subconjunto de tareas de la Oreden en estado TareaRealizada 
-        
+        Propiedad de solo lectura que un subconjunto de tareas de la Oreden en estado TareaRealizada
+
         Returns:
             [<TareaRealizada: obj>..] """
         return self._tareas_en_estado(TareaRealizada)
 
     @property
     def tareas_canceladas(self):
-        
-        """Propiedad de solo lectura que un subconjunto de tareas de la Oreden en estado TareaCancelada 
-        
+
+        """Propiedad de solo lectura que un subconjunto de tareas de la Oreden en estado TareaCancelada
+
         Returns:
             [<TareaCancelada: obj>..] """
         return self._tareas_en_estado(TareaCancelada)
@@ -126,7 +128,7 @@ class Orden(ModeloBase):
     @property
     def tipos_tarea_agregables(self):
         """Devuelve los tipos de tarea que todavía no se hayan agregado a la Orden
-        
+
         Returns:
             [<TipoTarea: obj>..]"""
         tipos_tareas = list(self.rubro.tipos_tareas.all())
@@ -142,20 +144,20 @@ class Orden(ModeloBase):
         total = 0
         for tarea in self.tareas_realizadas:
             total += tarea.subtotal
-        return total 
+        return total
 
     def _hacer_en_tareas(self, ids_tareas, accion):
         """ Método privado para realizar una acción en un conjunto de tareas
-        
+
         Args:
-            ids_tareas([int..]): ids del conjunto de tareas 
+            ids_tareas([int..]): ids del conjunto de tareas
             accion(str): acción a relaizar """
 
         if not self.cerrada and not self.cancelada:
 
             if type(ids_tareas) != list:
                 ids_tareas = [ids_tareas]
-            
+
             [tarea.hacer(accion) for tarea in self.tareas.filter(pk__in=ids_tareas)]
 
     def aceptar_tareas(self, ids_tareas):
@@ -164,7 +166,7 @@ class Orden(ModeloBase):
         Args:
             ids_tareas([int..]): ids del conjunto de tareas a aceptar """
         self._hacer_en_tareas(ids_tareas, "aceptar")
-    
+
     def finalizar_tareas(self, ids_tareas):
         """ Método que invoca _hacer_en_tareas ordenándole la accion "finalizar".
 
@@ -188,11 +190,11 @@ class Orden(ModeloBase):
     def cancelar(self):
         """ Método para cancelar la orden de trabajo
 
-        Raise: 
+        Raise:
             Exception, si la orden de trabajo tiene tareas realizadas """
         if self.tareas_realizadas:
             raise Exception("La orden de trabajo nro: {} tiene tareas realizadas y no se puede cancelar".format(self.id))
-        
+
         [tarea.hacer("cancelar") for tarea in self.tareas.all()]
         self.cancelada = True
         self.fecha_fin = timezone.now()
@@ -201,17 +203,17 @@ class Orden(ModeloBase):
     def cerrar(self):
         """ Método para cancelar la orden de trabajo
 
-        Raise: 
+        Raise:
             Exception, si la orden de trabajo tiene tareas pendientes """
         if self.tareas_pendientes:
             raise Exception("La orden de trabajo nro: {} tiene tareas pendientes y no se puede cerrar".format(self.id))
-        
-        self.precio_final = self.precio_total 
+
+        self.precio_final = self.precio_total
         self.cerrada = True
         self.fecha_fin = timezone.now()
         self.save()
 
-class Equipo(models.Model):
+class Equipo(SafeDeleteModel):
     """
     Modelo de Equipo para asociar a Ordenes de Trabajo y llevar registro de las mismas.
 

@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'usuario',
     'orden',
     'reportes',
+    'safedelete',
     'django_extensions',
     'docs'
 ]

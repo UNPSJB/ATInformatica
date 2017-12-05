@@ -1,8 +1,11 @@
 from django.db import models
 from django.apps import apps
 from sas.models import ModeloBase
+from safedelete.models import SafeDeleteModel, SOFT_DELETE
 # Create your models here.
-class TipoServicio(ModeloBase):
+
+class TipoServicio(SafeDeleteModel):
+    _safedelete_policy = SOFT_DELETE
     nombre = models.CharField(max_length=30)
     descripcion = models.TextField(max_length=100)
 
@@ -11,9 +14,9 @@ class TipoServicio(ModeloBase):
 
     def save(self, *args, **kwargs):
         is_new = self.pk is None
-        
+
         super(self.__class__, self).save(*args, **kwargs)
-        #para evitar problemas de referencias circulares, conseguimos los modelos 
+        #para evitar problemas de referencias circulares, conseguimos los modelos
         #con django.apss
         if is_new:
             TipoTarea = apps.get_model("tarea", "TipoTarea")

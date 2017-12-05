@@ -3,17 +3,19 @@ from rubro.models import Rubro
 from usuario.models import Usuario
 from servicio.models import TipoServicio
 from tarifa.models import Tarifa
-from sas.models import ModeloBase
+from safedelete.models import SafeDeleteModel, SOFT_DELETE
 from decimal import Decimal
 
 # Create your models here.
-class TipoTarea(ModeloBase):
+class TipoTarea(SafeDeleteModel):
     """ Modelo para la gestión de tipos de tarea
 
     Attributes:
         nombre(str): nombre del tipo de tarea
         descripcion(str, opcional): descripción del tipo de tarea
         rubro(:obj: Rubro): rubro al que pertenece el tipo de tarea """
+
+    _safedelete_policy = SOFT_DELETE
 
     nombre = models.CharField(max_length=30)
     descripcion = models.CharField(max_length=100, null=True, blank=True)
@@ -23,7 +25,7 @@ class TipoTarea(ModeloBase):
     )
 
     def save(self, *args, **kwargs):
-        
+
         is_new = self.pk is None
 
         super(self.__class__, self).save(*args, **kwargs)
@@ -48,7 +50,7 @@ class TareaQuerySet(models.QuerySet):
 
 TareaManager = TareaBaseManager.from_queryset(TareaQuerySet)
 
-class Tarea(models.Model):
+class Tarea(SafeDeleteModel):
     """ Modelo para la gestión de las tareas de las Órdenes de Trabajo
 
     Attributes:
@@ -76,7 +78,7 @@ class Tarea(models.Model):
     def nombre(self):
         """ Propiedad de sólo lectura que devuelve el nombre del tipo de tarea asociado a la tarea """
         return self.tipo_tarea.nombre
-    
+
     @property
     def descripcion(self):
         """ Propiedad de sólo lectura que devuelve la descripción del tipo de tarea asociado a la tarea """
@@ -93,7 +95,7 @@ class Tarea(models.Model):
             return 0
         costo_repuestos = 0
         for reserva in self.reservas.all():
-            costo_repuestos += reserva.precio_unitario * reserva.cantidad 
+            costo_repuestos += reserva.precio_unitario * reserva.cantidad
         # por cada reserva multiplicar precio_unitario por cantidad
         return costo_repuestos
 
@@ -108,31 +110,31 @@ class Tarea(models.Model):
     @property
     def observaciones_tarea(self):
         return self.observaciones.all()
-    
+
     def estas_presupuestada(self):
-        """ Método que consulta si la tarea está en estado TareaPresupuestada 
-        
+        """ Método que consulta si la tarea está en estado TareaPresupuestada
+
         Returns:
             True si la el estado de la tarea es TareaPresupuestada, False si no """
         return isinstance(self.estado, TareaPresupuestada)
 
     def estas_pendiente(self):
-        """ Método que consulta si la tarea está en estado TareaPendiente 
-        
+        """ Método que consulta si la tarea está en estado TareaPendiente
+
         Returns:
             True si la el estado de la tarea es TareaPendiente, False si no """
         return isinstance(self.estado, TareaPendiente)
 
     def estas_realizada(self):
-        """ Método que consulta si la tarea está en estado TareaRealizada 
-        
+        """ Método que consulta si la tarea está en estado TareaRealizada
+
         Returns:
             True si la el estado de la tarea es TareaRealizada, False si no """
         return isinstance(self.estado, TareaRealizada)
 
     def estas_cancelada(self):
-        """ Método que consulta si la tarea está en estado TareaCancelada 
-        
+        """ Método que consulta si la tarea está en estado TareaCancelada
+
         Returns:
             True si la el estado de la tarea es TareaCancelada, False si no """
         return isinstance(self.estado, TareaCancelada)
@@ -140,20 +142,20 @@ class Tarea(models.Model):
     @classmethod
     def crear(cls, tipo_tarea, orden, observacion):
 
-        """ Método para la creación de nuevas tareas 
-        
+        """ Método para la creación de nuevas tareas
+
         Controla la existencia de una Tarifa para el TipoTarea y el TipoServicio,
         de lo contrario lanza excepción.
-        Además setea el precio de la tarea en función del precio de la tarifa al 
+        Además setea el precio de la tarea en función del precio de la tarifa al
         momento de la creación.
 
         Args:
             tipo_tarea(:obj:TipoTarea): tipo de tarea de la tarea a gestionar
             orden(:obj:Orden): Órden de Trabajo para la cual se creó la tarea
             observacion(str, opcional): observación de la tarea
-        
+
         Returns:
-            obj:Tarea 
+            obj:Tarea
 
         Raise:
             Exception (si no existe Tarifa para el tipo de tarea y el tipo de servicio) """
@@ -166,23 +168,23 @@ class Tarea(models.Model):
         except Exception as e:
             tarea.delete()
             raise Exception("El tipo de tarea: {}, no se encuentra tarifada para el tipo de servicio {}".format(tipo_tarea, tipo_servicio))
-        tarea.precio = tarifa.precio 
+        tarea.precio = tarifa.precio
         tarea.save()
         tarea.hacer(accion=None)
         return tarea
 
     @property
     def estado(self):
-        """ Método que retorna el estado actual de la tarea 
-        
+        """ Método que retorna el estado actual de la tarea
+
         Returns:
             TareaEstado """
         if self.estados.exists():
             return self.estados.latest().related()
-    
+
     def estados_related(self):
-        """ Método que retorna la lista de estados por los que pasó la tarea (incluyendo el actual) 
-        
+        """ Método que retorna la lista de estados por los que pasó la tarea (incluyendo el actual)
+
         Returns:
             [<TareaEstado>..] """
         return [estado.related() for estado in self.estados.all()]
@@ -195,11 +197,11 @@ class Tarea(models.Model):
             *args y **kwargs: los argumentos que se le pasarán al método
 
         Returns:
-            TareaEstado, si el método es de transición crea la instancia correspondiente, 
-            si no, devuelve el estado actual 
+            TareaEstado, si el método es de transición crea la instancia correspondiente,
+            si no, devuelve el estado actual
 
         Raise:
-            Exception si se intenta invocar a un método que no existe en el estado actual  
+            Exception si se intenta invocar a un método que no existe en el estado actual
         """
         estado_actual = self.estado
         if estado_actual is not None and hasattr(estado_actual, accion):
@@ -225,7 +227,7 @@ class Tarea(models.Model):
         self.save()
 
 
-class EstadoTarea(models.Model):
+class EstadoTarea(SafeDeleteModel):
     """Modelo de Estado para la Tarea"""
     TIPO = 0
     TIPOS = [
@@ -261,7 +263,7 @@ class EstadoTarea(models.Model):
 
     def agregar_observacion(self, usuario, contenido):
         self.tarea.observaciones.create(tarea=self, usuario=usuario, contenido=contenido)
-    
+
     def cancelar_reserva(self, reserva):
         reserva = self.tarea.reservas.get(pk=reserva.id)
         if reserva:
@@ -318,7 +320,7 @@ class TareaCancelada(EstadoTarea):
 for Klass in EstadoTarea.__subclasses__():
     EstadoTarea.register(Klass)
 
-class ObservacionTarea(models.Model):
+class ObservacionTarea(SafeDeleteModel):
 
     tarea = models.ForeignKey(
         Tarea, related_name="observaciones"

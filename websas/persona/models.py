@@ -1,7 +1,9 @@
 from django.db import models
-from sas.models import ModeloBase
-class Persona(ModeloBase):
+from safedelete.models import SafeDeleteModel, SOFT_DELETE
+
+class Persona(SafeDeleteModel):
     """ Modelo genérico para la gestión de personas. """
+    _safedelete_policy = SOFT_DELETE
     TIPO_DOC = (
         ('DU', 'DNI'),
         ('CL', 'CUIL'),
@@ -22,9 +24,9 @@ class Persona(ModeloBase):
         return "{} {}".format(self.nombre, self.apellido)
 
     def como(self, Klass):
-        """ Retorna una instancia de un rol asociado a una persona con la ayuda del método 
+        """ Retorna una instancia de un rol asociado a una persona con la ayuda del método
         related de la clase Rol.
-        
+
         Args
             Klass (string): nombre de una subclase de Rol
         Returns
@@ -34,7 +36,7 @@ class Persona(ModeloBase):
 
     def agregar_rol(self, rol):
         """ Agrega un rol a una persona.
-        
+
         **Args:**
             - rol (string): rol
         """
@@ -48,17 +50,18 @@ class Persona(ModeloBase):
 
     def sos(self, Klass):
         """ Recibe una subclase de rol y retorna True si la persona está asociada y False si no.
-        
-        **Args:**    
+
+        **Args:**
             - Klass (string): subclase de Rol
         **Returns:**
-            - bool 
+            - bool
         """
         return any([isinstance(rol, Klass) for rol in self.roles_related()])
 
 
-class Rol(ModeloBase):
+class Rol(SafeDeleteModel):
     """ Modelo genérico para la gestión de roles de personas. """
+    _safedelete_policy = SOFT_DELETE
     TIPO = 0
     TIPOS = [
         (0, "rol")
@@ -75,7 +78,7 @@ class Rol(ModeloBase):
     @property
     def doc(self):
         return self.persona.doc
-    
+
     @property
     def domicilio(self):
         return self.persona.domicilio
@@ -84,9 +87,9 @@ class Rol(ModeloBase):
     def correo(self):
         return self.persona.email
 
-    @property   
+    @property
     def telefono(self):
-        return self.persona.telefono 
+        return self.persona.telefono
 
     def save(self, *args, **kwargs):
         if self.pk is None:
@@ -110,7 +113,7 @@ class Rol(ModeloBase):
 class Tecnico(Rol):
     """ Modelo de rol Técnico. """
     TIPO = 1
-    
+
 
 class Cliente(Rol):
     """ Modelo de rol Técnico. """
