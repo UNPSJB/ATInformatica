@@ -74,8 +74,7 @@ class ClienteCreate(CreateView):
 # TODO: debería devolver JSON con datos del nuevo cliente, cosa de pasarlo al parent
 class ClienteCreatePopup(ClienteCreate):
     template_name = 'persona/cliente_form_popup.html'
-    success_url = '#'
-        
+    success_url = '#'       
         
 
 class ClienteCreateAjax(ClienteCreate):
