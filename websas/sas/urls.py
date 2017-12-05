@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from .views import IndexView, ConfigView
+from .views import IndexView
 from usuario.views import GroupView
 from django.contrib.auth.decorators import login_required
 urlpatterns = [
@@ -9,6 +9,5 @@ urlpatterns = [
 
     # The home page
     url(r'^$', login_required(IndexView.as_view(), login_url='usuario:login'), name='index'),
-    url(r'^config$', login_required(ConfigView.as_view(), login_url='usuario:login'), name='config'),
     url(r'^autorizacion$', login_required(GroupView.as_view(), login_url='usuario:login'), name='autorizacion'),
 ]

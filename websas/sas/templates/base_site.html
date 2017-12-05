@@ -41,13 +41,9 @@
   {% block estilos %}
   {% endblock estilos %}
 
-  {% if request.session.lela_estilo %}
-  <!-- Custom theme style -->
-  <link href="{% static 'css/sas.css' %}" rel="stylesheet">  
-  {% else %}
-  <!-- Custom theme style -->
-  <link href="{% static 'build/css/custom.css' %}" rel="stylesheet">  
-  {% endif %}  
+  <!-- Estilo personalizado -->
+  <link href="{% static 'css/sas.css' %}" rel="stylesheet">
+  
 </head>
 
 <body class="nav-md {% block clase_body %}{% endblock clase_body %}">
@@ -126,18 +122,4 @@
 <!-- TableClick (C) 2017 Desarrollo del Sour ahrrecualquiera-->
 <script src="{% static 'js/tableclick.js' %}"></script>
 
-<script>
-  // Escuchar cambio de config de estilo
-  $('#check-lela_estilo').on('change', function() {
-    // Armar data del request
-    var datos = {
-      'csrfmiddlewaretoken': getCookie('csrftoken'),
-      'lela_estilo': $('#check-lela_estilo').is(':checked')
-    };
-    // POST, y si success, avisar... no sea cosa que el usuario pierda el contexto
-    $.post('/config', datos).success(function() {
-      alert("¡Éxito! Se aplicará cuando recargue la página.")
-    });
-  });
-</script>
 </html>
