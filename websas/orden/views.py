@@ -46,7 +46,7 @@ class OrdenCreate(CreateView):
         if persona.sos(Cliente):
             orden = Orden(usuario=request.user, cliente=persona.como(Cliente), tecnico=tecnico.como(Tecnico), rubro=rubro, tipo_servicio=servicio, descripcion=descripcion,equipo=equipo)
             orden.save()
-            
+
             return JsonResponse({"data": reverse_lazy("orden:orden_ver", args=(orden.id, ))})
 
         return JsonResponse({'data':'Todo mall'})
@@ -62,7 +62,7 @@ class OrdenCerrar(View):
             orden.cerrar()
         except Exception as e:
             response = JsonResponse({'error': str(e)})
-            response.status_code = 403  
+            response.status_code = 403
             return response
         return JsonResponse({'data':'ok'})
 
@@ -77,7 +77,7 @@ class OrdenCancelar(View):
             orden.cancelar()
         except Exception as e:
             response = JsonResponse({'error': str(e)})
-            response.status_code = 403  
+            response.status_code = 403
             return response
         return JsonResponse({'data':'ok'})
 
@@ -91,7 +91,7 @@ class OrdenDelete(DeleteView):
     template_name = 'orden/orden_delete.html'
     success_url = reverse_lazy('orden:orden_listar')
 
-    @method_decorator(permission_required('orden.delete_orden', login_url='orden:orden_listar'))        
+    @method_decorator(permission_required('orden.delete_orden', login_url='orden:orden_listar'))
     def post(self, request, *args, **kwargs):
         return super(self.__class__, self).post(request,*args, **kwargs)
 
@@ -104,11 +104,11 @@ class OrdenDetail(DetailView):
         contexto = super(self.__class__, self).get_context_data(**kwargs)
         pk = self.kwargs.get('pk')
         orden = Orden.objects.get(pk=pk)
-        contexto['tipos_tareas'] = orden.rubro.tipos_tareas_related
+        contexto['tipos_tareas'] = orden.rubro.tipos_tareas.all()
         contexto['tareas_presupuestadas'] = orden.tareas_presupuestadas
         return contexto
 
-    @method_decorator(permission_required('orden.change_orden', login_url='orden:orden_listar'))        
+    @method_decorator(permission_required('orden.change_orden', login_url='orden:orden_listar'))
     def post(self, request, *args, **kwargs):
         return super(self.__class__, self).post(request,*args, **kwargs)
 

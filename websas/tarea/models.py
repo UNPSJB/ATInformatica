@@ -4,6 +4,8 @@ from usuario.models import Usuario
 from servicio.models import TipoServicio
 from tarifa.models import Tarifa
 from safedelete.models import SafeDeleteModel, SOFT_DELETE
+from safedelete.managers import SafeDeleteManager, DELETED_VISIBLE
+from safedelete.queryset import SafeDeleteQueryset
 from decimal import Decimal
 
 # Create your models here.
@@ -37,10 +39,10 @@ class TipoTarea(SafeDeleteModel):
     def __str__(self):
         return "{}".format(self.nombre)
 
-class TareaBaseManager(models.Manager):
+class TareaBaseManager(SafeDeleteManager):
     pass
 
-class TareaQuerySet(models.QuerySet):
+class TareaQuerySet(SafeDeleteQueryset):
     def en_estado(self, estados):
         if type(estados) != list:
             estados = [estados]
@@ -60,6 +62,9 @@ class Tarea(SafeDeleteModel):
         productos(:[obj..]:Producto, opcional): colección de productos (repuestos) necesarios para la tarea
         precio(:obj: Decimal): precio de la tarea """
 
+    _safedelete_policy = SOFT_DELETE
+    # objects = TareaManager()
+
     tipo_tarea = models.ForeignKey(
         TipoTarea, related_name="tareas"
     )
@@ -69,7 +74,6 @@ class Tarea(SafeDeleteModel):
     observacion = models.CharField(max_length=250, null=True, blank=True)
     productos = models.ManyToManyField('producto.Producto', through='producto.ReservaStock', related_name='tareas')
     precio = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0'))
-    objects = TareaManager()
 
     class Meta:
         unique_together = (("tipo_tarea", "orden"),)
@@ -226,6 +230,8 @@ class Tarea(SafeDeleteModel):
         self.precio=Decimal(precio)
         self.save()
 
+class EstadoTareaManager(SafeDeleteManager):
+    _safedelete_visibility = DELETED_VISIBLE
 
 class EstadoTarea(SafeDeleteModel):
     """Modelo de Estado para la Tarea"""
@@ -233,6 +239,10 @@ class EstadoTarea(SafeDeleteModel):
     TIPOS = [
         (0, "estado")
     ]
+
+    _safedelete_policy = SOFT_DELETE
+    objects = EstadoTareaManager()
+
     tarea = models.ForeignKey(Tarea, related_name="estados")
     tipo = models.PositiveSmallIntegerField(choices=TIPOS)
     timestamp = models.DateTimeField(auto_now=True)
@@ -321,6 +331,8 @@ for Klass in EstadoTarea.__subclasses__():
     EstadoTarea.register(Klass)
 
 class ObservacionTarea(SafeDeleteModel):
+
+    _safedelete_policy = SOFT_DELETE
 
     tarea = models.ForeignKey(
         Tarea, related_name="observaciones"
