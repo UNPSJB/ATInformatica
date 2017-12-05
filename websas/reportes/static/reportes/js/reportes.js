@@ -38,7 +38,8 @@ $("#daterangepicker").daterangepicker(
         'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
         'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
         'Este mes': [moment().startOf('month'), moment().endOf('month')],
-        'Último mes': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        'Último mes': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+        'Último trimestre': [moment().subtract(3, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
     },
     "alwaysShowCalendars": true,
     "showCustomRangeLabel": false,
@@ -56,6 +57,9 @@ $("#daterangepicker").on("show.daterangepicker", function(ev, picker) {
     /**
      * Evento que se dispara cuando se muestra el datepicker
      */    
+    $("#chart-error").hide()
+    $("#chart-container").hide()
+    $("#total-facturado").hide()
 })
 
 
@@ -68,34 +72,53 @@ $("#daterangepicker").on("apply.daterangepicker", function(ev, picker){
 
     init_chart()
 
+    var fecha_ini = picker.startDate.format("DD/MM/YYYY")
+    var fecha_fin = picker.endDate.format("DD/MM/YYYY")
+
     $.ajax({
         url: $(location).attr("href"),
         type: "GET",
         data: {
-            "fecha_ini": picker.startDate.format("DD/MM/YYYY"),
-            "fecha_fin": picker.endDate.format("DD/MM/YYYY"),
+            "fecha_ini": fecha_ini,
+            "fecha_fin": fecha_fin,
         },
         dataType: "json",
         success: function(data){
             //Si la lista de ordenes viene vacia, mostramos el error
             if(data.ordenes.length == 0){
-                $("#chart-error").addClass("alert-warning")                
-                $("#chart-error").html("<strong >Su consulta no ha generado resultados</strong>")
+                //$("#chart-error").addClass("alert-warning")                
+                $("#chart-error").html("<strong>Su consulta no ha generado resultados</strong>")
                 $("#chart-error").fadeIn()
                 return
             }
             //Si no, no mostramos error y cargamos los datos en el grafico
-            $("#chart-error").hide()
+            var total_facturado = 0
             for (let i = 0; i < data.ordenes.length; i++) {
                 const ot = data.ordenes[i];
                 chart.data.labels.push(ot.propietario)
                 chart.data.datasets[0].data.push(ot.total)
-                chart.update()
-                console.log(ot.propietario, ot.total);
+                total_facturado += parseInt(ot.total)
             }
+            chart.update()
             //mostramos el grafico
             $("#chart-container").show()
+            $("#fecha-ini").html(fecha_ini)
+            $("#fecha-fin").html(fecha_fin)
+            $("#total").html("$" + total_facturado)
+            $("#total-facturado").show()
         },
     })
 })
 
+function imprimir(){
+
+    var canvas = $("#chart-ots-clientes")[0]
+    var canvasImg = canvas.toDataURL("image/jpg", 1.0)
+
+    var doc = new jsPDF("landscape")
+    var total = $("#msg-total").text()
+    doc.setFontSize(20)
+    doc.text(total, 100, 100)
+    doc.addImage(canvasImg, "JPEG", 10, 10, 280, 150)
+    doc.save('prueba.pdf')
+}
