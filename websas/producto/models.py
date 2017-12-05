@@ -100,7 +100,7 @@ class ReservaStock(SafeDeleteModel):
     def save(self, *args, **kwagrs):
 
         # Verificar que sea la primera vez que se hace el save con el self.pk is None
-        if self.pk is None and self.__class__.objects.filter(producto=self.producto, tarea=self.tarea).exists():
+        if self.__class__.objects.filter(producto=self.producto, tarea=self.tarea).exists():
             raise Exception("El producto {} ya se encuentra reservado para la tarea {}".format(self.producto, self.tarea))
 
         self.precio_unitario = self.producto.precio

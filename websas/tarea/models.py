@@ -63,7 +63,7 @@ class Tarea(SafeDeleteModel):
         precio(:obj: Decimal): precio de la tarea """
 
     _safedelete_policy = SOFT_DELETE
-    # objects = TareaManager()
+    objects = TareaManager()
 
     tipo_tarea = models.ForeignKey(
         TipoTarea, related_name="tareas"
@@ -98,7 +98,7 @@ class Tarea(SafeDeleteModel):
         if not self.reservas:
             return 0
         costo_repuestos = 0
-        for reserva in self.reservas.all():
+        for reserva in self.reservas_stock:
             costo_repuestos += reserva.precio_unitario * reserva.cantidad
         # por cada reserva multiplicar precio_unitario por cantidad
         return costo_repuestos
@@ -109,7 +109,7 @@ class Tarea(SafeDeleteModel):
 
     @property
     def reservas_stock(self):
-        return self.reservas.all()
+        return self.reservas.all_with_deleted()
 
     @property
     def observaciones_tarea(self):
@@ -233,7 +233,7 @@ class Tarea(SafeDeleteModel):
 class EstadoTareaManager(SafeDeleteManager):
     _safedelete_visibility = DELETED_VISIBLE
 
-class EstadoTarea(SafeDeleteModel):
+class EstadoTarea(models.Model):
     """Modelo de Estado para la Tarea"""
     TIPO = 0
     TIPOS = [
@@ -241,7 +241,7 @@ class EstadoTarea(SafeDeleteModel):
     ]
 
     _safedelete_policy = SOFT_DELETE
-    objects = EstadoTareaManager()
+    # objects = EstadoTareaManager()
 
     tarea = models.ForeignKey(Tarea, related_name="estados")
     tipo = models.PositiveSmallIntegerField(choices=TIPOS)
