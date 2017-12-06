@@ -96,6 +96,7 @@ class ReservaStock(SafeDeleteModel):
     )
     precio_unitario = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0'))
     cantidad = models.PositiveIntegerField()
+    cancelada = models.BooleanField(default=False)
 
     def save(self, *args, **kwagrs):
 
@@ -128,4 +129,8 @@ class ReservaStock(SafeDeleteModel):
         """ Método para consumir los repuestos reservados """
         self.producto.stock -= self.cantidad
         self.producto.save()
+        self.delete()
+
+    def cancelar(self):
+        self.cancelada = True
         self.delete()

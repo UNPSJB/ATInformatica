@@ -7,7 +7,8 @@ from django.contrib.auth.decorators import permission_required
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 from django.core.urlresolvers import reverse_lazy
 from .models import Producto
-from .forms import ProductoForm, ProductoUpdateForm
+from .forms import ProductoForm, ProductoUpdateForm, ReservaCancelarForm, ReservaModificarForm
+from sas.views import AjaxFormView
 # Create your views here.
 
 class ProductoCreate(CreateView):
@@ -48,3 +49,16 @@ class ProductoDetail(DetailView):
     context_object_name = 'producto'
     template_name = 'producto/producto_detail.html'
     success_url = reverse_lazy('producto:producto_listar')
+
+class ReservaCancelar(AjaxFormView):
+
+    def dispatch(self, request, *args, **kwargs):
+        print(request.POST)
+        return super().dispatch(request, *args, **kwargs)
+    form_class = ReservaCancelarForm
+
+class ReservaModificar(AjaxFormView):
+    def dispatch(self, request, *args, **kwargs):
+        print(request.POST)
+        return super().dispatch(request, *args, **kwargs)
+    form_class = ReservaModificarForm

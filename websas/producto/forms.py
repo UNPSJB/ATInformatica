@@ -1,5 +1,5 @@
 from django import forms
-from .models import Producto
+from .models import Producto, ReservaStock
 
 class ProductoForm(forms.ModelForm):
 
@@ -12,14 +12,14 @@ class ProductoForm(forms.ModelForm):
             'stock_minimo',
             'stock',
             'precio',
-        ]  
+        ]
         labels = {
             'nombre':'Nombre',
             'descripcion':'Descripcion',
             'marca':'Marca',
             'stock_minimo':'Stock minimo',
             'stock':'Stock actual',
-            'precio':'Precio $',          
+            'precio':'Precio $',
         }
         error_messages = {
             'nombre' : {
@@ -74,3 +74,28 @@ class ProductoUpdateForm(ProductoForm):
                 'class':'form-control col-md-7 col-xs-12'
                 }),
         }
+
+
+class ReservaCancelarForm(forms.Form):
+    reserva_id = forms.IntegerField()
+
+    def clean(self):
+        if not ReservaStock.objects.filter(pk=reserva_id).exists():
+            raise forms.ValidationError("No existe la reserva")
+
+    def save(self, commit=True):
+        reserva = ReservaStock.objects.get(pk=self.cleaned_data.get("reserva_id"))
+        reserva.cancelar()
+
+class ReservaModificarForm(forms.Form):
+    reserva_id = forms.IntegerField()
+    cantidad = forms.IntegerField()
+
+    def clean(self):
+        if not ReservaStock.objects.filter(pk=self.cleaned_data.get("reserva_id")).exists():
+            raise forms.ValidationError("No existe la reserva")
+
+    def save(self, commit=True):
+        reserva = ReservaStock.objects.get(pk=self.cleaned_data.get("reserva_id"))
+        reserva.cantidad = self.cleaned_data.get("cantidad")
+        reserva.save()

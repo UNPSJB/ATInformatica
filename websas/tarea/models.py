@@ -109,7 +109,7 @@ class Tarea(SafeDeleteModel):
 
     @property
     def reservas_stock(self):
-        return self.reservas.all_with_deleted()
+        return self.reservas.all_with_deleted().filter(cancelada=False)
 
     @property
     def observaciones_tarea(self):

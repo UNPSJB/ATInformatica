@@ -32,13 +32,14 @@
           <!-- <div id="mainb" style="height:350px;"> -->
           <div>
             <p class="lead">Repuestos reservados</p>
-            <table class="table table-striped jambo_table">
+            <table id="tabla-reservas" class="table table-striped jambo_table">
               <thead>
                 <tr class="headings">
                   <th class="column-title">Producto </th>
                   <th class="column-title">Cantidad </th>
                   <th class="column-title">Precio unitario </th>
                   <th class="column-title">Subtotal </th>
+                  <th class="column-title">Eliminar </th>
                 </tr>
               </thead>
 
@@ -49,7 +50,43 @@
                   <td class=" ">{{ reserva.cantidad }}</td>
                   <td class=" ">{{ reserva.precio_unitario }}</td>
                   <td class=" ">{{ reserva.subtotal }}</td>
+                  <td class="celda_control"><a class="fa fa-trash" data-ajax-url="{% url 'producto:reserva_cancelar' %}" onclick="alert('adasd')"></a></td>
                 </tr>
+
+
+                <!-- Modal -->
+                <div class="modal fade"  id="modal-detalle-reserva" data-ajax_url="{% url 'producto:reserva_modificar'%}" data-id_reserva="{{ reserva.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            &times;
+                        </button>
+                          <h5 class="modal-title" id="exampleModalLabel">{{ reserva.producto.nombre }} reservados</h5>
+                      </div>
+                      <div class="modal-body">
+                          <div class="form-group">
+                              <label for="cantidad">Cantidad: </label>
+                              <input id="input-modificar-cantidad" name="cantidad" type="" value="{{reserva.cantidad}}">
+
+                              <div style="display:inline-block"  class="">
+                                <strong id="cantidad-error" hidden class="red">
+                                  Debe ingresar una cantidad válida
+                                </strong>
+                              </div>            
+
+                          </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" onclick="modificarReserva()">Guardar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!--fin modal-->
+
                 {% endfor %} {% endif %}
               </tbody>
             </table>
@@ -166,5 +203,24 @@
 <script src="{% static '/js/reservar_stock.js' %}"></script>
 <script src="{% static '/js/agregar_observacion.js' %}"></script>
 <script src="{% static '/js/cambiar_precio.js' %}"></script>
+<script src="{% static '/js/modificar_reserva.js' %}"></script>
+
+<script>
+// Registrar el onclick para la fila en las tablas .tableclick,
+// excepto si no hay data, o en la .celda_control, que es la que expande las
+// columnas ocultas por el responsiveness del DataTable, lo cual está bueno.
+$(document).ready(function() {
+    $("#tabla-reservas").each(function(e) {
+        $(this).on(
+            'click',
+            'tbody tr td:not(".celda_control"):not(".dataTables_empty"):not(".celda_input")',
+            function(e) {
+                var modal = $("#modal-detalle-reserva")
+                modal.modal("show")
+            }
+        );
+    });
+});
+</script>
 
 {% endblock scripts %}
