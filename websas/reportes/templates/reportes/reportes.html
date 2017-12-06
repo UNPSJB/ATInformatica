@@ -2,45 +2,83 @@
 {% load staticfiles %}
 
 {% block contenido %}
-    <div class="x_panel">
-        <div id="reporte-total-ots" class="container">
+    <!--primer panel-->
+    <div class="col-md-12">
+        <div class="x_panel">
             <div class="x_title">
                 <h1>Indique las fechas</h1>
             </div>
-            
             <div class="x_content">
                 <div class="form_group" style="margin-bottom: 2em">
                     <input type="text" name="daterangepicker" id="daterangepicker">
                 </div>
+            </div>
+        </div>
+    </div>
 
-                <div class=""></div>
-                
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="x_panel">
+            <div class="x_content">
+            
                 <div id="chart-error" hidden class="alert alert-warning"></div>
-                
+            
                 <div class="col-md-6">
                     <div id="chart-container" hidden class="chart-container" style="position: relative; height: 60vh; width: 60vh">
                         <canvas id="chart-ots-clientes" width="400" height="400"></canvas>
                     </div>
                 </div>
-                
+            
+            </div>
+        </div>
+    </div>
+
+    <!--segundo panel-->
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="x_panel tile">
+            <div class="x_title">
+                <h1>Indique las fechas</h1>
+            </div>
+        
+            <div class="x_content">
                 <div id="total-facturado" hidden class="col-md-6">
                     <div id="msg-total">
                         <h1>Total facturado entre <span id="fecha-ini"></span> y <span id="fecha-fin"></span>: 
                             <br/>
-                
+            
                             <strong><span id="total"></span></strong></h1>
                     </div>
                     <button class="btn btn-warning" onclick="imprimir()">
                         <i class="fa fa-print"></i> Descargar PDF
                     </button>
                 </div>
-
             </div>
-            
+        
         </div>
     </div>
 
+    <!--tercer panel-->
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="x_panel tile">
+            <div class="x_title">
+                <h1>Indique las fechas</h1>
+            </div>
+        
+            <div class="x_content"></div>
+        
+        </div>
+    </div>
 
+    <!--cuarto panel-->
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="x_panel tile">
+            <div class="x_title">
+                <h1>Indique las fechas</h1>
+            </div>
+        
+            <div class="x_content"></div>
+        
+        </div>
+    </div>
 {% endblock contenido %}
 
 {% block scripts %}
