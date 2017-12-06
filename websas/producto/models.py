@@ -21,9 +21,9 @@ class Producto(SafeDeleteModel):
 
     _safedelete_policy = SOFT_DELETE
 
-    nombre = models.CharField(max_length=20)
+    nombre = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=50, null=True, blank=True)
-    marca = models.CharField(max_length=20)
+    marca = models.CharField(max_length=100)
     stock_minimo = models.IntegerField()
     stock = models.IntegerField()
     precio = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0'))
