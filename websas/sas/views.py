@@ -25,14 +25,9 @@ class AjaxFormView(View):
         response.status_code = self.response_error_status_code
         return response
 
+
 class IndexView(TemplateView):
     template_name = 'principal.html'
-
-
-class ConfigView(View):
-    def post(self, request):
-        request.session['lela_estilo'] = (request.POST['lela_estilo'] == 'true')
-        return HttpResponse(status=200)
 
 
 class SASAdminView(TemplateView):
