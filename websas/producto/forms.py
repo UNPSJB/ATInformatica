@@ -80,7 +80,7 @@ class ReservaCancelarForm(forms.Form):
     reserva_id = forms.IntegerField()
 
     def clean(self):
-        if not ReservaStock.objects.filter(pk=reserva_id).exists():
+        if not ReservaStock.objects.filter(pk=self.cleaned_data.get("reserva_id")).exists():
             raise forms.ValidationError("No existe la reserva")
 
     def save(self, commit=True):

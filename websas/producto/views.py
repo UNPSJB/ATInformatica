@@ -52,13 +52,8 @@ class ProductoDetail(DetailView):
 
 class ReservaCancelar(AjaxFormView):
 
-    def dispatch(self, request, *args, **kwargs):
-        print(request.POST)
-        return super().dispatch(request, *args, **kwargs)
     form_class = ReservaCancelarForm
 
 class ReservaModificar(AjaxFormView):
-    def dispatch(self, request, *args, **kwargs):
-        print(request.POST)
-        return super().dispatch(request, *args, **kwargs)
+
     form_class = ReservaModificarForm
