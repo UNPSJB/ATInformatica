@@ -85,7 +85,7 @@ $("#daterangepicker").on("apply.daterangepicker", function(ev, picker){
         dataType: "json",
         success: function(data){
             //Si la lista de ordenes viene vacia, mostramos el error
-            if(data.ordenes.length == 0){
+            if(data.ordenes_total.length == 0){
                 //$("#chart-error").addClass("alert-warning")                
                 $("#chart-error").html("<strong>Su consulta no ha generado resultados</strong>")
                 $("#chart-error").fadeIn()
@@ -93,8 +93,8 @@ $("#daterangepicker").on("apply.daterangepicker", function(ev, picker){
             }
             //Si no, no mostramos error y cargamos los datos en el grafico
             var total_facturado = 0
-            for (let i = 0; i < data.ordenes.length; i++) {
-                const ot = data.ordenes[i];
+            for (let i = 0; i < data.ordenes_total.length; i++) {
+                const ot = data.ordenes_total[i];
                 chart.data.labels.push(ot.propietario)
                 chart.data.datasets[0].data.push(ot.total)
                 total_facturado += parseInt(ot.total)
