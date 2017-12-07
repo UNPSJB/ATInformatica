@@ -92,11 +92,13 @@ $("#daterangepicker").on("apply.daterangepicker", function(ev, picker){
                 return
             }
             //Si no, no mostramos error y cargamos los datos en el grafico
+            console.log(data)
             var total_facturado = 0
             for (let i = 0; i < data.ordenes_total.length; i++) {
                 const ot = data.ordenes_total[i];
                 chart.data.labels.push(ot.propietario)
                 chart.data.datasets[0].data.push(ot.total)
+                chart.data.datasets[1].data.push(ot.cantidad)
                 total_facturado += parseInt(ot.total)
             }
             chart.update()

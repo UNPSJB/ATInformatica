@@ -21,44 +21,46 @@ class ReporteTotalOrdenesClientesRangoTiempo(TemplateView):
 
         return super().get(request, *args, **kwargs)
 
-    def ajax_get(self, request, *args, **kwargs):        
+    def ajax_get(self, request, *args, **kwargs):
         form = ReporteTotalOrdenesClientesRangoTiempoForm(request.GET or None)
 
         if form.is_valid():
-            
+
             fecha_ini = form.cleaned_data.get("fecha_ini")
             fecha_fin = form.cleaned_data.get("fecha_fin")
-            
+
             ordenes_total = Orden.objects.filter(
                 fecha_fin__range=[fecha_ini, fecha_fin]).values(
-                    propietario=Concat(Upper(F("cliente__persona__apellido")),
-                    Value(", "), 
+                    propietario=Concat(Upper(
+                    F("cliente__persona__apellido")),
+                    Value(", "),
                     F("cliente__persona__nombre"))).annotate(
-                    total=Sum("precio_final"))
-            
-            ordenes_cantidad_cliente = Orden.objects.filter(
-                fecha_fin__range=[fecha_ini, fecha_fin]).values(
-                    propietario=Concat(Upper(F("cliente__persona__apellido")),
-                    Value(", "), 
-                    F("cliente__persona__nombre"))).annotate(
+                    total=Sum("precio_final")).annotate(
                     cantidad=Count("precio_final"))
+
+            # ordenes_cantidad_cliente = Orden.objects.filter(
+                # fecha_fin__range=[fecha_ini, fecha_fin]).values(
+                    # propietario=Concat(Upper(F("cliente__persona__apellido")),
+                    # Value(", "),
+                    # F("cliente__persona__nombre"))).annotate(
+                    # cantidad=Count("precio_final"))
 
             ordenes_cantidad_tecnico = Orden.objects.filter(
                 fecha_fin__range=[fecha_ini, fecha_fin]).values(
-                    creador=Concat(Upper(F("tecnico__persona__apellido")),
-                    Value(", "), 
+                    tecnico_encargado=Concat(Upper(F("tecnico__persona__apellido")),
+                    Value(", "),
                     F("tecnico__persona__nombre"))).annotate(
                     total=Count("precio_final"))
 
 
             print(ordenes_total)
-            print(ordenes_cantidad_cliente)
+            # print(ordenes_cantidad_cliente)
             print(ordenes_cantidad_tecnico)
-                
+
             return JsonResponse(
                 {
                     "ordenes_total": list(ordenes_total),
-                    "ordenes_cantidad_cliente": list(ordenes_cantidad_cliente),
+                    # "ordenes_cantidad_cliente": list(ordenes_cantidad_cliente),
                     "ordenes_cantidad_tecnico": list(ordenes_cantidad_tecnico)
                 }
             )

@@ -1,6 +1,8 @@
 {% extends "principal.html" %}
 {% load staticfiles %}
-
+{% block estilos %}
+    <link rel="stylesheet" href="{% static 'css/reportes.css'%}">
+{% endblock estilos%}
 {% block contenido %}
     <!--primer panel-->
     <div class="col-md-12">
@@ -23,9 +25,10 @@
                 <div id="chart-error" hidden class="alert alert-warning"></div>
             
                 <div class="col-md-6">
-                    <div id="chart-container" hidden class="chart-container" style="position: relative; height: 60vh; width: 60vh">
+                    <div id="chart-container" hidden class="" style="position: relative; height: 60vh; width: 60vh">
                         <canvas id="chart-ots-clientes" width="400" height="400"></canvas>
                     </div>
+                    <div id="chart-legend" class="chart-legend"></div>
                 </div>
             
             </div>
@@ -36,7 +39,7 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         <div class="x_panel tile">
             <div class="x_title">
-                <h1>Indique las fechas</h1>
+                <h1>Indique las fechas 2</h1>
             </div>
         
             <div class="x_content">
@@ -60,7 +63,7 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         <div class="x_panel tile">
             <div class="x_title">
-                <h1>Indique las fechas</h1>
+                <h1>Indique las fechas 3</h1>
             </div>
         
             <div class="x_content"></div>
@@ -72,10 +75,14 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         <div class="x_panel tile">
             <div class="x_title">
-                <h1>Indique las fechas</h1>
+                <h1>Indique las fechas 4</h1>
             </div>
         
-            <div class="x_content"></div>
+            <div class="x_content">
+                <div id="chart-container" class="" style="position: relative; height: 60vh; width: 60vh">
+                    <canvas id="chart-ots-tecnicos" width="400" height="400"></canvas>
+                </div>
+            </div>
         
         </div>
     </div>
