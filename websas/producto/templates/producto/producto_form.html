@@ -4,7 +4,15 @@
   <div class="row" style="margin-left: 10px; margin-right: 10px;">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Productos</h2>
+        {% if form.instance.id %}
+        {% if perms.producto.change_producto %}
+        <h2>Editar producto</h2>
+        {% else %}
+        <h2>Detalles de producto</h2>
+        {% endif %}
+        {% else %}
+        <h2>Crear producto</h2>
+        {% endif %}
         <div class="clearfix"></div>
       </div>
       <div class="x_content">

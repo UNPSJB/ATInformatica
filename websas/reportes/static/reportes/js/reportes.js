@@ -111,14 +111,28 @@ $("#daterangepicker").on("apply.daterangepicker", function(ev, picker){
 })
 
 function imprimir(){
+    // Init doc
+    var doc = new jsPDF({
+        orientation: 'p',
+        unit: 'mm'
+    });
 
-    var canvas = $("#chart-ots-clientes")[0]
-    var canvasImg = canvas.toDataURL("image/jpg", 1.0)
+    // Cabecera
+    doc.setFontSize(17);
+    doc.setFillColor(24,24,24);
+    
+    doc.rect(4,0,doc.internal.pageSize.width, 25, 'F');
 
-    var doc = new jsPDF("landscape")
-    var total = $("#msg-total").text()
-    doc.setFontSize(20)
-    doc.text(total, 100, 100)
-    doc.addImage(canvasImg, "JPEG", 10, 10, 280, 150)
-    doc.save('prueba.pdf')
+    
+
+    var canvas = $("#chart-ots-clientes")[0];
+    var canvasImg = canvas.toDataURL("image/jpg", 0.6);
+
+
+    var total = 'Total facturado por cliente\nen el período ' + $('#fecha-ini').text() + ' al ' + $('#fecha-fin').text() + ':';
+    
+    doc.setFontSize(20);
+    doc.text(30, 40, total);
+    doc.addImage(canvasImg, 'PNG', 30, 80, 70, 70);
+    doc.save('prueba.pdf');
 }

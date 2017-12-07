@@ -16,16 +16,6 @@ las pantallas de la interfaz, con explicaciones de cada parte.
 
 .. toctree::
     :caption: Pantallas disponibles:
+    :glob:
 
-    interfaz/login
-    interfaz/primer_login
-    interfaz/principal
-    interfaz/menu_admin
-    interfaz/clientes
-    interfaz/tecnicos
-    interfaz/rubros
-    interfaz/equipos
-    interfaz/productos
-    interfaz/servicios
-    interfaz/ordenes
-
+    interfaz/*
