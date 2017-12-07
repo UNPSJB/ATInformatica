@@ -11,8 +11,8 @@ from persona.views.empleado import EmpleadoCreate, EmpleadoDelete, EmpleadoDetai
 class GerenteCreate(EmpleadoCreate):
     
     success_url = reverse_lazy('empleado:gerente:gerente_listar')
-    template_name = 'persona/gerente_form.html'
-    _rol = Gerente()
+    # template_name = 'persona/gerente_form.html'
+    rol = Gerente()
 
     @method_decorator(permission_required('persona.add_gerente', login_url='empleado:gerente:gerente_listar'))        
     def post(self, request, *args, **kwargs):

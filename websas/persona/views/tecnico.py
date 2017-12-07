@@ -10,9 +10,9 @@ from persona.views.empleado import EmpleadoCreate, EmpleadoDelete, EmpleadoDetai
 
 class TecnicoCreate(EmpleadoCreate):
     
-    template_name = 'persona/tecnico_form.html'
+    # template_name = 'persona/tecnico_form.html'
     success_url = reverse_lazy('empleado:tecnico:tecnico_listar')
-    _rol = Tecnico()
+    rol = Tecnico()
 
     @method_decorator(permission_required('persona.add_tecnico', login_url='empleado:tecnico:tecnico_listar'))
     def post(self, request, *args, **kwargs):

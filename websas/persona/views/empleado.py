@@ -15,15 +15,17 @@ Vistas de empleados
 """""""""""""""""""""""""""""""""""""""
 class EmpleadoCreate(CreateView):
     model = Persona
-    form_class = EmpleadoForm
-    _rol = Cliente()
+    form_class = PersonaForm
+    template_name = 'persona/empleado_form.html'
+    rol = " "
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
         form = self.form_class(request.POST)
         if form.is_valid():
             persona = form.save()
-            persona.agregar_rol(self._rol)
+            # import ipdb; ipdb.set_trace()
+            persona.agregar_rol(self.rol)
             persona.save()
             return HttpResponseRedirect(self.get_success_url())
         return self.render_to_response(self.get_context_data(form=form))

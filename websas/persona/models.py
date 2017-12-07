@@ -119,8 +119,6 @@ class Cliente(Rol):
     """ Modelo de rol Técnico. """
     TIPO = 2
 
-    def ordenes(self, estado):
-        return self.ordenes.filter(isinstance(self.ordenes.estado, estado))
 
 class JefeTaller(Rol):
     """ Modelo de rol Técnico. """

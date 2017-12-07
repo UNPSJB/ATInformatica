@@ -10,9 +10,9 @@ from persona.views.empleado import EmpleadoCreate, EmpleadoDelete, EmpleadoDetai
 
 class JefeTallerCreate(EmpleadoCreate):
 
-    template_name = 'persona/jefe_form.html' 
+    # template_name = 'persona/jefe_form.html' 
     success_url = reverse_lazy('empleado:jefe:jefe_listar')
-    _rol = JefeTaller()
+    rol = JefeTaller()
 
     @method_decorator(permission_required('persona.add_jefetaller', login_url='empleado:jefe:jefe_listar'))
     def post(self, request, *args, **kwargs):

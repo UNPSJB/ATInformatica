@@ -1,5 +1,5 @@
 from django import forms
-from .models import Persona
+from .models import Persona, Rol
 
 class PersonaForm (forms.ModelForm):
 
@@ -92,15 +92,7 @@ class PersonaUpdateForm(PersonaForm):
 
 class EmpleadoForm(PersonaForm):
     
-    class Meta(PersonaForm.Meta):
-        fields = [
-            'nombre',
-            'apellido',
-            'doc',
-            'domicilio',
-            'email',
-            'telefono',
-        ]
+    roles = forms.ModelChoiceField(queryset=Rol.objects.values("tipo").distinct().exclude(tipo=2).exclude(tipo=10).all())
 
 class EmpleadoUpdateForm(PersonaUpdateForm):
     
