@@ -41,7 +41,7 @@ class ReporteTotalOrdenesClientesRangoTiempo(TemplateView):
                     propietario=Concat(Upper(F("cliente__persona__apellido")),
                     Value(", "), 
                     F("cliente__persona__nombre"))).annotate(
-                    total=Count("precio_final"))
+                    cantidad=Count("precio_final"))
 
             ordenes_cantidad_tecnico = Orden.objects.filter(
                 fecha_fin__range=[fecha_ini, fecha_fin]).values(
