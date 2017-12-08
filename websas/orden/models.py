@@ -146,7 +146,7 @@ class Orden(SafeDeleteModel):
             total += tarea.subtotal
         return total
 
-    def _hacer_en_tareas(self, ids_tareas, accion):
+    def _hacer_en_tareas(self, ids_tareas, accion,usuario):
         """ Método privado para realizar una acción en un conjunto de tareas
 
         Args:
@@ -158,28 +158,28 @@ class Orden(SafeDeleteModel):
             if type(ids_tareas) != list:
                 ids_tareas = [ids_tareas]
 
-            [tarea.hacer(accion) for tarea in self.tareas.filter(pk__in=ids_tareas)]
+            [tarea.hacer(accion,usuario=usuario) for tarea in self.tareas.filter(pk__in=ids_tareas)]
 
-    def aceptar_tareas(self, ids_tareas):
+    def aceptar_tareas(self, ids_tareas,usuario):
         """ Método que invoca _hacer_en_tareas ordenándole la accion "aceptar".
 
         Args:
             ids_tareas([int..]): ids del conjunto de tareas a aceptar """
-        self._hacer_en_tareas(ids_tareas, "aceptar")
+        self._hacer_en_tareas(ids_tareas, "aceptar",usuario=usuario)
 
-    def finalizar_tareas(self, ids_tareas):
+    def finalizar_tareas(self, ids_tareas,usuario):
         """ Método que invoca _hacer_en_tareas ordenándole la accion "finalizar".
 
         Args:
             ids_tareas([int..]): ids del conjunto de tareas a finalizar """
-        self._hacer_en_tareas(ids_tareas, "finalizar")
+        self._hacer_en_tareas(ids_tareas, "finalizar", usuario=usuario)
 
-    def cancelar_tareas(self, ids_tareas):
+    def cancelar_tareas(self, ids_tareas,usuario):
         """ Método que invoca _hacer_en_tareas ordenándole la accion "cancelar".
 
         Args:
             ids_tareas([int..]): ids del conjunto de tareas a cancelar """
-        self._hacer_en_tareas(ids_tareas, "cancelar")
+        self._hacer_en_tareas(ids_tareas, "cancelar",usuario=usuario)
 
     def reservar_stock(self, id_tarea, producto, cantidad):
         tarea = self.tareas.get(pk=id_tarea)
@@ -187,7 +187,7 @@ class Orden(SafeDeleteModel):
             raise Exception ("No existe la tarea")
         tarea.reservar_stock(producto,  cantidad)
 
-    def cancelar(self):
+    def cancelar(self,usuario):
         """ Método para cancelar la orden de trabajo
 
         Raise:
@@ -195,7 +195,7 @@ class Orden(SafeDeleteModel):
         if self.tareas_realizadas:
             raise Exception("La orden de trabajo nro: {} tiene tareas realizadas y no se puede cancelar".format(self.id))
 
-        [tarea.hacer("cancelar") for tarea in self.tareas.all()]
+        [tarea.hacer("cancelar",usuario=usuario) for tarea in self.tareas.all()]
         self.cancelada = True
         self.fecha_fin = timezone.now()
         self.save()

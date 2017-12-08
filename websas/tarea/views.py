@@ -60,7 +60,7 @@ class TareaAceptar(View):
         tareas = request.POST.getlist('tareas[]')
         if orden is not None:
             try:
-                orden.aceptar_tareas(tareas)
+                orden.aceptar_tareas(tareas, usuario=request.user)
             except Exception as e:
                 response = JsonResponse({'error': str(e)})
                 response.status_code = 403  
@@ -78,7 +78,7 @@ class TareaFinalizar(View):
         tareas = request.POST.getlist('tareas[]')
         if orden is not None:
             try:
-                orden.finalizar_tareas(tareas)
+                orden.finalizar_tareas(tareas,usuario=request.user)
             except Exception as e:
                 response = JsonResponse({'error': str(e)})
                 response.status_code = 403  

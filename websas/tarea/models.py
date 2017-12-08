@@ -264,9 +264,9 @@ class EstadoTarea(models.Model):
         """Devuelve un objeto estado de la Tarea."""
         return self.__class__ != EstadoTarea and self or getattr(self, self.get_tipo_display())
 
-    def cancelar(self):
+    def cancelar(self,usuario):
         [self.cancelar_reserva(reserva) for reserva in self.tarea.reservas.all()]
-        return TareaCancelada(tarea=self.tarea)
+        return TareaCancelada(tarea=self.tarea, usuario=usuario)
 
     def reservar_stock(self, producto, cantidad):
         self.tarea.reservas.create(tarea=self, producto=producto, cantidad=cantidad)
@@ -284,19 +284,19 @@ class EstadoTarea(models.Model):
 class TareaPresupuestada(EstadoTarea):
     """ Se espera que el cliente la acepte """
     TIPO = 1
-    def aceptar(self):
-        return TareaPendiente(tarea=self.tarea)
+    def aceptar(self,usuario):
+        return TareaPendiente(tarea=self.tarea, usuario=usuario)
 
 class TareaPendiente(EstadoTarea):
     """ Fue aceptada la tarea y ahora hay que realizarla """
     TIPO = 2
-    def finalizar(self):
+    def finalizar(self,usuario):
         for reserva in self.tarea.reservas.all():
             if not reserva.hay_stock:
                 raise Exception("No hay stock suficiente para completar la tarea")
         for reserva in self.tarea.reservas.all():
             reserva.usar_repuestos()
-        return TareaRealizada(tarea=self.tarea)
+        return TareaRealizada(tarea=self.tarea, usuario=usuario)
 
         # if any(map(lambda reserva: not reserva.hay_stock, self.tarea.reservas.all())):
         #     raise Exception("No hay stock suficiente para completar la tarea")
