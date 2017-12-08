@@ -3,10 +3,12 @@
 ### Organización: AT-Informática
 
 #### Cátedra
+
     * Lic. Diego van Haaster
     * Lic. Bruno Pazos
 
 #### Alumnos
+
     * Krmpotic, Lucas
     * Serruya Aloisi, Luciano Sebastián
     * Soto, Kevin
