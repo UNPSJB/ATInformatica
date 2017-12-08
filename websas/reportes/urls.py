@@ -1,11 +1,11 @@
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
-from .views import ReporteTotalOrdenesClientesRangoTiempo
+from .views import ReporteTotalOrdenes, ReporteProducto
 urlpatterns = [
     # Matches any html file - to be used for gentella
     # Avoid using your .html in your resources.
     # Or create a separate django app.
 
-    url(r'^ver/', login_required(ReporteTotalOrdenesClientesRangoTiempo.as_view(),
-                                 login_url='usuario:login'), name="reportes"),
+    url(r'^ver/', login_required(ReporteTotalOrdenes.as_view(), login_url='usuario:login'), name="reportes"),
+    url(r'^ver_otro/', login_required(ReporteProducto.as_view(), login_url='usuario:login'), name="productos"),
 ]

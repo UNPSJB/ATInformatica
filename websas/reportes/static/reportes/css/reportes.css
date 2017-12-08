@@ -6,3 +6,8 @@
     background:blue;
     display: inline-block;
 }
+
+.chart-container{
+    height: 300px; 
+    width: 100%;
+}

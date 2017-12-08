@@ -126,9 +126,9 @@ $("#btn-ajax").on("click", function(e){
 
                 total_facturado += parseInt(ot.total)
 
-                cantidad_chart.data.labels[i] = ot.criterio
-                cantidad_chart.data.datasets[0].data[i] = parseInt(ot.cantidad)
-                cantidad_chart.data.datasets[0].backgroundColor[i] = COLORES[randomProperty(COLORES)]
+                cantidad_chart.data.labels.push(ot.criterio)
+                cantidad_chart.data.datasets[0].data.push(parseInt(ot.cantidad))
+                cantidad_chart.data.datasets[0].backgroundColor.push(COLORES[randomProperty(COLORES)])
             }
             chart.update()
             displayBarLegend(chart, "#chart-total-legend")

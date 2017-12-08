@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from django.views.generic import FormView
+from django.views.generic import FormView, TemplateView
 # Create your views here.
 from django.db.models import Sum, Count, F, Value
 from django.db.models.functions import Concat, Upper
@@ -17,7 +17,7 @@ FILTROS = {
     'tecnico': Concat(Upper(F("tecnico__persona__apellido")), Value(', '), F("tecnico__persona__nombre")),
 }
 
-class ReporteTotalOrdenesClientesRangoTiempo(FormView):
+class ReporteTotalOrdenes(FormView):
     template_name = "reportes/reportes.html"
     form_class = ReporteTotalOrdenesForm
 
@@ -38,15 +38,6 @@ class ReporteTotalOrdenesClientesRangoTiempo(FormView):
             fecha_fin = form.cleaned_data.get("fecha_fin")
             filtro = FILTROS[form.cleaned_data.get("filtros")]
 
-            # ordenes_total = Orden.objects.filter(
-                # fecha_fin__range=[fecha_ini, fecha_fin]).values(
-                    # propietario=Concat(Upper(
-                    # F("cliente__persona__apellido")),
-                    # Value(", "),
-                    # F("cliente__persona__nombre"))).annotate(
-                    # total=Sum("precio_final")).annotate(
-                    # cantidad=Count("precio_final"))
-
             ordenes_total = Orden.objects.filter(
                     fecha_fin__range=[fecha_ini, fecha_fin]).values(
                     criterio=filtro).annotate(
@@ -64,35 +55,20 @@ class ReporteTotalOrdenesClientesRangoTiempo(FormView):
                     cantidad=Count("precio_final"))
 
 
-            # ordenes_cantidad_cliente = Orden.objects.filter(
-                # fecha_fin__range=[fecha_ini, fecha_fin]).values(
-                    # propietario=Concat(Upper(F("cliente__persona__apellido")),
-                    # Value(", "),
-                    # F("cliente__persona__nombre"))).annotate(
-                    # cantidad=Count("precio_final"))
-
-            # ordenes_cantidad_tecnico = Orden.objects.filter(
-                # fecha_fin__range=[fecha_ini, fecha_fin]).values(
-                    # tecnico_encargado=Concat(Upper(F("tecnico__persona__apellido")),
-                    # Value(", "),
-                    # F("tecnico__persona__nombre"))).annotate(
-                    # total=Count("precio_final"))
-
-
-            # print(ordenes_total)
-            # print(ordenes_cantidad_cliente)
-            # print(ordenes_cantidad_tecnico)
 
             return JsonResponse(
                 {
                     "ordenes_total": list(ordenes_total),
                     "ordenes_viejas": list(ordenes_viejas),
-                    # "ordenes_cantidad_tecnico": list(ordenes_cantidad_tecnico)
                 }
             )
 
 
         return JsonResponse({})
+
+class ReporteProducto(TemplateView):
+    template_name = "reportes/reporte_productos.html"
+
 
 
 

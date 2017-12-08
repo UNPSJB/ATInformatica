@@ -20,6 +20,7 @@ function init_chart(){
         cantidad_chart.destroy()
     }
 
+    //inicializamos grafico de barras 
     var dataset_total_facturado = {
         label: 'Total facturado en el año actual',
         data: [],
