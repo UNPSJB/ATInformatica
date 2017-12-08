@@ -7,7 +7,7 @@
 
 {% block contenido %}
 {% if user.is_superuser %}
-    {% include 'admin_tiles.html' %}
+    {% include 'admin_tiles.html' with ordenes=ordenes %}
 {% else %}
 <div class="row" style="margin-left: 10px; margin-right: 10px;">
     <h1>WebSAS - Sistema de Administración de Servicios</h1>

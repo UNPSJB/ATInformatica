@@ -1,4 +1,4 @@
-from persona.models import Persona, Cliente, Tecnico, JefeTaller, Gerente
+from persona.models import Persona, Cliente, Rol
 from producto.models import Producto
 from orden.models import Equipo, Orden
 from rubro.models import Rubro
@@ -36,9 +36,10 @@ def websasdbinfo(request):
 
         # Personas
         'cant_clientes': Cliente.objects.count(),
-        'cant_tecnicos': Tecnico.objects.count(),
-        'cant_jefes': JefeTaller.objects.count(),
-        'cant_usuarios': Usuario.objects.count(),
+        'cant_empleados': Rol.objects.all().exclude(tipo=0).exclude(tipo=2).exclude(tipo=10).distinct('persona'),
+        # 'cant_tecnicos': Tecnico.objects.count(),
+        # 'cant_jefes': JefeTaller.objects.count(),
+        # 'cant_usuarios': Usuario.objects.count(),
 
         # Workflow
         'cant_productos': Producto.objects.count(),

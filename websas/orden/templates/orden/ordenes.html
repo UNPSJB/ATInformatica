@@ -1,15 +1,14 @@
-{% extends "principal.html" %}
-{% load staticfiles %}
-
-{% block contenido %}
+{% extends "principal.html" %} {% load staticfiles %} {% block contenido %}
 <div class="row">
+
   <div class="x_panel">
     <div class="x_title">
       <h2>Ordenes de trabajo</h2>
       <div class="clearfix"></div>
     </div>
     <div class="x_content">
-      <table id="datatable-ordenes" class="table table-striped tableclick table-hover table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
+      <table id="datatable-ordenes" class="table table-striped tableclick table-hover table-bordered dt-responsive nowrap" cellSpacing=0
+        width=100%>
         <thead>
           <tr>
             <th data-width="10%" data-priority=1>Fecha creación</th>
@@ -30,29 +29,21 @@
             <td>{% autoescape off %}{{ orden.descripcion }}{% endautoescape %}</td>
             <td>{{ orden.rubro.nombre }}</td>
             <td>{{ orden.tipo_servicio.nombre }}</td>
-            <td> 
-              {% if orden.equipo %} 
-                {{ orden.equipo }} 
-              {% else %} 
-                - 
-              {% endif %} 
+            <td>
+              {% if orden.equipo %} {{ orden.equipo }} {% else %} - {% endif %}
             </td>
             <td align="center">
               {{ orden.condicion }}
             </td>
             <td>
-            {% if orden.fecha_fin %}
-               {{ orden.fecha_fin }}
-            {% else %}
-                -
-            {% endif %}
+              {% if orden.fecha_fin %} {{ orden.fecha_fin }} {% else %} - {% endif %}
             </td>
           </tr>
 
           {% endfor %} {% else %}
 
           <h1>No hay ordenes de trabajo registradas</h1>
-         
+
           {% endif %}
         </tbody>
       </table>
@@ -60,9 +51,7 @@
   </div>
 </div>
 
-{% endblock contenido %}
-
-{% block scripts %} 
+{% endblock contenido %} {% block scripts %}
 <!-- Datatables -->
 <script src="{% static 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
 <script src="{% static 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
@@ -80,5 +69,4 @@
 <script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
 <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
 
-<script src="{% static '/js/ordenes.js' %}"></script> 
-{% endblock scripts %}
+<script src="{% static '/js/ordenes.js' %}"></script> {% endblock scripts %}

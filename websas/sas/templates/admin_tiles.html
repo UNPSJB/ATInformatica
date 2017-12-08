@@ -1,253 +1,168 @@
-<div class="row" style="margin-left: 10px; margin-right: 10px;">
-    <div class="x_panel">
-        <div class="x_title">
-            <h1>Base de datos</h1>
-        </div>
-        <div class="x_content">
-            <!-- TARIFARIO -->
-            <h3>Tarifario</h3>
-
-            <!-- Tipos de Servicio -->
-            {% if DBINFO.cant_tiposservicio > 0 %}
-            <div class="col-xs-6 col-md-3">
-                <a href="{% url 'servicio:servicio_listar' %}">
-            {% else %}
-            <div class="col-xs-6 col-md-3">
-                <a href="{% url 'servicio:servicio_crear' %}">
-            {% endif %}
-                    <div class="tile-stats">
-                        <div class="icon"><i class="fa fa-location-arrow"></i></div>
-                        <div class="count">{{ DBINFO.cant_tiposservicio }}</div>
-                        {% if DBINFO.cant_tiposservicio > 0 %}
-                        <h3>Tipos de Servicio</h3>
-                        <p>Cantidad de Tipos de Servicio registrados.</p>
-                        {% else %}
-                        <h3 style="color: red">Tipos de Servicio</h3>
-                        <p><strong>No hay tipos de Servicio registrados.</strong></p>
-                        {% endif %}
-                    </div>
-                </a>
+{% extends "base_site.html" %}{% load staticfiles %} {% block contenido %}
+<div class="row">
+  <div class="x_panel">
+    <div class="x_title">
+        <h3>Flujo de trabajo</h3>
+    </div>
+    <div class="x_content">
+    <!-- Ordenes de trabajo abiertas -->
+    <div class="col-xs-6 col-md-3">
+        <a href="{% url 'orden:orden_listar' %}">
+          <div class="tile-stats">
+            <div class="icon">
+              <i class="fa fa-file-text-o"></i>
             </div>
-
-            <!-- Rubros -->
-            {% if DBINFO.cant_rubros > 0 %}
-            <div class="col-xs-6 col-md-3">
-                <a href="{% url 'rubro:rubro_listar' %}">
-            {% else %}
-            <div class="col-xs-6 col-md-3">
-                <a href="{% url 'rubro:rubro_crear' %}">
-            {% endif %}
-                    <div class="tile-stats">
-                        <div class="icon"><i class="fa fa-object-group"></i></div>
-                        <div class="count">{{ DBINFO.cant_rubros }}</div>
-                        {% if DBINFO.cant_rubros > 0 %}
-                        <h3>Rubros</h3>
-                        <p>Cantidad de rubros registrados.</p>
-                        {% else %}
-                        <h3 style="color: red">Rubros</h3>
-                        <p><strong>No hay rubros registrados.</strong></p>
-                        {% endif %}
-                    </div>
-                </a>
+            <div class="count">&nbsp;</div>
+            <div>
+                <h3>Todas las Ordenes</h3>
+                <p>Listado completo de Ordenes de Trabajo.</p>
             </div>
-
-            <!-- Tipos de tarea -->
-            <div class="col-xs-6 col-md-3">
-                <a href="{% url 'rubro:rubro_listar' %}">
-                    <div class="tile-stats">
-                        <div class="icon"><i class="fa fa-paint-brush"></i></div>
-                        <div class="count">{{ DBINFO.cant_tipostarea }}</div>
-                        {% if DBINFO.cant_tipostarea > 0 %}
-                        <h3>Tipos de Tarea</h3>
-                        <p>Cantidad de Tipos de Tarea registrados.</p>
-                        {% else %}
-                        <h3 style="color: red">Tipos de Tarea</h3>
-                        <p><strong>No hay tipos de tarea registrados.</strong></p>
-                        {% endif %}
-                    </div>
-                </a>
-            </div>
-
-            <!-- Tarifas -->
-            <div class="col-xs-6 col-md-3">
-                <a href="{% url 'rubro:rubro_listar' %}">
-                    <div class="tile-stats">
-                        <div class="icon"><i class="fa fa-money"></i></div>
-                        <div class="count">{{ DBINFO.cant_tarifas_0 }}</div>
-                        {% if DBINFO.cant_tarifas_0 > 0 %}
-                        <h3 style="color: red">Tareas no tarifadas</h3>
-                        <p><strong>Existen tareas no tarifadas.</strong></p>
-                        {% else %}
-                        <h3>Tareas no tarifadas</h3>
-                        <p>No hay tareas sin tarifar.</p>
-                        {% endif %}
-                    </div>
-                </a>
-            </div>
-
-            <!-------------------------->
-            <div class="clearfix"></div>
-            <div class="ln_solid"></div>
-            <!-------------------------->
-
-            <!-- PERSONAS -->
-            <h3>Personas</h3>
-            
-            <!-- Clientes -->
-            {% if DBINFO.cant_clientes > 0 %}
-            <div class="col-xs-6 col-md-3">
-                <a href="{% url 'cliente:cliente_listar' %}">
-            {% else %}
-            <div class="col-xs-6 col-md-3">
-                <a href="{% url 'cliente:cliente_crear' %}">
-            {% endif %}
-                    <div class="tile-stats">
-                        <div class="icon"><i class="fa fa-users"></i></div>
-                        <div class="count">{{ DBINFO.cant_clientes }}</div>
-                        {% if DBINFO.cant_clientes > 0 %}
-                        <h3>Clientes</h3>
-                        <p>Cantidad de clientes registrados.</p>
-                        {% else %}
-                        <h3 style="color: red">Clientes</h3>
-                        <p><strong>No hay tipos clientes registrados.</strong></p>
-                        {% endif %}
-                    </div>
-                </a>
-            </div>
-
-            <!-- Técnicos -->
-            {% if DBINFO.cant_tecnicos > 0 %}
-            <div class="col-xs-6 col-md-3">
-                <a href="{% url 'empleado:tecnico:tecnico_listar' %}">
-            {% else %}
-            <div class="col-xs-6 col-md-3">
-                <a href="{% url 'empleado:tecnico:tecnico_crear' %}">
-            {% endif %}
-                    <div class="tile-stats">
-                        <div class="icon"><i class="fa fa-user"></i></div>
-                        <div class="count">{{ DBINFO.cant_tecnicos }}</div>
-                        {% if DBINFO.cant_tecnicos > 0 %}
-                        <h3>Técnicos</h3>
-                        <p>Cantidad de técnicos registrados.</p>
-                        {% else %}
-                        <h3 style="color: red">Técnicos</h3>
-                        <p><strong>No hay técnicos registrados.</strong></p>
-                        {% endif %}
-                    </div>
-                </a>
-            </div>
-
-            <!-- Jefes de Taller -->
-            {% if DBINFO.cant_jefes > 0 %}
-            <div class="col-xs-6 col-md-3">
-                <a href="{% url 'empleado:jefe:jefe_listar' %}">
-            {% else %}
-            <div class="col-xs-6 col-md-3">
-                <a href="{% url 'empleado:jefe:jefe_crear' %}">
-            {% endif %}
-                    <div class="tile-stats">
-                        <div class="icon"><i class="fa fa-user-plus"></i></div>
-                        <div class="count">{{ DBINFO.cant_tecnicos }}</div>
-                        {% if DBINFO.cant_tecnicos > 0 %}
-                        <h3>Jefes de Taller</h3>
-                        <p>Cantidad de jefes de taller registrados.</p>
-                        {% else %}
-                        <h3 style="color: red">Jefes de Taller</h3>
-                        <p><strong>No hay jefes de taller registrados.</strong></p>
-                        {% endif %}
-                    </div>
-                </a>
-            </div>
-
-            <div class="clearfix"></div>
-
-            <!-- Usuarios -->
-            <div class="col-xs-6 col-md-3">
-                <a href="{% url 'usuario:grupos' %}">
-                    <div class="tile-stats">
-                        <div class="icon"><i class="fa fa-key"></i></div>
-                        <div class="count">{{ DBINFO.cant_usuarios }}</div>
-                        <h3>Usuarios</h3>
-                        <p>Cantidad de usuarios asignados.</p>
-                    </div>
-                </a>
-            </div>
-
-            <!-------------------------->
-            <div class="clearfix"></div>
-            <div class="ln_solid"></div>
-            <!-------------------------->
-
-            <!-- WORKFLOW -->
-            <h3>Flujo de trabajo</h3>
-
-            <!-- Ordenes de trabajo abiertas -->
-            <div class="col-xs-6 col-md-3">
-                <a href="{% url 'orden:orden_listar' %}">
-                    <div class="tile-stats">
-                        <div class="icon"><i class="fa fa-file-text-o"></i></div>
-                        <div class="count">{{ DBINFO.cant_ordenes_abiertas }}</div>
-                        <h3>Ordenes abiertas</h3>
-                        <p>Cantidad de ordenes de trabajo abiertas.</p>
-                    </div>
-                </a>
-            </div>
-            
-            <!-- Ordenes de trabajo cerradas -->
-            <div class="col-xs-6 col-md-3">
-                <a href="{% url 'orden:orden_listar' %}">
-                    <div class="tile-stats">
-                        <div class="icon"><i class="fa fa-archive"></i></div>
-                        <div class="count">{{ DBINFO.cant_ordenes_cerradas }}</div>
-                        <h3>Ordenes cerradas</h3>
-                        <p>Cantidad de ordenes de trabajo cerradas.</p>
-                    </div>
-                </a>
-            </div>          
-    
-            <!-- Productos -->
-            {% if DBINFO.cant_productos > 0 %}
-            <div class="col-xs-6 col-md-3">
-                <a href="{% url 'producto:producto_listar' %}">
-            {% else %}
-            <div class="col-xs-6 col-md-3">
-                <a href="{% url 'producto:producto_crear' %}">
-            {% endif %}
-                    <div class="tile-stats">
-                        <div class="icon"><i class="fa fa-hdd-o"></i></div>
-                        <div class="count">{{ DBINFO.cant_productos }}</div>
-                        {% if DBINFO.cant_productos > 0 %}
-                        <h3>Productos / Insumos</h3>
-                        <p>Cantidad de productos registrados.</p>
-                        {% else %}
-                        <h3 style="color: red">Productos / Insumos</h3>
-                        <p><strong>No hay productos registrados.</strong></p>
-                        {% endif %}
-                    </div>
-                </a>
-            </div>
-
-            <!-- Equipos -->
-            {% if DBINFO.cant_equipos > 0 %}
-            <div class="col-xs-6 col-md-3">
-                <a href="{% url 'orden:equipo_listar' %}">
-            {% else %}
-            <div class="col-xs-6 col-md-3">
+          </div>
+        </a>
+      </div>
+  
+      <!-- Clientes -->
+      {% if DBINFO.cant_clientes > 0 %}
+      <div class="col-xs-6 col-md-3">
+          <a href="{% url 'cliente:cliente_listar' %}">
+      {% else %}
+      <div class="col-xs-6 col-md-3">
+          <a href="{% url 'cliente:cliente_crear' %}">
+      {% endif %}
+              <div class="tile-stats">
+                  <div class="icon"><i class="fa fa-users"></i></div>
+                  <div class="count">&nbsp;</div>
+                  {% if DBINFO.cant_clientes > 0 %}
+                  <h3>Clientes</h3>
+                  <p>Cantidad de clientes registrados.</p>
+                  {% else %}
+                  <h3 style="color: red">Clientes</h3>
+                  <p><strong>No hay tipos clientes registrados.</strong></p>
+                  {% endif %}
+              </div>
+          </a>
+      </div>
+  
+      <!-- Productos -->
+      {% if DBINFO.cant_productos > 0 %}
+      <div class="col-xs-6 col-md-3">
+        <a href="{% url 'producto:producto_listar' %}">
+          {% else %}
+          <div class="col-xs-6 col-md-3">
+            <a href="{% url 'producto:producto_crear' %}">
+              {% endif %}
+              <div class="tile-stats">
+                <div class="icon">
+                  <i class="fa fa-hdd-o"></i>
+                </div>
+                <div class="count">&nbsp;</div>
+                {% if DBINFO.cant_productos > 0 %}
+                <h3>Productos / Insumos</h3>
+                <p>Cantidad de productos registrados.</p>
+                {% else %}
+                <h3 style="color: red">Productos / Insumos</h3>
+                <p>
+                  <strong>No hay productos registrados.</strong>
+                </p>
+                {% endif %}
+              </div>
+            </a>
+          </div>
+  
+          <!-- Equipos -->
+          {% if DBINFO.cant_equipos > 0 %}
+          <div class="col-xs-6 col-md-3">
+            <a href="{% url 'orden:equipo_listar' %}">
+              {% else %}
+              <div class="col-xs-6 col-md-3">
                 <a href="{% url 'orden:equipo_crear' %}">
-            {% endif %}
-                    <div class="tile-stats">
-                        <div class="icon"><i class="fa fa-desktop"></i></div>
-                        <div class="count">{{ DBINFO.cant_equipos }}</div>
-                        {% if DBINFO.cant_equipos > 0 %}
-                        <h3>Equipos</h3>
-                        <p>Cantidad de equipos registrados.</p>
-                        {% else %}
-                        <h3 style="color: red">Equipos</h3>
-                        <p><strong>No hay equipos registrados.</strong></p>
-                        {% endif %}
+                  {% endif %}
+                  <div class="tile-stats">
+                    <div class="icon">
+                      <i class="fa fa-desktop"></i>
                     </div>
+                    <div class="count">&nbsp;</div>
+                    {% if DBINFO.cant_equipos > 0 %}
+                    <h3>Equipos</h3>
+                    <p>Cantidad de equipos registrados.</p>
+                    {% else %}
+                    <h3 style="color: red">Equipos</h3>
+                    <p>
+                      <strong>No hay equipos registrados.</strong>
+                    </p>
+                    {% endif %}
+                  </div>
                 </a>
-            </div>
+              </div>
+          </div>
+    </div>
+
+        <div class="x_panel">
+      <ul class="nav navbar-right panel_toolbox">
+        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+        </li>
+      </ul>
+          <div class="x_title">
+            <h2>Ordenes de trabajo</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <table id="datatable-ordenes" class="table table-striped tableclick table-hover table-bordered dt-responsive nowrap" cellSpacing=0
+              width=100%>
+              <thead>
+                <tr>
+                  <th data-width="10%" data-priority=1>Fecha creación</th>
+                  <th data-priority=1>Cliente</th>
+                  <th>Descripción</th>
+                  <th>Rubro</th>
+                  <th>Tipo de servicio</th>
+                  <th>Equipo</th>
+                  <th data-width="10%" data-priority=2>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% if ordenes %} {% for orden in ordenes %}
+                <tr data-tableclick="{% url 'orden:orden_ver' orden.id %}">
+                  <td class="celda_control">{{ orden.fecha_creacion }}</td>
+                  <td>{{ orden.cliente.persona.apellido|upper }}, {{ orden.cliente.persona.nombre }}</td>
+                  <td>{% autoescape off %}{{ orden.descripcion }}{% endautoescape %}</td>
+                  <td>{{ orden.rubro.nombre }}</td>
+                  <td>{{ orden.tipo_servicio.nombre }}</td>
+                  <td>
+                    {% if orden.equipo %} {{ orden.equipo }} {% else %} - {% endif %}
+                  </td>
+                  <td align="center">
+                    {{ orden.condicion }}
+                  </td>
+                </tr>
+
+                {% endfor %} {% else %}
+
+                <h1>No hay ordenes de trabajo registradas</h1>
+
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
         </div>
     </div>
-</div>
+
+    {% endblock contenido %} {% block scripts %}
+    <!-- Datatables -->
+    <script src="{% static 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
+    <script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
+    <script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
+    <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
+
+    <script src="{% static '/js/ordenes.js' %}"></script> {% endblock scripts %}

@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView, View
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
+from orden.models import Orden
 
 
 class AjaxFormView(View):
@@ -29,6 +30,10 @@ class AjaxFormView(View):
 class IndexView(TemplateView):
     template_name = 'principal.html'
 
+    def get_context_data(self, **kwargs):
+        contexto = super().get_context_data(**kwargs)
+        contexto['ordenes'] = Orden.objects.exclude(cerrada=True).exclude(cancelada=True)
+        return contexto
 
 class SASAdminView(TemplateView):
     template_name = 'el_admin.html'
