@@ -63,8 +63,10 @@ class Rol(SafeDeleteModel):
     """ Modelo genérico para la gestión de roles de personas. """
     _safedelete_policy = SOFT_DELETE
     TIPO = 0
+    ROLNAME = "Rol"
+
     TIPOS = [
-        (0, "rol")
+        (0, ROLNAME)
     ]
 
     tipo = models.PositiveSmallIntegerField(choices=TIPOS)
@@ -75,6 +77,15 @@ class Rol(SafeDeleteModel):
         null=True
     )
 
+    def __str__(self):
+        return "{}".format(self.ROLNAME)
+    @property
+    def nombre(self):
+        return self.persona.nombre
+
+    @property
+    def apellido(self):
+        return self.persona.apellido
     @property
     def doc(self):
         return self.persona.doc
@@ -113,20 +124,23 @@ class Rol(SafeDeleteModel):
 class Tecnico(Rol):
     """ Modelo de rol Técnico. """
     TIPO = 1
+    ROLNAME = "Técnico"
 
 
 class Cliente(Rol):
     """ Modelo de rol Técnico. """
     TIPO = 2
-
+    ROLNAME = "Cliente"
 
 class JefeTaller(Rol):
     """ Modelo de rol Técnico. """
     TIPO = 3
-
+    ROLNAME = "Jefe de Taller"
 class Gerente(Rol):
     """ Modelo de rol Técnico. """
     TIPO = 4
+    ROLNAME = "Gerente"
+
 
 for Klass in Rol.__subclasses__():
     Rol.register(Klass)

@@ -64,6 +64,7 @@ class CustomUserManager(BaseUserManager):
 
 class Usuario(Rol, AbstractUser):
     TIPO = 10
+    ROLNAME = "Usuario"
 
     primer_login = models.BooleanField(default=True)
 
