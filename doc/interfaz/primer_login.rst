@@ -1,14 +1,17 @@
 Cambio de contraseña inicial
 ============================
 
-Tras ingresar en el :doc:`Login <login>` por primera vez, se le presentará la pantalla
-de cambio de clave automáticamente.
+Esta pantalla se nos presenta tras autenticarnos en el sistema en el :doc:`Login <login>` por primera vez.
 
 .. image::  /imagenes/primer_login.png
     :align: center
 
-* En el campo "Contraseña anterior" debe ingresar la contraseña que le asignó el administrador.
-* En el campo "Contraseña nueva" debe ingresar la contraseña que quiere asignar a su cuenta. Debe contar con algunas medidas de seguridad que le serán indicadas.
-* En el campo "Confirmar contraseña nueva" debe volver a escribir su nueva contraseña.
-* El link "Cancelar" lo lleva a la :doc:`Pantalla Principal <principal>` sin cambiar su contraseña.
-* El botón "Cambiar contraseña" confirma los ingresos anteriores y lo lleva a la pantalla de :doc:`Login <login>`. Deberá volver a ingresar al sistema.
+* En el campo "Contraseña anterior" deberemos ingresar la clave de acceso actual.
+* En el campo "Contraseña nueva" deberemos ingresar una contraseña nueva para nuestro usuario.
+* En el campo "Confirmar contraseña nueva" deberemos ingresar **nuevamente** la contraseña del campo anterior, para confirmar que es correcta.
+* El link "Cancelar" nos llevará a la :doc:`Pantalla Principal <principal>` conservando nuestra contraseña actual.
+* El botón "Cambiar contraseña" confirmará los ingresos anteriores y nos llevará a la pantalla de :doc:`Login <login>`, donde deberemos volver a ingresar al sistema con las nuevas credenciales.
+
+.. seealso::
+    - :doc:`[How-to] Cómo ingresar al sistema </howto/login>`.
+    - :doc:`[How-to] Cómo crear un nuevo usuario </howto/usuario_nuevo>`.

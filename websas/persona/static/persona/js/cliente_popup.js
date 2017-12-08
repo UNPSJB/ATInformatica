@@ -30,17 +30,17 @@ $.ajaxSetup({
     }
 });
 $('#form_cliente').submit(function(event){
-    event.preventDefault()
     $.ajax({    
         //la url a donde hay que pegarle en el servidor esta en el html de la tabla
         //de esta forma, podemos tener el .js separado del .html
         url: '/cliente/crear_ajax',
         type: "POST",
         data:$('#form_cliente').serialize(),
-        done: function(data){
+        success: function(data){
             window.opener.close_popup()
         },
-        error: function(err){}
+        error: function(err){
+        }
 
     })
     return false

@@ -73,9 +73,10 @@ function crearTarea(objs, context){
         }
 
         // Pero primero, la observación:
-        if (data['observacion'] == '') {
-            $('#observaciontarea').select();
-            throw "No puede dejar la observación en blanco";
+        var enblanco = new RegExp('^ *$');
+
+        if (enblanco.test(data['observacion'])) {
+            data['observacion'] = '-';
         }
 
         $.ajax({    

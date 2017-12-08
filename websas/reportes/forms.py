@@ -2,6 +2,15 @@ from django.contrib.auth.forms import forms
 
 FORMATO_FECHA = "%d/%m/%Y"
 
-class ReporteTotalOrdenesClientesRangoTiempoForm(forms.Form):
+
+class ReporteTotalOrdenesForm(forms.Form):
+    CHOICES = (
+        ("rubro", "Rubro"),
+        ("tipo_servicio", "Tipo de servicio"),
+        ("cliente", "Cliente"),
+        ("tecnico", "Técnico"),
+    )
+    filtros = forms.ChoiceField(CHOICES)
+
     fecha_ini = forms.DateTimeField(input_formats=[FORMATO_FECHA])
     fecha_fin = forms.DateTimeField(input_formats=[FORMATO_FECHA])

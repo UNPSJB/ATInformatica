@@ -1,13 +1,17 @@
 Login
 =====
 
-La pantalla de login es la primera pantalla frente a la que se encontrará como usuario.
-Desde aquí, el sistema lo identificará y se encargará de presentarle las opciones adecuadas.
+La pantalla de login nos permite identificarnos en el sistema para poder utilizar las funciones
+para las que el administrador nos haya dado permiso de utilizar.
 
 .. image:: /imagenes/login.png
     :align: center
 
-* En el campo "Usuario" deberá ingresar su nombre de usuario, asignado por el administrador.
-* En el campo "Contraseña" deberá ingresar su clave.
-* El botón "Ingresar" valida su nombre de usuario y contraseña, y finalmente le da acceso al sistema.
-    
+* En el campo "Usuario" deberemos ingresar nuestro nombre de usuario.
+* En el campo "Contraseña" deberemos ingresar nuestra clave de acceso.
+* El botón "Ingresar" validará el nombre de usuario y la contraseña ingresados, y nos dará acceso al sistema de ser correctos.
+* El link "¿Necesita ayuda?" nos traerá a esta página del manual.
+
+.. seealso::
+    - :doc:`[How-to] Cómo ingresar al sistema </howto/login>`.
+    - :doc:`[How-to] Cómo crear un nuevo usuario </howto/usuario_nuevo>`.

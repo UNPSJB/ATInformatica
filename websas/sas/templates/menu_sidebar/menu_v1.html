@@ -9,7 +9,7 @@
         {% if perms.orden.add_orden %}
         <li><a href="{% url 'orden:orden_crear' %}">Crear</a></li>
         {% endif %}
-        <li><a href="{% url 'orden:orden_listar' %}">Listar</a></li>
+        <li><a href="{% url 'orden:orden_listar' %}">Listados</a></li>
       </ul>
     </li>
     <li><a><i class="fa fa-cubes"></i> Equipos <span class="fa fa-chevron-down"></span></a>
@@ -17,7 +17,7 @@
           {% if perms.orden.add_equipo %}
           <li><a href="{% url 'orden:equipo_crear' %}">Crear</a></li>
           {% endif %}
-        <li><a href="{% url 'orden:equipo_listar' %}">Listar</a></li>
+        <li><a href="{% url 'orden:equipo_listar' %}">Listados</a></li>
       </ul>
     </li>
     <li><a><i class="fa fa-desktop"></i>Productos<span class="fa fa-chevron-down"></span></a>
@@ -45,12 +45,6 @@
         <li><a href="{% url 'empleado:empleado_listar' %}">Listados</a></li>
       </ul>
     </li>
-    <!-- <li><a><i class="fa fa-table"></i>Tipos de tareas<span class="fa fa-chevron-down"></span></a>
-      <ul class="nav child_menu">
-        <li><a href="/tTarea_detail.html">Altas </a></li>
-        <li><a href="/tTareas.html">Listados</a></li>          
-      </ul>
-    </li> -->
     <li><a><i class="fa fa-wrench"></i>Tipos de Servicio<span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
         {% if perms.servicio.add_tiposervicio %}
@@ -67,9 +61,9 @@
         <li><a href="{% url 'rubro:rubro_listar'%}">Listados</a></li>          
       </ul>
     </li>
-    <li><a><i class="fa fa-database"></i>Reportesulis<span class="fa fa-chevron-down"></span></a>
+    <li><a><i class="fa fa-database"></i>Reportes<span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
-        <li><a href="{% url 'reportes:reportes'%}">Ver</a></li>
+        <li><a href="{% url 'reportes:reportes'%}">Total facturado</a></li>
       </ul>
     </li>
 

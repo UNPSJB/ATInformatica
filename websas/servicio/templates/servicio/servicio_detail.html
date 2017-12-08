@@ -4,30 +4,37 @@
 <div class="row">
   <div class="x_panel">
     <div class="x_title">
-      <h2>Tipo de Servicio <small>gestión de servicios a ofrecer</small></h2>
-      <!-- <ul class="nav navbar-right panel_toolbox">
-        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-        </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Settings 1</a>
-            </li>
-            <li><a href="#">Settings 2</a>
-            </li>
-          </ul>
-        </li>
-        <li><a class="close-link"><i class="fa fa-close"></i></a>
-        </li>
-      </ul> -->
+      {% if form.instance.id %}
+      {% if perms.servicio.change_tiposervicio %}
+      <h2>Editar tipo de servicio</h2>
+      {% else %}
+      <h2>Detalles de tipo de servicio</h2>
+      {% endif %}
+      {% else %}
+      <h2>Crear tipo de servicio</h2>
+      {% endif %}
       <div class="clearfix"></div>
     </div>
     <div class="x_content">
-      <br />
+      {% if perms.servicio.add_tiposervicio or perms.servicio.change_tiposervicio %}
       <form id="am-servicio" method="POST" novalidate class="form-horizontal form-label-left">
-        
-        <!-- Comienzo del formulario - csrf_token para aceptar data POST en django -->
         {% csrf_token %}
+
+        {% if form.errors %}
+        <div class="clearfix"></div>
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-error col-md-6 col-sm-6 col-xs-12 col-md-offset-3 col-sm-offset-3 col-xs-12">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-error col-md-6 col-sm-6 col-xs-12 col-md-offset-3 col-sm-offset-3 col-xs-12">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+        {% endif %}
 
         <!-- Campo de texto Nombre -->
         <div class="item form-group">
@@ -53,12 +60,48 @@
         
         <div class="item form-group">
           <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-            <a class="btn btn-default" href="{% url 'servicio:servicio_listar' %}">Volver al listado</a>
             <button class="btn btn-primary" type="reset">Reiniciar</button>
             <button type="submit" class="btn btn-success">Aceptar</button>
           </div>
         </div>
       </form>
+      {% else %}
+      <table width="100%">
+        <col width="40%">
+        <col width="60%">
+        <tr>
+          <td><h2>Nombre: </h2></td><td>{{ form.instance.nombre }}</td>
+        </tr>
+        <tr>
+          <td><h2>Descripción: </h2></td><td>{{ form.instance.descripcion }}</td>
+        </tr>
+      </table>
+      {% endif %}
+      <hr>
+      <a class="btn btn-default pull-left" href="{% url 'servicio:servicio_listar' %}"><i class="fa fa-arrow-left fa-lg"></i>&nbsp;&nbsp;Volver al listado</a>      
+      {% if perms.servicio.delete_tiposervicio and form.instance.id %}
+      <a data-toggle="modal" data-target="#modal-confirmacion-delete" class="btn btn-danger pull-right"><i class="fa fa-trash fa-lg"></i>&nbsp;&nbsp;Eliminar servicio</a>
+      <div id="modal-confirmacion-delete" class="modal fade">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">×</span></button>
+              <h3><span class="text-warning"><i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;&nbsp;Confirmar eliminación</span></h3>
+            </div>
+            <div class="modal-body">
+              <p>¿Está seguro de que desea eliminar el tipo de servicio "{{ form.instance.nombre }}"?</p>
+            </div>
+            <div class="modal-footer">
+              <form action="{% url 'servicio:servicio_eliminar' form.instance.id %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button class="btn btn-danger" type="submit">Confirmar eliminar servicio</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}    
     </div>
   </div>
 </div>

@@ -74,7 +74,7 @@ class OrdenCancelar(View):
         if not orden:
             return JsonResponse({'error': 'no existe la orden de trabajo'})
         try:
-            orden.cancelar()
+            orden.cancelar(usuario=request.user)
         except Exception as e:
             response = JsonResponse({'error': str(e)})
             response.status_code = 403

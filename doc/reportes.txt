@@ -17,8 +17,8 @@ El mínimo de filtrado son:
  2) opcionalmente filtrados por: técnico, producto, cliente, rubro, etc...
 
 1) Total facturado de OTs en un período de tiempo
-2) Producto más utilizado en servicios
+2) Productos más utilizados por rubro
 3) Técnicos que mayormente realizan determinadas tareas. (el que filnaliza)// Tecnicos por estados tareas
 4) Cantidad de RdyPs pagadas por órdenes canceladas. (y otras cosas parecidas) 
-5) Algo con tareas y rubros y tipo de servicio 
+5) Tipos de Tarea más realizada por Tipo de Servicio
 
