@@ -79,3 +79,8 @@ class ReporteProducto(TemplateView):
 # ReservaStock.objects.deleted_only().exclude(cancelada=True).values(prod=F("producto__nombre"), rubro=F("tarea__orden__rubro__nombre")).annotate(cantidad=Count("rubro"), total=Sum("precio_unitario"))
 
 # TareaRealizada.objects.values(tipo_tarea=F("tarea__tipo_tarea__nombre"), tecnico=F("usuario__username")).annotate(cantidad=Count("tipo_tarea")).order_by("tipo_tarea")
+
+# cache = {}
+# for q in query:
+    # if q["tipo_tarea"] not in cache.keys():
+        # cache[q["tipo_tarea"]] = (q["tecnico"], q["cantidad"])
