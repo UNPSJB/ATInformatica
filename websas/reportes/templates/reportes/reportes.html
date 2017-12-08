@@ -1,8 +1,8 @@
 {% extends "principal.html" %}
 {% load staticfiles %}
 {% block estilos %}
-    <link rel="stylesheet" href="{% static 'css/reportes.css'%}">
-{% endblock estilos%}
+<link rel="stylesheet" href="{% static 'reportes/css/reportes.css' %}">
+{% endblock estilos %}
 {% block contenido %}
     <!--primer panel-->
     <div class="col-md-12">
@@ -10,78 +10,91 @@
             <div class="x_title">
                 <h1>Indique las fechas</h1>
             </div>
-            <div class="x_content">
+            <div class="x_content" style="display:inline-block">
                 <div class="form_group" style="margin-bottom: 2em">
                     <input type="text" name="daterangepicker" id="daterangepicker">
                 </div>
+                <div class="" >
+
+                    <form action="" data-ajax_url="{% url 'reportes:reportes' %}">
+                        <div class="item form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.filtros.label }}">{{ form.filtros.label }}<span class="required">*</span>
+                          </label>
+                          <div class="col-md-6 col-sm-6 col-xs-12">
+                            {{ form.filtros }}
+                          </div>
+                        </div>
+                    </form>
+                    <button id="btn-ajax" class="btn btn-success" value=""><i class="fa fa-bar-chart"></i> Generar reporte</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-6 col-sm-6 col-xs-12">
+    <div id="chart-container" hidden class="col-md-6 col-sm-6 col-xs-12">
         <div class="x_panel">
+            <div class="x_title">
+                <h1>Total facturado</h1>
+            </div>
+
             <div class="x_content">
-            
-                <div id="chart-error" hidden class="alert alert-warning"></div>
-            
-                <div class="col-md-6">
-                    <div id="chart-container" hidden class="" style="position: relative; height: 60vh; width: 60vh">
-                        <canvas id="chart-ots-clientes" width="400" height="400"></canvas>
-                    </div>
-                    <div id="chart-legend" class="chart-legend"></div>
+                <div class="" style="position: relative; height: 60vh; width: 60vh">
+                    <canvas id="chart-total-ots" width="400" height="400"></canvas>
                 </div>
-            
+                <div id="chart-total-legend" class=""></div>
             </div>
         </div>
+    </div>
+
+    <div id="chart-error" hidden class="col-md-12 col-sm-12 col-xs-12">
+        <div class="alert alert-warning"></div>
     </div>
 
     <!--segundo panel-->
-    <div class="col-md-6 col-sm-6 col-xs-12">
-        <div class="x_panel tile">
+    <div id="total-facturado" hidden class="col-md-6 col-sm-6 col-xs-12">
+        <div class="x_panel">
             <div class="x_title">
-                <h1>Indique las fechas 2</h1>
+                <h1>Resultados totales (poner cant OTs)</h1>
             </div>
         
             <div class="x_content">
-                <div id="total-facturado" hidden class="col-md-6">
-                    <div id="msg-total">
-                        <h1>Total facturado entre <span id="fecha-ini"></span> y <span id="fecha-fin"></span>: 
-                            <br/>
-            
-                            <strong><span id="total"></span></strong></h1>
-                    </div>
-                    <button class="btn btn-warning" onclick="imprimir()">
-                        <i class="fa fa-print"></i> Descargar PDF
-                    </button>
+                <div id="msg-total">
+                    <h1>Total facturado entre <span id="fecha-ini"></span> y <span id="fecha-fin"></span>: 
+                        <br/>
+
+                        <strong><span id="total"></span></strong></h1>
                 </div>
+                <button class="btn btn-warning" onclick="alert('nooo maestro te la debo me quede sin hoja4')">
+                    <i class="fa fa-print"></i> Descargar PDF
+                </button>
             </div>
-        
         </div>
     </div>
 
     <!--tercer panel-->
-    <div class="col-md-6 col-sm-6 col-xs-12">
+    <div hidden class="col-md-6 col-sm-6 col-xs-12">
         <div class="x_panel tile">
             <div class="x_title">
                 <h1>Indique las fechas 3</h1>
             </div>
         
-            <div class="x_content"></div>
-        
+            <div class="x_content">
+            </div>
         </div>
     </div>
 
     <!--cuarto panel-->
-    <div class="col-md-6 col-sm-6 col-xs-12">
-        <div class="x_panel tile">
+    <div id="chart-container-cantidad" hidden class="col-md-6 col-sm-6 col-xs-12">
+        <div class="x_panel">
             <div class="x_title">
-                <h1>Indique las fechas 4</h1>
+                <h1>Cantidad de órdenes de trabajo</h1>
             </div>
         
             <div class="x_content">
-                <div id="chart-container" class="" style="position: relative; height: 60vh; width: 60vh">
-                    <canvas id="chart-ots-tecnicos" width="400" height="400"></canvas>
+                <div class="" style="position: relative; height: 60vh; width: 60vh">
+                    <canvas id="chart-cantidad-ots" width="400" height="400"></canvas>
                 </div>
+                <div id="chart-cantidad-legend" class=""></div>
             </div>
         
         </div>

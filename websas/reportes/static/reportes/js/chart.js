@@ -1,42 +1,49 @@
-var chart;
+var chart
+var cantidad_chart
 
-//var light_blue = "rgba(54, 162, 255, 0.5)"
-var light_blue = "#c7d66d"
-var dark_blue = "rgba(60, 100, 137, 1)"
-var blue_line = "rgba(23, 45, 68, 1)"
-
-var colors = ["#36A2FF", "#FFE74C", "#FF5964", "#F0B67F", "#38618C"]
+var COLORES = {    
+    "dark_blue": "#3c6489",
+    "light_blue": "#36A2FF",
+    "blue_line": "#172d44",
+    "paleta_1": "#FFE74C",
+    "paleta_2": "#FF5964", 
+    "paleta_3": "#F0B67F", 
+    "paleta_4": "#38618C",
+}
 function init_chart(){
 
 
     if(chart){
         chart.destroy()
     }
+    if(cantidad_chart){
+        cantidad_chart.destroy()
+    }
 
     var dataset_total_facturado = {
         label: 'Total facturado',
         data: [],
-        backgroundColor: light_blue,
-        borderColor: blue_line,
+        backgroundColor: COLORES["light_blue"],
+        borderColor: COLORES["blue_line"],
         borderWidth: 1,
         yAxisID: "total_facturado_y",
     } 
 
-    var dataset_cantidad = {
-        label: 'Cantidad de órdenes de trabajo',
+    var dataset_total_viejo = {
+        label: 'Total facturado en el año anterior',
         data: [],
-        backgroundColor: dark_blue,
-        borderColor: blue_line,
+        backgroundColor: COLORES["dark_blue"],
+        borderColor: COLORES["blue_line"],
         borderWidth: 1,
-        yAxisID: "cantidad_y",
+        yAxisID: "total_viejo_y",
     } 
 
-    var data_ots_clientes = {
+    var data_total_ots = {
         labels: [],
-        datasets: [dataset_total_facturado, dataset_cantidad],
+        datasets: [dataset_total_facturado, dataset_total_viejo],
     }
 
-    var opciones_ots_clientes = {
+    var opcioes_total_ots = {
         legend: Chart.defaults.global.legend,
         scales: {
             xAxes: [{
@@ -49,43 +56,74 @@ function init_chart(){
                     beginAtZero:true,
                 },
             }, {
-                id: "cantidad_y",
-                position: "right",
+                id: "total_viejo_y",
+                display: false,
                 ticks: {
                     beginAtZero:true,
-                    stepSize: 1,
+                    //stepSize: 1,
                 },
             },]
         },
     }
 
-    chart = new Chart($("#chart-ots-clientes"), {
+    chart = new Chart($("#chart-total-ots"), {
         type: 'bar',
-        data: data_ots_clientes,
-        options: opciones_ots_clientes,
+        data: data_total_ots,
+        options: opcioes_total_ots,
     });
 
-    $("#chart-legend").html(chart.generateLegend())
+
+
+    //inicializamos grafico de cantidades
+    var dataset_cantidad_ots = {
+        label: 'Cantidad de órdenes de trabajo',
+        data: [],
+        backgroundColor: [],
+        borderColor: COLORES["blue_line"],
+        borderWidth: 3,
+    }
+
+    var data_cantidad_ots = {
+        labels: [],
+        datasets: [dataset_cantidad_ots],
+    }
+
+    cantidad_chart = new Chart($("#chart-cantidad-ots"),{
+        type: 'doughnut',
+        data: data_cantidad_ots,
+        options: Chart.defaults.doughnut,
+    });
+
 }
 
+function displayBarLegend(barChart, legendId){
+    var legend = "<ul>"
+    for(let i=0; i<barChart.data.datasets.length; i++){
+        const label = barChart.data.datasets[i].label
+        const color = barChart.data.datasets[i].backgroundColor
+        legend = legend + "<li><div id='rectangle' style='background:"
+            + color + "'></div> <span>" + label + "</span></li><br/>"
+    }
+    legend = legend + "</ul>"
+    $(legendId).html(legend)
+}
 
-var myPieChart = new Chart($("#chart-ots-tecnicos"),{
-    type: 'doughnut',
-    data: {
-        datasets: [{
-            data: [10, 20, 30, 15],
-            backgroundColor: ['red', 'yellow', 'blue', "white"],
-        }],
-        // These labels appear in the legend and in the tooltips when hovering different arcs
-        labels: [
-            'Red',
-            'Yellow',
-            'Blue',
-            'White',
-        ]
-    },
-    options: Chart.defaults.doughnut,
-    });
+function displayDoughnutLegend(doughnut, legendId){
+    var legend = "<ul>"
+    var data_total = 0
+    for(let i=0; i<doughnut.data.datasets[0].data.length; i++){
+        data_total += doughnut.data.datasets[0].data[i]
+    }
 
-
-$("#chart-container-tecnicos").show()
+    for(let i=0; i<doughnut.data.labels.length; i++){
+        const label = doughnut.data.labels[i] + " (" +
+            doughnut.data.datasets[0].data[i] + "/" +
+            data_total + ")"
+        const color = doughnut.data.datasets[0].backgroundColor[i]
+        legend = legend + "<li><div id='rectangle' style='background:"
+            + color + "'></div> <span>" + label + "</span></li><br/>"
+    }
+    legend = legend + "</ul>"
+    console.log(legend)
+    $(legendId).html(legend)
+}
