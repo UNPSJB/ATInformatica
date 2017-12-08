@@ -23,6 +23,15 @@ class Persona(SafeDeleteModel):
     def get_nombre_completo(self):
         return "{} {}".format(self.nombre, self.apellido)
 
+    def is_tecnico(self):
+        return self.sos(Tecnico)
+    
+    def is_jefe_taller(self):
+        return self.sos(JefeTaller)
+
+    def is_gerente(self):
+        return self.sos(Gerente)
+
     def como(self, Klass):
         """ Retorna una instancia de un rol asociado a una persona con la ayuda del método
         related de la clase Rol.

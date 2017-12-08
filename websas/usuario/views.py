@@ -37,8 +37,13 @@ class LoginView(FormView):
             return super(self.__class__, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
+<<<<<<< Updated upstream
 
         user = Usuario.objects.get(username=form.cleaned_data['username'])
+=======
+        import ipdb; ipdb.set_trace()
+        user = Usuario.objects.get(username=form.get_user())
+>>>>>>> Stashed changes
         if user.primer_login and not user.is_superuser:
             messages.warning(self.request, 'Se recomienda cambiar la contraseña predeterminada.')
             self.success_url = reverse_lazy('usuario:password_change')
