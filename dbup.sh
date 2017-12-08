@@ -1,0 +1,2 @@
+docker run --rm --name websas -v /home/usuario/DkrVolumes/websas:/var/lib/postgresql/data -p 5432:5432 -d -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres postgres
+docker run --rm --name pgadmin -p 5050:5050 -d thajeztah/pgadmin4
