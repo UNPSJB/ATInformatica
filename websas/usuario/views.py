@@ -38,9 +38,12 @@ class LoginView(FormView):
 
     def form_valid(self, form):
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
         user = Usuario.objects.get(username=form.cleaned_data['username'])
 =======
+=======
+>>>>>>> Stashed changes
         import ipdb; ipdb.set_trace()
         user = Usuario.objects.get(username=form.get_user())
 >>>>>>> Stashed changes
