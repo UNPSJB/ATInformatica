@@ -113,14 +113,15 @@ $("#btn-ajax").on("click", function(e){
             //Si no, no mostramos error y cargamos los datos en el grafico
             var total_facturado = 0
             var ot, ot_vieja
+            //console.log(data)
             for (let i = 0; i < data.ordenes_total.length; i++) {
                 ot = data.ordenes_total[i];
                 ot_vieja = data.ordenes_viejas[i];
 
                 chart.data.labels[i] = ot.criterio
-                chart.data.datasets[0].data[i] = ot.total
+                chart.data.datasets[1].data[i] = ot.total
                 if(ot_vieja){
-                    chart.data.datasets[1].data[i] = ot_vieja.total
+                    chart.data.datasets[0].data[i] = ot_vieja.total
                 }
 
                 total_facturado += parseInt(ot.total)

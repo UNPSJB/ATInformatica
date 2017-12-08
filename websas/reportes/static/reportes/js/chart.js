@@ -21,7 +21,7 @@ function init_chart(){
     }
 
     var dataset_total_facturado = {
-        label: 'Total facturado',
+        label: 'Total facturado en el año actual',
         data: [],
         backgroundColor: COLORES["light_blue"],
         borderColor: COLORES["blue_line"],
@@ -35,12 +35,12 @@ function init_chart(){
         backgroundColor: COLORES["dark_blue"],
         borderColor: COLORES["blue_line"],
         borderWidth: 1,
-        yAxisID: "total_viejo_y",
+        yAxisID: "total_facturado_y",
     } 
 
     var data_total_ots = {
         labels: [],
-        datasets: [dataset_total_facturado, dataset_total_viejo],
+        datasets: [dataset_total_viejo, dataset_total_facturado],
     }
 
     var opcioes_total_ots = {
@@ -124,6 +124,6 @@ function displayDoughnutLegend(doughnut, legendId){
             + color + "'></div> <span>" + label + "</span></li><br/>"
     }
     legend = legend + "</ul>"
-    console.log(legend)
+    //console.log(legend)
     $(legendId).html(legend)
 }
