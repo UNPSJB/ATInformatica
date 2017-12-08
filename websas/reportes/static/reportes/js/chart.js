@@ -21,7 +21,7 @@ function init_chart(){
     }
 
     var dataset_total_facturado = {
-        label: 'Total facturado',
+        label: 'Total facturado en el año actual',
         data: [],
         backgroundColor: COLORES["light_blue"],
         borderColor: COLORES["blue_line"],
@@ -40,7 +40,7 @@ function init_chart(){
 
     var data_total_ots = {
         labels: [],
-        datasets: [dataset_total_facturado, dataset_total_viejo],
+        datasets: [dataset_total_viejo, dataset_total_facturado],
     }
 
     var opcioes_total_ots = {
