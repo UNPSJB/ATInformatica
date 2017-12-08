@@ -31,14 +31,14 @@ class LoginView(FormView):
     @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
         user = request.user
-        if user.is_authenticated(): 
+        if user.is_authenticated():
             return HttpResponseRedirect(self.get_success_url())
         else:
             return super(self.__class__, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        
-        user = Usuario.objects.get(username=form.get_user())
+
+        user = Usuario.objects.get(username=form.cleaned_data['username'])
         if user.primer_login and not user.is_superuser:
             messages.warning(self.request, 'Se recomienda cambiar la contraseña predeterminada.')
             self.success_url = reverse_lazy('usuario:password_change')
@@ -67,7 +67,7 @@ class RegistrarUsuario(View):
             return JsonResponse({'data':'joya', 'successurl':reverse_lazy('usuario:grupos')})
 
         response = JsonResponse({'data': form.errors})
-        response.status_code = 403  
+        response.status_code = 403
         return response
 
 class CambiarContraseñaView(PasswordChangeView):
@@ -87,13 +87,13 @@ class GroupView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         form = CrearGrupoForm(request.POST or None)
-       
+
         if form.is_valid():
             form.save()
             return JsonResponse({'data':'todo piola'})
 
         response = JsonResponse({'error': 'se pudrió todo'})
-        response.status_code = 403  
+        response.status_code = 403
         return response
 
 
@@ -106,7 +106,7 @@ class GroupView(TemplateView):
 
 class EliminarGrupo(View):
     def post(self, request, *args, **kwargs):
-        
+
         form = EliminarGrupoForm(request.POST or None)
 
         if form.is_valid():
@@ -120,24 +120,24 @@ class EliminarGrupo(View):
 class UserAddGroup(View):
 
     def post(self, request, *args, **kwargs):
-        
+
         form = UserAddGroupForm(request.POST or None)
         if form.is_valid():
             form.save()
             return JsonResponse({'data':'todo piola'})
 
         response = JsonResponse({'error': 'se pudrió todo'})
-        response.status_code = 403  
+        response.status_code = 403
         return response
 
 class UserRemoveGroup(View):
-    
+
     def post(self, request, *args, **kwargs):
-        
+
         form = UserRemoveGroupForm(request.POST or None)
         if form.is_valid():
             form.save()
-            return JsonResponse({"data": "todo joyeli"})        
+            return JsonResponse({"data": "todo joyeli"})
 
 
         response = JsonResponse({})
@@ -155,13 +155,13 @@ class GroupAddPermission(View):
             return JsonResponse({'data':'todo piola'})
 
         response = JsonResponse({'error': 'se pudrió todo'})
-        response.status_code = 403  
+        response.status_code = 403
         return response
 
 class GroupRemovePermission(View):
 
     def post(self, request, *args, **kwargs):
-        
+
         form = GroupRemovePermissionForm(request.POST or None)
         if form.is_valid():
             form.save()
