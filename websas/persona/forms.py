@@ -90,10 +90,43 @@ class PersonaUpdateForm(PersonaForm):
             'telefono': forms.TextInput(attrs={'class':'form-control col-md-7 col-xs-12', 'type':'tel'}),
         }
 
-class EmpleadoForm(PersonaForm):
-    
-    roles = forms.ModelChoiceField(queryset=Rol.objects.values("tipo").distinct().exclude(tipo=2).exclude(tipo=10).all())
 
+def get_roles_empleado():
+    roles = Rol.TIPOS
+    roles_empleados = []
+    for r in roles:
+        if r[0] != 0 and r[0] != 2 and r[0] != 10:
+            roles_empleados.append(r)
+    
+    return roles_empleados
+
+class EmpleadoForm(PersonaForm):
+
+    rol = forms.ChoiceField(choices=get_roles_empleado())
+
+    def clean(self):
+        if Persona.objects.filter(doc=self.cleaned_data['doc']).exists():
+            persona = Persona.objects.get(doc=self.cleaned_data['doc'])
+            rol = Rol.objects.filter(tipo=self.cleaned_data['rol']).first()
+            if persona.sos(rol.related().__class__):
+                raise forms.ValidationError("El {} ya se encuentra registrado".format(rol.get_tipo_display()))
+
+    def save(self):
+
+        if not Persona.objects.filter(doc=self.cleaned_data['doc']).exists():
+            persona = Persona(
+                nombre=self.cleaned_data['nombre'],
+                apellido=self.cleaned_data['apellido'],
+                doc=self.cleaned_data['doc'],
+                domicilio=self.cleaned_data['domicilio'],
+                telefono=self.cleaned_data['telefono'],
+                email=self.cleaned_data['email'])
+            persona.save()
+        else:
+            persona = Persona.objects.get(doc=self.cleaned_data['doc'])
+        rol = Rol.objects.filter(tipo=self.cleaned_data['rol']).first()
+        persona.agregar_rol(rol.related().__class__())
+        
 class EmpleadoUpdateForm(PersonaUpdateForm):
     
     class Meta(PersonaUpdateForm.Meta):

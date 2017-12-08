@@ -5,11 +5,11 @@
 <div class="row">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Gerentes</h2>
+        <h2>Empleados</h2>
         <div class="clearfix"></div>
       </div>
       <div class="x_content">
-        <table id="datatable-gerentes" class="table table-striped tableclick table-hover table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
+        <table id="datatable-empleados" class="table table-striped tableclick table-hover table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
           <thead>
             <tr>
               <th data-priority=1>DNI/CUIT/CUIL</th>
@@ -22,18 +22,18 @@
 
           <tbody>
             {% if object_list %}
-            {% for gerente in object_list %}
-            <tr data-tableclick="{% url 'empleado:gerente:gerente_ver' gerente.persona.id %}">
-              <td class="celda_control">{{ gerente.persona.doc }}</td>
-              <td>{{ gerente.persona.apellido|upper }}, {{ gerente.persona.nombre }}</td>
-              <td>{{ gerente.persona.domicilio }}</td>
-              <td>{{ gerente.persona.telefono }}</td>
-              <td>{{ gerente.persona.email }}</td>
+            {% for persona in object_list %}
+            <tr data-tableclick="{% url 'empleado:empleado_ver' persona.persona.id %}">
+              <td class="celda_control">{{ persona.doc }}</td>
+              <td>{{ persona.apellido|upper }}, {{ persona.nombre }}</td>
+              <td>{{ persona.domicilio }}</td>
+              <td>{{ persona.telefono }}</td>
+              <td>{{ persona.correo }}</td>
             </tr>
             {% endfor %}
             {% else %}
 
-            <h1>No hay gerentes registrados</h1>
+            <h1>No hay empleados registrados</h1>
             <!-- no importa si hay un <h1> en el body, DataTables lo saca de la tabla -->
 
             {% endif %}
@@ -63,5 +63,5 @@
   <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
   <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
 
-  <script src="{% static 'persona/js/gerente.js' %}"></script>
+  <script src="{% static 'persona/js/empleado.js' %}"></script>
 {% endblock scripts %}

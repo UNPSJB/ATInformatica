@@ -1,0 +1,85 @@
+{% extends "principal.html" %} {% block contenido %}
+<div class="row">
+  <div class="x_panel">
+    <div class="x_title">
+      <h2>Empleado
+        <small>gestión de gerentes</small>
+      </h2>
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+      <table width="100%">
+        <tr>
+          <td>
+            <h1>{{ empleado.apellido|upper }}, {{ empleado.nombre }}</h1>
+          </td>
+          <td>
+            <h2>DNI: </h2>{{ empleado.doc }}</td>
+        </tr>
+        <tr>
+          <td>
+            <h2>Domicilio: </h2>{{ empleado.domicilio }}</td>
+          <td>
+            <h2>Email: </h2>{{ empleado.email }}</td>
+        </tr>
+        {% if roles %}
+        <tr>
+          <td>
+            <h2>Roles</h2>
+            {% for rol in roles %}
+            {{ rol.ROLNAME }}
+            {% endfor %}
+          </td>
+        </tr>
+        {% endif %}
+      </table>
+      {% if perms.persona.change_rol or perms.persona.delete_rol %}
+      <hr>
+      <div class="pull-right">
+        {% if perms.persona.delete_rol %}
+        <a data-toggle="modal" data-target="#modal-confirmacion-delete" class="btn btn-danger"><i class="fa fa-trash fa-lg"></i>&nbsp;&nbsp;Eliminar empleado</a>
+        {% endif %}
+
+        {% if perms.persona.change_rol %}
+        <a href="{% url 'empleado:empleado_editar' empleado.id %}" class="btn btn-info"><i class="fa fa-pencil fa-lg"></i>&nbsp;&nbsp;Editar empleado</a>
+        {% endif %}
+
+        {% if perms.usuario.add_usuario %}
+        <a class="btn btn-warning" id="btn-crear-usuario" ajax-url="{% url 'usuario:usuario_crear' %}" data-persona-id="{{ empleado.id }}"
+        onclick="crearUsuario()"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;Crear usuario</a>
+        {% endif %}
+      </div>
+      {% if perms.persona.delete_rol %}
+      <div id="modal-confirmacion-delete" class="modal fade">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">×</span></button>
+              <h3><span class="text-warning"><i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;&nbsp;Confirmar eliminación</span></h3>
+            </div>
+            <div class="modal-body">
+              <p>¿Está seguro de que desea eliminar el rol "{{ empleado.nombre }}"?</p>
+            </div>
+            <div class="modal-footer">
+              <form action="{% url 'empleado:empleado_eliminar' empleado.id %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button class="btn btn-danger" type="submit">Confirmar eliminar empleado</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="ln_solid"></div>
+  <a class="btn btn-default" href="{% url 'empleado:empleado_listar' %}">
+    <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Volver al listado</a>
+
+</div>
+{% endblock contenido %} {% block scripts %}
+<script src="/static/persona/js/crear_usuario.js"></script>
+<script>'{{ csrf_token }}'</script> {% endblock scripts %}

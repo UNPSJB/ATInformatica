@@ -39,31 +39,10 @@
     </li>
     <li><a><i class="fa fa-edit"></i>Empleados<span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
-        <li><a>Tecnicos<span class="fa fa-chevron-down"></span></a>
-          <ul class="nav child_menu">
-            {% if perms.persona.add_tecnico %}
-            <li><a href="{% url 'empleado:tecnico:tecnico_crear' %}">Crear</a></li>
-            {% endif %}
-            <li><a href="{% url 'empleado:tecnico:tecnico_listar' %}">Listados</a></li>
-          </ul>
-        </li>
-        <li><a>Jefes<span class="fa fa-chevron-down"></span></a>
-          <ul class="nav child_menu">
-            {% if perms.persona.add_jefetaller %}
-            <li><a href="{% url 'empleado:jefe:jefe_crear' %}">Crear</a></li>
-            {% endif %}
-            <li><a href="{% url 'empleado:jefe:jefe_listar' %}">Listados</a></li>
-          </ul>            
-        </li>
-        <li><a>Gerentes<span class="fa fa-chevron-down"></span></a>
-          <ul class="nav child_menu">
-            {% if perms.persona.add_gerente %}
-            <li><a href="{% url 'empleado:gerente:gerente_crear' %}">Crear</a></li>
-            {% endif %}
-            <li><a href="{% url 'empleado:gerente:gerente_listar' %}">Listados</a></li>
-          </ul>            
-        </li>
-
+        {% if perms.persona.add_rol %}
+        <li><a href="{% url 'empleado:empleado_crear' %}">Crear</a></li>
+        {% endif %}
+        <li><a href="{% url 'empleado:empleado_listar' %}">Listados</a></li>
       </ul>
     </li>
     <li><a><i class="fa fa-wrench"></i>Tipos de Servicio<span class="fa fa-chevron-down"></span></a>
