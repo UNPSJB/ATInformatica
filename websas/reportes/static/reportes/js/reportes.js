@@ -113,6 +113,7 @@ $("#btn-ajax").on("click", function(e){
             //Si no, no mostramos error y cargamos los datos en el grafico
             var total_facturado = 0
             var ot, ot_vieja
+            //console.log(data)
             for (let i = 0; i < data.ordenes_total.length; i++) {
                 ot = data.ordenes_total[i];
                 ot_vieja = data.ordenes_viejas[i];

@@ -35,7 +35,7 @@ function init_chart(){
         backgroundColor: COLORES["dark_blue"],
         borderColor: COLORES["blue_line"],
         borderWidth: 1,
-        yAxisID: "total_viejo_y",
+        yAxisID: "total_facturado_y",
     } 
 
     var data_total_ots = {
@@ -124,6 +124,6 @@ function displayDoughnutLegend(doughnut, legendId){
             + color + "'></div> <span>" + label + "</span></li><br/>"
     }
     legend = legend + "</ul>"
-    console.log(legend)
+    //console.log(legend)
     $(legendId).html(legend)
 }
