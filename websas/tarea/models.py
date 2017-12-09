@@ -163,14 +163,19 @@ class Tarea(SafeDeleteModel):
 
         Raise:
             Exception (si no existe Tarifa para el tipo de tarea y el tipo de servicio) """
-
+        if Tarea.objects.filter(tipo_tarea=tipo_tarea, orden=orden).exists():
+            tarea = Tarea.objects.get(tipo_tarea=tipo_tarea, orden=orden)
+            if tarea.estas_cancelada():
+                tarea_presupuestada = TareaPresupuestada(tarea=tarea)
+                tarea_presupuestada.save()
+                return tarea
+            raise Exception("La tarea ya existe")
         tarea = cls(tipo_tarea=tipo_tarea, orden=orden, observacion=observacion)
         tarea.save()
         tipo_servicio = tarea.orden.tipo_servicio
         try:
             tarifa = tarea.tipo_tarea.tarifas.get(tipo_servicio=tipo_servicio)
         except Exception as e:
-            tarea.delete()
             raise Exception("El tipo de tarea: {}, no se encuentra tarifada para el tipo de servicio {}".format(tipo_tarea, tipo_servicio))
         tarea.precio = tarifa.precio
         tarea.save()
@@ -264,7 +269,7 @@ class EstadoTarea(models.Model):
         """Devuelve un objeto estado de la Tarea."""
         return self.__class__ != EstadoTarea and self or getattr(self, self.get_tipo_display())
 
-    def cancelar(self,usuario):
+    def cancelar(self, usuario):
         [self.cancelar_reserva(reserva) for reserva in self.tarea.reservas.all()]
         return TareaCancelada(tarea=self.tarea, usuario=usuario)
 
@@ -275,12 +280,8 @@ class EstadoTarea(models.Model):
         self.tarea.observaciones.create(tarea=self, usuario=usuario, contenido=contenido)
 
     def cancelar_reserva(self, reserva):
-        reserva = self.tarea.reservas.get(pk=reserva.id)
-        if reserva:
-            reserva.delete()
-            return self
-        raise Exception("***TAREA: no existe la reserva indicada***")
-
+        reserva.cancelar()
+        
 class TareaPresupuestada(EstadoTarea):
     """ Se espera que el cliente la acepte """
     TIPO = 1

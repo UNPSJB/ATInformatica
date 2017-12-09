@@ -105,11 +105,6 @@ class TareaCreate(View):
             return response 
         try:
             orden.agregar_tarea(tipo_tarea, observacion)
-        except IntegrityError as err:
-            print(err)
-            response = JsonResponse({'error': 'La tarea no se puede agregar a la orden. Ya existe.'})
-            response.status_code = 403
-            return response
         except Exception as e:
             response = JsonResponse({'error': str(e)})
             response.status_code = 403  
@@ -132,7 +127,7 @@ class TareaCancelar(View):
     def post(self, request, *args, **kwargs):
         pk = int(request.POST.get("tarea_id"))
         tarea = Tarea.objects.get(pk=pk)
-        tarea.hacer("cancelar", usuario=request.user)
+        tarea.hacer(accion="cancelar", usuario=request.user)
         if tarea.estas_cancelada():
             return JsonResponse({'data':'ok'})
         response = JsonResponse({'error': 'la tarea {} no se pudo cancelar'.format(tarea.tipo_tarea.nombre)})

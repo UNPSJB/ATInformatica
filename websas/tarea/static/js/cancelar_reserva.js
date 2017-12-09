@@ -10,8 +10,6 @@ function cancelarReserva(){
         "reserva_id": reserva,
     }
 
-    console.log()
-
     $.ajax({
         url: $("#cancelar_reserva")[0].dataset["ajax_url"],
         type: "POST",
@@ -19,8 +17,19 @@ function cancelarReserva(){
         dataType: "json",
         success: function(data){
             $("#modal-cancelar-reserva").modal("toggle")
+        },
+        statusCode: {
+            403: function(data) {
+                // Mensaje del servidor
+                mostrarError(data.responseJSON.error);
+            }
         }
     })
+}
+
+function mostrarError(mensaje) {
+    $('#errormsg').html(mensaje);
+    $('#error-elem').fadeIn();
 }
 
 $('#modal-cancelar-reserva').on('hidden.bs.modal', function () {

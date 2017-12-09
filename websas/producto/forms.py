@@ -96,6 +96,7 @@ class ReservaModificarForm(forms.Form):
             raise forms.ValidationError("No existe la reserva")
 
     def save(self, commit=True):
+        
         reserva = ReservaStock.objects.get(pk=self.cleaned_data.get("reserva_id"))
         reserva.cantidad = self.cleaned_data.get("cantidad")
         reserva.save()

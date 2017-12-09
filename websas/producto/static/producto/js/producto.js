@@ -16,8 +16,6 @@ var botones_default = [{
 
 var botones_dt;
 
-console.log(tabla_html.attr('data-url_agregar'))
-
 if (tabla_html.attr('data-url_agregar')) {
     var boton_agregar = [{
         text: "<b>Nuevo producto</b>",

@@ -101,6 +101,7 @@
                           <h4>¿Está seguro que desea cancelar la reserva de {{ reserva.cantidad }} {{ reserva.producto.nombre }}?</h3>
                       </div>
                       <div class="modal-footer">
+                          <span class="text-danger" hidden id="error-elem"><strong><i class="fa fa-warning fa-lg"></i>&nbsp;&nbsp;<span id="errormsg">Error</span>&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>                          
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                         <button type="button" class="btn btn-danger" onclick="cancelarReserva()"><i class="fa fa-trash"></i> Eliminar reserva</button>
                       </div>

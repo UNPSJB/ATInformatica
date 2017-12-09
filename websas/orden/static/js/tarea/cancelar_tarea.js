@@ -10,8 +10,6 @@ function cancelarTarea(){
         "tarea_id": tarea,
     }
 
-    console.log()
-
     $.ajax({
         url: $("#cancelar_tarea")[0].dataset["ajax_url"],
         type: "POST",
