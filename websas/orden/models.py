@@ -190,14 +190,10 @@ class Orden(SafeDeleteModel):
         tarea.reservar_stock(producto,  cantidad)
 
     def cancelar(self, usuario):
-        """ Método para cancelar la orden de trabajo
-
-        Raise:
-            Exception, si la orden de trabajo tiene tareas realizadas """
-        if self.tareas_realizadas:
-            raise Exception("La orden de trabajo nro: {} tiene tareas realizadas y no se puede cancelar".format(self.id))
-
-        [tarea.hacer("cancelar",usuario=usuario) for tarea in self.tareas.all()]
+        """ Método para cancelar la orden de trabajo """
+        for tarea in self.tareas.all():
+            if not tarea.estas_realizada:
+                tarea.hacer("cancelar",usuario=usuario)
         self.cancelada = True
         self.fecha_fin = timezone.now()
         self.save()

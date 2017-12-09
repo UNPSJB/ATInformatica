@@ -1,10 +1,10 @@
 {% extends "principal.html" %}{% load staticfiles %} {% block contenido %}
 <div class="row">
   <div class="x_panel">
-    <div class="x_title">
+    <!-- <div class="x_title">
       <h3>Flujo de trabajo</h3>
-    </div>
-    <div class="x_content">
+    </div> -->
+    <div class="x_content" style="margin-top:1.2em">
       <!-- Ordenes de trabajo abiertas -->
       <div class="col-xs-6 col-md-3">
         <a href="{% url 'orden:orden_listar' %}">
@@ -109,7 +109,7 @@
           <div class="x_panel">
 
             <div class="x_title">
-              <h2>Ordenes de trabajo</h2>
+              <h2>Ordenes de trabajo abiertas</h2>
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
@@ -142,10 +142,7 @@
                     </td>
                   </tr>
 
-                  {% endfor %} {% else %}
-
-                  <h1>No hay ordenes de trabajo registradas</h1>
-
+                  {% endfor %} 
                   {% endif %}
                 </tbody>
               </table>

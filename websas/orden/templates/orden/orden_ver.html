@@ -84,7 +84,7 @@
     </div>
 
     <div class="x_content col-xs-12">
-      {% if not orden.cerrada %}
+      {% if not orden.cerrada and not orden.cancelada %}
       <div id="orden-abierta">
         <div class="col-xs-9">
           <!-- Tab panes -->
@@ -128,7 +128,7 @@
     </div>
   </div>
   <div class="ln_solid"></div>
-  <a id="btn-volver-listado" class="btn btn-default" href="{% url 'orden:orden_listar' %}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Volver al listado</a>
+  <a id="btn-volver-listado" class="btn btn-default" {% if orden.cerrada or orden.cancelada %} href="{% url 'orden:orden_listar' %}" {% else %} href="{% url 'index:index' %}" {% endif %}><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Volver al listado</a>
 </div>
 
 <div class="clearfix"></div>
