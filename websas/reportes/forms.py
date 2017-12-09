@@ -10,7 +10,9 @@ class ReporteTotalOrdenesForm(forms.Form):
         ("cliente", "Cliente"),
         ("tecnico", "Técnico"),
     )
-    filtros = forms.ChoiceField(CHOICES)
+    filtros = forms.ChoiceField(CHOICES, widget=forms.Select(attrs={
+        'class': 'form-control'
+    }))
 
     fecha_ini = forms.DateTimeField(input_formats=[FORMATO_FECHA])
     fecha_fin = forms.DateTimeField(input_formats=[FORMATO_FECHA])
