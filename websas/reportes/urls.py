@@ -6,6 +6,6 @@ urlpatterns = [
     # Avoid using your .html in your resources.
     # Or create a separate django app.
 
-    url(r'^ver/', login_required(ReporteTotalOrdenes.as_view(), login_url='usuario:login'), name="reportes"),
-    url(r'^ver_otro/', login_required(ReporteProducto.as_view(), login_url='usuario:login'), name="productos"),
+    url(r'^total_facturado/', login_required(ReporteTotalOrdenes.as_view(), login_url='usuario:login'), name="reportes"),
+    url(r'^productos/', login_required(ReporteProducto.as_view(), login_url='usuario:login'), name="productos"),
 ]
