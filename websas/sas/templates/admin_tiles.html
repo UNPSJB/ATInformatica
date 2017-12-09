@@ -1,12 +1,12 @@
-{% extends "base_site.html" %}{% load staticfiles %} {% block contenido %}
+{% extends "principal.html" %}{% load staticfiles %} {% block contenido %}
 <div class="row">
   <div class="x_panel">
     <div class="x_title">
-        <h3>Flujo de trabajo</h3>
+      <h3>Flujo de trabajo</h3>
     </div>
     <div class="x_content">
-    <!-- Ordenes de trabajo abiertas -->
-    <div class="col-xs-6 col-md-3">
+      <!-- Ordenes de trabajo abiertas -->
+      <div class="col-xs-6 col-md-3">
         <a href="{% url 'orden:orden_listar' %}">
           <div class="tile-stats">
             <div class="icon">
@@ -14,294 +14,162 @@
             </div>
             <div class="count">&nbsp;</div>
             <div>
-                <h3>Todas las Ordenes</h3>
-                <p>Listado completo de Ordenes de Trabajo.</p>
+              <h3>Todas las Ordenes</h3>
+              <p>Listado completo de Ordenes de Trabajo.</p>
             </div>
           </div>
         </a>
       </div>
-  
+
       <!-- Clientes -->
       {% if DBINFO.cant_clientes > 0 %}
       <div class="col-xs-6 col-md-3">
-          <a href="{% url 'cliente:cliente_listar' %}">
-      {% else %}
-      <div class="col-xs-6 col-md-3">
-          <a href="{% url 'cliente:cliente_crear' %}">
-      {% endif %}
-              <div class="tile-stats">
-                  <div class="icon"><i class="fa fa-users"></i></div>
-                  <div class="count">&nbsp;</div>
-                  {% if DBINFO.cant_clientes > 0 %}
-                  <h3>Clientes</h3>
-                  <p>Cantidad de clientes registrados.</p>
-                  {% else %}
-                  <h3 style="color: red">Clientes</h3>
-                  <p><strong>No hay tipos clientes registrados.</strong></p>
-                  {% endif %}
-              </div>
-          </a>
-      </div>
-  
-      <!-- Productos -->
-      {% if DBINFO.cant_productos > 0 %}
-      <div class="col-xs-6 col-md-3">
-        <a href="{% url 'producto:producto_listar' %}">
+        <a href="{% url 'cliente:cliente_listar' %}">
           {% else %}
           <div class="col-xs-6 col-md-3">
-            <a href="{% url 'producto:producto_crear' %}">
+            <a href="{% url 'cliente:cliente_crear' %}">
               {% endif %}
               <div class="tile-stats">
                 <div class="icon">
-                  <i class="fa fa-hdd-o"></i>
+                  <i class="fa fa-users"></i>
                 </div>
                 <div class="count">&nbsp;</div>
-                {% if DBINFO.cant_productos > 0 %}
-                <h3>Productos / Insumos</h3>
-                <p>Cantidad de productos registrados.</p>
+                {% if DBINFO.cant_clientes > 0 %}
+                <h3>Clientes</h3>
+                <p>Cantidad de clientes registrados.</p>
                 {% else %}
-                <h3 style="color: red">Productos / Insumos</h3>
+                <h3 style="color: red">Clientes</h3>
                 <p>
-                  <strong>No hay productos registrados.</strong>
+                  <strong>No hay tipos clientes registrados.</strong>
                 </p>
                 {% endif %}
               </div>
             </a>
           </div>
-  
-          <!-- Equipos -->
-          {% if DBINFO.cant_equipos > 0 %}
+
+          <!-- Productos -->
+          {% if DBINFO.cant_productos > 0 %}
           <div class="col-xs-6 col-md-3">
-            <a href="{% url 'orden:equipo_listar' %}">
+            <a href="{% url 'producto:producto_listar' %}">
               {% else %}
               <div class="col-xs-6 col-md-3">
-                <a href="{% url 'orden:equipo_crear' %}">
+                <a href="{% url 'producto:producto_crear' %}">
                   {% endif %}
                   <div class="tile-stats">
                     <div class="icon">
-                      <i class="fa fa-desktop"></i>
+                      <i class="fa fa-hdd-o"></i>
                     </div>
                     <div class="count">&nbsp;</div>
-                    {% if DBINFO.cant_equipos > 0 %}
-                    <h3>Equipos</h3>
-                    <p>Cantidad de equipos registrados.</p>
+                    {% if DBINFO.cant_productos > 0 %}
+                    <h3>Productos / Insumos</h3>
+                    <p>Cantidad de productos registrados.</p>
                     {% else %}
-                    <h3 style="color: red">Equipos</h3>
+                    <h3 style="color: red">Productos / Insumos</h3>
                     <p>
-                      <strong>No hay equipos registrados.</strong>
+                      <strong>No hay productos registrados.</strong>
                     </p>
                     {% endif %}
                   </div>
                 </a>
               </div>
-          </div>
-    </div>
 
-    {% if user.persona.is_tecnico %}
-    <div class="x_panel">
-      <ul class="nav navbar-right panel_toolbox">
-        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-          <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="dashboard_graph">
-        
-                  <div class="row x_title">
-                    <div class="col-md-6">
-                      <h3>Network Activities <small>Graph title sub-title</small></h3>
-                    </div>
-                    <div class="col-md-6">
-                      <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                        <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+              <!-- Equipos -->
+              {% if DBINFO.cant_equipos > 0 %}
+              <div class="col-xs-6 col-md-3">
+                <a href="{% url 'orden:equipo_listar' %}">
+                  {% else %}
+                  <div class="col-xs-6 col-md-3">
+                    <a href="{% url 'orden:equipo_crear' %}">
+                      {% endif %}
+                      <div class="tile-stats">
+                        <div class="icon">
+                          <i class="fa fa-desktop"></i>
+                        </div>
+                        <div class="count">&nbsp;</div>
+                        {% if DBINFO.cant_equipos > 0 %}
+                        <h3>Equipos</h3>
+                        <p>Cantidad de equipos registrados.</p>
+                        {% else %}
+                        <h3 style="color: red">Equipos</h3>
+                        <p>
+                          <strong>No hay equipos registrados.</strong>
+                        </p>
+                        {% endif %}
                       </div>
-                    </div>
+                    </a>
                   </div>
-        
-                  <div class="col-md-9 col-sm-9 col-xs-12">
-                    <div id="chart_plot_01" data-stuff='["a","b","c"]' class="demo-placeholder"></div>
-                  </div>
-        
-                  <div class="col-md-3 col-sm-3 col-xs-12 bg-white">
-                    <div class="x_title">
-                      <h2>Top Campaign Performance</h2>
-                      <div class="clearfix"></div>
-                    </div>
-        
-                    <div class="col-md-12 col-sm-12 col-xs-6">
-                      <div>
-                        <p>Facebook Campaign</p>
-                        <div class="">
-                          <div class="progress progress_sm" style="width: 76%;">
-                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="99"></div>
-                          </div>
-                        </div>
-                      </div>
-                      <div>
-                        <p>Twitter Campaign</p>
-                        <div class="">
-                          <div class="progress progress_sm" style="width: 76%;">
-                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="60"></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-6">
-                      <div>
-                        <p>Conventional Media</p>
-                        <div class="">
-                          <div class="progress progress_sm" style="width: 76%;">
-                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="40"></div>
-                          </div>
-                        </div>
-                      </div>
-                      <div>
-                        <p>Bill boards</p>
-                        <div class="">
-                          <div class="progress progress_sm" style="width: 76%;">
-                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50"></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-        
-                  </div>
-        
-                  <div class="clearfix"></div>
-                </div>
               </div>
-            </div>      </li>
-      </ul>
-          <div class="x_title">
-            <h2>Ordenes de trabajo</h2>
-            <div class="clearfix"></div>
           </div>
-          <div class="x_content">
-            <table id="datatable-ordenes" class="table table-striped tableclick table-hover table-bordered dt-responsive nowrap" cellSpacing=0
-              width=100%>
-              <thead>
-                <tr>
-                  <th data-width="10%" data-priority=1>Fecha creación</th>
-                  <th data-priority=1>Cliente</th>
-                  <th>Descripción</th>
-                  <th>Rubro</th>
-                  <th>Tipo de servicio</th>
-                  <th>Equipo</th>
-                  <th data-width="10%" data-priority=2>Estado</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% if ordenes %} {% for orden in ordenes %}
-                <tr data-tableclick="{% url 'orden:orden_ver' orden.id %}">
-                  <td class="celda_control">{{ orden.fecha_creacion }}</td>
-                  <td>{{ orden.cliente.persona.apellido|upper }}, {{ orden.cliente.persona.nombre }}</td>
-                  <td>{% autoescape off %}{{ orden.descripcion }}{% endautoescape %}</td>
-                  <td>{{ orden.rubro.nombre }}</td>
-                  <td>{{ orden.tipo_servicio.nombre }}</td>
-                  <td>
-                    {% if orden.equipo %} {{ orden.equipo }} {% else %} - {% endif %}
-                  </td>
-                  <td align="center">
-                    {{ orden.condicion }}
-                  </td>
-                </tr>
 
-                {% endfor %} {% else %}
+          {% if user.persona.is_gerente %}
+          <h1>Acá va el grafico de la guita</h1>
+          {% endif %} {% if user.persona.is_jefe_taller %}
+          <h1>Acá va el gráfico de carga de trabajo por técnico</h1>
+          {% endif %}
+          <div class="x_panel">
 
-                <h1>No hay ordenes de trabajo registradas</h1>
-
-                {% endif %}
-              </tbody>
-            </table>
-          </div>
-        </div>
-    </div>
-    {% elif user.persona.is_gerente %}
-    <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-          <div class="dashboard_graph">
-  
-            <div class="row x_title">
-              <div class="col-md-6">
-                <h3>Network Activities <small>Graph title sub-title</small></h3>
-              </div>
-              <div class="col-md-6">
-                <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                  <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                  <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
-                </div>
-              </div>
+            <div class="x_title">
+              <h2>Ordenes de trabajo</h2>
+              <div class="clearfix"></div>
             </div>
-  
-            <div class="col-md-9 col-sm-9 col-xs-12">
-              <div id="chart_plot_01" data-stuff='["a","b","c"]' class="demo-placeholder"></div>
+            <div class="x_content">
+              <table id="datatable-ordenes" class="table table-striped tableclick table-hover table-bordered dt-responsive nowrap" cellSpacing=0
+                width=100%>
+                <thead>
+                  <tr>
+                    <th data-width="10%" data-priority=1>Fecha creación</th>
+                    <th data-priority=1>Cliente</th>
+                    <th>Descripción</th>
+                    <th>Rubro</th>
+                    <th>Tipo de servicio</th>
+                    <th>Equipo</th>
+                    <th data-width="10%" data-priority=2>Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if ordenes %} {% for orden in ordenes %}
+                  <tr data-tableclick="{% url 'orden:orden_ver' orden.id %}">
+                    <td class="celda_control">{{ orden.fecha_creacion }}</td>
+                    <td>{{ orden.cliente.persona.apellido|upper }}, {{ orden.cliente.persona.nombre }}</td>
+                    <td>{% autoescape off %}{{ orden.descripcion }}{% endautoescape %}</td>
+                    <td>{{ orden.rubro.nombre }}</td>
+                    <td>{{ orden.tipo_servicio.nombre }}</td>
+                    <td>
+                      {% if orden.equipo %} {{ orden.equipo }} {% else %} - {% endif %}
+                    </td>
+                    <td align="center">
+                      {{ orden.condicion }}
+                    </td>
+                  </tr>
+
+                  {% endfor %} {% else %}
+
+                  <h1>No hay ordenes de trabajo registradas</h1>
+
+                  {% endif %}
+                </tbody>
+              </table>
             </div>
-  
-            <div class="col-md-3 col-sm-3 col-xs-12 bg-white">
-              <div class="x_title">
-                <h2>Top Campaign Performance</h2>
-                <div class="clearfix"></div>
-              </div>
-  
-              <div class="col-md-12 col-sm-12 col-xs-6">
-                <div>
-                  <p>Facebook Campaign</p>
-                  <div class="">
-                    <div class="progress progress_sm" style="width: 76%;">
-                      <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="99"></div>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <p>Twitter Campaign</p>
-                  <div class="">
-                    <div class="progress progress_sm" style="width: 76%;">
-                      <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="60"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-12 col-sm-12 col-xs-6">
-                <div>
-                  <p>Conventional Media</p>
-                  <div class="">
-                    <div class="progress progress_sm" style="width: 76%;">
-                      <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="40"></div>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <p>Bill boards</p>
-                  <div class="">
-                    <div class="progress progress_sm" style="width: 76%;">
-                      <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-  
-            </div>
-  
-            <div class="clearfix"></div>
           </div>
-        </div>
       </div>
-    {% endif %}
-    {% endblock contenido %} {% block scripts %}
-    <!-- Datatables -->
-    <script src="{% static 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
-    <script src="{% static 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
-    <script src="{% static 'vendors/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
-    <script src="{% static 'vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js' %}"></script>
-    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
-    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
-    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
-    <script src="{% static 'vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js' %}"></script>
-    <script src="{% static 'vendors/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
-    <script src="{% static 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
-    <script src="{% static 'vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
-    <script src="{% static 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
-    <script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
-    <script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
-    <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
 
-    <script src="{% static '/js/ordenes.js' %}"></script> {% endblock scripts %}
+      {% endblock contenido %} {% block scripts %}
+      <!-- Datatables -->
+      <script src="{% static 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+      <script src="{% static 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+      <script src="{% static 'vendors/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+      <script src="{% static 'vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js' %}"></script>
+      <script src="{% static 'vendors/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+      <script src="{% static 'vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+      <script src="{% static 'vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+      <script src="{% static 'vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js' %}"></script>
+      <script src="{% static 'vendors/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+      <script src="{% static 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+      <script src="{% static 'vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
+      <script src="{% static 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
+      <script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
+      <script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
+      <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
+
+      <script src="{% static '/vendors/js/custom.js' %}"></script>
+      <script src="{% static '/js/ordenes.js' %}"></script> {% endblock scripts %}

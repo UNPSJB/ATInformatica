@@ -135,9 +135,11 @@ class Orden(SafeDeleteModel):
         tipos_tareas_orden = list()
 
         for tarea in self.tareas.all():
-            tipos_tareas_orden.append(tarea.tipo_tarea)
+            if not tarea.estas_cancelada():
+                tipos_tareas_orden.append(tarea.tipo_tarea)
 
         return set(tipos_tareas) - set(tipos_tareas_orden)
+    
     @property
     def precio_total(self):
         """ Devuelve el precio total de la orden """

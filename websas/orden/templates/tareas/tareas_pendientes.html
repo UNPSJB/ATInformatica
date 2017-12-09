@@ -12,6 +12,7 @@
           <th class="column-title">Tarifa</th>
           <th class="column-title">Costo repuestos</th>
           <th class="column-title">Subtotal</th>
+          <th class="column-title">Eliminar</th>
           <th class="bulk-actions" colspan="7">
             <a class="antoo" style="color:#fff; font-weight:500;">Aplicar acciones a 
               <span class="action-cnt"> </span> )
@@ -32,7 +33,28 @@
           <td class=" ">{{ tarea.precio }}</td>
           <td class="a-right a-right ">{{ tarea.costo_repuestos }}</td>
           <td class=" ">{{ tarea.subtotal }}</td>
+          <td class="celda_control"><a class="fa fa-trash fa-lg a-right" id="cancelar_tarea" data-ajax_url="{% url 'tarea:tarea_cancelar' %}" onclick="confirmarCancelacionTarea()"></a></td>
         </tr>
+        <!-- Modal cancelar tarea-->
+        <div class="modal fade"  id="modal-cancelar-tarea" data-ajax_url="{% url 'tarea:tarea_cancelar'%}" data-id_tarea="{{ tarea.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        &times;
+                    </button>
+                    <h3><span class="text-warning"><i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;&nbsp;Confirmar eliminación</span></h3>
+                  </div>
+                  <div class="modal-body">
+                      <h4>¿Está seguro que desea cancelar la tarea de {{ tarea.tipo_tarea_nombre }}?</h3>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-danger" onclick="cancelarTarea()"><i class="fa fa-trash"></i> Eliminar tarea</button>
+                  </div>
+                </div>
+              </div>
+            </div>
         {% endfor %} {% endif %}
       </tbody>
     </table>

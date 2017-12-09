@@ -28,7 +28,7 @@ class AjaxFormView(View):
 
 
 class IndexView(TemplateView):
-    template_name = 'principal.html'
+    template_name = 'admin_tiles.html'
 
     def get_context_data(self, **kwargs):
         contexto = super().get_context_data(**kwargs)

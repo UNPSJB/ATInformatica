@@ -126,6 +126,18 @@ class TareaDetail(DetailView):
         contexto['productos'] = Producto.objects.all()
         return contexto
 
+class TareaCancelar(View):
+
+    @method_decorator(permission_required('tarea.change_tarea', login_url="orden:orden_listar"))    
+    def post(self, request, *args, **kwargs):
+        pk = int(request.POST.get("tarea_id"))
+        tarea = Tarea.objects.get(pk=pk)
+        tarea.hacer("cancelar", usuario=request.user)
+        if tarea.estas_cancelada():
+            return JsonResponse({'data':'ok'})
+        response = JsonResponse({'error': 'la tarea {} no se pudo cancelar'.format(tarea.tipo_tarea.nombre)})
+        response.status_code = 403  
+        return response 
 
 class TareaCambiarPrecio(View):
     @method_decorator(permission_required('tarea.change_tarea', login_url="orden:orden_listar"))

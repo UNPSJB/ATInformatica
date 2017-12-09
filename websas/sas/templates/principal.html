@@ -6,10 +6,8 @@
 {% endblock menu_sidebar %}
 
 {% block contenido %}
-{% if user.is_superuser %}
-    {% include 'admin_tiles.html' with ordenes=ordenes %}
-{% else %}
-<div class="row" style="margin-left: 10px; margin-right: 10px;">
+
+<!-- <div class="row" style="margin-left: 10px; margin-right: 10px;">
     <h1>WebSAS - Sistema de Administración de Servicios</h1>
     <hr>
     <p><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;Utilice el menú lateral para acceder a la función que desee.</p>
@@ -19,6 +17,6 @@
     <img src="{% static 'images/AT-logo.jpg' %}" alt="A-T Informática" style="display: block; margin: auto;">
     <br>
     <img align="middle" src="{% static 'images/AT-titulo.gif' %}" alt="SOPORTE TOTAL EN COMPUTACIÓN" style="display: block; margin: auto;">
-</div>
-{% endif %}
+</div> -->
+
 {% endblock contenido %}

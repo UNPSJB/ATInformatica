@@ -109,8 +109,3 @@ function mostrarError(mensaje) {
 $('#modalTarea').on('hidden.bs.modal', function () {
     location.reload()
 });
-
-// $("input:checked[name=tipo_tarea]:radio").change(function () {
-//     console.log("ea")
-//     // alert(this.value)
-// })
