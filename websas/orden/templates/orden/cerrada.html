@@ -1,4 +1,4 @@
-<div class=" ">
+<div style="font-size:1.15em">
   <div class="col-md-12">
     <div class="x_panel">
       <div class="x_title">
@@ -32,6 +32,7 @@
         </ul>
         <div class="clearfix"></div>
       </div>
+      
       <div class="x_content">
 
         <section class="content invoice">
@@ -75,6 +76,8 @@
           </div>
           <!-- /.row -->
 
+          <p class="lead" style="margin-top:1.5em">Tareas realizadas</p>
+          <hr>
           <!-- Table row -->
           <div class="row">
             <div class="col-xs-12 table">
@@ -104,33 +107,61 @@
             <!-- /.col -->
           </div>
           <!-- /.row -->
-
+          
+          {% if orden.tiene_repuestos %}
+          <p class="lead">Repuestos utilizados</p>
+          <hr>
+          <!-- Table row -->
+          <div class="row">
+              <div class="col-md-12 table">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Producto</th>
+                      <th>Precio unitario</th>
+                      <th>Cantidad</th>
+                      <th>Subtotal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for tarea in orden.tareas_realizadas %}
+                    {% for reserva in tarea.reservas_stock %}
+                    <tr>
+                      <td>{{ reserva.producto.nombre }}</td>
+                      <td>${{ reserva.precio_unitario }}</td>
+                      <td>{{ reserva.cantidad }}</td>
+                      <td>${{ reserva.subtotal }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.col -->
+            </div>
+            <!-- /.row -->
+            {% endif %}
           <div class="row">
             <!-- /.col -->
-            <div class="col-xs-3" style="float:right">
-              <p class="lead">Total a pagar ${{ orden.precio_total }}.-</p>
-              <!-- <div class="table-responsive">
+            <div class="col-xs-5" style="float:right; margin-top:3em">
+              <div class="table-responsive">
                 <table class="table">
                   <tbody>
                     <tr>
-                      <th style="width:50%">Subtotal:</th>
-                      <td>{{ orden.precio_total }}</td>
+                      <th style="width:50%">Mano de obra:</th>
+                      <td>${{ orden.total_mano_de_obra }}</td>
                     </tr>
                     <tr>
-                      <th>Tax (9.3%)</th>
-                      <td>$10.34</td>
-                    </tr>
-                    <tr>
-                      <th>Shipping:</th>
-                      <td>$5.80</td>
+                      <th>Repuestos:</th>
+                      <td>${{ orden.total_repuestos }}</td>
                     </tr>
                     <tr>
                       <th>Total:</th>
-                      <td>$265.24</td>
+                      <td>${{ orden.precio_total }}</td>
                     </tr>
                   </tbody>
                 </table>
-              </div> -->
+              </div>
             </div>
             <!-- /.col -->
           </div>

@@ -189,7 +189,7 @@ class Orden(SafeDeleteModel):
             raise Exception ("No existe la tarea")
         tarea.reservar_stock(producto,  cantidad)
 
-    def cancelar(self,usuario):
+    def cancelar(self, usuario):
         """ Método para cancelar la orden de trabajo
 
         Raise:
@@ -215,6 +215,27 @@ class Orden(SafeDeleteModel):
         self.fecha_fin = timezone.now()
         self.save()
 
+    def tiene_repuestos(self):
+        # si alguna tarea tiene una reserva, entonces, la orden tiene repuestos
+        return any(map(lambda tarea: tarea.reservas_stock.count() > 0, self.tareas_realizadas))
+
+    @property
+    def total_repuestos(self):
+        total_repuestos = 0
+        for tarea in self.tareas_realizadas:
+            total_repuestos += tarea.costo_repuestos
+        return total_repuestos
+
+    @property
+    def total_mano_de_obra(self):
+        total_mano_de_obra = 0
+        for tarea in self.tareas_realizadas:
+            total_mano_de_obra += tarea.precio
+        return total_mano_de_obra
+
+    @property
+    def fecha(self):
+        return self.fecha_fin.date()
 class Equipo(SafeDeleteModel):
     """
     Modelo de Equipo para asociar a Ordenes de Trabajo y llevar registro de las mismas.
