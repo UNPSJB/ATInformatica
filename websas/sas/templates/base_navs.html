@@ -28,7 +28,7 @@ footer_fixed
                 </div>
                 <div class="profile_info">
                     <span>Bienvenid@,</span>
-                    <h2>{% if user.is_authenticated %}{{ user.first_name }}{% else %} Usuario {% endif %}</h2>
+                    <h2>{% if user.is_authenticated %}{{ user.username }}{% else %} Usuario {% endif %}</h2>
                 </div>
             </div>
             
