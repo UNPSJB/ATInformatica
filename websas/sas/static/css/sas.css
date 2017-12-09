@@ -1868,7 +1868,7 @@ h4.graph_title {
     animation-name: transformAnimation;
     animation-duration: .5s;
     animation-iteration-count: 1;
-    color: rgba(58, 58, 58, 0.41);
+    color: rgba(58, 58, 58, 0.658);
     animation-timing-function: ease;
     animation-fill-mode: forwards;
     -webkit-animation-name: transformAnimation;
@@ -1885,7 +1885,7 @@ h4.graph_title {
 .tile-stats .icon {
     width: 20px;
     height: 20px;
-    color: #BAB8B8;
+    color: rgb(91, 214, 187);
     position: absolute;
     right: 53px;
     top: 22px;
@@ -1913,11 +1913,12 @@ h4.graph_title {
     padding: 0
 }
 .tile-stats h3 {
-    color: #BAB8B8
+    color: rgb(22, 68, 32)
 }
 .tile-stats p {
     margin-top: 5px;
     font-size: 12px
+    color: rgb(5, 38, 88);
 }
 .tile-stats>.dash-box-footer {
     position: relative;
