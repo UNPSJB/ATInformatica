@@ -116,7 +116,6 @@ class EmpleadoForm(PersonaForm):
             if rol is None:
                 raise forms.ValidationError("No existe el rol de empleado.")
 
-            print(persona.sos(rol))
             if persona.sos(rol):
                 raise forms.ValidationError("El {} ya se encuentra registrado".format(rol.get_tipo_display()))
 
