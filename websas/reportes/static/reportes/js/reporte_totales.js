@@ -52,7 +52,6 @@ function inicializarGrafico () {
             //Si la lista de ordenes viene vacia, mostramos el error
 
             // Activar visualizador abajo
-            console.log("AAAAAAAAAAAAAAAAAAAA")
             var panel_reporte = $('#reporte_pre').first();
 
             if(data.ordenes_total.length == 0){
@@ -70,25 +69,24 @@ function inicializarGrafico () {
                 ot = data["ordenes_total"][i];
                 ot_vieja = data["ordenes_viejas"][i];
 
-                console.log(ot)
                 chartBar.options.data[0].dataPoints.push(
                     {
                         label: ot.criterio,
                         y: parseInt(ot.total),
                     })
-                chart.data.labels[i] = ot["criterio"]
-                chart.data.datasets[1].data[i] = ot["total"]
-                chartBar.options.data[1].dataPoints.push(
-                    {
-                        label: ot.criterio,
-                        y: parseInt(1000),
-                    })
                 if(ot_vieja){
                     chart.data.datasets[0].data[i] = ot_vieja["total"]
+                    chartBar.options.data[1].dataPoints.push(
+                        {
+                            label: ot.criterio,
+                            y: parseInt(ot_vieja.total),
+                        })
                 }
 
                 total_facturado += parseInt(ot.total)
 
+                chart.data.labels[i] = ot["criterio"]
+                chart.data.datasets[1].data[i] = ot["total"]
                 cantidad_chart.data.labels.push(ot.criterio)
                 cantidad_chart.data.datasets[0].data.push(parseInt(ot.cantidad))
                 cantidad_chart.data.datasets[0].backgroundColor.push(COLORES[randomProperty(COLORES)])
