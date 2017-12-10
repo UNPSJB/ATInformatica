@@ -1,4 +1,8 @@
-{% extends "principal.html" %}{% load staticfiles %} {% block contenido %}
+{% extends "principal.html" %}{% load staticfiles %}
+{% block estilos %}
+<link rel="stylesheet" href="{% static 'reportes/css/reportes.css' %}">
+{% endblock estilos %}
+{% block contenido %}
 <div class="row">
   <div class="x_panel">
     <!-- <div class="x_title">
@@ -150,36 +154,36 @@
               <div class="x_content">
                   <div id="msg-total" style="text-align: center;">
                       <h1>Total facturado entre
-                        <span id="fecha-ini"></span> y
+                        <span id="fecha-ini"></span>:
                         <span id="fecha-fin"></span>:
                         <strong>
                           <span id="total"></span>
                         </strong>
                       </h1>
                     </div>
-                    <div id="chart-container" hidden class="col-md-6 col-sm-6 col-xs-12">
-                      <div class="" style="position: relative; height: 60vh; width: 60vh">
+                    <div id="chart-container" class="col-md-6 col-sm-6 col-xs-12 chart-container">
+                      {% comment %}<!-- <div class="" style="position: relative; height: 60vh; width: 60vh">
                         <canvas id="chart-total-ots" width="400" height="400"></canvas>
                       </div>
-                      <div id="chart-total-legend" class="">
+                      <div id="chart-total-legend" class=""> -->{% endcomment %}
     
                       </div>
     
                     </div>
-                    <hr>
-                    <!--segundo panel-->
-                    <div id="total-facturado" hidden class="col-md-6 col-sm-6 col-xs-12">
+                    <hr>{% comment %}
+                    <!-- segundo panel -->
+                    <!-- <div id="total-facturado" hidden class="col-md-6 col-sm-6 col-xs-12">
                       <h1>Resultados totales (poner cant OTs)</h1>
-                    </div>
-    
-                    <!--tercer panel-->
-                    <div hidden class="col-md-6 col-sm-6 col-xs-12">
+                    </div> --> {% endcomment %}
+
+                    {% comment %}<!--tercer panel-->
+                    <!-- <div hidden class="col-md-6 col-sm-6 col-xs-12">
                       <div class="x_title">
                         <h1>Indique las fechas 3</h1>
                       </div>
-                    </div>
+                    </div> -->{% endcomment %}
                     <!--cuarto panel-->
-                    <div id="chart-container-cantidad" hidden class="col-md-6 col-sm-6 col-xs-12">
+                    {% comment %}<!-- <div id="chart-container-cantidad" hidden class="col-md-6 col-sm-6 col-xs-12">
                       <h1>Cantidad de órdenes de trabajo</h1>
     
                       <div class="" style="position: relative; height: 60vh; width: 60vh">
@@ -191,7 +195,7 @@
                     <div class="ln_solid"></div>
                     <button class="btn btn-warning pull-right" onclick="alert('nooo maestro te la debo me quede sin hoja4')">
                       <i class="fa fa-print"></i> Descargar PDF
-                    </button>    
+                    </button> -->{% endcomment %}
               </div>
             </div>
 
@@ -270,7 +274,94 @@
       <script src="{% static '/js/ordenes.js' %}"></script>
 
       <!-- Para los gráficos -->
-      <script src="{% static 'reportes/js/reportes.js' %}"></script>
-      <script src="{% static 'reportes/js/chart.js' %}"></script> 
+      <!-- <script src="{% static 'reportes/js/reportes.js' %}"></script>
+      <script src="{% static 'vendors/js/canvas.js' %}"></script>  -->
 
-      {% endblock scripts %}
+      <script src="{% static 'vendors/canvasjs/jquery.canvasjs.min.js' %}"></script>
+      <script src="{% static 'js/reporte-sas.js' %}" ></script>          
+      
+      <script>
+$("#daterangepicker").daterangepicker(
+{
+    startDate: moment().startOf('month'),
+    endDate: moment().endOf("month"),
+    locale: {
+        "format": 'DD/MM/YYYY',
+        "applyLabel": "Aceptar",
+        "cancelLabel": "Cancelar",
+        "fromLabel": "desde",
+        "toLabel": "hasta",
+        "daysOfWeek": [
+            "Dom",
+            "Lun",
+            "Mar",
+            "Mié",
+            "Jue",
+            "Vie",
+            "Sáb"
+        ],
+        "monthNames": [
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre"
+        ],
+    },
+    ranges: {
+        'Hoy': [moment(), moment()],
+        'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        'Este mes': [moment().startOf('month'), moment()],
+        'Este trimestre': [moment().subtract(3, "month"), moment()],
+        'Desde principio de año': [moment().startOf('month').startOf('year'), moment()],
+        'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
+        'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+        'Último mes': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+        'Último trimestre': [moment().subtract(3, 'month').startOf('month'), moment()],
+        'Último año': [moment().subtract(12, 'month'), moment()],
+    },
+    "alwaysShowCalendars": true,
+    "showCustomRangeLabel": false,
+    "linkedCalendars": false,
+
+}, 
+function(start, end, label){
+    /**
+     * funcion de callback que se ejecuta cuando se seleccionan fechas validas y se pulsa el boton "Aceptar",
+     * o cuando se elige alguno de los rangos predefinidos ("Hoy", "Ayer", "Últimos 7 días", ...)
+     */
+});
+</script>
+<script>
+  $(document).on('ready', function(){
+    
+    var chart =  $("#chart-container").reporteSAS({
+        opcionesDataset :{
+            tipochart : 'column',
+            x : 'criterio',
+            y : 'total',
+            dataset : "ordenes_total"
+        },
+        opcionesAjax : {
+            fecha_ini : $("#daterangepicker").data('daterangepicker').startDate.format("DD/MM/YYYY"),
+            fecha_fin : $("#daterangepicker").data('daterangepicker').endDate.format("DD/MM/YYYY"),
+            filtro : $("#id_filtros").val(),
+            ajaxurl : $("form")[0].dataset["ajax_url"],
+        },
+        opcionesGrafico : {
+            titulo : 'Gráfico de prueba',  
+            container : "chart-container"      
+        }
+      });
+      console.log(chart)
+      // console.log(chart)
+    })
+</script>
+{% endblock scripts %}
