@@ -102,7 +102,106 @@
           </div>
 
           {% if user.persona.is_gerente %}
-          <h1>Acá va el grafico de la guita</h1>
+          <!-- Acá va el gráfico de la guita -->
+          <!--primer panel-->
+          <div class="col-md-12">
+            <div class="x_panel dashboard_graph">
+
+              <div class="row x_title">
+
+                <div class="col-md-1" style="float:right">
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                      <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="col-md-4">
+                  <h3>Opciones del reporte</h3>
+                </div>
+
+                <div class="col-md-3" style="background: #fff; cursor: pointer; padding: 4px 10px; border: 1px solid #ccc">
+                  <input type="text" class="chart-input" name="daterangepicker" id="daterangepicker" style="border:none; background-color:#fff; width:90%" placeholder="indique las fechas">
+                  <i style="float:right" class="glyphicon glyphicon-calendar fa fa-calendar"><b style="margin-left:0.5em" class="caret"></b></i>              
+                </div>
+
+                <div class="col-md-3 col-md-offset-1">
+                    <form action="" data-ajax_url="{% url 'reportes:reportes' %}">
+                        <div class="item form-group">
+                          <!-- <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.filtros.label }}">{{ form.filtros.label }}
+                            <span class="required">*</span>
+                          </label> -->
+                          <div class=" ">
+                            {{ form.filtros }}
+                          </div>
+                        </div>
+                      </form>
+                </div>
+              </div>
+
+              <div id="chart-error" hidden class="col-md-12 col-sm-12 col-xs-12">
+                  <div class="alert alert-warning"></div>
+                </div>
+
+
+              <div class="x_content">
+                  <div id="msg-total" style="text-align: center;">
+                      <h1>Total facturado entre
+                        <span id="fecha-ini"></span> y
+                        <span id="fecha-fin"></span>:
+                        <strong>
+                          <span id="total"></span>
+                        </strong>
+                      </h1>
+                    </div>
+                    <div id="chart-container" hidden class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="" style="position: relative; height: 60vh; width: 60vh">
+                        <canvas id="chart-total-ots" width="400" height="400"></canvas>
+                      </div>
+                      <div id="chart-total-legend" class="">
+    
+                      </div>
+    
+                    </div>
+                    <hr>
+                    <!--segundo panel-->
+                    <div id="total-facturado" hidden class="col-md-6 col-sm-6 col-xs-12">
+                      <h1>Resultados totales (poner cant OTs)</h1>
+                    </div>
+    
+                    <!--tercer panel-->
+                    <div hidden class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="x_title">
+                        <h1>Indique las fechas 3</h1>
+                      </div>
+                    </div>
+                    <!--cuarto panel-->
+                    <div id="chart-container-cantidad" hidden class="col-md-6 col-sm-6 col-xs-12">
+                      <h1>Cantidad de órdenes de trabajo</h1>
+    
+                      <div class="" style="position: relative; height: 60vh; width: 60vh">
+                        <canvas id="chart-cantidad-ots" width="400" height="400"></canvas>
+                      </div>
+                      <div id="chart-cantidad-legend" class=""></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="ln_solid"></div>
+                    <button class="btn btn-warning pull-right" onclick="alert('nooo maestro te la debo me quede sin hoja4')">
+                      <i class="fa fa-print"></i> Descargar PDF
+                    </button>    
+              </div>
+            </div>
+
+            <!-- <div id="reporte_pre" class="x_panel" style="display: none;">
+
+              <div class="x_content" style="display: none;">
+                    </div>
+            </div> -->
+          </div>
+          <!-- Acá termina el gráfico de la guita -->
           {% endif %} {% if user.persona.is_jefe_taller %}
           <h1>Acá va el gráfico de carga de trabajo por técnico</h1>
           {% endif %}
@@ -116,7 +215,7 @@
               <table id="datatable-ordenes" class="table table-striped tableclick table-hover table-bordered dt-responsive nowrap" cellSpacing=0
                 width=100%>
                 <thead>
-                  <tr>
+                  <tr>input
                     <th data-width="10%" data-priority=1>Fecha creación</th>
                     <th data-priority=1>Cliente</th>
                     <th>Descripción</th>
@@ -142,8 +241,7 @@
                     </td>
                   </tr>
 
-                  {% endfor %} 
-                  {% endif %}
+                  {% endfor %} {% endif %}
                 </tbody>
               </table>
             </div>
@@ -169,4 +267,10 @@
       <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
 
       <script src="{% static '/vendors/js/custom.js' %}"></script>
-      <script src="{% static '/js/ordenes.js' %}"></script> {% endblock scripts %}
+      <script src="{% static '/js/ordenes.js' %}"></script>
+
+      <!-- Para los gráficos -->
+      <script src="{% static 'reportes/js/reportes.js' %}"></script>
+      <script src="{% static 'reportes/js/chart.js' %}"></script> 
+
+      {% endblock scripts %}
