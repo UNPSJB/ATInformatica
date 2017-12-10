@@ -34,6 +34,7 @@ function inicializarGrafico () {
     //inicializamos graficos
     init_chart()
 
+    var total_facturado = 0
     var picker = $("#daterangepicker").data('daterangepicker')
     var fecha_ini = picker.startDate.format("DD/MM/YYYY")
     var fecha_fin = picker.endDate.format("DD/MM/YYYY")
@@ -52,7 +53,8 @@ function inicializarGrafico () {
             //Si la lista de ordenes viene vacia, mostramos el error
 
             // Activar visualizador abajo
-            var panel_reporte = $('#reporte_pre').first();
+            var chart_totales = $("#chart-totales").CanvasJSChart() 
+            var chart_cantidades = $("#chart-cantidades").CanvasJSChart()
 
             if(data.ordenes_total.length == 0){
                 $("#chart-error").fadeIn()
@@ -62,60 +64,49 @@ function inicializarGrafico () {
 
             $("#chart-error").hide()
             //Si no, no mostramos error y cargamos los datos en el grafico
-            var total_facturado = 0
             var ot, ot_vieja
             //console.log(data)
             for (let i = 0; i < data.ordenes_total.length; i++) {
                 ot = data["ordenes_total"][i];
                 ot_vieja = data["ordenes_viejas"][i];
 
-                chartBar.options.data[0].dataPoints.push(
+                chart_totales.options.data[0].dataPoints.push(
                     {
                         label: ot.criterio,
                         y: parseInt(ot.total),
                     })
                 if(ot_vieja){
-                    chart.data.datasets[0].data[i] = ot_vieja["total"]
-                    chartBar.options.data[1].dataPoints.push(
+                    chart_totales.options.data[1].dataPoints.push(
                         {
-                            label: ot.criterio,
                             y: parseInt(ot_vieja.total),
+                            label: ot.criterio,
                         })
                 }
 
                 total_facturado += parseInt(ot.total)
-
-                chart.data.labels[i] = ot["criterio"]
-                chart.data.datasets[1].data[i] = ot["total"]
-                cantidad_chart.data.labels.push(ot.criterio)
-                cantidad_chart.data.datasets[0].data.push(parseInt(ot.cantidad))
-                cantidad_chart.data.datasets[0].backgroundColor.push(COLORES[randomProperty(COLORES)])
+                chart_cantidades.options.data[0].dataPoints.push({
+                    label: ot.criterio,
+                    name: ot.criterio,
+                    y: parseInt(ot.cantidad)
+                })
             }
-            chart.update()
-            chartBar.render()
-            displayBarLegend(chart, "#chart-total-legend")
-            cantidad_chart.update()
-            displayDoughnutLegend(cantidad_chart, "#chart-cantidad-legend")
-            
-            $('#msg-total').show()
-            $("#chart-container").show()
-            $("#chart-container-cantidad").show()
+            chart_totales.render()
+            chart_cantidades.render()
             $("#fecha-ini").html(fecha_ini)
             $("#fecha-fin").html(fecha_fin)
             $("#total").html("$" + total_facturado)
-            $("#total-facturado").show()
+        }})
 
-            // Si no lo mostré todavía, mostrarlo.
-            if (panel_reporte.css('display') == 'none') {
-                panel_reporte.css('display', 'inline-block');
-            }
-            // Si está plegado, desplegarlo.
-            if (panel_reporte.find('.x_content').first().css('display', 'none')) {
-                panel_reporte.find('.collapse-link').first().trigger('click');                
-            }
-        },
-    });
-
+        var panel_reporte = $('#reporte_pre').first();
+        
+        // Si no lo mostré todavía, mostrarlo.
+        if (panel_reporte.css('display') == 'none') {
+            panel_reporte.css('display', 'inline-block');
+        }
+        // Si está plegado, desplegarlo.
+        if (panel_reporte.find('.x_content').first().css('display', 'none')) {
+            panel_reporte.find('.collapse-link').first().trigger('click');
+        }
 }
 
 $('.chart-input').on('change', function(){
