@@ -2,12 +2,13 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.generic import FormView, TemplateView
 # Create your views here.
-from django.db.models import Sum, Count, F, Value
+from django.db.models import Sum, Count, F, Value, FloatField
 from django.db.models.functions import Concat, Upper
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from orden.models import Orden
-from .forms import ReporteTotalOrdenesForm
+from producto.models import ReservaStock
+from .forms import ReporteTotalOrdenesForm, ReporteProductoForm
 
 
 FILTROS = {
@@ -15,11 +16,22 @@ FILTROS = {
     'rubro': F("rubro__nombre"),
     'tipo_servicio': F("tipo_servicio__nombre"),
     'tecnico': Concat(Upper(F("tecnico__persona__apellido")), Value(', '), F("tecnico__persona__nombre")),
+    'rubro_productos': (F("tarea__orden__rubro__nombre"), F("rubro__nombre")),
+    'tipo_servicio_productos': (F("tarea__orden__tipo_servicio__nombre"), F("tipo_servicio__nombre")),
 }
 
 class ReporteTotalOrdenes(FormView):
     template_name = "reportes/reportes.html"
     form_class = ReporteTotalOrdenesForm
+
+    @staticmethod
+    def get_query(criteria, date_start, date_end):
+        """Metodo estatico que devuelve la query asi se lo puede reusar desde otra view"""
+        return Orden.objects.filter(
+                    fecha_fin__range=[date_start, date_end]).values(
+                    criterio=criteria).annotate(
+                    total=Sum("precio_final"),
+                    cantidad=Count("precio_final"))
 
 
     def get(self, request, *args, **kwargs):
@@ -30,7 +42,7 @@ class ReporteTotalOrdenes(FormView):
         return super().get(request, *args, **kwargs)
 
     def ajax_get(self, request, *args, **kwargs):
-        form = ReporteTotalOrdenesForm(request.GET or None)
+        form = self.form_class(request.GET or None)
 
         if form.is_valid():
 
@@ -38,23 +50,13 @@ class ReporteTotalOrdenes(FormView):
             fecha_fin = form.cleaned_data.get("fecha_fin")
             filtro = FILTROS[form.cleaned_data.get("filtros")]
 
-            ordenes_total = Orden.objects.filter(
-                    fecha_fin__range=[fecha_ini, fecha_fin]).values(
-                    criterio=filtro).annotate(
-                    total=Sum("precio_final"),
-                    cantidad=Count("precio_final"))
+            ordenes_total = ReporteTotalOrdenes.get_query(filtro, fecha_ini, fecha_fin)
 
             # conseguimos la fecha que nos pasaron, pero con un anio menos
             fecha_ini = fecha_ini - relativedelta(years=1)
             fecha_fin = fecha_fin - relativedelta(years=1)
 
-            ordenes_viejas = Orden.objects.filter(
-                    fecha_fin__range=[fecha_ini, fecha_fin]).values(
-                    criterio=filtro).annotate(
-                    total=Sum("precio_final"),
-                    cantidad=Count("precio_final"))
-
-
+            ordenes_viejas = ReporteTotalOrdenes.get_query(filtro, fecha_ini, fecha_fin)
 
             return JsonResponse(
                 {
@@ -66,10 +68,44 @@ class ReporteTotalOrdenes(FormView):
 
         return JsonResponse({})
 
-class ReporteProducto(TemplateView):
+class ReporteProducto(FormView):
     template_name = "reportes/reporte_productos.html"
+    form_class = ReporteProductoForm
+
+    def get(self, request, *args, **kwargs):
+
+        if(request.is_ajax()):
+            return self.ajax_get(request, *args, **kwargs)
+
+        return super().get(request, *args, **kwargs)
+
+    def ajax_get(self, request, *args, **kwargs):
+        form = self.form_class(request.GET or None)
+
+        if form.is_valid():
+
+            fecha_ini = form.cleaned_data.get("fecha_ini")
+            fecha_fin = form.cleaned_data.get("fecha_fin")
+            filtro = FILTROS[form.cleaned_data.get("filtros")][0]
+
+            incidencia_productos = ReservaStock.objects.deleted_only().exclude(
+                cancelada=True).values(
+                criterio=filtro,
+                prod=F("producto__nombre")).order_by("criterio").annotate(
+                total_utilizado=Sum("cantidad"), total_recaudado=
+                Sum(F("precio_unitario")* F("cantidad"),
+                output_field=FloatField()))
+
+            # total =
+
+            return JsonResponse(
+                {
+                 "incidencia_productos": list(incidencia_productos),
+                }
+            )
 
 
+        return JsonResponse({})
 
 
 
