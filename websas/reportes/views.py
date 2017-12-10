@@ -78,9 +78,18 @@ class ReporteProducto(TemplateView):
 
 # ReservaStock.objects.deleted_only().exclude(cancelada=True).values(prod=F("producto__nombre"), rubro=F("tarea__orden__rubro__nombre")).annotate(cantidad=Count("rubro"), total=Sum("precio_unitario"))
 
+
+
+#esta es la que va
+# ReservaStock.objects.deleted_only().exclude(cancelada=True).values(rubro=F("tarea__orden__rubro__nombre"), prod=F("producto__nombre")).order_by("rubro").annotate(total_utilizado=Sum("cantidad"), total_recaudado=Sum(F("precio_unitario")* F("cantidad"), output_field=FloatField()))
+
 # TareaRealizada.objects.values(tipo_tarea=F("tarea__tipo_tarea__nombre"), tecnico=F("usuario__username")).annotate(cantidad=Count("tipo_tarea")).order_by("tipo_tarea")
 
 # cache = {}
 # for q in query:
     # if q["tipo_tarea"] not in cache.keys():
         # cache[q["tipo_tarea"]] = (q["tecnico"], q["cantidad"])
+
+
+# esta es la de rdpys pagadas por ots canceladas
+# TareaRealizada.objects.filter(tarea__tipo_tarea__nombre__icontains="rdyp", tarea__orden__cancelada=True).annotate(otras_tareas=Count(F("tarea__orden__tareas"))).filter(otras_tareas=1).annotate(cantidad=Count("tarea__orden__rubro__nombre"))
