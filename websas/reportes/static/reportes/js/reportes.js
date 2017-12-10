@@ -142,6 +142,21 @@ $("#btn-ajax").on("click", function(e){
             $("#total").html("$" + total_facturado)
             $("#total-facturado").show()
 
+            // Activar visualizador abajo
+            var panel_reporte = $('#reporte_pre').first();
+            // Si no lo mostré todavía, mostrarlo.
+            if (panel_reporte.css('display') == 'none') {
+                panel_reporte.css('display', 'inline-block');
+            }
+            // Si está plegado, desplegarlo.
+            if (panel_reporte.find('.x_content').first().css('display', 'none')) {
+                panel_reporte.find('.collapse-link').first().trigger('click');                
+            }
         },
-    })
+    });
+
 })
+
+function imprimir() {
+    
+}

@@ -1917,7 +1917,7 @@ h4.graph_title {
 }
 .tile-stats p {
     margin-top: 5px;
-    font-size: 12px
+    font-size: 12px;
     color: rgb(5, 38, 88);
 }
 .tile-stats>.dash-box-footer {
