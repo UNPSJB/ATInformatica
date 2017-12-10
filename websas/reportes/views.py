@@ -35,7 +35,6 @@ class ReporteTotalOrdenes(FormView):
 
 
     def get(self, request, *args, **kwargs):
-
         if(request.is_ajax()):
             return self.ajax_get(request, *args, **kwargs)
 

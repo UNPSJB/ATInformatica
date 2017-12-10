@@ -72,7 +72,8 @@ $(document).on("ready", function () {
                 { label: "mango",  y: 30  },
                 { label: "grape",  y: 28  }
             ]
-        }
+        },
+
         ]
     });
 })
