@@ -64,15 +64,15 @@ function(start, end, label){
      * o cuando se elige alguno de los rangos predefinidos ("Hoy", "Ayer", "Últimos 7 días", ...)
      */
 });
-$("#daterangepicker").on("show.daterangepicker", function(ev, picker) {
-    /**
-     * Evento que se dispara cuando se muestra el datepicker
-     */    
-    $("#chart-error").hide()
-    $("#chart-container").hide()
-    $("#chart-container-cantidad").hide()
-    $("#total-facturado").hide()
-})
+// $("#daterangepicker").on("show.daterangepicker", function(ev, picker) {
+//     /**
+//      * Evento que se dispara cuando se muestra el datepicker
+//      */    
+//     $("#chart-error").hide()
+//     $("#chart-container").hide()
+//     $("#chart-container-cantidad").hide()
+//     $("#total-facturado").hide()
+// })
 
 
 
@@ -84,8 +84,11 @@ $("#daterangepicker").on("apply.daterangepicker", function(ev, picker){
 
 })
 
-$("#btn-ajax").on("click", function(e){
+$(document).on('ready', function(){
+    inicializarGrafico()
+})
 
+function inicializarGrafico () {
     //inicializamos graficos
     init_chart()
 
@@ -108,8 +111,13 @@ $("#btn-ajax").on("click", function(e){
             if(data.ordenes_total.length == 0){
                 $("#chart-error .alert").html("<strong>Su consulta no ha generado resultados</strong>")
                 $("#chart-error").fadeIn()
+                $('#msg-total').hide()
+                $("#chart-container").hide()
+                $("#chart-container-cantidad").hide()
+                $("#total-facturado").hide()
                 return
             }
+            $('#chart-error').hide()
             //Si no, no mostramos error y cargamos los datos en el grafico
             var total_facturado = 0
             var ot, ot_vieja
@@ -134,7 +142,8 @@ $("#btn-ajax").on("click", function(e){
             displayBarLegend(chart, "#chart-total-legend")
             cantidad_chart.update()
             displayDoughnutLegend(cantidad_chart, "#chart-cantidad-legend")
-
+            
+            $('#msg-total').show()
             $("#chart-container").show()
             $("#chart-container-cantidad").show()
             $("#fecha-ini").html(fecha_ini)
@@ -155,6 +164,15 @@ $("#btn-ajax").on("click", function(e){
         },
     });
 
+}
+
+$('.chart-input').on('change', function(){
+    inicializarGrafico()
+  })
+
+
+$("#btn-ajax").on("click", function(e){
+    inicializarGrafico()
 })
 
 function imprimir() {
