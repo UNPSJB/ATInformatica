@@ -21,7 +21,7 @@ FILTROS = {
 }
 
 class ReporteTotalOrdenes(FormView):
-    template_name = "reportes/reportes.html"
+    template_name = "reportes/reporte_totales.html"
     form_class = ReporteTotalOrdenesForm
 
     @staticmethod

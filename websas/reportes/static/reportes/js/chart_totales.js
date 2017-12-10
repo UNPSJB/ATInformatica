@@ -1,5 +1,6 @@
 var chart
 var cantidad_chart
+var chartBar
 
 var COLORES = {    
     "dark_blue": "#3c6489",
@@ -94,6 +95,31 @@ function init_chart(){
         data: data_cantidad_ots,
         options: Chart.defaults.doughnut,
     });
+
+    chartBar = new CanvasJS.Chart("chartBar", {
+        title:{
+            text: "Unas columnitas (el de barras es el horizontal, ojota)"              
+        },
+        legend: {
+            horizontalAlign: "central",
+            verticalAlign: "bottom",
+            fontSize: 15,
+        },
+        data: [{        
+                type: "column",
+                showInLegend: true,
+                legendText: "la concha de tu madre allboys",
+                dataPoints: [],
+              },
+              {        
+                type: "column",
+                showInLegend: true,
+                legendText: "te vamos a quemar floresta la reputamadrequelorepario",
+                dataPoints: [],
+              },        
+          ],
+    });
+    chartBar.render();
 
 }
 

@@ -6,61 +6,77 @@
 
 {% block contenido %}
     <!--primer panel-->
+
     <div class="col-md-12">
+
+
         <div class="x_panel">
+            <ul class="nav navbar-right panel_toolbox">
+                <li>
+                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+            </ul>
             <div class="x_title">
-                <h1>Indique las fechas</h1>
+                <h3>Opciones del reporte</h3>
             </div>
-            <div class="x_content" style="display:inline-block">
+            <div class="x_content">
                 <div class="form_group" style="margin-bottom: 2em">
-                    <input type="text" name="daterangepicker" id="daterangepicker">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="daterangepicker">Seleccione rango de fechas:</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control inline" name="daterangepicker" id="daterangepicker">
+                    </div>
                 </div>
-                <div class="" >
-
-                    <form action="" data-ajax_url="{% url 'reportes:reportes' %}">
-                        <div class="item form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.filtros.label }}">{{ form.filtros.label }}<span class="required">*</span>
-                          </label>
-                          <div class="col-md-6 col-sm-6 col-xs-12">
-                            {{ form.filtros }}
-                          </div>
+                <br>
+                <form action="" data-ajax_url="{% url 'reportes:productos' %}">
+                    <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.filtros.label }}">{{ form.filtros.label }}<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        {{ form.filtros }}
                         </div>
-                    </form>
-                    <button id="btn-ajax" class="btn btn-success" value=""><i class="fa fa-bar-chart"></i> Generar reporte</button>
+                    </div>
+                </form>
+                <hr>
+                <button id="btn-ajax" class="btn btn-success" value=""><i class="fa fa-bar-chart"></i> Generar reporte</button>
+            </div>
+        </div>
+        
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title"><h1>grafiquito de barras</h1></div>
+                <div class="x_content">
+                
+                    <div id="chartBar" class="chart-container"></div>
+        
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="col-md-4 col-sm-12 col-xs-12">
-        <div class="x_panel">
-            <div class="x_title"><h1>grafiquito de barras</h1></div>
-            <div class="x_content">
-            
-                <div id="chartBar" class="chart-container"></div>
-
+        
+        <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title"><h1>grafiquito de torta</h1></div>
+                <div class="x_content">
+                
+                    <div id="chartDoughnut" class="chart-container"></div>
+        
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-4 col-sm-12 col-xs-12">
-        <div class="x_panel">
-            <div class="x_title"><h1>grafiquito de torta</h1></div>
-            <div class="x_content">
-            
-                <div id="chartDoughnut" class="chart-container"></div>
 
+
+        <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title"><h1>grafiquito de area</h1></div>
+                <div class="x_content">
+                
+                    <div id="chartArea" class="chart-container"></div>
+        
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-4 col-sm-12 col-xs-12">
-        <div class="x_panel">
-            <div class="x_title"><h1>grafiquito de area</h1></div>
-            <div class="x_content">
-            
-                <div id="chartArea" class="chart-container"></div>
 
-            </div>
-        </div>
+
     </div>
 
 
@@ -73,8 +89,8 @@
 {% endblock contenido %}
 
 {% block scripts %}
+    <script src="{% static 'reportes/js/daterangepicker.js' %}"></script>
     <script src="{% static 'vendors/canvasjs/jquery.canvasjs.min.js' %}"></script>
-    <script src="{% static 'reportes/js/reportes.js' %}"></script>
-    <script src="{% static 'reportes/js/chart.js' %}"></script>
-    <script src="{% static 'reportes/js/canvas.js' %}"></script>
+    <script src="{% static 'reportes/js/chart_productos.js' %}"></script>
+    <script src="{% static 'reportes/js/reporte_productos.js' %}"></script>
 {% endblock scripts %}

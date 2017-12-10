@@ -37,6 +37,18 @@
             </div>
         </div>
 
+    <div id="chart-error" hidden class="col-md-12 col-sm-12 col-xs-12">
+        <div class="alert alert-warning"><strong>Su consulta no ha genereado resultados</strong></div>
+    </div>
+
+
+        
+    <!--grafico de canvasjs-->
+    <div id="chartBar" class="chart-container"></div>
+
+
+
+
     <div id="reporte_pre" class="x_panel" style="display: none;">
         <ul class="nav navbar-right panel_toolbox">
             <li>
@@ -51,36 +63,30 @@
                 <h1>Total facturado entre <span id="fecha-ini"></span> y <span id="fecha-fin"></span>: 
                 <strong><span id="total"></span></strong></h1>
             </div>
-            <div id="chart-container" hidden class="col-md-6 col-sm-6 col-xs-12">
+
+
+            <div id="chart-container" class="col-md-6 col-sm-6 col-xs-12">
+
                 <div class="" style="position: relative; height: 60vh; width: 60vh">
                     <canvas id="chart-total-ots" width="400" height="400"></canvas>
                 </div>
                 <div id="chart-total-legend" class="">
 
                 </div>
-                <div id="chart-error" hidden class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="alert alert-warning"></div>
-                </div>
             </div>
+
             <hr>
             <!--segundo panel-->
-            <div id="total-facturado" hidden class="col-md-6 col-sm-6 col-xs-12">
+            <div id="total-facturado"  class="col-md-6 col-sm-6 col-xs-12">
                 <h1>Resultados totales (poner cant OTs)</h1>
             </div>
         
-            <!--tercer panel-->
-            <div hidden class="col-md-6 col-sm-6 col-xs-12">
-                <div class="x_title">
-                    <h1>Indique las fechas 3</h1>
-                </div>
-            </div>
             <!--cuarto panel-->
             <div id="chart-container-cantidad" hidden class="col-md-6 col-sm-6 col-xs-12">
                 <h1>Cantidad de órdenes de trabajo</h1>
         
                 <div class="" style="position: relative; height: 60vh; width: 60vh">
-                    <canvas id="chart-cantidad-ots" width="400" height="400"></canvas>
-                </div>
+                    <canvas id="chart-cantidad-ots" width="400" height="400"></canvas> </div>
                 <div id="chart-cantidad-legend" class=""></div>
             </div>
             <div class="clearfix"></div>
@@ -95,7 +101,9 @@
 {% endblock contenido %}
 
 {% block scripts %}
+    <script src="{% static 'vendors/canvasjs/jquery.canvasjs.min.js' %}"></script>
+    <script src="{% static 'reportes/js/daterangepicker.js' %}"></script>
     <script src="{% static 'reportes/js/reportes.js' %}"></script>
-    <script src="{% static 'reportes/js/chart.js' %}"></script>
+    <script src="{% static 'reportes/js/chart_totales.js' %}"></script>
     <script src="{% static 'reportes/js/rep_templates.js' %}"></script>
 {% endblock scripts %}

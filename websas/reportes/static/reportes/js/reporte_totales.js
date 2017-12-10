@@ -7,72 +7,15 @@ function randomProperty(obj) {
     return result;
 }
 
-$("#daterangepicker").daterangepicker(
-{
-    startDate: moment().startOf('month'),
-    endDate: moment().endOf("month"),
-    locale: {
-        "format": 'DD/MM/YYYY',
-        "applyLabel": "Aceptar",
-        "cancelLabel": "Cancelar",
-        "fromLabel": "desde",
-        "toLabel": "hasta",
-        "daysOfWeek": [
-            "Dom",
-            "Lun",
-            "Mar",
-            "Mié",
-            "Jue",
-            "Vie",
-            "Sáb"
-        ],
-        "monthNames": [
-            "Enero",
-            "Febrero",
-            "Marzo",
-            "Abril",
-            "Mayo",
-            "Junio",
-            "Julio",
-            "Agosto",
-            "Septiembre",
-            "Octubre",
-            "Noviembre",
-            "Diciembre"
-        ],
-    },
-    ranges: {
-        'Hoy': [moment(), moment()],
-        'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-        'Este mes': [moment().startOf('month'), moment()],
-        'Este trimestre': [moment().subtract(3, "month"), moment()],
-        'Desde principio de año': [moment().startOf('month').startOf('year'), moment()],
-        'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
-        'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
-        'Último mes': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-        'Último trimestre': [moment().subtract(3, 'month').startOf('month'), moment()],
-        'Último año': [moment().subtract(12, 'month'), moment()],
-    },
-    "alwaysShowCalendars": true,
-    "showCustomRangeLabel": false,
-    "linkedCalendars": false,
-
-}, 
-function(start, end, label){
+//$("#daterangepicker").on("show.daterangepicker", function(ev, picker) {
     /**
-     * funcion de callback que se ejecuta cuando se seleccionan fechas validas y se pulsa el boton "Aceptar",
-     * o cuando se elige alguno de los rangos predefinidos ("Hoy", "Ayer", "Últimos 7 días", ...)
-     */
-});
-// $("#daterangepicker").on("show.daterangepicker", function(ev, picker) {
-//     /**
-//      * Evento que se dispara cuando se muestra el datepicker
-//      */    
-//     $("#chart-error").hide()
-//     $("#chart-container").hide()
-//     $("#chart-container-cantidad").hide()
-//     $("#total-facturado").hide()
-// })
+     * Evento que se dispara cuando se muestra el datepicker
+     */    
+    //$("#chart-error").hide()
+    //$("#chart-container").hide()
+    //$("#chart-container-cantidad").hide()
+    //$("#total-facturado").hide()
+//})
 
 
 
@@ -83,7 +26,6 @@ $("#daterangepicker").on("apply.daterangepicker", function(ev, picker){
      */
 
 })
-
 $(document).on('ready', function(){
     inicializarGrafico()
 })
@@ -108,28 +50,41 @@ function inicializarGrafico () {
         dataType: "json",
         success: function(data){
             //Si la lista de ordenes viene vacia, mostramos el error
+
+            // Activar visualizador abajo
+            console.log("AAAAAAAAAAAAAAAAAAAA")
+            var panel_reporte = $('#reporte_pre').first();
+
             if(data.ordenes_total.length == 0){
-                $("#chart-error .alert").html("<strong>Su consulta no ha generado resultados</strong>")
                 $("#chart-error").fadeIn()
-                $('#msg-total').hide()
-                $("#chart-container").hide()
-                $("#chart-container-cantidad").hide()
-                $("#total-facturado").hide()
+                panel_reporte.css('display', 'none');
                 return
             }
-            $('#chart-error').hide()
+
+            $("#chart-error").hide()
             //Si no, no mostramos error y cargamos los datos en el grafico
             var total_facturado = 0
             var ot, ot_vieja
             //console.log(data)
             for (let i = 0; i < data.ordenes_total.length; i++) {
-                ot = data.ordenes_total[i];
-                ot_vieja = data.ordenes_viejas[i];
+                ot = data["ordenes_total"][i];
+                ot_vieja = data["ordenes_viejas"][i];
 
-                chart.data.labels[i] = ot.criterio
-                chart.data.datasets[1].data[i] = ot.total
+                console.log(ot)
+                chartBar.options.data[0].dataPoints.push(
+                    {
+                        label: ot.criterio,
+                        y: parseInt(ot.total),
+                    })
+                chart.data.labels[i] = ot["criterio"]
+                chart.data.datasets[1].data[i] = ot["total"]
+                chartBar.options.data[1].dataPoints.push(
+                    {
+                        label: ot.criterio,
+                        y: parseInt(1000),
+                    })
                 if(ot_vieja){
-                    chart.data.datasets[0].data[i] = ot_vieja.total
+                    chart.data.datasets[0].data[i] = ot_vieja["total"]
                 }
 
                 total_facturado += parseInt(ot.total)
@@ -139,6 +94,7 @@ function inicializarGrafico () {
                 cantidad_chart.data.datasets[0].backgroundColor.push(COLORES[randomProperty(COLORES)])
             }
             chart.update()
+            chartBar.render()
             displayBarLegend(chart, "#chart-total-legend")
             cantidad_chart.update()
             displayDoughnutLegend(cantidad_chart, "#chart-cantidad-legend")
@@ -151,8 +107,6 @@ function inicializarGrafico () {
             $("#total").html("$" + total_facturado)
             $("#total-facturado").show()
 
-            // Activar visualizador abajo
-            var panel_reporte = $('#reporte_pre').first();
             // Si no lo mostré todavía, mostrarlo.
             if (panel_reporte.css('display') == 'none') {
                 panel_reporte.css('display', 'inline-block');
