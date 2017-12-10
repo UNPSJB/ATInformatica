@@ -1,6 +1,6 @@
 from django import forms
 from .models import Persona, Rol
-
+from django.apps import apps
 class PersonaForm (forms.ModelForm):
 
     class Meta:
@@ -107,8 +107,17 @@ class EmpleadoForm(PersonaForm):
     def clean(self):
         if Persona.objects.filter(doc=self.cleaned_data['doc']).exists():
             persona = Persona.objects.get(doc=self.cleaned_data['doc'])
-            rol = Rol.objects.filter(tipo=self.cleaned_data['rol']).first()
-            if persona.sos(rol.related().__class__):
+            tipo_rol = int(self.cleaned_data['rol'])
+            rol = None
+            for klass in Rol.__subclasses__():
+                if klass.TIPO == tipo_rol:
+                    rol = klass
+
+            if rol is None:
+                raise forms.ValidationError("No existe el rol de empleado.")
+
+            print(persona.sos(rol))
+            if persona.sos(rol):
                 raise forms.ValidationError("El {} ya se encuentra registrado".format(rol.get_tipo_display()))
 
     def save(self):
@@ -124,8 +133,17 @@ class EmpleadoForm(PersonaForm):
             persona.save()
         else:
             persona = Persona.objects.get(doc=self.cleaned_data['doc'])
-        rol = Rol.objects.filter(tipo=self.cleaned_data['rol']).first()
-        persona.agregar_rol(rol.related().__class__())
+
+        tipo_rol = int(self.cleaned_data['rol'])
+        rol = None
+        for klass in Rol.__subclasses__():
+            if klass.TIPO == tipo_rol:
+                rol = klass
+        
+        if rol is None:
+            raise forms.ValidationError("No existe el rol")
+
+        persona.agregar_rol(rol())
         
 class EmpleadoUpdateForm(PersonaUpdateForm):
     
