@@ -106,7 +106,8 @@ class ReporteProducto(FormView):
 
         return JsonResponse({})
 
-
+class ReporteEvolucionFacturacionMensual(FormView):
+    pass
 
 
  # ReservaStock.objects.deleted_only().exclude(cancelada=True).values(prod=F("producto__nombre"), rubro=F("tarea__orden__rubro__nombre")).annotate(utilizados=Sum("cantidad"))
