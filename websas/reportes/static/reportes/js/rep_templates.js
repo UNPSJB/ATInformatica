@@ -1,8 +1,13 @@
 
 /**
- * Genera e imprime el PDF de acuerdo a un template.
- * contenido_rep usa tiles de 8x8 (o 16x8), que pueden ser:
- * {
+ * Interfaz:
+ * imprimirPDF({
+ *  titulo: [string],
+ *  tiles: [tile[]]
+ *  usuario: [string]
+ * })
+ * 
+ * tile = {
  *  tipo: [string] = 'vacio' | 'grafico' | 'html'
  *  titulo: [string]
  *  selectorJQuery: [string]
@@ -89,7 +94,7 @@ function imprimirPDF(contenido_rep){
       * TODO: multilínea
       */
     var titulo_general = contenido['titulo'];
-    doc.setFontSize(25);
+    doc.setFontSize(22);
     centrar_ancho(titulo_general, 30);  // Centrar en la página
 
 
@@ -97,55 +102,65 @@ function imprimirPDF(contenido_rep){
     
         
     // Posición inicial del cursor
-    var cursor_graficos = {x: 30, y: 60};
+    var margen_izquierdo = 30;
+    var cursor_graficos = {x: margen_izquierdo, y: 60};
         
     // Procesar los tiles
     contenido.tiles.forEach(function(tile) {
-        // Tile no vacío
-        if (tile.tipo != 'vacio') {
-            // Es ancho? Setear tamaño_x para los dos tipos
-            var tamaño_x = 80;
-            var desplazamiento_cursor = {x: 90, y: 0};
+        console.log(cursor_graficos);
 
-            if (tile.ancho) {
-                    tamaño_x = 160;
-                    desplazamiento_cursor = {x: 0, y: 90};
-            }
-            var tamaño_y = 80;  // Fijo.
+        // Es ancho? Setear tamaño_x para los dos tipos
+        var tamaño_x = 85;
+        var desplazamiento_cursor = {x: 90, y: 0};
 
-            // Imprimir el título en la posición del cursor y desplazarlo hacia abajo
-            if (tile.titulo) {
-                doc.setFontSize(16);
-                centrar_punto(tile.titulo, cursor_graficos.x + tamaño_x / 2, cursor_graficos.y);
-                cursor_graficos.y = cursor_graficos.y + 16;
-            }
+        if (tile.ancho) {
+                tamaño_x = tamaño_x * 1.8;
+                desplazamiento_cursor.x = 0;
+                desplazamiento_cursor.y = 90;
+        }
+        var tamaño_y = 80;  // Fijo.
 
-            // Si soy un gráfico, pasarme a base64 y agregarme bajo el cursor
-            if (tile.tipo == 'grafico') {
-                var canvasImg = ($(tile.selector).find('canvas').first()[0]).toDataURL();
-                doc.addImage(canvasImg, 'PNG', cursor_graficos.x, cursor_graficos.y, tamaño_x, tamaño_y);
-            } else if (tile.tipo == 'html') {   // Si tengo HTML, escupirlo en la hoja
-                var fuenteHTML = $(tile.selector).html();
-                doc.fromHTML(
-                    fuenteHTML,
-                    cursor_graficos.x, // x
-                    cursor_graficos.y, // y
-                    {
-                    'width': tamaño_x, 
-                    'height': tamaño_y,
-                    'elementHandlers': {
-                        '.no_imprimir': function(element, renderer) {
-                            return true;
-                            }
+        // Imprimir el título en la posición del cursor y desplazarlo hacia abajo
+        if (tile.titulo) {
+            doc.setFontSize(16);
+            centrar_punto(tile.titulo, cursor_graficos.x + tamaño_x / 2, cursor_graficos.y);
+            cursor_graficos.y = cursor_graficos.y + 8;
+        }
+
+        // Si soy un gráfico, pasarme a base64 y agregarme bajo el cursor
+        if (tile.tipo == 'grafico') {
+            var canvasImg = ($(tile.selector).find('canvas').first()[0]).toDataURL();
+
+            // TODO: escalar proporcionalmente la imagen dentro del tile (tamaños x e y)
+            // var alto = canvasImg.height;
+            // var ancho = canvasImg.width;
+
+            doc.addImage(canvasImg, 'PNG', cursor_graficos.x, cursor_graficos.y, tamaño_x, tamaño_y);
+        } else if (tile.tipo == 'html') {   // Si tengo HTML, escupirlo en la hoja
+            var fuenteHTML = $(tile.selector).html();
+            doc.fromHTML(
+                fuenteHTML,
+                cursor_graficos.x,
+                cursor_graficos.y,
+                {
+                'width': tamaño_x, 
+                'height': tamaño_y,
+                'elementHandlers': {
+                    '.no_imprimir': function(element, renderer) {
+                        return true;
                         }
                     }
-                );          
-            }
+                }
+            );          
+        }
 
-            cursor_graficos.x = cursor_graficos.x + desplazamiento_cursor.x;
-            cursor_graficos.y = cursor_graficos.y + desplazamiento_cursor.y;
-        };
+        cursor_graficos.x = cursor_graficos.x + desplazamiento_cursor.x;
+        if (cursor_graficos.x > 120) {
+            cursor_graficos.x = margen_izquierdo;
+            desplazamiento_cursor.y = 90;
+        }
 
+        cursor_graficos.y = cursor_graficos.y + desplazamiento_cursor.y;
     });
     
 

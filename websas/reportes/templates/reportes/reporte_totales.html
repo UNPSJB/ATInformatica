@@ -58,7 +58,7 @@
         </div>
         <div class="x_content" style="display: none;">
             <div id="msg-total" style="text-align: center; padding:2em;">
-                <h2>
+                <h2 id="titulo_reporte">
                     <span style="border-bottom: 1px solid;">Total facturado entre <span id="fecha-ini"></span> y <span id="fecha-fin"></span>: 
                         <strong><span id="total"></span></strong>
                     </span>
@@ -75,10 +75,15 @@
                 <div id="chart-cantidades" class="chart-container"></div>
             </div>
 
+            <div id="descripcion-cantidades">
+                <p>El gráfico comparativo muestra el <strong>monto total facturado</strong> entre las fechas seleccionadas según el criterio elegido.</p>
+                <p>El gráfico de dona muestra cómo se distribuye este total entre qué <strong>cantidad</strong> de órdenes de trabajo.</p>
+            </div>
+
 
             <div class="clearfix"></div>
             <div class="ln_solid"></div>
-            <button class="btn btn-warning pull-right" onclick="alert('nooo maestro te la debo me quede sin hoja4')">
+            <button class="btn btn-warning pull-right" onclick="imprimir()">
                 <i class="fa fa-print"></i> Descargar PDF
             </button>
         </div>

@@ -119,5 +119,26 @@ $("#btn-ajax").on("click", function(e){
 })
 
 function imprimir() {
-    
+    var contenido_reporte = {
+        titulo: $('#titulo_reporte').text(),
+        tiles: [
+            {
+                tipo: 'grafico',
+                titulo: '',
+                selector: '#chart-totales',
+            },
+            {
+                tipo: 'html',
+                titulo: 'Descripción',
+                selector: '#descripcion-cantidades'
+            },
+            {
+                tipo: 'grafico',
+                selector: '#chart-cantidades',
+            },
+        ],
+        usuario: '',
+    };
+
+    imprimirPDF(contenido_reporte);
 }
