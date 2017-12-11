@@ -42,19 +42,18 @@ function init_grafico() {
         ],
         opcionesGrafico: {}
     });
-    
 }
 $(document).on('ready', function(){
     return init_grafico()
 })
 
 $("form .chart-input").on("change", function(){
-    $("#chart-container").CanvasJSChart().destroy()
+    chart.CanvasJSChart().destroy()
     return init_grafico()
 })
 
 
 $("#daterangepicker").on("apply.daterangepicker", function(ev, picker){
-    $("#chart-container").CanvasJSChart().destroy()
+    chart.CanvasJSChart().destroy()
     return init_grafico()
 })

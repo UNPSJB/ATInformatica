@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <br>
-                <form action="" data-ajax_url="{% url 'reportes:reportes' %}">
+                <form action="" data-ajax_url="{% url 'reportes:reportes' %}" data-ajax_url_cantidad="{% url 'reportes:cantidad_ordenes' %}">
                     <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.filtros.label }}">{{ form.filtros.label }}<span class="required">*</span>
                         </label>
@@ -65,11 +65,9 @@
                 </h2>
             </div>
 
-
             <div id="chart-container" class="col-md-5 col-md-offset-1 col-sm-6 col-xs-12">
                 <div id="chart-totales" class="chart-container"></div>
             </div>
-
 
             <div id="chart-container-cantidad" class="col-md-5 col-sm-6 col-xs-12">
                 <div id="chart-cantidades" class="chart-container"></div>
@@ -94,6 +92,7 @@
 
 {% block scripts %}
     <script src="{% static 'vendors/canvasjs/jquery.canvasjs.min.js' %}"></script>
+    <script src="{% static 'js/reporte-sas.js' %}"></script>
     <script src="{% static 'reportes/js/daterangepicker.js' %}"></script>
     <script src="{% static 'reportes/js/reporte_totales.js' %}"></script>
     <script src="{% static 'reportes/js/chart_totales.js' %}"></script>

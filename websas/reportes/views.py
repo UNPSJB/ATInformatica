@@ -79,8 +79,56 @@ class ReporteTotalOrdenes(FormView):
                     "ordenes_total": list(ordenes_total),
                 }
             )
+        return JsonResponse({})
 
+class ReporteCantidadOrdenes(FormView):
+    template_name = "reportes/reporte_totales.html"
+    form_class = ReporteTotalOrdenesForm
 
+    @staticmethod
+    def get_query(criteria, date_start, date_end):
+        """Metodo estatico que devuelve la query asi se lo puede reusar desde otra view"""
+        #
+        # esta query tiene que devolver la cantidad de plata se recaudo
+        # durante un rango de tiempo con cada filtro, pero si no se recaudo
+        # nada, que devuelve 0 de total y 0 de cantidad
+        #
+        ots = Orden.objects.values(criterio=criteria).annotate(
+            cantidad=Case(
+                When(fecha_fin__range=[date_start, date_end],
+                     then=Count("criterio")),
+                default=Value(0), output_field=DecimalField()
+            )).values("criterio", "cantidad").order_by("criterio")
+
+        cache = {}
+        for ot in ots:
+            if ot["criterio"] not in cache.keys():
+                cache[ot["criterio"]] = ot["cantidad"]
+            cache[ot["criterio"]] += ot["cantidad"]
+        return cache.items()
+
+    def get(self, request, *args, **kwargs):
+        if(request.is_ajax()):
+            return self.ajax_get(request, *args, **kwargs)
+
+        return super().get(request, *args, **kwargs)
+
+    def ajax_get(self, request, *args, **kwargs):
+        form = self.form_class(request.GET or None)
+
+        if form.is_valid():
+
+            fecha_ini = form.cleaned_data.get("fecha_ini")
+            fecha_fin = form.cleaned_data.get("fecha_fin")
+            filtro = FILTROS[form.cleaned_data.get("filtros")]
+
+            ordenes_total = ReporteCantidadOrdenes.get_query(filtro, fecha_ini, fecha_fin)
+
+            return JsonResponse(
+                {
+                    "cantidad_ordenes": list(ordenes_total),
+                }
+            )
         return JsonResponse({})
 
 class ReporteProducto(FormView):

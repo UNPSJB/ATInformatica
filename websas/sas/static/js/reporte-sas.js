@@ -42,6 +42,18 @@
         var chartContainer = this
         var opc = $.extend(true, opcionesIniciales, opcionesUsuario)
         var datasets = []
+        $(this).CanvasJSChart({
+          title:{
+            text: opc.opcionesGrafico.titulo,
+          },
+          legend: {
+            horizontalAlign: "central",
+            verticalAlign: "bottom",
+            fontSize: 15,
+          },
+          data: [],
+        })
+
         for(let i = 0; i < opc.opcionesDataset.length; i++){
             var ds = opc.opcionesDataset[i]
             $.ajax({
@@ -54,6 +66,7 @@
                 "fecha_fin": ds.opcionesAjax.fecha_fin,
                 "filtros": ds.opcionesAjax.filtro,
               },
+              async:false,
               dataType: "json",
               success: function (data) {
                     ds = opc.opcionesDataset[i]
@@ -86,13 +99,18 @@
               },
             });
           }
-          var chart = $(this).CanvasJSChart({
-            title: {
-              text: opc.opcionesGrafico.titulo
-            },
-              data: datasets, 
-          });
-          return chart
+          
+          $(this).CanvasJSChart().options.data = datasets
+          //se instancia el grafico con los datos pasados
+          // var chart = $(this).CanvasJSChart({
+          //   title: {
+          //     text: opc.opcionesGrafico.titulo
+          //   },
+          //     data: datasets, 
+          // });
+          // $(this).CanvasJSChart().render()
+          $(this).CanvasJSChart().render()
+          // return chart.CanvasJSChart()
         }
       return $(this).each(inicializar)
       },
