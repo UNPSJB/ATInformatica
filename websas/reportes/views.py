@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from django.views.generic import FormView, TemplateView
+from django.views.generic import FormView, TemplateView, View
 # Create your views here.
-from django.db.models import Sum, Count, F, Value, FloatField
-from django.db.models.functions import Concat, Upper
+from django.db.models import Sum, Count, F, Value, FloatField, DecimalField, IntegerField, Case, When
+from django.db.models.functions import Concat, Upper, TruncDay
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from orden.models import Orden
@@ -27,11 +27,34 @@ class ReporteTotalOrdenes(FormView):
     @staticmethod
     def get_query(criteria, date_start, date_end):
         """Metodo estatico que devuelve la query asi se lo puede reusar desde otra view"""
-        return Orden.objects.filter(
-                    fecha_fin__range=[date_start, date_end]).values(
-                    criterio=criteria).annotate(
-                    total=Sum("precio_final"),
-                    cantidad=Count("precio_final"))
+        #
+        # esta query tiene que devolver la cantidad de plata se recaudo
+        # durante un rango de tiempo con cada filtro, pero si no se recaudo
+        # nada, que devuelve 0 de total y 0 de cantidad
+        #
+        ots = Orden.objects.values(criterio=criteria).annotate(
+            total=Case(
+                When(fecha_fin__range=[date_start, date_end],
+                     then=F("precio_final")),
+                default=Value(0), output_field=DecimalField()
+            )).values("criterio", "total").order_by("criterio", "-precio_final")
+
+        cache = {}
+        for ot in ots:
+            if ot["criterio"] not in cache.keys():
+                cache[ot["criterio"]] = ot["total"]
+            cache[ot["criterio"]] += ot["total"]
+        return cache.items()
+            
+            
+        # return Orden.objects.filter(
+                    # fecha_fin__range=[date_start, date_end]).values(
+                    # criterio=criteria).annotate(
+                    # cantidad=Count("criterio")
+                    # ).annotate(hay=Case(
+                    # When(cantidad__isnull=False, then=F("cantidad")
+                    # ), default=Value(0))).annotate(
+                    # total=Sum("precio_final")).order_by("criterio")
 
 
     def get(self, request, *args, **kwargs):
@@ -51,16 +74,9 @@ class ReporteTotalOrdenes(FormView):
 
             ordenes_total = ReporteTotalOrdenes.get_query(filtro, fecha_ini, fecha_fin)
 
-            # conseguimos la fecha que nos pasaron, pero con un anio menos
-            fecha_ini = fecha_ini - relativedelta(years=1)
-            fecha_fin = fecha_fin - relativedelta(years=1)
-
-            ordenes_viejas = ReporteTotalOrdenes.get_query(filtro, fecha_ini, fecha_fin)
-
             return JsonResponse(
                 {
                     "ordenes_total": list(ordenes_total),
-                    "ordenes_viejas": list(ordenes_viejas),
                 }
             )
 
@@ -95,19 +111,39 @@ class ReporteProducto(FormView):
                 Sum(F("precio_unitario")* F("cantidad"),
                 output_field=FloatField()))
 
-            # total =
+            total_facturado = ReporteTotalOrdenes.get_query(filtro, fecha_ini, fecha_fin)
 
             return JsonResponse(
                 {
-                 "incidencia_productos": list(incidencia_productos),
+                    "incidencia_productos": list(incidencia_productos),
+                    "total_facturado": list(total_facturado),
                 }
             )
 
 
         return JsonResponse({})
 
-class ReporteEvolucionFacturacionMensual(FormView):
-    pass
+
+class ReporteEvolucionFacturacionMensual(View):
+
+    def get(self, request, *args, **kwargs):
+
+        hoy = datetime.now()
+
+        facturacion = Orden.objects.filter(
+            fecha_fin__year=hoy.year, fecha_fin__month=hoy.month,
+            fecha_fin__day__lte=hoy.day).annotate(
+            dia=TruncDay('fecha_fin')).values(
+            "dia").annotate(c=Count("dia")).annotate(
+            total_dia=Sum("precio_final")).values(
+            "dia", "total_dia").order_by("dia")
+
+
+
+        return JsonResponse({
+            "facturacion": list(facturacion)
+        })
+
 
 
  # ReservaStock.objects.deleted_only().exclude(cancelada=True).values(prod=F("producto__nombre"), rubro=F("tarea__orden__rubro__nombre")).annotate(utilizados=Sum("cantidad"))

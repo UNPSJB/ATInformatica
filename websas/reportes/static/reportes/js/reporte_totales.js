@@ -1,11 +1,11 @@
-function randomProperty(obj) {
-    var result;
-    var count = 0;
-    for (var prop in obj)
-        if (Math.random() < 1/++count)
-           result = prop;
-    return result;
-}
+// function randomProperty(obj) {
+//     var result;
+//     var count = 0;
+//     for (var prop in obj)
+//         if (Math.random() < 1/++count)
+//            result = prop;
+//     return result;
+// }
 
 //$("#daterangepicker").on("show.daterangepicker", function(ev, picker) {
     /**
@@ -50,6 +50,7 @@ function inicializarGrafico () {
         },
         dataType: "json",
         success: function(data){
+            console.log(data);
             //Si la lista de ordenes viene vacia, mostramos el error
 
             // Activar visualizador abajo
