@@ -27,7 +27,7 @@
           <td>
             <h2>Roles</h2>
             {% for rol in roles %}
-            {{ rol.ROLNAME }}
+            <span>{{ rol.ROLNAME }}<i id="data-rol" data-empleado-id="{{ empleado.id }}" data-rol-id="{{ rol.id }}" data-ajax-url="{% url 'empleado:empleado_eliminar_rol' %}" class="fa fa-trash fa-lg" onclick="eliminarRol()" style="margin-left:3em"></i></span> 
             {% endfor %}
           </td>
         </tr>
@@ -81,5 +81,7 @@
 
 </div>
 {% endblock contenido %} {% block scripts %}
+<script src="/static/js/ajax_setup.js" ></script>
 <script src="/static/persona/js/crear_usuario.js"></script>
+<script src="/static/persona/js/eliminar-rol.js"></script>
 <script>'{{ csrf_token }}'</script> {% endblock scripts %}
