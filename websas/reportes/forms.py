@@ -31,4 +31,13 @@ class ReporteProductoForm(forms.Form):
 
 class ReporteEvolucionFacturacionMensualForm(forms.Form):
     fecha_ini = forms.DateTimeField(input_formats=[FORMATO_FECHA])
-    
+
+class ReporteCargaTrabajoForm(forms.Form):
+    CHOICES = (
+        ("rubro", "Rubro"),
+        ("tecnico", "Técnico"),
+    )
+    filtros = forms.ChoiceField(CHOICES, widget=forms.Select(attrs={
+        'class': 'form-control'
+    }))
+

@@ -9,7 +9,7 @@ from decimal import Decimal
 from dateutil.relativedelta import relativedelta
 from orden.models import Orden
 from producto.models import ReservaStock
-from .forms import ReporteTotalOrdenesForm, ReporteProductoForm, ReporteEvolucionFacturacionMensualForm
+from .forms import ReporteTotalOrdenesForm, ReporteProductoForm, ReporteEvolucionFacturacionMensualForm, ReporteCargaTrabajoForm
 
 
 FILTROS = {
@@ -205,6 +205,31 @@ class ReporteEvolucionFacturacionMensual(View):
         return JsonResponse({})
 
 
+class ReporteCargaTrabajoTecnico(View):
+    form_class = ReporteCargaTrabajoForm
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(request.GET or None)
+        print(form)
+
+        if form.is_valid():
+            filtro = FILTROS[form.cleaned_data.get("filtros")]
+
+            carga_trabajo = Orden.objects.exclude(
+                    cerrada=True
+                    ).exclude(
+                        cancelada=True
+                    ).values(
+                        criterio=filtro
+                    ).annotate(cantidad_ots_abiertas=Count('criterio'))
+
+            return JsonResponse(
+                {
+                    "carga_trabajo": list(carga_trabajo),
+                }
+            )
+
+        return JsonResponse({})
  # ReservaStock.objects.deleted_only().exclude(cancelada=True).values(prod=F("producto__nombre"), rubro=F("tarea__orden__rubro__nombre")).annotate(utilizados=Sum("cantidad"))
 
 # ReservaStock.objects.deleted_only().exclude(cancelada=True).values(prod=F("producto__nombre"), rubro=F("tarea__orden__rubro__nombre")).annotate(cantidad=Count("rubro"), total=Sum("precio_unitario"))
@@ -224,3 +249,8 @@ class ReporteEvolucionFacturacionMensual(View):
 
 # esta es la de rdpys pagadas por ots canceladas
 # TareaRealizada.objects.filter(tarea__tipo_tarea__nombre__icontains="rdyp", tarea__orden__cancelada=True).annotate(otras_tareas=Count(F("tarea__orden__tareas"))).filter(otras_tareas=1).annotate(cantidad=Count("tarea__orden__rubro__nombre"))
+
+
+# Carga de Trabajo por Técnico (Cantidad de OTs abiertas en el momento)
+# 
+# Orden.objects.exclude(cerrada=True).exclude(cancelada=True).values(criterio=filtro).annotate(cantidad_ots_abiertas=Count('criterio'))
