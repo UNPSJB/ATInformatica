@@ -18,8 +18,8 @@
             </div>
             <div class="count">&nbsp;</div>
             <div>
-              <h3>Todas las Ordenes</h3>
-              <p>Listado completo de Ordenes de Trabajo.</p>
+              <h3>Todas las órdenes de trabajo</h3>
+              <p>Listado completo de órdenes de trabajo.</p>
             </div>
           </div>
         </a>
@@ -123,7 +123,7 @@
                   </ul>
                 </div>
 
-                <div class="col-md-4">
+                <!-- <div class="col-md-4">
                   <h3>Opciones del reporte</h3>
                 </div>
 
@@ -133,7 +133,7 @@
                 </div>
 
                 <div class="col-md-3 col-md-offset-1">
-                    <form action="" class="chart-input" data-ajax_url="{% url 'reportes:reportes' %}">
+                    <form action="" class="chart-input" >
                         <div class="item form-group">
                           <div class=" ">
                             {{ form.filtros }}
@@ -141,19 +141,19 @@
                         </div>
                       </form>
                 </div>
-              </div>
+              </div> -->
 
               <div class="x_content">
                   <div id="msg-total" style="text-align: center;">
-                      <h1>Total facturado entre
-                        <span id="fecha-ini"></span> y
+                      <h1>Movimiento mensual de la caja
+                        <!-- <span id="fecha-ini"></span> y
                         <span id="fecha-fin"></span>:
                         <strong>
                           <span id="total"></span>
-                        </strong>
+                        </strong> -->
                       </h1>
                     </div>
-                    <div id="chart-container" class="col-md-6 col-sm-6 col-xs-12 chart-container"></div>
+                    <div id="chart-container" data-ajax_url="{% url 'reportes:facturacion_mensual' %}" class="col-md-6 col-sm-6 col-xs-12 chart-container"></div>
     
                     </div>
                     <hr>

@@ -9,12 +9,11 @@
 
   <div class="x_panel">
     <div class="x_title">
-      <h2>Ordenes de trabajo</h2>
+      <h2>Órdenes de trabajo</h2>
       <div class="clearfix"></div>
     </div>
     <div class="x_content">
-      <table id="datatable-ordenes" class="table table-striped tableclick table-hover table-bordered dt-responsive nowrap" cellSpacing=0
-        width=100%>
+      <table id="datatable-ordenes" class="table table-striped tableclick table-hover table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
         <thead>
           <tr>
             <th data-width="10%" data-priority=1>Fecha creación</th>
@@ -57,7 +56,7 @@
 
     <div class="x_panel">
       <div class="x_title">
-        <h1>LAGUITA</h1>
+        <h1>Totales facturados</h1>
       </div>
       <div class="x_content">
            {% if user.persona.is_gerente %}
@@ -150,6 +149,7 @@
 
 
 <script src="{% static '/js/ordenes.js' %}"></script>
+<script src="{% static '/js/reporte_totales.js' %}"></script>
 <script src="{% static 'reportes/js/daterangepicker.js' %}"></script>
 <script src="{% static 'js/reporte-sas.js' %}"></script>
 

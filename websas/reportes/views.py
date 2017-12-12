@@ -3,12 +3,13 @@ from django.http import JsonResponse
 from django.views.generic import FormView, TemplateView, View
 # Create your views here.
 from django.db.models import Sum, Count, F, Value, FloatField, DecimalField, IntegerField, Case, When
-from django.db.models.functions import Concat, Upper, TruncDay
+from django.db.models.functions import Concat, Upper, TruncDay, Extract
 from datetime import datetime
+from decimal import Decimal
 from dateutil.relativedelta import relativedelta
 from orden.models import Orden
 from producto.models import ReservaStock
-from .forms import ReporteTotalOrdenesForm, ReporteProductoForm
+from .forms import ReporteTotalOrdenesForm, ReporteProductoForm, ReporteEvolucionFacturacionMensualForm
 
 
 FILTROS = {
@@ -45,8 +46,8 @@ class ReporteTotalOrdenes(FormView):
                 cache[ot["criterio"]] = ot["total"]
             cache[ot["criterio"]] += ot["total"]
         return cache.items()
-            
-            
+
+
         # return Orden.objects.filter(
                     # fecha_fin__range=[date_start, date_end]).values(
                     # criterio=criteria).annotate(
@@ -174,24 +175,34 @@ class ReporteProducto(FormView):
 
 class ReporteEvolucionFacturacionMensual(View):
 
+    form_class = ReporteEvolucionFacturacionMensualForm
+
     def get(self, request, *args, **kwargs):
+        form = self.form_class(request.GET or None)
+        if form.is_valid():
+            fecha = form.cleaned_data.get("fecha_ini")
 
-        hoy = datetime.now()
+            facturacion = Orden.objects.filter(
+                fecha_fin__year=fecha.year,
+                fecha_fin__month=fecha.month).annotate(
+                dia=Extract("fecha_fin", "day")).values(
+                "dia").annotate(c=Count("dia")).annotate(
+                total_dia=Sum("precio_final")).values(
+                "dia", "total_dia").order_by("dia")
 
-        facturacion = Orden.objects.filter(
-            fecha_fin__year=hoy.year, fecha_fin__month=hoy.month,
-            fecha_fin__day__lte=hoy.day).annotate(
-            dia=TruncDay('fecha_fin')).values(
-            "dia").annotate(c=Count("dia")).annotate(
-            total_dia=Sum("precio_final")).values(
-            "dia", "total_dia").order_by("dia")
+            days = {ot["dia"]:ot["total_dia"] for ot in facturacion}
+            query = {}
 
+            for day in range(1, fecha.day+1):
+                if day not in days.keys():
+                    query[day] = Decimal()
+                    continue
+                query[day] = days[day]
 
-
-        return JsonResponse({
-            "facturacion": list(facturacion)
-        })
-
+            return JsonResponse({
+                "facturacion": sorted(list(query.items()), key=lambda x: x[0])
+            })
+        return JsonResponse({})
 
 
  # ReservaStock.objects.deleted_only().exclude(cancelada=True).values(prod=F("producto__nombre"), rubro=F("tarea__orden__rubro__nombre")).annotate(utilizados=Sum("cantidad"))

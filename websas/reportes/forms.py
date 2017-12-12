@@ -28,3 +28,7 @@ class ReporteProductoForm(forms.Form):
 
     fecha_ini = forms.DateTimeField(input_formats=[FORMATO_FECHA])
     fecha_fin = forms.DateTimeField(input_formats=[FORMATO_FECHA])
+
+class ReporteEvolucionFacturacionMensualForm(forms.Form):
+    fecha_ini = forms.DateTimeField(input_formats=[FORMATO_FECHA])
+    

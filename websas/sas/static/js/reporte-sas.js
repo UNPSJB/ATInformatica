@@ -29,6 +29,8 @@
       var opcionesGrafico = {
         "titulo" : '',
         "mensaje_error" : "Su consulta no generó resultados",
+        "nombre_eje_x": "",
+        "nombre_eje_y": ""
       }
 
       opcionesIniciales = {
@@ -44,6 +46,12 @@
         $(this).CanvasJSChart({
           title:{
             text: opc.opcionesGrafico.titulo,
+          },
+          axisX: {
+            title: opc.opcionesGrafico.nombre_eje_x,
+          },
+          axisY: {
+            title: opc.opcionesGrafico.nombre_eje_y,
           },
           legend: {
             horizontalAlign: "central",
@@ -68,6 +76,7 @@
               async:false,
               dataType: "json",
               success: function (data) {
+                    console.log(data);
                     ds = opc.opcionesDataset[i]
                     
                     //de esta forma podemos verificar que el servidor

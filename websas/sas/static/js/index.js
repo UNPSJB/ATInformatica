@@ -1,46 +1,38 @@
 var chart
 
 function init_grafico() {
-    var fecha_ini = $("#daterangepicker").data('daterangepicker').startDate
-    var fecha_fin = $("#daterangepicker").data('daterangepicker').endDate
+    var fecha = moment() 
+    var fecha_vieja = moment().subtract(1, "year")
 
-    //copiamos las fechas porque si no se va a decrementando en un anio
-    //cada vez que se envia el segundo dataset
-    var fecha_ini_vieja = moment($("#daterangepicker").data('daterangepicker').startDate)
-    var fecha_fin_vieja = moment($("#daterangepicker").data('daterangepicker').endDate)
-    
-    $("#fecha-ini").html(fecha_ini.format("DD/MM/YYYY"))
-    $("#fecha-fin").html(fecha_fin.format("DD/MM/YYYY"))
     chart = $("#chart-container").reporteSAS({
         opcionesDataset: [
             {
-                tipochart: 'column',
+                tipochart: 'splineArea',
                 x: '0',
                 y: '1',
-                dataset: "ordenes_total",
+                dataset: "facturacion",
                 textoLeyenda: "Facturado en el año actual",
                 opcionesAjax: {
-                    fecha_ini: fecha_ini.format("DD/MM/YYYY"),
-                    fecha_fin: fecha_fin.format("DD/MM/YYYY"),
-                    filtro: $("#id_filtros").val(),
-                    ajaxurl: $("form")[0].dataset["ajax_url"],
+                    fecha_ini: fecha.format("DD/MM/YYYY"),
+                    ajaxurl: $("#chart-container")[0].dataset["ajax_url"],
                 },
             },
             {
-                tipochart: 'column',
+                tipochart: 'splineArea',
                 x: '0',
                 y: '1',
-                dataset: "ordenes_total",
+                dataset: "facturacion",
                 textoLeyenda: "Facturado en el año pasado",
                 opcionesAjax: {
-                    fecha_ini: fecha_ini_vieja.subtract(1, "year").format("DD/MM/YYYY"),
-                    fecha_fin: fecha_fin_vieja.subtract(1, "year").format("DD/MM/YYYY"),
-                    filtro: $("#id_filtros").val(),
-                    ajaxurl: $("form")[0].dataset["ajax_url"],
+                    fecha_ini: fecha_vieja.format("DD/MM/YYYY"),
+                    ajaxurl: $("#chart-container")[0].dataset["ajax_url"],
                 },
             },
         ],
-        opcionesGrafico: {}
+        opcionesGrafico: {
+            titulo: "Facturación diaria",
+            nombre_eje_x: "Días del mes",
+        }
     });
 }
 $(document).on('ready', function(){
