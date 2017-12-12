@@ -65,18 +65,14 @@
                 </h2>
             </div>
 
-            <div id="chart-container" class="col-md-5 col-md-offset-1 col-sm-6 col-xs-12">
+            <div id="chart-container" class="col-md-5 col-sm-12 col-xs-12">
                 <div id="chart-totales" class="chart-container"></div>
             </div>
 
-            <div id="chart-container-cantidad" class="col-md-5 col-sm-6 col-xs-12">
+            <div id="chart-container-cantidad" class="col-md-5 col-md-offset-1 col-sm-12 col-xs-12">
                 <div id="chart-cantidades" class="chart-container"></div>
             </div>
 
-            <div id="descripcion-cantidades">
-                <p>El gráfico comparativo muestra el <strong>monto total facturado</strong> entre las fechas seleccionadas según el criterio elegido.</p>
-                <p>El gráfico de dona muestra cómo se distribuye este total entre qué <strong>cantidad</strong> de órdenes de trabajo.</p>
-            </div>
 
 
             <div class="clearfix"></div>
@@ -95,6 +91,5 @@
     <script src="{% static 'js/reporte-sas.js' %}"></script>
     <script src="{% static 'reportes/js/daterangepicker.js' %}"></script>
     <script src="{% static 'reportes/js/reporte_totales.js' %}"></script>
-    <script src="{% static 'reportes/js/chart_totales.js' %}"></script>
     <script src="{% static 'reportes/js/rep_templates.js' %}"></script>
 {% endblock scripts %}

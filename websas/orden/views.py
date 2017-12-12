@@ -15,6 +15,7 @@ from persona.models import Cliente, Tecnico, Persona
 from rubro.models import Rubro
 
 from .forms import OrdenForm, EquipoForm
+from reportes.forms import ReporteTotalOrdenesForm
 
 # Create your views here.
 class OrdenCreate(CreateView):
@@ -84,6 +85,13 @@ class OrdenCancelar(View):
 class OrdenesList(ListView):
     model = Orden
     template_name = 'orden/ordenes.html'
+
+    
+    def get_context_data(self, **kwargs):
+        context = super(self.__class__, self).get_context_data(**kwargs)
+        context["form"] = ReporteTotalOrdenesForm()
+        return context
+    
 
 
 class OrdenDelete(DeleteView):

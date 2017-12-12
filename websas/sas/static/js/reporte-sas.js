@@ -39,7 +39,6 @@
         
       function inicializar(){
         
-        var chartContainer = this
         var opc = $.extend(true, opcionesIniciales, opcionesUsuario)
         var datasets = []
         $(this).CanvasJSChart({
@@ -70,6 +69,7 @@
               dataType: "json",
               success: function (data) {
                     ds = opc.opcionesDataset[i]
+                    
                     //de esta forma podemos verificar que el servidor
                     //nos devolvio datos de nuestra consulta exitosamente
                     if(data.hasOwnProperty(data[ds.dataset]) || 
@@ -83,7 +83,8 @@
                     for (let i = 0; i < data[ds.dataset].length; i++){
                       dataPoints.push({
                         label: data[ds.dataset][i][ds.x],
-                        y: parseInt(data[ds.dataset][i][ds.y])
+                        name: data[ds.dataset][i][ds.x],
+                        y: parseInt(data[ds.dataset][i][ds.y]),
                       }) 
                     }
                     datasets.push({
@@ -100,17 +101,12 @@
             });
           }
           
+          //cargamos los datos al grafico
           $(this).CanvasJSChart().options.data = datasets
-          //se instancia el grafico con los datos pasados
-          // var chart = $(this).CanvasJSChart({
-          //   title: {
-          //     text: opc.opcionesGrafico.titulo
-          //   },
-          //     data: datasets, 
-          // });
-          // $(this).CanvasJSChart().render()
+
+          //renderizamos
           $(this).CanvasJSChart().render()
-          // return chart.CanvasJSChart()
+          return $(this).CanvasJSChart()
         }
       return $(this).each(inicializar)
       },

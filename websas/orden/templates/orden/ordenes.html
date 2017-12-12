@@ -1,4 +1,10 @@
-{% extends "principal.html" %} {% load staticfiles %} {% block contenido %}
+{% extends "principal.html" %}
+{% load staticfiles %}
+{% block contenido %}
+{% block estilos %}
+<link rel="stylesheet" href="{% static 'reportes/css/reportes.css' %}">
+{% endblock estilos %}
+
 <div class="row">
 
   <div class="x_panel">
@@ -48,6 +54,78 @@
         </tbody>
       </table>
     </div>
+
+    <div class="x_panel">
+      <div class="x_title">
+        <h1>LAGUITA</h1>
+      </div>
+      <div class="x_content">
+           {% if user.persona.is_gerente %}
+          <!-- Acá va el gráfico de la guita -->
+          <!--primer panel-->
+          <div class="col-md-12">
+            <div class="x_panel dashboard_graph">
+          
+              <div class="row x_title">
+          
+                <div class="col-md-1" style="float:right">
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                      <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+          
+                <div class="col-md-4">
+                  <h3>Opciones del reporte</h3>
+                </div>
+          
+                <div class="col-md-3" style="background: #fff; cursor: pointer; padding: 4px 10px; border: 1px solid #ccc">
+                  <input type="text" class="chart-input" name="daterangepicker" id="daterangepicker" style="border:none; background-color:#fff; width:90%"
+                    placeholder="indique las fechas">
+                  <i style="float:right" class="glyphicon glyphicon-calendar fa fa-calendar">
+                    <b style="margin-left:0.5em" class="caret"></b>
+                  </i>
+                </div>
+          
+                <div class="col-md-3 col-md-offset-1">
+                  <form action="" class="chart-input" data-ajax_url="{% url 'reportes:reportes' %}">
+                    <div class="item form-group">
+                      <div class=" ">
+                        {{ form.filtros }}
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+          
+              <div class="x_content">
+                <div id="msg-total" style="text-align: center;">
+                  <h1>Total facturado entre
+                    <span id="fecha-ini"></span> y
+                    <span id="fecha-fin"></span>:
+                    <strong>
+                      <span id="total"></span>
+                    </strong>
+                  </h1>
+                </div>
+                <div id="chart-container" class="col-md-6 col-sm-6 col-xs-12 chart-container"></div>          
+              </div>
+              <hr> 
+            </div>
+          </div>
+          </div>
+          <!-- Acá termina el gráfico de la guita -->
+          {% endif %}
+
+
+
+
+
+      </div>
+    </div>
   </div>
 </div>
 
@@ -68,5 +146,11 @@
 <script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
 <script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
 <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
+<script src="{% static 'vendors/canvasjs/jquery.canvasjs.min.js' %}"></script>
 
-<script src="{% static '/js/ordenes.js' %}"></script> {% endblock scripts %}
+
+<script src="{% static '/js/ordenes.js' %}"></script>
+<script src="{% static 'reportes/js/daterangepicker.js' %}"></script>
+<script src="{% static 'js/reporte-sas.js' %}"></script>
+
+{% endblock scripts %}

@@ -1,25 +1,3 @@
-// function randomProperty(obj) {
-//     var result;
-//     var count = 0;
-//     for (var prop in obj)
-//         if (Math.random() < 1/++count)
-//            result = prop;
-//     return result;
-// }
-
-//$("#daterangepicker").on("show.daterangepicker", function(ev, picker) {
-    /**
-     * Evento que se dispara cuando se muestra el datepicker
-     */    
-    //$("#chart-error").hide()
-    //$("#chart-container").hide()
-    //$("#chart-container-cantidad").hide()
-    //$("#total-facturado").hide()
-//})
-
-
-
-
 $(document).on('ready', function(){
     inicializarGrafico()
 })
@@ -74,7 +52,7 @@ function inicializarGrafico() {
                 x: '0',
                 y: '1',
                 dataset: "cantidad_ordenes",
-                textoLeyenda: "Facturado en el año actual",
+                // textoLeyenda: "Facturado en el año actual",
                 opcionesAjax: {
                     fecha_ini: fecha_ini.format("DD/MM/YYYY"),
                     fecha_fin: fecha_fin.format("DD/MM/YYYY"),
@@ -86,7 +64,15 @@ function inicializarGrafico() {
         opcionesGrafico: {}
     });
 
+    var chart_totales = $("#chart-totales").CanvasJSChart()
+    var total_facturado = 0
+    for (let i = 0; i < chart_totales.options.data[0].dataPoints.length; i++) {
+        const element = chart_totales.options.data[0].dataPoints[i];
+        total_facturado += parseInt(element["y"])
+    }
+    $("#total").html("$ " + total_facturado)
     var panel_reporte = $('#reporte_pre').first();
+
 
     // Si no lo mostré todavía, mostrarlo.
     if (panel_reporte.css('display') == 'none') {
