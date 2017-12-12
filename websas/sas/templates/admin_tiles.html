@@ -197,6 +197,46 @@
           
           {% if user.persona.is_jefe_taller %}
           <h1>Acá va el gráfico de carga de trabajo por técnico</h1>
+          <div class="col-md-12">
+            <div class="x_panel dashboard_graph">
+
+              <div class="row x_title">
+
+                <div class="col-md-1" style="float:right">
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                      <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="col-md-4">
+                  <h3>Opciones del reporte</h3>
+                </div>
+                <div class="col-md-3 col-md-offset-8">
+                    <form class="">
+                        <div class="item form-group">
+                            <div class="">
+                            {{ form_carga.filtros }}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+              </div>
+
+              <div class="x_content">
+                  <div id="msg-total" style="text-align: center;">
+                      <h1>Carga de Trabajo</h1>
+                    </div>
+                    <div id="chart-container-carga-trabajo" data-ajax_url="{% url 'reportes:carga_trabajo' %}" class="col-md-6 col-sm-6 col-xs-12 chart-container"></div>
+    
+                    </div>
+                    <hr>
+              </div>
+            </div>
+          </div>
           {% endif %}
           <div class="x_panel">
 
