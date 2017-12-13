@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <br>
-                <form action="" data-ajax_url="{% url 'reportes:productos' %}">
+                <form action="" data-ajax_url="{% url 'reportes:productos' %}" data-ajax_url_cantidad="{% url 'reportes:cantidad_productos' %}" data-ajax_url_total="{% url 'reportes:reportes' %}">
                     <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.filtros.label }}">{{ form.filtros.label }}<span class="required">*</span>
                         </label>
@@ -43,29 +43,59 @@
         
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
-                <div class="x_title"><h1>grafiquito de barras</h1></div>
+                <div class="x_title"><h1>Incidencia de los repuestos en la facturación</h1></div>
                 <div class="x_content">
-                
-                    <div id="chartBar" class="chart-container"></div>
+                <div id="msg-total" style="text-align: center; padding:2em;">
+                    <h2 id="titulo_reporte">
+                        <span style="border-bottom: 1px solid;">Total facturado entre
+                            <span id="fecha-ini"></span> y
+                            <span id="fecha-fin"></span>:
+                            <strong>
+                                <span id="total"></span>
+                            </strong>
+                        </span>
+                    </h2>
+                    <h2 id="titulo_reporte">
+                        <span style="border-bottom: 1px solid;">Facturado por productos:
+                            <strong>
+                                <span id="total-productos"></span>
+                            </strong>
+                        </span>
+                    </h2>
+                </div>
+
+                    <div id="chart-totales-productos" class="chart-container"></div>
         
                 </div>
             </div>
         </div>
 
+        <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h1 id="comparacion-filtro"></h1>
+                </div>
+                <div class="x_content">
+        
+                    <div id="chart-cantidades" class="chart-container"></div>
+        
+                </div>
+            </div>
+        </div>
         
         <div class="col-md-6 col-sm-12 col-xs-12">
             <div class="x_panel">
-                <div class="x_title"><h1>grafiquito de torta</h1></div>
+                <div class="x_title"><h1 id="comparacion-mano-obra"></h1></div>
                 <div class="x_content">
                 
-                    <div id="chartDoughnut" class="chart-container"></div>
+                    <div id="chart-porcentajes" class="chart-container"></div>
         
                 </div>
             </div>
         </div>
 
 
-        <div class="col-md-6 col-sm-12 col-xs-12">
+        {% comment %} <div class="col-md-6 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title"><h1>grafiquito de area</h1></div>
                 <div class="x_content">
@@ -74,7 +104,7 @@
         
                 </div>
             </div>
-        </div>
+        </div> {% endcomment %}
 
 
     </div>
@@ -89,8 +119,9 @@
 {% endblock contenido %}
 
 {% block scripts %}
-    <script src="{% static 'reportes/js/daterangepicker.js' %}"></script>
     <script src="{% static 'vendors/canvasjs/jquery.canvasjs.min.js' %}"></script>
-    <script src="{% static 'reportes/js/chart_productos.js' %}"></script>
+    <script src="{% static 'reportes/js/daterangepicker.js' %}"></script>
+    {% comment %} <script src="{% static 'reportes/js/chart_productos.js' %}"></script> {% endcomment %}
     <script src="{% static 'reportes/js/reporte_productos.js' %}"></script>
+    <script src="{% static 'js/reporte-sas.js' %}"></script>
 {% endblock scripts %}

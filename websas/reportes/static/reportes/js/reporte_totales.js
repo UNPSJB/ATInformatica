@@ -49,8 +49,8 @@ function inicializarGrafico() {
         opcionesDataset: [
             {
                 tipochart: 'doughnut',
-                x: '0',
-                y: '1',
+                x: 'criterio',
+                y: 'cantidad',
                 dataset: "cantidad_ordenes",
                 // textoLeyenda: "Facturado en el año actual",
                 opcionesAjax: {

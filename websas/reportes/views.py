@@ -8,56 +8,31 @@ from datetime import datetime
 from decimal import Decimal
 from dateutil.relativedelta import relativedelta
 from orden.models import Orden
+from persona.models import Cliente, Tecnico
 from producto.models import ReservaStock
+from rubro.models import Rubro
+from servicio.models import TipoServicio
 from .forms import ReporteTotalOrdenesForm, ReporteProductoForm, ReporteEvolucionFacturacionMensualForm, ReporteCargaTrabajoForm
 
 
-FILTROS = {
-    'cliente': Concat(Upper(F("cliente__persona__apellido")), Value(', '), F("cliente__persona__nombre")),
-    'rubro': F("rubro__nombre"),
-    'tipo_servicio': F("tipo_servicio__nombre"),
-    'tecnico': Concat(Upper(F("tecnico__persona__apellido")), Value(', '), F("tecnico__persona__nombre")),
-    'rubro_productos': (F("tarea__orden__rubro__nombre"), F("rubro__nombre")),
-    'tipo_servicio_productos': (F("tarea__orden__tipo_servicio__nombre"), F("tipo_servicio__nombre")),
-}
+# FILTROS = {
+#     'cliente': Concat(Upper(F("cliente__persona__apellido")), Value(', '), F("cliente__persona__nombre")),
+#     'rubro': F("rubro__nombre"),
+#     'tipo_servicio': F("tipo_servicio__nombre"),
+#     'tecnico': Concat(Upper(F("tecnico__persona__apellido")), Value(', '), F("tecnico__persona__nombre")),
+# }
 
 class ReporteTotalOrdenes(FormView):
+
+    FILTROS = {
+        'rubro': (Rubro, F("nombre"), lambda r: r.nombre),
+        'tipo_servicio': (TipoServicio, F("nombre"), lambda ts: ts.nombre),
+        'cliente': (Cliente, Concat(Upper(F("persona__apellido")), Value(', '), F("persona__nombre")), lambda c: "{}, {}".format(c.persona.apellido.upper(), c.persona.nombre)),
+        'tecnico': (Tecnico, Concat(Upper(F("persona__apellido")), Value(', '), F("persona__nombre")), lambda t: "{}, {}".format(t.persona.apellido.upper(), t.persona.nombre)),
+    }
+
     template_name = "reportes/reporte_totales.html"
     form_class = ReporteTotalOrdenesForm
-
-    @staticmethod
-    def get_query(criteria, date_start, date_end):
-        """Metodo estatico que devuelve la query asi se lo puede reusar desde otra view"""
-        #
-        # esta query tiene que devolver la cantidad de plata se recaudo
-        # durante un rango de tiempo con cada filtro, pero si no se recaudo
-        # nada, que devuelve 0 de total y 0 de cantidad
-        #
-        ots = Orden.objects.values(criterio=criteria).annotate(
-            total=Case(
-                When(fecha_fin__range=[date_start, date_end],
-                     then=F("precio_final")),
-                default=Value(0), output_field=DecimalField()
-            )).values("criterio", "total").order_by("criterio", "-precio_final")
-
-        cache = {}
-        for ot in ots:
-            if ot["criterio"] not in cache.keys():
-                cache[ot["criterio"]] = ot["total"]
-            cache[ot["criterio"]] += ot["total"]
-        return cache.items()
-
-
-        # return Orden.objects.filter(
-                    # fecha_fin__range=[date_start, date_end]).values(
-                    # criterio=criteria).annotate(
-                    # cantidad=Count("criterio")
-                    # ).annotate(hay=Case(
-                    # When(cantidad__isnull=False, then=F("cantidad")
-                    # ), default=Value(0))).annotate(
-                    # total=Sum("precio_final")).order_by("criterio")
-
-
     def get(self, request, *args, **kwargs):
         if(request.is_ajax()):
             return self.ajax_get(request, *args, **kwargs)
@@ -71,13 +46,34 @@ class ReporteTotalOrdenes(FormView):
 
             fecha_ini = form.cleaned_data.get("fecha_ini")
             fecha_fin = form.cleaned_data.get("fecha_fin")
-            filtro = FILTROS[form.cleaned_data.get("filtros")]
 
-            ordenes_total = ReporteTotalOrdenes.get_query(filtro, fecha_ini, fecha_fin)
+            Klass = self.FILTROS[form.cleaned_data.get("filtros")][0]
+            criterio = self.FILTROS[form.cleaned_data.get("filtros")][1]
+            referencia = self.FILTROS[form.cleaned_data.get("filtros")][2]
+            
+            query = Klass.objects.values(criterio=criterio).filter(
+            ordenes__fecha_fin__range=[fecha_ini, fecha_fin]).annotate(
+                total=Case(
+                When(
+                    ordenes__precio_final__isnull=False,
+                    then=F("ordenes__precio_final") 
+                ), default=Value(0))).order_by("criterio")
+
+            cache = {}
+
+            for q in query:
+                if q["criterio"] not in cache.keys():
+                    cache[q["criterio"]] = q["total"]
+                    continue
+                cache[q["criterio"]] += q["total"]
+
+            for k in Klass.objects.all():
+                if referencia(k) not in cache.keys():
+                    cache[referencia(k)] = Decimal(0)
 
             return JsonResponse(
                 {
-                    "ordenes_total": list(ordenes_total),
+                    "ordenes_total": sorted(list(cache.items()), key=lambda ot: ot[0]),
                 }
             )
         return JsonResponse({})
@@ -86,27 +82,12 @@ class ReporteCantidadOrdenes(FormView):
     template_name = "reportes/reporte_totales.html"
     form_class = ReporteTotalOrdenesForm
 
-    @staticmethod
-    def get_query(criteria, date_start, date_end):
-        """Metodo estatico que devuelve la query asi se lo puede reusar desde otra view"""
-        #
-        # esta query tiene que devolver la cantidad de plata se recaudo
-        # durante un rango de tiempo con cada filtro, pero si no se recaudo
-        # nada, que devuelve 0 de total y 0 de cantidad
-        #
-        ots = Orden.objects.values(criterio=criteria).annotate(
-            cantidad=Case(
-                When(fecha_fin__range=[date_start, date_end],
-                     then=Count("criterio")),
-                default=Value(0), output_field=DecimalField()
-            )).values("criterio", "cantidad").order_by("criterio")
-
-        cache = {}
-        for ot in ots:
-            if ot["criterio"] not in cache.keys():
-                cache[ot["criterio"]] = ot["cantidad"]
-            cache[ot["criterio"]] += ot["cantidad"]
-        return cache.items()
+    FILTROS = {
+        'rubro': (Rubro, F("nombre")),
+        'tipo_servicio': (TipoServicio, F("nombre")),
+        'cliente': (Cliente, Concat(Upper(F("persona__apellido")), Value(', '), F("persona__nombre"))),
+        'tecnico': (Tecnico, Concat(Upper(F("persona__apellido")), Value(', '), F("persona__nombre"))),
+    }
 
     def get(self, request, *args, **kwargs):
         if(request.is_ajax()):
@@ -121,21 +102,30 @@ class ReporteCantidadOrdenes(FormView):
 
             fecha_ini = form.cleaned_data.get("fecha_ini")
             fecha_fin = form.cleaned_data.get("fecha_fin")
-            filtro = FILTROS[form.cleaned_data.get("filtros")]
 
-            ordenes_total = ReporteCantidadOrdenes.get_query(filtro, fecha_ini, fecha_fin)
+            Klass = self.FILTROS[form.cleaned_data.get("filtros")][0]
+            criterio = self.FILTROS[form.cleaned_data.get("filtros")][1]
+            
+            cantidad_ordenes = Klass.objects.values(
+                criterio=criterio).annotate(
+                cantidad=Count("ordenes")).order_by("criterio")
 
             return JsonResponse(
                 {
-                    "cantidad_ordenes": list(ordenes_total),
+                    "cantidad_ordenes": list(cantidad_ordenes),
                 }
             )
         return JsonResponse({})
 
-class ReporteProducto(FormView):
+class ReporteTotalProductos(FormView):
     template_name = "reportes/reporte_productos.html"
     form_class = ReporteProductoForm
 
+    FILTROS = {
+        'rubro': (F("tarea__orden__rubro__nombre"), Rubro),
+        'tipo_servicio': (F("tarea__orden__tipo_servicio__nombre"), TipoServicio)
+    }
+
     def get(self, request, *args, **kwargs):
 
         if(request.is_ajax()):
@@ -150,28 +140,129 @@ class ReporteProducto(FormView):
 
             fecha_ini = form.cleaned_data.get("fecha_ini")
             fecha_fin = form.cleaned_data.get("fecha_fin")
-            filtro = FILTROS[form.cleaned_data.get("filtros")][0]
+            filtro = self.FILTROS[form.cleaned_data.get("filtros")][0]
+            Klass = self.FILTROS[form.cleaned_data.get("filtros")][1]
 
-            incidencia_productos = ReservaStock.objects.deleted_only().exclude(
-                cancelada=True).values(
-                criterio=filtro,
-                prod=F("producto__nombre")).order_by("criterio").annotate(
-                total_utilizado=Sum("cantidad"), total_recaudado=
-                Sum(F("precio_unitario")* F("cantidad"),
-                output_field=FloatField()))
+            # si no hubo reservas en el rango de fechas, que me tire 0.
+            # si hubo, que me devuelva el precio unitario del producto reservado
+            # por la cantidad
+            # incidencia_productos = ReservaStock.objects.deleted_only().exclude(
+                # cancelada=True).values(criterio=filtro).annotate(total=Case(
+                # When(
+                    # deleted__range=[fecha_ini, fecha_fin],
+                    # then=Sum(F("precio_unitario")*F("cantidad"),
+                             # output_field=DecimalField())
+                # ), default=Value(0))).order_by("criterio")
 
-            total_facturado = ReporteTotalOrdenes.get_query(filtro, fecha_ini, fecha_fin)
+
+            query = []
+            #va queriendo, falta atajar el caso de la instalacion de red,
+            #que como nunca se usan repuestos, no aparece ninguna reservado
+            #habria que armar un diccionario con ese nombre de criterio,
+            #y un Decimal(0)
+            for k in Klass.objects.all():
+                incidencia = ReservaStock.objects.deleted_only().exclude(
+                    cancelada=True).filter(
+                    deleted__range=[fecha_ini, fecha_fin]).values(
+                    criterio=filtro).annotate(
+                    incidencia=Case(
+                        When(
+                            criterio=k.nombre,
+                            then=Sum(F("precio_unitario")*F("cantidad"),
+                            output_field=DecimalField())),
+                        default=Value(0))).order_by("-incidencia")
+
+                if(k.nombre not in [q["criterio"] for q in incidencia]):
+                    query.append({"criterio": k.nombre, "incidencia": Decimal(0)})
+                    continue
+
+                query.append(incidencia[0])
+
+
+            print("QUERY:")
+            for q in sorted(query, key=lambda x: x["criterio"]):
+                print(q)
+
+            # incidencia_productos = ReservaStock.objects.deleted_only().exclude(
+                # cancelada=True).annotate(total=Case(
+                # When(
+                    # fecha_fin__range=[fecha_ini, fecha_fin],
+                    # then=Sum(F("precio_unitario")*F("cantidad"),
+                             # output_field=DecimalField())
+                # ), default=DecimalField(0))).filter(deleted__range=
+                # [fecha_ini, fecha_fin]).values(
+                # criterio=filtro,
+                # .order_by(
+                # "criterio").annotate(total_recaudado=
+                # Sum(F("precio_unitario")* F("cantidad"),
+                # output_field=DecimalField()))
+
+
+
+            # for q in query:
+                # print(q)
+            # query = {q["criterio"]:Decimal(0) for q in incidencia_productos}
+
+            # for q in incidencia_productos:
+                # query[q["criterio"]] += q["total"]
 
             return JsonResponse(
                 {
-                    "incidencia_productos": list(incidencia_productos),
-                    "total_facturado": list(total_facturado),
+                    "incidencia_productos": sorted(query, key=lambda x: x["criterio"]),
                 }
             )
 
 
         return JsonResponse({})
 
+class ReporteCantidadProductos(FormView):
+    template_name = "reportes/reporte_productos.html"
+    form_class = ReporteProductoForm
+
+    FILTROS = {
+        'rubro': F("tarea__orden__rubro__nombre"),
+        'tipo_servicio': F("tarea__orden__tipo_servicio__nombre"), 
+    }
+
+    def get(self, request, *args, **kwargs):
+
+        if(request.is_ajax()):
+            return self.ajax_get(request, *args, **kwargs)
+
+        return super().get(request, *args, **kwargs)
+
+    def ajax_get(self, request, *args, **kwargs):
+        form = self.form_class(request.GET or None)
+
+        if form.is_valid():
+
+            fecha_ini = form.cleaned_data.get("fecha_ini")
+            fecha_fin = form.cleaned_data.get("fecha_fin")
+            filtro = self.FILTROS[form.cleaned_data.get("filtros")]
+
+            # incidencia_productos = ReservaStock.objects.deleted_only().exclude(
+                # cancelada=True).values(
+                # criterio=filtro,
+                # prod=F("producto__nombre")).order_by(
+                # "criterio").annotate(total_recaudado=
+                # Sum(F("precio_unitario")* F("cantidad"),
+                # output_field=FloatField()))
+
+            cantidad_productos = ReservaStock.objects.deleted_only().exclude(
+                cancelada=True).values(
+                criterio=filtro).order_by(
+                "criterio").annotate(cantidad=Sum("cantidad"))
+
+
+            print("cantidad_productos: {}".format(cantidad_productos))
+            return JsonResponse(
+                {
+                    "cantidad_productos": list(cantidad_productos),
+                }
+            )
+
+
+        return JsonResponse({})
 
 class ReporteEvolucionFacturacionMensual(View):
 
@@ -252,5 +343,5 @@ class ReporteCargaTrabajoTecnico(View):
 
 
 # Carga de Trabajo por Técnico (Cantidad de OTs abiertas en el momento)
-# 
+#
 # Orden.objects.exclude(cerrada=True).exclude(cancelada=True).values(criterio=filtro).annotate(cantidad_ots_abiertas=Count('criterio'))

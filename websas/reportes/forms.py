@@ -19,8 +19,8 @@ class ReporteTotalOrdenesForm(forms.Form):
 
 class ReporteProductoForm(forms.Form):
     CHOICES = (
-        ("rubro_productos", "Rubro"),
-        ("tipo_servicio_productos", "Tipo de servicio"),
+        ("rubro", "Rubro"),
+        ("tipo_servicio", "Tipo de servicio"),
     )
     filtros = forms.ChoiceField(CHOICES, widget=forms.Select(attrs={
         'class': 'form-control'

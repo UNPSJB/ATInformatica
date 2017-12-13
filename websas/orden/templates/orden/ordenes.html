@@ -54,12 +54,12 @@
       </table>
     </div>
 
+    {% if user.persona.is_gerente %}
     <div class="x_panel">
       <div class="x_title">
         <h1>Totales facturados</h1>
       </div>
       <div class="x_content">
-           {% if user.persona.is_gerente %}
           <!-- Acá va el gráfico de la guita -->
           <!--primer panel-->
           <div class="col-md-12">
