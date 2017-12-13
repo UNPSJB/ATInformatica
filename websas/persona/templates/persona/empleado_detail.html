@@ -14,13 +14,12 @@
             <h1>{{ empleado.apellido|upper }}, {{ empleado.nombre }}</h1>
           </td>
           <td>
-            <h2>DNI: </h2>{{ empleado.doc }}</td>
+            <h2 style="float:right">DNI: {{ empleado.doc }}</h2></td>
         </tr>
         <tr>
+          <td><h2>Domicilio: {{ empleado.domicilio }}</h2></td>
           <td>
-            <h2>Domicilio: </h2>{{ empleado.domicilio }}</td>
-          <td>
-            <h2>Email: </h2>{{ empleado.email }}</td>
+            <h2 style="float:right">Email: {{ empleado.email }}</h2></td>
         </tr>
         {% if roles %}
         <tr>
