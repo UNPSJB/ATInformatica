@@ -53,6 +53,9 @@ $("#daterangepicker").on("apply.daterangepicker", function (ev, picker) {
 })
 
 function inicializarGrafico() {
+    if($("form")[0] === undefined){
+        return
+    }
     var fecha_ini = $("#daterangepicker").data('daterangepicker').startDate
     var fecha_fin = $("#daterangepicker").data('daterangepicker').endDate
     $("#fecha-ini").html(fecha_ini.format("DD/MM/YYYY"))

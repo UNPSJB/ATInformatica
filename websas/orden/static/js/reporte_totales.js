@@ -1,6 +1,9 @@
 var chart
 
 function init_grafico() {
+    if($("form")[0] === undefined){
+        return
+    }
     var fecha_ini = $("#daterangepicker").data('daterangepicker').startDate
     var fecha_fin = $("#daterangepicker").data('daterangepicker').endDate
 
