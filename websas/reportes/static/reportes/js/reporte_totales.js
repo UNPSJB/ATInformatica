@@ -173,9 +173,6 @@ $('.chart-input').on('change', function(){
   })
 
 
-$("#btn-ajax").on("click", function(e){
-    inicializarGrafico()
-})
 $("#daterangepicker").on("apply.daterangepicker", function (ev, picker) {
 
     inicializarGrafico()
