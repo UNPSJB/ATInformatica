@@ -76,6 +76,7 @@
                 "filtros": ds.opcionesAjax.filtro,
                 "rubro": ds.opcionesAjax.rubro,
                 "tipo_servicio": ds.opcionesAjax.tipo_servicio,
+                "tipo_tarea": ds.opcionesAjax.tipo_tarea,
               },
               async:false,
               dataType: "json",

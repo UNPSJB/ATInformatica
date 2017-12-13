@@ -66,5 +66,26 @@ class ReporteTareaMasRealizadaForm(forms.Form):
         widget=forms.Select(attrs={
             'class': 'form-control',
         }))
+class TipoTareaChoiceField(ModelChoiceField):
+    def label_from_instance(self, obj):
+        return "{} ({})".format(obj.nombre, obj.rubro.nombre)
 
+class ReporteTecnicoFinalizadorForm(forms.Form):
+    fecha_ini = forms.DateTimeField(input_formats=[FORMATO_FECHA])
+    fecha_fin = forms.DateTimeField(input_formats=[FORMATO_FECHA])
+
+    tipo_servicio = TipoServicioChoiceField(
+        queryset=TipoServicio.objects.all(), 
+        empty_label=None,
+        widget=forms.Select(attrs={
+            'class': 'form-control',
+        }))
+
+    tipo_tarea = TipoTareaChoiceField(
+        queryset=TipoTarea.objects.all().order_by("rubro__nombre"),
+        empty_label=None,
+        widget=forms.Select(attrs={
+            'class': 'form-control',
+        })
+    )
 
