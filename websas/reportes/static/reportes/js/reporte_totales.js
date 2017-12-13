@@ -42,7 +42,9 @@ function inicializarGrafico() {
                 },
             },
         ],
-        opcionesGrafico: {}
+        opcionesGrafico: {
+            titulo: "Facturado en el año actual y el año pasado",
+        }
     });
 
     $("#chart-cantidades").reporteSAS({
@@ -61,7 +63,9 @@ function inicializarGrafico() {
                 },
             },
         ],
-        opcionesGrafico: {}
+        opcionesGrafico: {
+            titulo: "Cantidad de órdenes de trabajo por " + $("#id_filtros option:selected").text()
+        }
     });
 
     var chart_totales = $("#chart-totales").CanvasJSChart()
