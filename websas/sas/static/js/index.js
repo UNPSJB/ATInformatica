@@ -1,7 +1,10 @@
 var chart
 var chart_carga
 
-function init_grafico() {
+function init_grafico_movimiento_mensual() {
+    if ($("#chart-container")[0] === undefined){
+        return
+    }
     var fecha = moment() 
     var fecha_vieja = moment().subtract(1, "year")
 
@@ -39,6 +42,9 @@ function init_grafico() {
 
 function init_grafico_carga_trabajo() {
 
+    if ($("#chart-container-carga-trabajo")[0] === undefined) {
+        return
+    }
     chart_carga = $("#chart-container-carga-trabajo").reporteSAS({
         opcionesDataset: [
             {
@@ -46,7 +52,7 @@ function init_grafico_carga_trabajo() {
                 x: 'criterio',
                 y: 'cantidad_ots_abiertas',
                 dataset: "carga_trabajo",
-                textoLeyenda: "Carga de Trabajo",
+                textoLeyenda: "Carga de trabajo",
                 opcionesAjax: {
                     ajaxurl: $("#chart-container-carga-trabajo")[0].dataset["ajax_url"],
                     filtro: $("#id_filtros").val(),
@@ -54,20 +60,21 @@ function init_grafico_carga_trabajo() {
             },
         ],
         opcionesGrafico: {
-            titulo: "Carga de Trabajo",
+            // titulo: "Carga de Trabajo",
             nombre_eje_x: "Criterio",
+            intervalo_eje_y: 5,
         }
     });
 }
 $(document).on('ready', function(){
     init_grafico_carga_trabajo()
-    return init_grafico()
+    return init_grafico_movimiento_mensual()
 
 })
 
 $("form .chart-input").on("change", function(){
     chart.CanvasJSChart().destroy()
-    return init_grafico()
+    return init_grafico_movimiento_mensual()
 })
 
 $('.chart-input-carga').on('change', function(){
@@ -77,5 +84,5 @@ $('.chart-input-carga').on('change', function(){
 
 $("#daterangepicker").on("apply.daterangepicker", function(ev, picker){
     chart.CanvasJSChart().destroy()
-    return init_grafico()
+    return init_grafico_movimiento_mensual()
 })

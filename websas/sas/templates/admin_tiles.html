@@ -196,7 +196,7 @@
           {% endif %} 
           
           {% if user.persona.is_jefe_taller %}
-          <h1>Acá va el gráfico de carga de trabajo por técnico</h1>
+          {% comment %} <h1>Acá va el gráfico de carga de trabajo por técnico</h1> {% endcomment %}
           <div class="col-md-12">
             <div class="x_panel dashboard_graph">
 
@@ -227,21 +227,22 @@
               </div>
 
               <div class="x_content">
-                  <div id="msg-total" style="text-align: center;">
-                      <h1>Carga de Trabajo</h1>
-                    </div>
-                    <div id="chart-container-carga-trabajo" data-ajax_url="{% url 'reportes:carga_trabajo' %}" class="col-md-6 col-sm-6 col-xs-12 chart-container"></div>
+                <div id="msg-total" style="text-align: center;">
+                  <h1>Carga de trabajo</h1>
+                </div>
+                <div id="chart-container-carga-trabajo" data-ajax_url="{% url 'reportes:carga_trabajo' %}" class="col-md-12 col-sm-12 col-xs-12 chart-container"></div>
     
-                    </div>
-                    <hr>
+              </div>
+                <hr>
               </div>
             </div>
           </div>
+          {% comment %} endif del jefetaller {% endcomment %}
           {% endif %}
           <div class="x_panel">
 
             <div class="x_title">
-              <h2>Ordenes de trabajo abiertas</h2>
+              <h2>Órdenes de trabajo abiertas</h2>
               <div class="clearfix"></div>
             </div>
             <div class="x_content">

@@ -298,12 +298,16 @@ class ReporteEvolucionFacturacionMensual(View):
 
 class ReporteCargaTrabajoTecnico(View):
     form_class = ReporteCargaTrabajoForm
+    FILTROS = {
+        'rubro': F("rubro__nombre"),
+        'tecnico': Concat(Upper(F("tecnico__persona__apellido")), Value(', '), F("tecnico__persona__nombre")),
+    }
 
     def get(self, request, *args, **kwargs):
         form = self.form_class(request.GET or None)
 
         if form.is_valid():
-            filtro = FILTROS[form.cleaned_data.get("filtros")]
+            filtro = self.FILTROS[form.cleaned_data.get("filtros")]
 
             carga_trabajo = Orden.objects.exclude(
                     cerrada=True

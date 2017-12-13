@@ -34,7 +34,7 @@ class IndexView(FormView):
     def get_context_data(self, **kwargs):
         contexto = super().get_context_data(**kwargs)
         contexto['ordenes'] = Orden.objects.exclude(cerrada=True).exclude(cancelada=True)
-        contexto['form_carga'] = ReporteCargaTrabajoForm
+        contexto['form_carga'] = ReporteCargaTrabajoForm(initial={"filtros": "tecnico"})
         return contexto
 
 class SASAdminView(TemplateView):

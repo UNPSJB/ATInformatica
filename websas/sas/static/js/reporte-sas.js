@@ -30,7 +30,7 @@
         "titulo" : '',
         "mensaje_error" : "Su consulta no generó resultados",
         "nombre_eje_x": "",
-        "nombre_eje_y": ""
+        "nombre_eje_y": "",
       }
 
       opcionesIniciales = {
@@ -49,9 +49,11 @@
           },
           axisX: {
             title: opc.opcionesGrafico.nombre_eje_x,
+            interval: opc.opcionesGrafico.intervalo_eje_x,
           },
           axisY: {
             title: opc.opcionesGrafico.nombre_eje_y,
+            interval: opc.opcionesGrafico.intervalo_eje_y,
           },
           legend: {
             horizontalAlign: "central",
