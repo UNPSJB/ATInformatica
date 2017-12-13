@@ -301,7 +301,6 @@ class ReporteCargaTrabajoTecnico(View):
 
     def get(self, request, *args, **kwargs):
         form = self.form_class(request.GET or None)
-        print(form)
 
         if form.is_valid():
             filtro = FILTROS[form.cleaned_data.get("filtros")]

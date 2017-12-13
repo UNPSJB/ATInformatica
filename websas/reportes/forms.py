@@ -38,6 +38,7 @@ class ReporteCargaTrabajoForm(forms.Form):
         ("tecnico", "Técnico"),
     )
     filtros = forms.ChoiceField(CHOICES, widget=forms.Select(attrs={
-        'class': 'form-control'
+        'class': 'form-control chart-input-carga'
     }))
+
 

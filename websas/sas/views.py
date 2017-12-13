@@ -2,7 +2,7 @@ from django.views.generic import TemplateView, View, FormView
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from orden.models import Orden
-from reportes.forms import ReporteTotalOrdenesForm
+from reportes.forms import ReporteTotalOrdenesForm,ReporteCargaTrabajoForm
 
 class AjaxFormView(View):
     """ Vista para manejar las peticiones con ajax a traves de un formulario
@@ -34,6 +34,7 @@ class IndexView(FormView):
     def get_context_data(self, **kwargs):
         contexto = super().get_context_data(**kwargs)
         contexto['ordenes'] = Orden.objects.exclude(cerrada=True).exclude(cancelada=True)
+        contexto['form_carga'] = ReporteCargaTrabajoForm
         return contexto
 
 class SASAdminView(TemplateView):
