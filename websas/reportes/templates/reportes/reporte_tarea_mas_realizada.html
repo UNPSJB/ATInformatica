@@ -1,0 +1,143 @@
+{% extends "principal.html" %}
+{% load staticfiles %}
+{% block estilos %}
+<link rel="stylesheet" href="{% static 'reportes/css/reportes.css' %}">
+{% endblock estilos %}
+
+{% block contenido %}
+    <!--primer panel-->
+
+    <div class="col-md-12">
+
+
+        <div class="x_panel">
+            <ul class="nav navbar-right panel_toolbox">
+                <li>
+                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+            </ul>
+            <div class="x_title">
+                <h3>Opciones del reporte</h3>
+            </div>
+            <div class="x_content">
+                <div class="form_group" style="margin-bottom: 2em">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="daterangepicker">Seleccione rango de fechas:</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control inline" name="daterangepicker" id="daterangepicker">
+                    </div>
+                </div>
+                <br>
+                <form action="" data-ajax_url="{% url 'reportes:tarea_mas_realizada' %}" >
+                    <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.rubro.label }}">{{ form.rubro.label }}:<span class="required">*</span>
+                        </label>
+                        <div id="form-rubro" class="col-md-6 col-sm-6 col-xs-12">
+                            {{ form.rubro }}
+                        </div>
+                    </div>
+
+                    <br/>
+                    <br/>
+
+                    <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.tipo_servicio.label }}">{{ form.tipo_servicio.label }}:
+                            <span class="required">*</span>
+                        </label>
+                        <div id="form-tipo-servicio" class="col-md-6 col-sm-6 col-xs-12">
+                            {{ form.tipo_servicio }}
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title"><h1>Tareas más realizadas</h1></div>
+                <div class="x_content">
+                <div id="msg-total" style="text-align: center; padding:2em;">
+                    <h2 id="titulo_reporte">
+                        <span style="border-bottom: 1px solid;">Tareas más realizadas entre
+                            <span id="fecha-ini"></span> y
+                            <span id="fecha-fin"></span>:
+                            <strong>
+                                <span id="total"></span>
+                            </strong>
+                        </span>
+                    </h2>
+                    <h2 id="titulo_reporte">
+                        <span style="border-bottom: 1px solid;">del rubro
+                            <strong>
+                                <span id="span-rubro"></span>
+                            </strong>
+                        </span>
+                        <span style="border-bottom: 1px solid;"> y el tipo de servicio
+                            <strong>
+                                <span id="span-tipo-servicio"></span>
+                            </strong>
+                        </span>
+
+                    </h2>
+                </div>
+
+                    <div id="chart-tarea-mas-realizada" class="chart-container"></div>
+        
+                </div>
+            </div>
+        </div>
+
+        {% comment %} <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h1 id="comparacion-filtro"></h1>
+                </div>
+                <div class="x_content">
+        
+                    <div id="chart-cantidades" class="chart-container"></div>
+        
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title"><h1 id="comparacion-mano-obra"></h1></div>
+                <div class="x_content">
+                
+                    <div id="chart-porcentajes" class="chart-container"></div>
+        
+                </div>
+            </div>
+        </div> {% endcomment %}
+
+
+        {% comment %} <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title"><h1>grafiquito de area</h1></div>
+                <div class="x_content">
+                
+                    <div id="chartArea" class="chart-container"></div>
+        
+                </div>
+            </div>
+        </div> {% endcomment %}
+
+
+    </div>
+
+
+
+    <!--segundo panel-->
+
+    <!--tercer panel-->
+
+    <!--cuarto panel-->
+{% endblock contenido %}
+
+{% block scripts %}
+    <script src="{% static 'vendors/canvasjs/jquery.canvasjs.min.js' %}"></script>
+    <script src="{% static 'js/reporte-sas.js' %}"></script>
+    <script src="{% static 'reportes/js/daterangepicker.js' %}"></script>
+    <script src="{% static 'reportes/js/reporte_tarea_mas_realizada.js' %}"></script>
+{% endblock scripts %}

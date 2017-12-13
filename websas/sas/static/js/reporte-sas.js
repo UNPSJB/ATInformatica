@@ -74,6 +74,8 @@
                 "fecha_ini": ds.opcionesAjax.fecha_ini,
                 "fecha_fin": ds.opcionesAjax.fecha_fin,
                 "filtros": ds.opcionesAjax.filtro,
+                "rubro": ds.opcionesAjax.rubro,
+                "tipo_servicio": ds.opcionesAjax.tipo_servicio,
               },
               async:false,
               dataType: "json",

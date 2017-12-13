@@ -8,11 +8,12 @@ from datetime import datetime
 from decimal import Decimal
 from dateutil.relativedelta import relativedelta
 from orden.models import Orden
+from tarea.models import TareaRealizada
 from persona.models import Cliente, Tecnico
 from producto.models import ReservaStock
 from rubro.models import Rubro
 from servicio.models import TipoServicio
-from .forms import ReporteTotalOrdenesForm, ReporteProductoForm, ReporteEvolucionFacturacionMensualForm, ReporteCargaTrabajoForm
+from .forms import ReporteTotalOrdenesForm, ReporteProductoForm, ReporteEvolucionFacturacionMensualForm, ReporteCargaTrabajoForm, ReporteTareaMasRealizadaForm
 
 
 # FILTROS = {
@@ -324,6 +325,40 @@ class ReporteCargaTrabajoTecnico(View):
             )
 
         return JsonResponse({})
+
+class ReporteTareaMasRealizada(TemplateView):
+    template_name = "reportes/reporte_tarea_mas_realizada.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super(ReporteTareaMasRealizada, self).get_context_data(**kwargs)
+        context["form"] = ReporteTareaMasRealizadaForm()
+        return context
+    
+    def get(self, request, *args, **kwargs):
+        if request.is_ajax():
+            return self.ajax_get(request, *args, **kwargs)
+
+        return super().get(request, *args, **kwargs)
+
+    def ajax_get(self, request, *args, **kwargs):
+        form = ReporteTareaMasRealizadaForm(request.GET or None)
+        if form.is_valid():
+            
+            rubro = form.cleaned_data.get("rubro")
+            tipo_servicio = form.cleaned_data.get("tipo_servicio")
+            fecha_ini = form.cleaned_data.get("fecha_ini")
+            fecha_fin = form.cleaned_data.get("fecha_fin")
+            query = TareaRealizada.objects.filter(
+            tarea__orden__rubro=rubro, 
+            tarea__orden__tipo_servicio=tipo_servicio, 
+            tarea__orden__fecha_fin__range=[fecha_ini, fecha_fin]).values(rubro=F("tarea__orden__rubro__nombre"), tipo_servicio=F("tarea__orden__tipo_servicio__nombre"), tipo_tarea=F("tarea__tipo_tarea__nombre")).order_by("rubro", "tipo_servicio", "tipo_tarea").annotate(cant=Count("tipo_tarea")).values("tipo_tarea", "cant")
+
+            return JsonResponse({
+                "tarea_mas_realizada": list(query), 
+            })
+            
+        return JsonResponse({})
+    
  # ReservaStock.objects.deleted_only().exclude(cancelada=True).values(prod=F("producto__nombre"), rubro=F("tarea__orden__rubro__nombre")).annotate(utilizados=Sum("cantidad"))
 
 # ReservaStock.objects.deleted_only().exclude(cancelada=True).values(prod=F("producto__nombre"), rubro=F("tarea__orden__rubro__nombre")).annotate(cantidad=Count("rubro"), total=Sum("precio_unitario"))
