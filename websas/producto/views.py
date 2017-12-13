@@ -8,6 +8,7 @@ from django.views.generic import CreateView, ListView, UpdateView, DeleteView, D
 from django.core.urlresolvers import reverse_lazy
 from .models import Producto
 from .forms import ProductoForm, ProductoUpdateForm, ReservaCancelarForm, ReservaModificarForm
+from reportes.forms import ReporteProductoForm
 from sas.views import AjaxFormView
 # Create your views here.
 
@@ -24,6 +25,13 @@ class ProductoCreate(CreateView):
 class ProductoList(ListView):
     model = Producto
     template_name = 'producto/productos.html'
+
+    
+    def get_context_data(self, **kwargs):
+        context = super(ProductoList, self).get_context_data(**kwargs)
+        context["form"] = ReporteProductoForm()
+        return context
+    
 
 class ProductoUpdate(UpdateView):
     model = Producto
