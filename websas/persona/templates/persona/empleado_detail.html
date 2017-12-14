@@ -26,9 +26,11 @@
         <tr>
           <td>
             <h2>Roles</h2>
+            <ul class="list-group col-md-4 col-sm-4 col-xs-12">
             {% for rol in roles %}
-            <span>{{ rol.ROLNAME }}<i id="data-rol" data-empleado-id="{{ empleado.id }}" data-rol-id="{{ rol.id }}" data-ajax-url="{% url 'empleado:empleado_eliminar_rol' %}" class="fa fa-trash fa-lg" onclick="eliminarRol()" style="margin-left:3em"></i></span> 
+            <li class="list-group-item"><span>{{ rol.ROLNAME }}<i id="data-rol" data-empleado-id="{{ empleado.id }}" data-rol-id="{{ rol.id }}" data-ajax-url="{% url 'empleado:empleado_eliminar_rol' %}" class="fa fa-trash fa-lg" onclick="eliminarRol()" style="margin-left:3em"></i></span></li> 
             {% endfor %}
+            </ul>
           </td>
         </tr>
         {% endif %}
