@@ -36,6 +36,9 @@ class TipoTarea(SafeDeleteModel):
             for ts in TipoServicio.objects.all():
                 Tarifa(tipo_tarea=self, tipo_servicio=ts).save()
 
+    def is_rdyp(self):
+        return self.nombre.strip().lower() == "rdyp"
+    
     def __str__(self):
         return "{}".format(self.nombre)
 

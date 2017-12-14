@@ -172,6 +172,9 @@ class TipoTareaCreate(FormView):
         descripcion = request.POST["descripcion"]
         
         tipo_tarea = TipoTarea(nombre=nombre, descripcion=descripcion, rubro=self.rubro)
+        if tipo_tarea.is_rdyp():
+            #aca pincha, tirar mensajito
+            return redirect("rubro:tipo_tarea_crear", self.rubro.id)
         tipo_tarea.save()
 
         return redirect("rubro:tipo_tarea_crear", self.rubro.id)
@@ -193,7 +196,7 @@ class TipoTareaUpdate(UpdateView):
         self.tipo_tarea = TipoTarea.objects.get(pk=kwargs["pk"])
 
         #si la tarea es la RDyP, lo mandamos al patio
-        if(self.tipo_tarea.nombre.lower() == "rdyp"):
+        if(self.tipo_tarea.is_rdyp()):
             raise Http404("No se puede editar la RDyP")
 
         return super().dispatch(request, *args, **kwargs)
@@ -218,7 +221,7 @@ class TipoTareaDelete(DeleteView):
         self.tipo_tarea = TipoTarea.objects.get(pk=kwargs["pk"])
 
         #si la tarea es la RDyP, lo mandamos al patio
-        if(self.tipo_tarea.nombre.lower() == "rdyp"):
+        if(self.tipo_tarea.is_rdyp()):
             raise Http404("No se puede eliminar la RDyP")
 
         return super().dispatch(request, *args, **kwargs)
