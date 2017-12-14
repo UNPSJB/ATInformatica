@@ -61,7 +61,8 @@ class EmpleadoList(ListView):
     template_name = 'persona/empleados.html'
 
     def get_queryset(self): 
-        return Rol.objects.all().exclude(tipo=0).exclude(tipo=2).exclude(tipo=10).distinct('persona')
+        query = Rol.objects.all().exclude(tipo=0).exclude(tipo=2).exclude(tipo=10).distinct('persona')
+        return [r for r in query if Persona.objects.filter(id=r.persona.id)]
         
 
 class EmpleadoDetail(DetailView):
