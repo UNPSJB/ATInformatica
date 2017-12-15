@@ -6,8 +6,13 @@ function init_grafico_movimiento_mensual() {
         return
     }
     var fecha = moment() 
-    var fecha_vieja = moment().subtract(1, "year")
-
+    var fecha_vieja = moment()
+    if($("#select-rango").val() == "anual"){
+        fecha_vieja.subtract(1, "year")
+    }
+    else{
+        fecha_vieja.subtract(1, "month")
+    }
     chart = $("#chart-container").reporteSAS({
         opcionesDataset: [
             {
@@ -70,6 +75,11 @@ $(document).on('ready', function(){
     init_grafico_carga_trabajo()
     return init_grafico_movimiento_mensual()
 
+})
+
+$("#select-rango").on("change", function(){
+    chart.CanvasJSChart().destroy()
+    return init_grafico_movimiento_mensual()
 })
 
 $("form .chart-input").on("change", function(){

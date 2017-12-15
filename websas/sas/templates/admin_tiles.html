@@ -124,19 +124,20 @@
                 </div>
 
               <div class="x_content">
-                  <div id="msg-total" style="text-align: center;">
+                    <div id="msg-total" style="text-align: center;">
                       <h1>Movimiento mensual de la caja
-                        <!-- <span id="fecha-ini"></span> y
-                        <span id="fecha-fin"></span>:
-                        <strong>
-                          <span id="total"></span>
-                        </strong> -->
                       </h1>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12 pull-right">
+                        <select id="select-rango" class=" form-control" name="">
+                            <option value="anual">Anual</option>
+                            <option value="mensual">Mensual</option>
+                        </select>
                     </div>
                     <div id="chart-container" data-ajax_url="{% url 'reportes:facturacion_mensual' %}" class="col-md-12 col-sm-12 col-xs-12 chart-container"></div>
     
-                    </div>
-                    <hr>
+                </div>
+                <hr>
               </div>
             </div>
 
