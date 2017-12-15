@@ -8,6 +8,7 @@ from safedelete.managers import SafeDeleteManager, DELETED_VISIBLE
 from safedelete.queryset import SafeDeleteQueryset
 from decimal import Decimal
 
+
 # Create your models here.
 class TipoTarea(SafeDeleteModel):
     """ Modelo para la gestión de tipos de tarea
@@ -18,6 +19,8 @@ class TipoTarea(SafeDeleteModel):
         rubro(:obj: Rubro): rubro al que pertenece el tipo de tarea """
 
     _safedelete_policy = SOFT_DELETE
+
+    RDYP = "rdyp"
 
     nombre = models.CharField(max_length=30)
     descripcion = models.CharField(max_length=100, null=True, blank=True)
@@ -37,8 +40,8 @@ class TipoTarea(SafeDeleteModel):
                 Tarifa(tipo_tarea=self, tipo_servicio=ts).save()
 
     def is_rdyp(self):
-        return self.nombre.strip().lower() == "rdyp"
-    
+        return self.nombre.strip().lower() == TipoTarea.RDYP
+
     def __str__(self):
         return "{}".format(self.nombre)
 
@@ -284,7 +287,7 @@ class EstadoTarea(models.Model):
 
     def cancelar_reserva(self, reserva):
         reserva.cancelar()
-        
+
 class TareaPresupuestada(EstadoTarea):
     """ Se espera que el cliente la acepte """
     TIPO = 1

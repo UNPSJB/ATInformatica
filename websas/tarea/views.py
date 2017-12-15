@@ -21,14 +21,14 @@ class ReservaCreate(View):
         form = ReservaForm(request.POST or None)
         tarea = None
         producto = None
-        
+
         if form.is_valid():
-            tarea = Tarea.objects.get(pk=form.cleaned_data['tarea'])    
+            tarea = Tarea.objects.get(pk=form.cleaned_data['tarea'])
             producto = Producto.objects.get(pk=form.cleaned_data['producto'])
             cantidad = form.cleaned_data['cantidad']
         if tarea is None or producto is None:
             response = JsonResponse({'error': 'no es posible realizar la operación'})
-            response.status_code = 403 
+            response.status_code = 403
             return response
         tarea.hacer("reservar_stock", producto=producto, cantidad=cantidad)
         return JsonResponse({'data':'ok'})
@@ -43,8 +43,8 @@ class ObservacionCreate(View):
             contenido = form.cleaned_data['contenido']
         if tarea is None:
             response = JsonResponse({'error': 'no es posible realizar la operación'})
-            response.status_code = 403 
-            return response     
+            response.status_code = 403
+            return response
         tarea.hacer("agregar_observacion", usuario=request.user, contenido=contenido)
         return JsonResponse({'data':'ok'})
 
@@ -63,13 +63,13 @@ class TareaAceptar(View):
                 orden.aceptar_tareas(tareas, usuario=request.user)
             except Exception as e:
                 response = JsonResponse({'error': str(e)})
-                response.status_code = 403  
+                response.status_code = 403
                 return response
             return JsonResponse({'data':'ok'})
         else:
             response = JsonResponse({'error': 'no es posible realizar la operación'})
-            response.status_code = 403  
-            return response         
+            response.status_code = 403
+            return response
 
 class TareaFinalizar(View):
     @method_decorator(permission_required('tarea.change_tarea', login_url='orden:orden_listar'))
@@ -81,15 +81,15 @@ class TareaFinalizar(View):
                 orden.finalizar_tareas(tareas,usuario=request.user)
             except Exception as e:
                 response = JsonResponse({'error': str(e)})
-                response.status_code = 403  
+                response.status_code = 403
                 return response
             return JsonResponse({'data':'ok'})
         else:
             response = JsonResponse({'error': 'no es posible realizar la operación'})
-            response.status_code = 403  
-            return response  
-class TareaCreate(View):    
-    
+            response.status_code = 403
+            return response
+class TareaCreate(View):
+
     @method_decorator(permission_required('tarea.add_tarea', login_url='orden:orden_listar'))
     def post(self, request, *args, **kwargs):
         form = CrearTareaForm(request.POST or None)
@@ -101,14 +101,14 @@ class TareaCreate(View):
             orden = Orden.objects.get(pk=form.cleaned_data['orden_id'])
         if orden is None or tipo_tarea is None:
             response = JsonResponse({'error': 'No es posible realizar la operacion para esta tarea u orden.'})
-            response.status_code = 403  
-            return response 
+            response.status_code = 403
+            return response
         try:
             orden.agregar_tarea(tipo_tarea, observacion)
         except Exception as e:
             response = JsonResponse({'error': str(e)})
-            response.status_code = 403  
-            return response           
+            response.status_code = 403
+            return response
         return JsonResponse({'data':'ok'})
 
 class TareaDetail(DetailView):
@@ -123,7 +123,7 @@ class TareaDetail(DetailView):
 
 class TareaCancelar(View):
 
-    @method_decorator(permission_required('tarea.change_tarea', login_url="orden:orden_listar"))    
+    @method_decorator(permission_required('tarea.change_tarea', login_url="orden:orden_listar"))
     def post(self, request, *args, **kwargs):
         pk = int(request.POST.get("tarea_id"))
         tarea = Tarea.objects.get(pk=pk)
@@ -131,8 +131,8 @@ class TareaCancelar(View):
         if tarea.estas_cancelada():
             return JsonResponse({'data':'ok'})
         response = JsonResponse({'error': 'la tarea {} no se pudo cancelar'.format(tarea.tipo_tarea.nombre)})
-        response.status_code = 403  
-        return response 
+        response.status_code = 403
+        return response
 
 class TareaCambiarPrecio(View):
     @method_decorator(permission_required('tarea.change_tarea', login_url="orden:orden_listar"))
@@ -148,10 +148,9 @@ class TareaCambiarPrecio(View):
         }
 
         return JsonResponse(data)
-        
-        
+
+
 class TipoTareaCreate(FormView):
-    # model = TipoTarea
     template_name = 'tarea/tipo_tarea_detail.html'
     form_class =  TipoTareaForm
 
@@ -162,29 +161,27 @@ class TipoTareaCreate(FormView):
         #y lo mismo en el post, porque serian dos objetos FormView distintos
         self.rubro = Rubro.objects.get(pk=kwargs["pk_rubro"])
         return super().dispatch(request, *args, **kwargs)
-    
+
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
-
     def post(self, request, *args, **kwargs):
-        nombre = request.POST["nombre"]
-        descripcion = request.POST["descripcion"]
-        
-        tipo_tarea = TipoTarea(nombre=nombre, descripcion=descripcion, rubro=self.rubro)
-        if tipo_tarea.is_rdyp():
-            #aca pincha, tirar mensajito
-            return redirect("rubro:tipo_tarea_crear", self.rubro.id)
-        tipo_tarea.save()
 
-        return redirect("rubro:tipo_tarea_crear", self.rubro.id)
+        form = self.form_class(request.POST or None)
+
+        if form.is_valid():
+            form.save(self.rubro)
+        return super().get(request, *args, **kwargs)
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy("rubro:tipo_tarea_crear", self.rubro.id)
 
     def get_context_data(self, **kwargs):
         contexto = super().get_context_data(**kwargs)
         contexto["tareas"] = self.rubro.tipos_tareas.all()
         contexto["rubro"] = self.rubro
         return contexto
-        
+
 class TipoTareaUpdate(UpdateView):
     model = TipoTarea
     form_class = TipoTareaForm
@@ -200,7 +197,7 @@ class TipoTareaUpdate(UpdateView):
             raise Http404("No se puede editar la RDyP")
 
         return super().dispatch(request, *args, **kwargs)
-    
+
 
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
@@ -225,17 +222,17 @@ class TipoTareaDelete(DeleteView):
             raise Http404("No se puede eliminar la RDyP")
 
         return super().dispatch(request, *args, **kwargs)
-    
+
     def get_success_url(self):
         return reverse_lazy("rubro:tipo_tarea_crear", args=(self.rubro.id,))
 
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
-    
+
     def get_context_data(self, **kwargs):
         contexto = super().get_context_data(**kwargs)
         contexto["rubro"] = self.rubro
-        contexto["tipo_tarea"] = self.tipo_tarea 
+        contexto["tipo_tarea"] = self.tipo_tarea
         return contexto
 
     @method_decorator(permission_required('tarea.delete_tipo_tarea', login_url='rubro:rubro_listar'))
@@ -249,7 +246,7 @@ class TipoTareaTarifar(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         self.tipo_tarea = TipoTarea.objects.get(pk=kwargs["pk"])
         return super().dispatch(request, *args, **kwargs)
-    
+
     def get_context_data(self, **kwargs):
         contexto = super().get_context_data(**kwargs)
         contexto["tipo_tarea"] = self.tipo_tarea
