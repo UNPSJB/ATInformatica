@@ -88,7 +88,8 @@
                     //nos devolvio datos de nuestra consulta exitosamente
                     if(data.hasOwnProperty(data[ds.dataset]) || 
                         data[ds.dataset].length == 0){
-                        alert(opc.opcionesGrafico.mensaje_error)
+                        //no mostramos nada mejor
+                        //alert(opc.opcionesGrafico.mensaje_error)
                         return
                     }
 
