@@ -123,7 +123,11 @@
 
       </div>
       {% else %}
+      {% if orden.precio_total > 0 %}
         {% include "orden/cerrada.html" %}
+      {% else %}
+        {% include "orden/cortesia.html" %}
+      {% endif %}
       {% endif %}
     </div>
   </div>

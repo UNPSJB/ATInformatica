@@ -86,12 +86,12 @@ class OrdenesList(ListView):
     model = Orden
     template_name = 'orden/ordenes.html'
 
-    
+
     def get_context_data(self, **kwargs):
         context = super(self.__class__, self).get_context_data(**kwargs)
         context["form"] = ReporteTotalOrdenesForm()
         return context
-    
+
 
 
 class OrdenDelete(DeleteView):
