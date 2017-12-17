@@ -85,7 +85,7 @@ function _imprimirPDF(contenido_rep){
       */
     var titulo_general = contenido['titulo'];
     doc.setFontSize(20);
-    centrar_ancho(titulo_general, 30);  // Centrar en la página
+    doc.text(titulo_general, 30, 40);
 
     doc.setFontSize(14);
     
@@ -269,6 +269,9 @@ function imprimirPDF (contenido, index) {
     for (var i = ind; i < contenido.tiles.length; i++) {
         if (contenido.tiles[i].tipo == 'div') {
             var div = ($(contenido.tiles[i].selector)[0]);
+            if (div == undefined) {
+                throw('Elemento no encontrado - ' + contenido.tiles[i].selector);
+            }
             tiles_divs.push(i);
             html2canvas(div).then(function(canvas) {
                 contenido.tiles[tiles_divs[0]].tipo = 'grafico';
