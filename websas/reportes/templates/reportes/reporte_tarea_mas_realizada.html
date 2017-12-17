@@ -5,67 +5,69 @@
 {% endblock estilos %}
 
 {% block contenido %}
-    <!--primer panel-->
+<!--primer panel-->
 
-    <div class="col-md-12">
+<div class="col-md-12">
 
 
-        <div class="x_panel">
-            <ul class="nav navbar-right panel_toolbox">
-                <li>
-                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                </li>
-            </ul>
-            <div class="x_title">
-                <h3>Opciones del reporte</h3>
+    <div class="x_panel">
+        <ul class="nav navbar-right panel_toolbox">
+            <li>
+                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+        </ul>
+        <div class="x_title">
+            <h3>Opciones del reporte</h3>
+        </div>
+        <div class="x_content">
+            <div class="form_group" style="margin-bottom: 2em">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="daterangepicker">Seleccione rango de fechas:</label>
+                <div class="col-md-4">
+                    <input type="text" class="form-control inline" name="daterangepicker" id="daterangepicker">
+                </div>
             </div>
-            <div class="x_content">
-                <div class="form_group" style="margin-bottom: 2em">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="daterangepicker">Seleccione rango de fechas:</label>
-                    <div class="col-md-4">
-                        <input type="text" class="form-control inline" name="daterangepicker" id="daterangepicker">
+            <br>
+            <form action="" data-ajax_url="{% url 'reportes:tarea_mas_realizada' %}" >
+                <div class="item form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.rubro.label }}">{{ form.rubro.label }}:<span class="required">*</span>
+                    </label>
+                    <div id="form-rubro" class="col-md-6 col-sm-6 col-xs-12">
+                        {{ form.rubro }}
                     </div>
                 </div>
-                <br>
-                <form action="" data-ajax_url="{% url 'reportes:tarea_mas_realizada' %}" >
-                    <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.rubro.label }}">{{ form.rubro.label }}:<span class="required">*</span>
-                        </label>
-                        <div id="form-rubro" class="col-md-6 col-sm-6 col-xs-12">
-                            {{ form.rubro }}
-                        </div>
+
+                <br/>
+                <br/>
+
+                <div class="item form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.tipo_servicio.label }}">{{ form.tipo_servicio.label }}:
+                        <span class="required">*</span>
+                    </label>
+                    <div id="form-tipo-servicio" class="col-md-6 col-sm-6 col-xs-12">
+                        {{ form.tipo_servicio }}
                     </div>
+                </div>
 
-                    <br/>
-                    <br/>
-
-                    <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.tipo_servicio.label }}">{{ form.tipo_servicio.label }}:
-                            <span class="required">*</span>
-                        </label>
-                        <div id="form-tipo-servicio" class="col-md-6 col-sm-6 col-xs-12">
-                            {{ form.tipo_servicio }}
-                        </div>
-                    </div>
-
-                </form>
-            </div>
+            </form>
         </div>
-        
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_panel">
-                <div class="x_title"><h1>Tareas más realizadas</h1></div>
-                <div class="x_content">
-                <div id="msg-total" style="text-align: center; padding:2em;">
-                    <h2 id="titulo_reporte">
-                        <span style="border-bottom: 1px solid;">Tareas más realizadas entre
+    </div>
+    
+    <div class="x_panel">
+        <div class="x_title"><h3>Visualización del reporte</h3></div>
+        <div class="x_content">
+            <span align="center"><h1 id="titulo-reporte">Tareas más realizadas</h1></span>
+            <br>
+            <div id="div-grafico-1" class="row">
+                <div id="msg-total" style="text-align: center;">
+                    <span style="border-bottom: 1px solid;">
+                        <h2 id="titulo_reporte">Tareas más realizadas entre
                             <span id="fecha-ini"></span> y
                             <span id="fecha-fin"></span>:
                             <strong>
                                 <span id="total"></span>
                             </strong>
-                        </span>
-                    </h2>
+                        </h2>
+                    </span>
                     <h2 id="titulo_reporte">
                         <span style="border-bottom: 1px solid;">del rubro
                             <strong>
@@ -77,62 +79,84 @@
                                 <span id="span-tipo-servicio"></span>
                             </strong>
                         </span>
-
                     </h2>
                 </div>
-
-                    <div id="chart-tarea-mas-realizada" class="chart-container"></div>
-        
-                </div>
+                <div id="chart-tarea-mas-realizada" class="chart-container"></div>
             </div>
+
+            <br>
+            
+            <div id="div-tabla-1" class="row">
+                <h3>Tabla de datos</h3>
+                <table id="tabla-cantidades" class="table table-striped">
+                    <thead>
+                        <col width="70%">
+                        <col width="30%">
+                        <th>Nombre de la tarea</th>
+                        <th>Cantidad realizada</th>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            
+            <br>
+            <div class="ln_solid"></div>
+
+            <div class="row" id="descripcion-reporte">
+                <h3>Descripción del reporte</h3>
+                <p>Este reporte presenta un gráfico simple que le permite visualizar las tareas más realizadas en órdenes de trabajo en el período actual para un determinado rubro y tipo de servicio.</p>
+                <p>La tabla de datos muestra hasta 15 registros con las mayores cantidades.</p>
+            </div>
+
         </div>
 
-        {% comment %} <div class="col-md-6 col-sm-12 col-xs-12">
-            <div class="x_panel">
-                <div class="x_title">
-                    <h1 id="comparacion-filtro"></h1>
-                </div>
-                <div class="x_content">
-        
-                    <div id="chart-cantidades" class="chart-container"></div>
-        
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-6 col-sm-12 col-xs-12">
-            <div class="x_panel">
-                <div class="x_title"><h1 id="comparacion-mano-obra"></h1></div>
-                <div class="x_content">
-                
-                    <div id="chart-porcentajes" class="chart-container"></div>
-        
-                </div>
-            </div>
-        </div> {% endcomment %}
-
-
-        {% comment %} <div class="col-md-6 col-sm-12 col-xs-12">
-            <div class="x_panel">
-                <div class="x_title"><h1>grafiquito de area</h1></div>
-                <div class="x_content">
-                
-                    <div id="chartArea" class="chart-container"></div>
-        
-                </div>
-            </div>
-        </div> {% endcomment %}
-
+        <div class="clearfix"></div>
+        <div class="ln_solid"></div>
+        <button class="btn btn-warning pull-right" onclick="imprimir()">
+            <i class="fa fa-print"></i> Descargar PDF
+        </button>
 
     </div>
 
+    {% comment %} <div class="col-md-6 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h1 id="comparacion-filtro"></h1>
+            </div>
+            <div class="x_content">
+    
+                <div id="chart-cantidades" class="chart-container"></div>
+    
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title"><h1 id="comparacion-mano-obra"></h1></div>
+            <div class="x_content">
+            
+                <div id="chart-porcentajes" class="chart-container"></div>
+    
+            </div>
+        </div>
+    </div> {% endcomment %}
 
 
-    <!--segundo panel-->
+    {% comment %} <div class="col-md-6 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title"><h1>grafiquito de area</h1></div>
+            <div class="x_content">
+            
+                <div id="chartArea" class="chart-container"></div>
+    
+            </div>
+        </div>
+    </div> {% endcomment %}
 
-    <!--tercer panel-->
 
-    <!--cuarto panel-->
+</div>
 {% endblock contenido %}
 
 {% block scripts %}
@@ -140,4 +164,6 @@
     <script src="{% static 'js/reporte-sas.js' %}"></script>
     <script src="{% static 'reportes/js/daterangepicker.js' %}"></script>
     <script src="{% static 'reportes/js/reporte_tarea_mas_realizada.js' %}"></script>
+    <script src="{% static 'reportes/js/rep_templates.js' %}"></script>
+
 {% endblock scripts %}

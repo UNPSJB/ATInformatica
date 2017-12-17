@@ -92,7 +92,39 @@ function inicializarGrafico() {
     // });
 
 
-//     var chart_totales = $("#chart-totales-productos").CanvasJSChart()
+
+    var chart_cantidades = $("#chart-tarea-mas-realizada").CanvasJSChart();
+    var info_tabla = [];
+    try {
+        chart_cantidades.options.data[0].dataPoints.forEach(function(e) {
+            info_tabla.push({
+                'nombre_tarea': e.name,
+                'cantidad': e.y,
+            });
+        });
+    } catch(e) {
+
+    }
+
+    info_tabla.sort(function(a, b) {
+        if (a['cantidad'] > b['cantidad']) {
+            return -1;
+        } else if (a['cantidad'] < b['cantidad']) {
+            return 1;
+        }
+        return 0;
+    });
+
+    var tabla_datos_cant_body = $('#tabla-cantidades').find('tbody').first();
+    $('#tabla-cantidades tr.datos').remove();
+
+    // Un for para mostrar no más de 5 registros del array ordenado
+    for (var i = 0; i<Math.min(info_tabla.length, 15); i++) {
+        e = info_tabla[i];
+        var fila = '<tr class="datos"><td>' + e.nombre_tarea + '</td><td>' + e.cantidad + '</td></tr>';
+        tabla_datos_cant_body.append(fila);
+    };
+
 //     var total_facturado = 0
 //     var total_facturado_productos = 0
 //     for (let i = 0; i < chart_totales.options.data[0].dataPoints.length; i++) {
@@ -120,4 +152,33 @@ function inicializarGrafico() {
 //             },
 //         ],
 //     })
+}
+
+function imprimir() {
+    var contenido_reporte = {
+        titulo: $('#titulo-reporte').text(),
+        tiles: [
+            {
+                tipo: 'div',
+                selector: '#descripcion-reporte',
+                ancho: true,
+            },
+            {
+                tipo: 'hr',
+            },
+            {
+                tipo: 'grafico',
+                selector: '#div-grafico-1',
+                ancho: true,
+            },
+            {
+                tipo: 'div',
+                selector: '#div-tabla-1',
+                ancho: true,
+            },
+        ],
+        usuario: get_nombreusuario(),
+    };
+
+    imprimirPDF(contenido_reporte);
 }
