@@ -5,45 +5,49 @@
 {% endblock estilos %}
 
 {% block contenido %}
-    <!--primer panel-->
-
-    <div class="col-md-12">
-
-
-        <div class="x_panel">
-            <ul class="nav navbar-right panel_toolbox">
-                <li>
-                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                </li>
-            </ul>
-            <div class="x_title">
-                <h3>Opciones del reporte</h3>
+<!--primer panel-->
+<div class="col-md-12">
+    <div class="x_panel">
+        <ul class="nav navbar-right panel_toolbox">
+            <li>
+                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+        </ul>
+        <div class="x_title">
+            <h3>Opciones del reporte</h3>
+        </div>
+        <div class="x_content">
+            <div class="form_group" style="margin-bottom: 2em">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="daterangepicker">Seleccione rango de fechas:</label>
+                <div class="col-md-4">
+                    <input type="text" class="form-control inline" name="daterangepicker" id="daterangepicker">
+                </div>
             </div>
-            <div class="x_content">
-                <div class="form_group" style="margin-bottom: 2em">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="daterangepicker">Seleccione rango de fechas:</label>
-                    <div class="col-md-4">
-                        <input type="text" class="form-control inline" name="daterangepicker" id="daterangepicker">
+            <br>
+            <form action="" data-ajax_url="{% url 'reportes:productos' %}" data-ajax_url_cantidad="{% url 'reportes:cantidad_productos' %}" data-ajax_url_total="{% url 'reportes:reportes' %}">
+                <div class="item form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.filtros.label }}">{{ form.filtros.label }}<span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                    {{ form.filtros }}
                     </div>
                 </div>
-                <br>
-                <form action="" data-ajax_url="{% url 'reportes:productos' %}" data-ajax_url_cantidad="{% url 'reportes:cantidad_productos' %}" data-ajax_url_total="{% url 'reportes:reportes' %}">
-                    <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.filtros.label }}">{{ form.filtros.label }}<span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                        {{ form.filtros }}
-                        </div>
-                    </div>
-                </form>
+            </form>
+            <br>
+            <div>
+                <input checked type="checkbox" class="flat chart-input" id="check-filtrarencero">
+                <label for="check-filtrarencero">&nbsp;&nbsp;Filtrar no facturado en este período</label>
             </div>
         </div>
-        
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_panel">
-                <div class="x_title"><h1>Incidencia de los repuestos en la facturación</h1></div>
-                <div class="x_content">
-                <div id="msg-total" style="text-align: center; padding:2em;">
+    </div>
+    
+    <div class="x_panel">
+        <div class="x_title"><h3>Visualización del reporte</h3></div>
+        <div class="x_content">
+            <span align="center" id="titulo-reporte"><h1>Incidencia de los productos<br>en la facturación por <span class="criterio"></span></h1></span>
+            <br>
+            <div id="div-grafico-1">
+                <div id="msg-total" style="text-align: center;">
                     <h2 id="titulo_reporte">
                         <span style="border-bottom: 1px solid;">Total facturado entre
                             <span id="fecha-ini"></span> y
@@ -61,51 +65,120 @@
                         </span>
                     </h2>
                 </div>
-
+                <div class="row" id="grafico-1">
                     <div id="chart-totales-productos" class="chart-container"></div>
-        
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-6 col-sm-12 col-xs-12">
-            <div class="x_panel">
-                <div class="x_title">
-                    <h1 id="comparacion-filtro"></h1>
-                </div>
-                <div class="x_content">
-        
+            <br>
+            <br>
+
+            <div class="row" id="div-tabla-1">
+                <h2 id="titulo-tabla-1">Mayores incidencias en el período actual:</h2>
+                <table id="tabla-totales" class="table table-bordered" width="100%">
+                    <thead>
+                        <col width="40%">
+                        <col width="20%">
+                        <col width="20%">
+                        <col width="20%">
+                        <th>Nombre</th>
+                        <th>Total facturado</th>
+                        <th>Facturado en productos <i class="fa fa-chevron-down"></i></th>
+                        <th>% en productos / total facturado</th>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+            <br>
+            <div class="ln_solid"></div>
+
+            <div class="row">
+                <div class="col-md-6 col-sm-12 col-xs-12" id="grafico-2">
                     <div id="chart-cantidades" class="chart-container"></div>
-        
                 </div>
+
+                <div class="col-md-6 col-sm-12 col-xs-12" id="div-tabla-2">
+                    <h2 id="titulo-tabla-2">Mayores cantidades de productos utilizadas por <span class="criterio"></span></h2>
+                    <table id="tabla-cantidades" class="table table-bordered" width="100%">
+                        <thead>
+                            <col width="70%">
+                            <col width="30%">
+                            <th>Nombre</th>
+                            <th>Cantidad <i class="fa fa-chevron-down"></i></th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <br>
+            <div class="ln_solid"></div>
+
+            <div class="row">
+                <div class="col-md-6 col-sm-12 col-xs-12" id="div-tabla-3">
+                    <h2 id="titulo-tabla-3">Tabla de datos:</h2>
+                    <table id="tabla-comparativo" class="table table-striped" width="100%">
+                        <tbody>
+                            <col width="60%">
+                            <col width="20%">
+                            <col width="20%">
+                            <tr>
+                                <td>Total facturado:</td><td align="right" id="td-totalfacturado"></td>
+                            </tr>
+                            <tr>
+                                <td>Total facturado en productos:</td><td align="right" id="td-totalfacturadoproductos"></td>
+                            </tr>
+                            <tr>
+                                <td>Neto de mano de obra:</td><td align="right" id="td-manodeobra"></td>
+                            </tr>
+                            <tr>
+                                <td>Porcentaje facturado:</td><td align="right"><b>100,00 %</b></td>
+                            </tr>
+                            <tr>
+                                <td>Porcentaje productos:</td><td align="right" id="td-porcentajeproductos"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-md-6 col-sm-12 col-xs-12" id="grafico-3">
+                    <div id="chart-porcentajes" class="chart-container"></div>        
+                </div>
+            </div>
+
+            <br>
+            <div class="ln_solid"></div>
+
+            <div class="row" id="descripcion-reporte">
+                <h3>Descripción del reporte</h3>
+                <p>Este reporte le permite visualizar los montos facturados exclusivamente por productos incluídos en órdenes de trabajo.</p>
+                <p>El primer gráfico es un comparativo de barras representando el monto derivado de la inclusión de productos como repuestos en órdenes de trabajo en relación al precio final de las mismas y los totales que representan.</p>
+                <p>El segundo gráfico muestra la cantidad total de unidades de productos utilizadas en órdenes de trabajo, según el criterio elegido.</p>
+                <p>El tercer gráfico le permite ver qué porcentaje de la facturación corresponde sólo a productos en relación al total de la misma.</p>
             </div>
         </div>
-        
-        <div class="col-md-6 col-sm-12 col-xs-12">
-            <div class="x_panel">
-                <div class="x_title"><h1 id="comparacion-mano-obra"></h1></div>
-                <div class="x_content">
-                
-                    <div id="chart-porcentajes" class="chart-container"></div>
-        
-                </div>
-            </div>
-        </div>
 
-
-        {% comment %} <div class="col-md-6 col-sm-12 col-xs-12">
-            <div class="x_panel">
-                <div class="x_title"><h1>grafiquito de area</h1></div>
-                <div class="x_content">
-                
-                    <div id="chartArea" class="chart-container"></div>
-        
-                </div>
-            </div>
-        </div> {% endcomment %}
-
-
+        <div class="clearfix"></div>
+        <div class="ln_solid"></div>
+        <button class="btn btn-warning pull-right" onclick="imprimir()">
+            <i class="fa fa-print"></i> Descargar PDF
+        </button>
     </div>
+
+    {% comment %} <div class="col-md-6 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title"><h1>grafiquito de area</h1></div>
+            <div class="x_content">
+            
+                <div id="chartArea" class="chart-container"></div>
+    
+            </div>
+        </div>
+    </div> {% endcomment %}
+</div>
 
 
 
@@ -120,5 +193,6 @@
     <script src="{% static 'vendors/canvasjs/jquery.canvasjs.min.js' %}"></script>
     <script src="{% static 'reportes/js/daterangepicker.js' %}"></script>
     <script src="{% static 'reportes/js/reporte_productos.js' %}"></script>
+    <script src="{% static 'reportes/js/rep_templates.js' %}"></script>
     <script src="{% static 'js/reporte-sas.js' %}"></script>
 {% endblock scripts %}

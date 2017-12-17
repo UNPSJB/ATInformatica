@@ -88,15 +88,17 @@ function inicializarGrafico() {
     for (let i = 0; i < chart_totales.options.data[1].dataPoints.length; i++) {
         const element = chart_totales.options.data[1].dataPoints[i];
         var valor = parseFloat(element["y"]);
+        var valor_anterior = 0;
         if (valor > 0) {
             // Sumar al total facturado en este periodo
             total_facturado += valor;
 
             // Si hay info de facturación del año anterior, recuperar el valor
-            if (chart_totales.options.data[0].dataPoints[i])
-                valor_anterior = parseFloat(chart_totales.options.data[0].dataPoints[i].y);
-            else
-                valor_anterior = 0;
+            // Usar .find para matchear por element.name contra name
+            var match = chart_totales.options.data[0].dataPoints.find(x => x.name == element.name);
+            if (match != undefined) {
+                valor_anterior = parseFloat(match["y"]);
+            }
 
             // Agregar al array de elementos de la tabla para mostrar
             info_tabla.push({
@@ -105,17 +107,17 @@ function inicializarGrafico() {
                 'anterior': valor_anterior,  // Valor del año pasado
                 'diff': valor - valor_anterior
             });
-
-            info_tabla.sort(function(a, b) {
-                if (a['valor'] > b['valor']) {
-                    return -1;
-                } else if (a['valor'] < b['valor']) {
-                    return 1;
-                }
-                return 0;
-            });
         }
     }
+
+    info_tabla.sort(function(a, b) {
+        if (a['valor'] > b['valor']) {
+            return -1;
+        } else if (a['valor'] < b['valor']) {
+            return 1;
+        }
+        return 0;
+    });
 
     // Actualizar la tabla de datos de facturación (macumba HTML)
     var tabla_datos_body = $('#tabla-totales').find('tbody').first();
