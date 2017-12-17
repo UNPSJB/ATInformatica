@@ -25,27 +25,27 @@
                 <br>
                 <form action="" data-ajax_url="{% url 'reportes:reportes' %}" data-ajax_url_cantidad="{% url 'reportes:cantidad_ordenes' %}">
                     <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.filtros.label }}">{{ form.filtros.label }}<span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.filtros.label }}">{{ form.filtros.label }}
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                         {{ form.filtros }}
                         </div>
                     </div>
                 </form>
+                <br>
+                <div>
+                    <input checked type="checkbox" class="flat chart-input" id="check-filtrarencero">
+                    <label for="check-filtrarencero">&nbsp;&nbsp;Filtrar no facturado en este período</label>
+                </div>
             </div>
         </div>
 
     <div id="chart-error" hidden class="col-md-12 col-sm-12 col-xs-12">
-        <div class="alert alert-warning"><strong>Su consulta no ha genereado resultados</strong></div>
+        <div class="alert alert-warning"><strong>Su consulta no ha generado resultados</strong></div>
     </div>
 
 
-        
-
-
-
-
-    <div id="reporte_pre" class="x_panel" style="display: none;">
+    <div id="reporte_pre" class="x_panel">
         <ul class="nav navbar-right panel_toolbox">
             <li>
                 <a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
@@ -54,7 +54,8 @@
         <div class="x_title">
             <h3>Visualización del reporte</h3>
         </div>
-        <div class="x_content" style="display: none;">
+        <div class="x_content">
+
             <div id="msg-total" style="text-align: center; padding:2em;">
                 <h2 id="titulo_reporte">
                     <span style="border-bottom: 1px solid;">Total facturado entre <span id="fecha-ini"></span> y <span id="fecha-fin"></span>: 
@@ -63,22 +64,65 @@
                 </h2>
             </div>
 
-            <div id="chart-container" class="col-md-5 col-sm-12 col-xs-12">
+            <div class="row" id="grafico-1">
                 <div id="chart-totales" class="chart-container"></div>
             </div>
 
-            <div id="chart-container-cantidad" class="col-md-5 col-md-offset-1 col-sm-12 col-xs-12">
-                <div id="chart-cantidades" class="chart-container"></div>
+            <div class="row" id="tabla-1">
+                <div id="div-tabla-1">
+                    <h2 id="titulo-tabla-1">Mayor facturación en el período actual:</h2>
+                    <table id="tabla-totales" class="table table-bordered" width="100%">
+                        <thead>
+                            <col width="40%">
+                            <col width="20%">
+                            <col width="20%">
+                            <col width="20%">
+                            <th>Nombre</th>
+                            <th>Valor año anterior</th>
+                            <th>Valor en periodo actual &nbsp;&nbsp;<i class="fa fa-sort-numeric-desc"></i></th>
+                            <th>Diferencia año anterior</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-
-
-            <div class="clearfix"></div>
             <div class="ln_solid"></div>
-            <button class="btn btn-warning pull-right" onclick="imprimir()">
-                <i class="fa fa-print"></i> Descargar PDF
-            </button>
+
+            <div class="row" id="grafico-2">
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <div id="chart-cantidades" class="chart-container"></div>
+                </div>
+                <div id="div-tabla-2" class="col-md-6 col-sm-12 col-xs-12">
+                    <h2 id="titulo-tabla-2">Tabla de datos:</h2>
+                    <table id="tabla-cantidades" class="table table-bordered" width="100%">
+                        <thead>
+                            <col width="40%">
+                            <col width="20%">
+                            <th>Nombre</th>
+                            <th>Cantidad</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="ln_solid"></div>
+            
+            <div class="row" id="descripcion-reporte">
+                <h2>Descripción del reporte</h2>
+                <p>En los gráficos de este reporte se puede observar, según el criterio elegido, la cantidad total facturada en los trabajos realizados de órdenes de trabajo cerradas.</p>
+                <p>El primero de los gráficos, además, presenta información del mismo período del año anterior, agrupando las barras para que pueda visualizar la diferencia. La tabla de datos muestra un máximo de 5 registros con mayor facturación.</p>
+                <p>El segundo gráfico permite visualizar las cantidades y las proporciones que representan del total facturado. Asimismo, la tabla indica un máximo de 5 registros con las mayores cantidades trabajadas.</p>
+            </div>
         </div>
+        <div class="clearfix"></div>
+        <div class="ln_solid"></div>
+        <button class="btn btn-warning pull-right" onclick="imprimir()">
+            <i class="fa fa-print"></i> Descargar PDF
+        </button>
     </div>
 </div>
 

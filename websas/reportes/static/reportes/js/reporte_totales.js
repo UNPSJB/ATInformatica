@@ -13,21 +13,11 @@ function inicializarGrafico() {
 
     $("#fecha-ini").html(fecha_ini.format("DD/MM/YYYY"))
     $("#fecha-fin").html(fecha_fin.format("DD/MM/YYYY"))
-    var chart = $("#chart-totales").reporteSAS({
+
+    var criterio_reporte = $("#id_filtros option:selected").text();
+
+    $("#chart-totales").reporteSAS({
         opcionesDataset: [
-            {
-                tipochart: 'column',
-                x: '0',
-                y: '1',
-                dataset: "ordenes_total",
-                textoLeyenda: "Facturado en el año actual",
-                opcionesAjax: {
-                    fecha_ini: fecha_ini.format("DD/MM/YYYY"),
-                    fecha_fin: fecha_fin.format("DD/MM/YYYY"),
-                    filtro: $("#id_filtros").val(),
-                    ajaxurl: $("form")[0].dataset["ajax_url"],
-                },
-            },
             {
                 tipochart: 'column',
                 x: '0',
@@ -41,9 +31,23 @@ function inicializarGrafico() {
                     ajaxurl: $("form")[0].dataset["ajax_url"],
                 },
             },
+            {
+                tipochart: 'column',
+                x: '0',
+                y: '1',
+                dataset: "ordenes_total",
+                textoLeyenda: "Facturado en el año actual",
+                opcionesAjax: {
+                    fecha_ini: fecha_ini.format("DD/MM/YYYY"),
+                    fecha_fin: fecha_fin.format("DD/MM/YYYY"),
+                    filtro: $("#id_filtros").val(),
+                    ajaxurl: $("form")[0].dataset["ajax_url"],
+                },
+            },
         ],
         opcionesGrafico: {
-            titulo: "Facturado en el año actual y el año pasado",
+            titulo: "Facturado en el año actual y el anterior por " + criterio_reporte,
+            filtrar_en_cero: $('#check-filtrarencero').is(':checked'),
         }
     });
 
@@ -64,28 +68,105 @@ function inicializarGrafico() {
             },
         ],
         opcionesGrafico: {
-            titulo: "Cantidad de órdenes de trabajo por " + $("#id_filtros option:selected").text()
+            titulo: "Cantidad de órdenes de trabajo por " + criterio_reporte,
+            filtrar_en_cero: $('#check-filtrarencero').is(':checked'),
         }
     });
 
-    var chart_totales = $("#chart-totales").CanvasJSChart()
+    // Seleccionar gráficos para recuperar algunos datos
+    var chart_totales = $("#chart-totales").CanvasJSChart();
+    var chart_cantidades = $("#chart-cantidades").CanvasJSChart();
+    
     var total_facturado = 0
-    for (let i = 0; i < chart_totales.options.data[0].dataPoints.length; i++) {
-        const element = chart_totales.options.data[0].dataPoints[i];
-        total_facturado += parseInt(element["y"])
+
+    // Info de las tablas de datos
+    var info_tabla = [];
+    var info_tabla_cantidades = [];
+
+    // Recorrer el dataset del gráfico de facturado por criterio para ir sumando los precios totales de las OTs
+    // y a la vez armar la tabla de datos.
+    for (let i = 0; i < chart_totales.options.data[1].dataPoints.length; i++) {
+        const element = chart_totales.options.data[1].dataPoints[i];
+        var valor = parseFloat(element["y"]);
+        if (valor > 0) {
+            // Sumar al total facturado en este periodo
+            total_facturado += valor;
+
+            // Si hay info de facturación del año anterior, recuperar el valor
+            if (chart_totales.options.data[0].dataPoints[i])
+                valor_anterior = parseFloat(chart_totales.options.data[0].dataPoints[i].y);
+            else
+                valor_anterior = 0;
+
+            // Agregar al array de elementos de la tabla para mostrar
+            info_tabla.push({
+                'nombre': element.name,
+                'valor': valor,
+                'anterior': valor_anterior,  // Valor del año pasado
+                'diff': valor - valor_anterior
+            });
+
+            info_tabla.sort(function(a, b) {
+                if (a['valor'] > b['valor']) {
+                    return -1;
+                } else if (a['valor'] < b['valor']) {
+                    return 1;
+                }
+                return 0;
+            });
+        }
     }
-    $("#total").html("$ " + total_facturado)
-    var panel_reporte = $('#reporte_pre').first();
+
+    // Actualizar la tabla de datos de facturación (macumba HTML)
+    var tabla_datos_body = $('#tabla-totales').find('tbody').first();
+    $('#tabla-totales tr.datos').remove();
+
+    // Un for para mostrar no más de 5 registros del array ordenado
+    for (var i = 0; i<Math.min(info_tabla.length, 5); i++) {
+        e = info_tabla[i];
+        var fila = '<tr class="datos"><td>' + e.nombre + '</td><td>$ ' + e.anterior.toLocaleString('es-AR', {minimumFractionDigits: 2}) + '</td><td>$ ' + e.valor.toLocaleString('es-AR', {minimumFractionDigits: 2}) + '</td><td>$ ' + e.diff.toLocaleString('es-AR', {minimumFractionDigits: 2}) + '</td></tr>';
+        tabla_datos_body.append(fila);
+    };
+
+    // ~~ GRAFICO CANTIDADES ~~
+
+    // Recorrer el dataset del gráfico de cantidades para armar la tabla de datos.
+    for (let i = 0; i < chart_cantidades.options.data[0].dataPoints.length; i++) {
+        const element = chart_cantidades.options.data[0].dataPoints[i];
+        var valor = parseInt(element["y"]);
+        if (valor > 0) {
+            // Agregar al array de elementos de la tabla para mostrar
+            info_tabla_cantidades.push({
+                'nombre': element.name,
+                'cantidad': valor,
+            });
+
+            // Ordenar con función de comparación innecesariamente explícita
+            info_tabla_cantidades.sort(function(a, b) {
+                if (a['cantidad'] > b['cantidad']) {
+                    return -1;
+                } else if (a['cantidad'] < b['cantidad']) {
+                    return 1;
+                }
+                return 0;
+            });
+        }
+    }
+
+    // Actualizar la tabla de datos de facturación (macumba HTML)
+    var tabla_datos_cant_body = $('#tabla-cantidades').find('tbody').first();
+    $('#tabla-cantidades tr.datos').remove();
+
+    // Nuevamente, mostrar no más de 5 registros
+    for (var i = 0; i<Math.min(info_tabla_cantidades.length, 5); i++) {
+        e = info_tabla_cantidades[i];
+        var fila = '<tr class="datos"><td>' + e.nombre + '</td><td>' + e.cantidad + '</td></tr>';
+        tabla_datos_cant_body.append(fila);
+    };
+
+    $("#total").html("$ " + total_facturado.toLocaleString('es-AR', {minimumFractionDigits: 2}))
 
 
-    // Si no lo mostré todavía, mostrarlo.
-    if (panel_reporte.css('display') == 'none') {
-        panel_reporte.css('display', 'inline-block');
-    }
-    // Si está plegado, desplegarlo.
-    if (panel_reporte.find('.x_content').first().css('display', 'none')) {
-        panel_reporte.find('.collapse-link').first().trigger('click');
-    }
 
 }
 
@@ -186,21 +267,36 @@ function imprimir() {
         titulo: $('#titulo_reporte').text(),
         tiles: [
             {
-                tipo: 'grafico',
-                titulo: '',
-                selector: '#chart-totales',
+                tipo: 'div',
+                selector: '#descripcion-reporte',
+                ancho: true,
             },
             {
-                tipo: 'html',
-                titulo: 'Descripción',
-                selector: '#descripcion-cantidades'
+                tipo: 'hr',
+            },
+            {
+                tipo: 'grafico',
+                selector: '#chart-totales',
+                ancho: true,
+            },
+            {
+                tipo: 'div',
+                selector: '#div-tabla-1',
+                ancho: true,
+            },
+            {
+                tipo: 'hr',
             },
             {
                 tipo: 'grafico',
                 selector: '#chart-cantidades',
             },
+            {
+                tipo: 'div',
+                selector: '#div-tabla-2',
+            },
         ],
-        usuario: '',
+        usuario: get_nombreusuario(),
     };
 
     imprimirPDF(contenido_reporte);
