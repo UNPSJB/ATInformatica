@@ -64,7 +64,7 @@
           data: [],
         })
 
-        for(let i = 0; i < opc.opcionesDataset.length; i++){
+        for(let i = 0; i < opc.opcionesDataset.length; i++) {
             var ds = opc.opcionesDataset[i]
             $.ajax({
               url: ds.opcionesAjax.ajaxurl,
@@ -98,13 +98,11 @@
                     
                     for (let i = 0; i < data[ds.dataset].length; i++) {
                       var valor = parseFloat(data[ds.dataset][i][ds.y]);
-                      if (!(opc.opcionesGrafico.filtrar_en_cero && valor == 0)) {
-                        dataPoints.push({
-                          label: data[ds.dataset][i][ds.x],
-                          name: data[ds.dataset][i][ds.x],
-                          y: valor,
-                        });
-                      }
+                      dataPoints.push({
+                        label: data[ds.dataset][i][ds.x],
+                        name: data[ds.dataset][i][ds.x],
+                        y: valor,
+                      });
                     }
                     datasets.push({
                         type:ds.tipochart,
@@ -117,6 +115,44 @@
                 alert("error en ajax")
                 console.log(data)
               },
+            });
+          }
+
+          // Filtrar si corresponde
+          if (opc.opcionesGrafico.filtrar_en_cero) {
+            // Aux
+            var datapoints_en_cero = {};  // Contar para cada DP en cuántas series se encontró en 0
+            var datapoints_borrar = [];   // Qué datapoints borrar de TODAS las series
+            var cant_series = datasets.length;  // Número total de series
+
+            // Determinar DPs en 0 - iterar en datasets para analizar datapoints
+            datasets.forEach(function(este_dataset) {
+              // Iterar en datapoints para registrar ocurrencias en cero
+              este_dataset.dataPoints.forEach(function(este_dataPoint) {
+                if (este_dataPoint.y == 0) {
+                  // Agregar al contador de ocurrencias en cero
+                  datapoints_en_cero[este_dataPoint.name] = datapoints_en_cero[este_dataPoint.name] ? datapoints_en_cero[este_dataPoint.name] + 1 : 1;
+                  // Si conté que todos están en cero, marcarme para borrar
+                  if (datapoints_en_cero[este_dataPoint.name] === cant_series) {
+                    datapoints_borrar.push(este_dataPoint.name);
+                  }
+                }
+              });
+            });
+
+            // Borrar DPs en 0
+            // Iterar en datasets para borrarme de la lista de datapoints
+            datasets.forEach(function(ds) {
+              // Iterar en los datapoints marcados para borrar
+              datapoints_borrar.forEach(function(dp) {
+                // Buscar el elemento marcado
+                var match = ds.dataPoints.find(x => x.name == dp);
+                if (match != undefined) {
+                  var i = ds.dataPoints.indexOf(match);
+                  // Determinar el índice ^ y borrar:
+                  ds.dataPoints.splice(i,1);
+                }
+              });
             });
           }
           
