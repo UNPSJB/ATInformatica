@@ -31,6 +31,7 @@
         "mensaje_error" : "Su consulta no generó resultados",
         "nombre_eje_x": "",
         "nombre_eje_y": "",
+        "filtrar_en_cero": false,
       }
 
       opcionesIniciales = {
@@ -95,12 +96,15 @@
 
                     var dataPoints = [];
                     
-                    for (let i = 0; i < data[ds.dataset].length; i++){
-                      dataPoints.push({
-                        label: data[ds.dataset][i][ds.x],
-                        name: data[ds.dataset][i][ds.x],
-                        y: parseInt(data[ds.dataset][i][ds.y]),
-                      }) 
+                    for (let i = 0; i < data[ds.dataset].length; i++) {
+                      var valor = parseFloat(data[ds.dataset][i][ds.y]);
+                      if (!(opc.opcionesGrafico.filtrar_en_cero && valor == 0)) {
+                        dataPoints.push({
+                          label: data[ds.dataset][i][ds.x],
+                          name: data[ds.dataset][i][ds.x],
+                          y: valor,
+                        });
+                      }
                     }
                     datasets.push({
                         type:ds.tipochart,

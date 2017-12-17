@@ -5126,6 +5126,10 @@ function getCookie(name) {
     return cookieValue;
 }
 
+function get_nombreusuario() {
+    return $('meta.sess').first().attr('data-un');
+}
+
 
 $(document).ready(function() {
 

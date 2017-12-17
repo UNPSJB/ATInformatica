@@ -9,6 +9,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta class='sess' data-un='{{user.username}}'>
 
   <title>{% block title %}Web SAS | Sistema de Administración de Servicios{% endblock title %}</title>
 
@@ -110,6 +111,7 @@
 
 <!--jsPDF-->
 <script src="{% static 'vendors/jsPDF/dist/jspdf.min.js' %}"></script>
+<script src="{% static 'vendors/html2canvas/html2canvas.min.js' %}"></script>
 
 <!-- Setup de ajax que obtiene el csrf -->
 <script src="{% static 'js/ajax_setup.js' %}"></script>
