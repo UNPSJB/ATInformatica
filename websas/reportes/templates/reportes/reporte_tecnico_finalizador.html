@@ -52,39 +52,70 @@
             </div>
         </div>
         
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_panel">
-                <div class="x_title"><h1>Tareas finalizadas por técnico</h1></div>
-                <div class="x_content">
-                <div id="msg-total" style="text-align: center; padding:2em;">
-                    <h2 id="titulo_reporte">
-                        <span style="border-bottom: 1px solid;">Tareas realizadas entre
-                            <span id="fecha-ini"></span> y
-                            <span id="fecha-fin"></span>:
-                            <strong>
-                                <span id="total"></span>
-                            </strong>
+        <div class="x_panel">
+            <div class="x_title"></div>
+            <div class="x_content">
+                <span align="center"><h1 id="titulo-reporte">Tareas finalizadas por técnico</h1></span>
+                <div id="div-grafico-1" class="row">
+                    <div id="msg-total" style="text-align: center;">
+                        <h2>
+                            <span style="border-bottom: 1px solid;">
+                                Tareas realizadas entre
+                                <span id="fecha-ini"></span> y
+                                <span id="fecha-fin"></span>:
+                                <strong>
+                                    <span id="total"></span>
+                                </strong>
+                            </span>
+                        </h2>
+                        <h2>
+                            <span style="border-bottom: 1px solid;">
+                                del tipo de tarea
+                                <strong>
+                                    <span id="span-tipo_tarea"></span>
+                                </strong>
+                                y el tipo de servicio
+                                <strong>
+                                    <span id="span-tipo-servicio"></span>
+                                </strong>
+                            </span>
+                            </h2>
                         </span>
-                    </h2>
-                    <h2 id="titulo_reporte">
-                        <span style="border-bottom: 1px solid;">del tipo de tarea
-                            <strong>
-                                <span id="span-tipo_tarea"></span>
-                            </strong>
-                        </span>
-                        <span style="border-bottom: 1px solid;"> y el tipo de servicio
-                            <strong>
-                                <span id="span-tipo-servicio"></span>
-                            </strong>
-                        </span>
-
-                    </h2>
+                    </div>
+                    <br>
+                    <div id="chart-tecnico-finalizador" class="chart-container"></div>
+                </div>
+                <br>
+                <div id="div-tabla-1" class="row">
+                    <h3>Tabla de datos</h3>
+                    <table id="tabla-cantidades" class="table table-bordered">
+                        <thead>
+                            <col width="70%">
+                            <col width="30%">
+                            <th>Nombre del técnico</th>
+                            <th>Cantidad realizada</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
 
-                    <div id="chart-tecnico-finalizador" class="chart-container"></div>
-        
+                <br>
+                <div class="ln_solid"></div>
+    
+                <div class="row" id="descripcion-reporte">
+                    <h3>Descripción del reporte</h3>
+                    <p>Este reporte presenta un gráfico simple que le permite visualizar los técnicos que más cantidad de un tipo de tarea han finalizado en órdenes de trabajo en el período actual.</p>
+                    <p>La tabla de datos muestra hasta 15 registros con las mayores cantidades.</p>
                 </div>
             </div>
+
+            <div class="clearfix"></div>
+            <div class="ln_solid"></div>
+            <button class="btn btn-warning pull-right" onclick="imprimir()">
+                <i class="fa fa-print"></i> Descargar PDF
+            </button>
+
         </div>
 
         {% comment %} <div class="col-md-6 col-sm-12 col-xs-12">
@@ -140,4 +171,5 @@
     <script src="{% static 'js/reporte-sas.js' %}"></script>
     <script src="{% static 'reportes/js/daterangepicker.js' %}"></script>
     <script src="{% static 'reportes/js/reporte_tecnico_finalizador.js' %}"></script>
+    <script src="{% static 'reportes/js/rep_templates.js' %}"></script>
 {% endblock scripts %}

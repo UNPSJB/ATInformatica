@@ -132,12 +132,12 @@ function inicializarGrafico() {
     // Un for para mostrar no más de 5 registros del array ordenado
     for (var i = 0; i<Math.min(info_tabla.length, 5); i++) {
         e = info_tabla[i];
-        var fila = '<tr class="datos"><td>' + e.nombre + '</td><td>$ ' + e.total_facturado.toLocaleString('es-AR', {minimumFractionDigits: 2}) + '</td><td>$ ' + e.parte_productos.toLocaleString('es-AR', {minimumFractionDigits: 2}) + '</td><td>' + e.porcentaje.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' %</td></tr>';
+        var fila = '<tr class="datos"><td>' + e.nombre + '</td><td>$ ' + e.total_facturado.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + '</td><td>$ ' + e.parte_productos.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + '</td><td>' + e.porcentaje.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' %</td></tr>';
         tabla_datos_body.append(fila);
     };
 
-    $("#total").html("$ " + total_facturado)
-    $("#total-productos").html("$ " + total_facturado_productos)
+    $("#total").html("$ " + total_facturado.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+    $("#total-productos").html("$ " + total_facturado_productos.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
 
 
     // Recorrido de las cantidades para armar la tabla de datos
