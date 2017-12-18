@@ -6,6 +6,7 @@ function _imprimirPDF(contenido_rep){
     var contenido_default = {
         membrete: 'AT Informática\nFragata Hércules 596\nPuerto Madryn (9120) - Chubut\nTel: (0280) 4456800',
         titulo: '', // Título del reporte
+        nombre_archivo: 'reporte.pdf', //Nombre del archivo .pdf del reporte
         tiles: [    // Lista de tiles
             {
                 tipo: 'vacio'
@@ -224,7 +225,7 @@ function _imprimirPDF(contenido_rep){
         tamaño_ultimo_y = Math.max(tamaño_ultimo_y, tamaño_y);
     });
 
-    doc.save('prueba.pdf');
+    doc.save(contenido["nombre_archivo"]);
 }
 
 /**

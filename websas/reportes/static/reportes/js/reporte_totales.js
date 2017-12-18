@@ -267,6 +267,7 @@ $("#daterangepicker").on("apply.daterangepicker", function (ev, picker) {
 function imprimir() {
     var contenido_reporte = {
         titulo: $('#titulo_reporte').text(),
+        nombre_archivo: "Reporte_totales_" + moment().format("DD/MM/YYYY") + ".pdf",
         tiles: [
             {
                 tipo: 'div',

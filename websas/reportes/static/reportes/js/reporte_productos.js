@@ -194,6 +194,7 @@ function inicializarGrafico() {
 function imprimir() {
     var contenido_reporte = {
         titulo: $('#titulo-reporte').text(),
+        nombre_archivo: "Reporte_productos_" + moment().format("DD/MM/YYYY") + ".pdf",
         tiles: [
             {
                 tipo: 'div',
