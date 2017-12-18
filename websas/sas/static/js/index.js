@@ -7,11 +7,14 @@ function init_grafico_movimiento_mensual() {
     }
     var fecha = moment() 
     var fecha_vieja = moment()
+    var leyenda_comparacion = ""
     if($("#select-rango").val() == "anual"){
         fecha_vieja.subtract(1, "year")
+        leyenda_comparacion = "Facturado en el año pasado"
     }
     else{
         fecha_vieja.subtract(1, "month")
+        leyenda_comparacion = "Facturado en el mes pasado"
     }
     chart = $("#chart-container").reporteSAS({
         opcionesDataset: [
@@ -31,7 +34,7 @@ function init_grafico_movimiento_mensual() {
                 x: '0',
                 y: '1',
                 dataset: "facturacion",
-                textoLeyenda: "Facturado en el año pasado",
+                textoLeyenda: leyenda_comparacion,
                 opcionesAjax: {
                     fecha_ini: fecha_vieja.format("DD/MM/YYYY"),
                     ajaxurl: $("#chart-container")[0].dataset["ajax_url"],

@@ -128,11 +128,14 @@
                       <h1>Movimiento mensual de la caja
                       </h1>
                     </div>
-                    <div class="col-md-3 col-sm-6 col-xs-12 pull-right">
-                        <select id="select-rango" class=" form-control" name="">
+                    <div class="form_group">
+                        <label class="control-label col-md-4 col-sm-6 col-xs-12" for="select-rango">Comparación:</label>
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                        <select id="select-rango" class="form-control inline" name="">
                             <option value="anual">Anual</option>
                             <option value="mensual">Mensual</option>
                         </select>
+                        </div>
                     </div>
                     <div id="chart-container" data-ajax_url="{% url 'reportes:facturacion_mensual' %}" class="col-md-12 col-sm-12 col-xs-12 chart-container"></div>
     
