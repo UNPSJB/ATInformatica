@@ -43,14 +43,16 @@ function init_grafico() {
                 },
             },
         ],
-        opcionesGrafico: {}
+        opcionesGrafico: {
+            filtrar_en_cero: $('#check-filtrarencero').is(':checked'),
+        }
     });
 }
 $(document).on('ready', function () {
     return init_grafico()
 })
 
-$("form .chart-input").on("change", function () {
+$(".chart-input").on("change", function () {
     chart.CanvasJSChart().destroy()
     return init_grafico()
 })
