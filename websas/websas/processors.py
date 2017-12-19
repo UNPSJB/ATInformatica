@@ -13,10 +13,19 @@ AYUDA_URLS = {
     'index': { 'template': 'ayuda/principal.html', 'titulo': 'Pantalla principal' },
     'cliente_listar': { 'template': 'ayuda/clientes.html', 'titulo': 'Listado de clientes' },
     'orden_listar': { 'template': 'ayuda/ordenes.html', 'titulo': 'Listado de órdenes de trabajo' },
+    'orden_crear': { 'template': 'ayuda/orden_nueva.html', 'titulo': 'Crear nueva orden de trabajo' },
     'equipo_listar': { 'template': 'ayuda/equipos.html', 'titulo': 'Listado de equipos' },
     'producto_listar': { 'template': 'ayuda/productos.html', 'titulo': 'Listado de productos' },
     'rubro_listar': { 'template': 'ayuda/rubros.html', 'titulo': 'Listado de rubros' },
     'servicio_listar': { 'template': 'ayuda/servicios.html', 'titulo': 'Listado de tipos de servicio' },
+    'reportes': { 'template': 'ayuda/reportes.html', 'titulo': 'Reportes' },
+    'cantidad_ordenes': { 'template': 'ayuda/reportes.html', 'titulo': 'Reportes' },
+    'productos': { 'template': 'ayuda/reportes.html', 'titulo': 'Reportes' },
+    'cantidad_productos': { 'template': 'ayuda/reportes.html', 'titulo': 'Reportes' },
+    'facturacion_mensual': { 'template': 'ayuda/reportes.html', 'titulo': 'Reportes' },
+    'carga_trabajo': { 'template': 'ayuda/reportes.html', 'titulo': 'Reportes' },
+    'tarea_mas_realizada': { 'template': 'ayuda/reportes.html', 'titulo': 'Reportes' },
+    'tecnico_finalizador': { 'template': 'ayuda/reportes.html', 'titulo': 'Reportes' },
 }
 
 def ayuda(request):
