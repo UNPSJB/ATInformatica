@@ -29,7 +29,7 @@
           <div class="row">
             <div class="col-xs-12 invoice-header">
               <h1>
-                <i class="fa fa-gift "></i> OT de un amigazo de la vida
+                <i class="fa fa-gift "></i> Orden de Trabajo
                 <small class="pull-right">Fecha: {{ orden.fecha }}</small>
               </h1>
             </div>
@@ -64,106 +64,7 @@
             <!-- /.col -->
           </div>
           <!-- /.row -->
-          <p class="lead" style="margin-top:1.5em">Esta Orden de Trabajo fue realizada a modo de cortesía</p>
-          <!--<p class="lead" style="margin-top:1.5em">Tareas realizadas</p>-->
-          <!--<hr>-->
-          <!--[> Table row <]-->
-          <!--<div class="row">-->
-            <!--<div class="col-xs-12 table">-->
-              <!--<table class="table table-striped">-->
-                <!--<thead>-->
-                  <!--<tr>-->
-                    <!--<th>Tarea</th>-->
-                    <!--<th>Tarifa</th>-->
-                    <!--<th>Costo en repuestos</th>-->
-                    <!--<th style="width: 59%">Descripción</th>-->
-                    <!--<th>Subtotal</th>-->
-                  <!--</tr>-->
-                <!--</thead>-->
-                <!--<tbody>-->
-                  <!--{% for tarea in orden.tareas_realizadas %}-->
-                  <!--<tr>-->
-                    <!--<td>{{ tarea.nombre }}</td>-->
-                    <!--<td>${{ tarea.precio }}</td>-->
-                    <!--<td>${{ tarea.costo_repuestos }}</td>-->
-                    <!--<td>{{ tarea.descripcion }}</td>-->
-                    <!--<td>${{ tarea.subtotal }}</td>-->
-                  <!--</tr>-->
-                  <!--{% endfor %}-->
-                <!--</tbody>-->
-              <!--</table>-->
-            <!--</div>-->
-            <!--[> /.col <]-->
-          <!--</div>-->
-          <!--[> /.row <]-->
-          
-          <!--{% if orden.tiene_repuestos %}-->
-          <!--<p class="lead">Repuestos utilizados</p>-->
-          <!--<hr>-->
-          <!--[> Table row <]-->
-          <!--<div class="row">-->
-              <!--<div class="col-md-12 table">-->
-                <!--<table class="table table-striped">-->
-                  <!--<thead>-->
-                    <!--<tr>-->
-                      <!--<th>Producto</th>-->
-                      <!--<th>Precio unitario</th>-->
-                      <!--<th>Cantidad</th>-->
-                      <!--<th>Subtotal</th>-->
-                    <!--</tr>-->
-                  <!--</thead>-->
-                  <!--<tbody>-->
-                    <!--{% for tarea in orden.tareas_realizadas %}-->
-                    <!--{% for reserva in tarea.reservas_stock %}-->
-                    <!--<tr>-->
-                      <!--<td>{{ reserva.producto.nombre }}</td>-->
-                      <!--<td>${{ reserva.precio_unitario }}</td>-->
-                      <!--<td>{{ reserva.cantidad }}</td>-->
-                      <!--<td>${{ reserva.subtotal }}</td>-->
-                    <!--</tr>-->
-                    <!--{% endfor %}-->
-                    <!--{% endfor %}-->
-                  <!--</tbody>-->
-                <!--</table>-->
-              <!--</div>-->
-              <!--[> /.col <]-->
-            <!--</div>-->
-            <!--[> /.row <]-->
-            <!--{% endif %}-->
-          <!--<div class="row">-->
-            <!--[> /.col <]-->
-            <!--<div class="col-xs-5" style="float:right; margin-top:3em">-->
-              <!--<div class="table-responsive">-->
-                <!--<table class="table">-->
-                  <!--<tbody>-->
-                    <!--<tr>-->
-                      <!--<th style="width:50%">Mano de obra:</th>-->
-                      <!--<td>${{ orden.total_mano_de_obra }}</td>-->
-                    <!--</tr>-->
-                    <!--<tr>-->
-                      <!--<th>Repuestos:</th>-->
-                      <!--<td>${{ orden.total_repuestos }}</td>-->
-                    <!--</tr>-->
-                    <!--<tr>-->
-                      <!--<th>Total:</th>-->
-                      <!--<td>${{ orden.precio_total }}</td>-->
-                    <!--</tr>-->
-                  <!--</tbody>-->
-                <!--</table>-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--<!-- /.col --div>-->
-          <!--[> /.row <]-->
-
-          <!--[> this row will not appear when printing <]-->
-          <!--<div class="row no-print">-->
-            <!--<div class="col-xs-12">-->
-              <!--<button class="btn btn-warning" onclick="window.print();">-->
-                <!--<i class="fa fa-print"></i> Imprimir</button>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</section>-->
-      <!--</div>-->
+          <p class="lead" style="margin-top:1.5em">Esta Orden de Trabajo fue realizada a modo de cortesía para el cliente <strong>{{ orden.cliente.persona }}</strong></p>
     </div>
   </div>
 
