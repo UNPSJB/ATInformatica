@@ -1,3 +1,4 @@
+from django.template import loader
 from persona.models import Persona, Cliente, Rol
 from producto.models import Producto
 from orden.models import Equipo, Orden
@@ -9,21 +10,24 @@ from usuario.models import Usuario
 
 AYUDA_URLS = {
     # URL origen : URL ayuda destino HTML
-    'index': '/docs/interfaz/principal.html',
-    'cliente_listar': '/docs/interfaz/clientes.html',
-    'orden_listar': '/docs/interfaz/ordenes.html',
-    'equipo_listar': '/docs/interfaz/equipos.html',
-    'producto_listar': '/docs/interfaz/productos.html',
-    'rubro_listar': '/docs/interfaz/rubros.html',
-    'servicio_listar': '/docs/interfaz/servicios.html',
+    'index': { 'template': 'ayuda/principal.html', 'titulo': 'Pantalla principal' },
+    'cliente_listar': { 'template': 'ayuda/clientes.html', 'titulo': 'Listado de clientes' },
+    'orden_listar': { 'template': 'ayuda/ordenes.html', 'titulo': 'Listado de órdenes de trabajo' },
+    'equipo_listar': { 'template': 'ayuda/equipos.html', 'titulo': 'Listado de equipos' },
+    'producto_listar': { 'template': 'ayuda/productos.html', 'titulo': 'Listado de productos' },
+    'rubro_listar': { 'template': 'ayuda/rubros.html', 'titulo': 'Listado de rubros' },
+    'servicio_listar': { 'template': 'ayuda/servicios.html', 'titulo': 'Listado de tipos de servicio' },
 }
 
 def ayuda(request):
     clave = request.resolver_match.url_name
 
-    if clave in AYUDA_URLS:
-        return { 'ayuda_pagina': AYUDA_URLS[clave] }
-
+    try:
+        template_ayuda = loader.get_template(AYUDA_URLS[clave]['template'])
+        titulo = AYUDA_URLS[clave]['titulo']
+        return { 'ayuda_pagina': { 'html': template_ayuda.render(), 'titulo': titulo } }
+    except:
+        pass    
     return {}
 
 def websasdbinfo(request):

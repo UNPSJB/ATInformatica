@@ -127,7 +127,22 @@ footer_fixed
                 </div>
             </div>
             <div class="clearfix"></div>
-    
+            {% if ayuda_pagina %}
+            <div class="row">
+                <div>
+                    <span class="pull-right text-info" style="margin-top: 10px; margin-right: 10px;">
+                        <a href="#div-ayuda" data-toggle="collapse"><i class="fa fa-question-circle fa-lg"></i>&nbsp;&nbsp;Ayuda</a>
+                    </span>
+                </div>
+                <div id="div-ayuda" class="panel collapse fade" style="padding: 10px;">
+                    <h3><i class="fa fa-info-circle"></i>&nbsp;&nbsp;{{ ayuda_pagina.titulo }}</h3>
+                    {{ ayuda_pagina.html }}
+                    <p>Si tiene alguna duda de cómo realizar una tarea en particular, sírvase leer la <a href="/docs/index.html" target="_blank">guía de uso (link)</a></p>
+                </div>
+            </div>
+            <br>
+            {% endif %}
+            
             <div class="row">
                 {% if messages %}
                 {% for message in messages %}
