@@ -53,6 +53,14 @@ class Persona(SafeDeleteModel):
             rol.persona = self
             rol.save()
 
+    def eliminar_rol(self, rol):
+        
+        if self.sos(rol.__class__):
+            rol.delete()
+        
+        if len(self.roles_related()) == 0:
+            self.delete()
+
     def roles_related(self):
         """ Retorna la colección de roles asociados a una persona. """
         return [rol.related() for rol in self.roles.all()]
@@ -115,11 +123,6 @@ class Rol(SafeDeleteModel):
         if self.pk is None:
             self.tipo = self.__class__.TIPO
         super(Rol, self).save(*args, **kwargs)
-
-    def eliminar(self):
-        """ Método para dar de baja una reserva (baja lógica) """
-        self.activo = False
-        self.save()
 
     def related(self):
         """ Retorna una instancia de una subclase de Rol """

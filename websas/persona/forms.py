@@ -100,18 +100,22 @@ def get_roles_empleado():
     
     return roles_empleados
 
+def get_rol_class(tipo_rol):
+    rol = None
+    for klass in Rol.__subclasses__():
+        if klass.TIPO == tipo_rol:
+            rol = klass
+    return rol
+        
 class EmpleadoForm(PersonaForm):
 
-    rol = forms.ChoiceField(choices=get_roles_empleado(), widget=forms.Select(attrs={ 'class': 'form-control' }))
+    rol = forms.ChoiceField(choices=get_roles_empleado(), widget=forms.Select(attrs={'id':'input-tipo-rol', 'class':'form-control'}))
 
     def clean(self):
         if Persona.objects.filter(doc=self.cleaned_data['doc']).exists():
             persona = Persona.objects.get(doc=self.cleaned_data['doc'])
-            tipo_rol = int(self.cleaned_data['rol'])
-            rol = None
-            for klass in Rol.__subclasses__():
-                if klass.TIPO == tipo_rol:
-                    rol = klass
+            # tipo_rol = int(self.cleaned_data['rol'])
+            rol = get_rol_class(int(self.cleaned_data['rol']))
 
             if rol is None:
                 raise forms.ValidationError("No existe el rol de empleado.")
@@ -134,16 +138,49 @@ class EmpleadoForm(PersonaForm):
             persona = Persona.objects.get(doc=self.cleaned_data['doc'])
 
         tipo_rol = int(self.cleaned_data['rol'])
-        rol = None
-        for klass in Rol.__subclasses__():
-            if klass.TIPO == tipo_rol:
-                rol = klass
+        rol = get_rol_class(int(self.cleaned_data['rol']))
         
         if rol is None:
             raise forms.ValidationError("No existe el rol")
 
         persona.agregar_rol(rol())
+
+class EmpleadoAgragarRolForm(EmpleadoForm):
+
+    persona_id = forms.IntegerField()
+
+
+    def clean(self):
         
+        if not Persona.objects.filter(pk=self.cleaned_data['persona_id']).exists():
+            raise forms.ValidationError("No existe la persona")
+
+        persona = Persona.objects.get(pk=self.cleaned_data['persona_id'])            
+        rol = get_rol_class(int(self.cleaned_data['rol']))
+
+        if rol is None:
+            raise forms.ValidationError("No existe el rol")  
+
+        if persona.sos(rol):
+            raise forms.ValidationError("La persona ya tiene el rol")     
+
+    def save(self, commit=True):
+        
+        persona = Persona.objects.get(pk=self.cleaned_data['persona_id'])
+        rol = get_rol_class(int(self.cleaned_data['rol']))
+
+        persona.agregar_rol(rol())
+        return persona
+
+    class Meta(EmpleadoForm.Meta):
+        exclude = [
+            'nombre',
+            'apellido',
+            'doc',
+            'domicilio',
+            'email',
+            'telefono',
+        ]
 class EmpleadoUpdateForm(PersonaUpdateForm):
     
     class Meta(PersonaUpdateForm.Meta):
