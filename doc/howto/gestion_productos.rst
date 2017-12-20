@@ -19,6 +19,7 @@ Para más información sobre esta pantalla, vea la ayuda contextual en la págin
 Para ver o editar los detalles, o eliminar algún producto ya existente, busque el item **Listado** bajo la categoría **Productos**, en el menú lateral.
 
 .. image:: /imagenes/menu-producto_listar.png
+    :align: center
 
 Haga click en la fila correspondiente al producto que desea editar o eliminar. Aparecerá un formulario con los datos del producto.
 Realice las modificaciones que desee y guarde los cambios con el botón **Aceptar**.

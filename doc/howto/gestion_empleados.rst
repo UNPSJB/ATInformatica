@@ -16,7 +16,8 @@ Al hacer click en dicho item, se presentará un formulario en el cual debe ingre
 - Para cancelar la creación del empleado, navegue a cualquier otro item de menú, o haga click en **Volver al listado** para ir a la lista de empleados.
 
 
-**Editar, asignar un usuario, o eliminar un empleado**
+Editar, asignar un usuario, o eliminar un empleado
+--------------------------------------------------
 
 Para ver o modificar los datos de un empleado, busque el item **Listado** bajo la categoría **Empleados** en el menú lateral y haga click en él.
 
