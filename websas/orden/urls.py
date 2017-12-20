@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required, permission_required
 from django.conf.urls import url
-from .views import OrdenCreate, OrdenCerrar, OrdenCancelar, OrdenesList, OrdenDelete, OrdenDetail, ClienteListado,EquipoCreate, EquipoList, EquipoDelete,EquipoCreatePopUp,EquipoListado, EquipoCreateJson
+from .views import OrdenCreate, OrdenCerrar, OrdenCancelar, OrdenesList, OrdenDelete, OrdenDetail, ClienteListado,EquipoCreate, EquipoList, EquipoDelete,EquipoCreatePopUp,EquipoListado, EquipoCreateJson, EquipoDetail
 
 urlpatterns = [
     url(r'^crear$', login_required(OrdenCreate.as_view(), login_url='usuario:login'), name="orden_crear"),
@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^equipo/crear$', login_required(EquipoCreate.as_view(), login_url='usuario:login'),name='equipo_crear'),
     url(r'^equipo/listar$', login_required(EquipoList.as_view(), login_url='usuario:login'),name='equipo_listar'),
     url(r'^equipo/eliminar/(?P<pk>\d+)$', login_required(EquipoDelete.as_view(), login_url='usuario:login'),name='equipo_eliminar'),
-    url(r'^equipo/ver/(?P<pk>\d+)$', login_required(EquipoList.as_view(), login_url='usuario:login'), name='equipo_ver'),
+    url(r'^equipo/ver/(?P<pk>\d+)$', login_required(EquipoDetail.as_view(), login_url='usuario:login'), name='equipo_ver'),
     url(r'^equipo/editar/(?P<pk>\d+)$', login_required(EquipoList.as_view(), login_url='usuario:login'), name='equipo_editar'),
     url(r'^equipo/crear_popup/(?P<pk>\d+)$', login_required(EquipoCreatePopUp.as_view(), login_url='usuario:login'), name='equipo_crear_popup'),
     url(r'^equipo/crear_json', login_required(EquipoCreateJson.as_view(), login_url='usuario:login'), name='equipo_crear_json')

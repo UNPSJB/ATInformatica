@@ -39,7 +39,9 @@
                   <th class="column-title">Cantidad </th>
                   <th class="column-title">Precio unitario </th>
                   <th class="column-title">Subtotal </th>
+                  {% if not tarea.estas_realizada %}
                   <th class="column-title">Eliminar </th>
+                  {% endif %}
                 </tr>
               </thead>
 
@@ -50,10 +52,12 @@
                   <td class=" ">{{ reserva.cantidad }}</td>
                   <td class=" ">{{ reserva.precio_unitario }}</td>
                   <td class=" ">{{ reserva.subtotal }}</td>
+                  {% if not tarea.estas_realizada %}
                   <td class="celda_control"><a class="fa fa-trash" id="cancelar_reserva" data-ajax_url="{% url 'producto:reserva_cancelar' %}" onclick="confirmarCancelacionReserva()"></a></td>
+                  {% endif %}
                 </tr>
 
-
+                {% if not tarea.estas_realizada %}                
                 <!-- Modal detalle reserva-->
                 <div class="modal fade"  id="modal-detalle-reserva" data-ajax_url="{% url 'producto:reserva_modificar'%}" data-id_reserva="{{ reserva.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog" role="document">
@@ -84,7 +88,7 @@
                     </div>
                   </div>
                 </div>
-
+                {% endif %}
                 <!--fin modal detalle reserva-->
 
                 <!-- Modal cancelar reserva-->
@@ -180,7 +184,7 @@
 
 
               <br />
-
+              {% if not tarea.estas_realizada %}
               <div class="text-center mtop20">
                 <button class="btn btn-info" data-toggle="modal" data-target="#modalReserva" style="font-weight:bold">+ | Reserva</button>
                 {% include "tarea/reservar_stock.html" %}
@@ -200,6 +204,7 @@
                 </a>
 
               </div>
+              {% endif %}
             </div>
           </section>
         </div>
