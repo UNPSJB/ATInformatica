@@ -1,37 +1,231 @@
-{% extends "principal.html" %}
-{% load staticfiles %}
-
-{% block title_left %}
-Cliente #{{cliente.id}} <small>gestión de clientes</small>
-{% endblock title_left %}
-
-{% block contenido %}
+{% extends "principal.html" %} {% load staticfiles %} {% block title_left %} Cliente #{{cliente.id}}
+<small>gestión de clientes</small>
+{% endblock title_left %} {% block contenido %}
 <div class="row" style="margin-left: 10px; margin-right: 10px">
   <div class="x_panel">
     <div class="x_title">
-      <!-- <ul class="nav navbar-right panel_toolbox">
-        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-        </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Settings 1</a>
-            </li>
-            <li><a href="#">Settings 2</a>
-            </li>
-          </ul>
-        </li>
-      </ul> -->
-      <h4>Datos personales</h4>
+      <h4>Clientes</h4>
     </div>
-    <div class="x_content">
-      <br />
-      <p><span>Nombre completo: <strong>{{ cliente.nombre }} {{ cliente.apellido }}</strong></span></p>
-      <p><span>DNI: <strong>{{ cliente.doc }}</strong></span></p>
-      <p><span>e-mail: <strong>{{ cliente.email }}</strong></span></p>
+    <h1 style="margin-bottom:0.75em">{{ cliente.apellido|upper }}, {{ cliente.nombre }}</h1>
+    <div class="tab-content col-xs-9">
+
+      <!-- <div class="ln_solid"></div> -->
+      <!-- Panel datos cliente -->
+      <div class="tab-pane " id="datos-ordenes">
+
+        <table id="datatable-ordenes-cliente" class="table table-striped tableclick table-hover table-bordered dt-responsive nowrap"
+          cellSpacing=0 width=100%>
+          <thead>
+            <tr>
+              <th data-width="10%" data-priority=1>Fecha creación</th>
+              <th data-priority=1>Cliente</th>
+              <th>Descripción</th>
+              <th>Rubro</th>
+              <th>Tipo de servicio</th>
+              <th>Equipo</th>
+              <th data-width="10%" data-priority=2>Estado</th>
+              <th data-width="10%" data-priority=2>Fecha fin</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% if ordenes %} {% for orden in ordenes %}
+            <tr data-tableclick="{% url 'orden:orden_ver' orden.id %}">
+              <td class="celda_control">{{ orden.fecha_creacion }}</td>
+              <td>{{ orden.cliente.persona.apellido|upper }}, {{ orden.cliente.persona.nombre }}</td>
+              <td>{% autoescape off %}{{ orden.descripcion }}{% endautoescape %}</td>
+              <td>{{ orden.rubro.nombre }}</td>
+              <td>{{ orden.tipo_servicio.nombre }}</td>
+              <td>
+                {% if orden.equipo %} {{ orden.equipo }} {% else %} - {% endif %}
+              </td>
+              <td align="center">
+                {{ orden.condicion }}
+              </td>
+              <td>
+                {% if orden.fecha_fin %} {{ orden.fecha_fin }} {% else %} - {% endif %}
+              </td>
+            </tr>
+
+            {% endfor %} {% else %}
+
+            <h1>No hay ordenes de trabajo registradas</h1>
+
+            {% endif %}
+          </tbody>
+        </table>
+
+      </div>
+
+      <div class="tab-pane" id="datos-equipos">
+        <table id="datatable-equipos-cliente" class="table table-striped tableclick table-hover table-bordered dt-responsive nowrap"
+          cellSpacing=0 width=100%>
+          <thead>
+            <tr>
+              <th data-width="15%" data-priority=1>Número de Serie</th>
+              <th data-width="20%" data-priority=2>Rubro</th>
+              <th data-priority=1>Descripción</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% if equipos %} {% for equipo in equipos %}
+
+            <tr data-tableclick="{% url 'orden:equipo_ver' equipo.id %}">
+              <td class="celda_control">{{ equipo.nro_serie }}</td>
+              <td>{{ equipo.rubro }}</td>
+              <td>{{ equipo.descripcion }}</td>
+            </tr>
+
+            {% endfor %} {% else %}
+
+            <h1>No hay ordenes de trabajo registradas</h1>
+
+            {% endif %}
+          </tbody>
+        </table>
+
+      </div>
+
+      <div class="tab-pane active" id="datos-personales">
+        <!-- Datos Personales -->
+        <div class="col-md-12" style="margin-top:2em">
+          <table class="table table-striped" width="100%">
+            <tr>
+              <td class="col-xs-6">
+                <strong>DNI:</strong> {{ cliente.doc }}</td>
+              <td class="col-xs-6">
+                <strong>Domicilio:</strong> {{ cliente.domicilio }}</td>
+            </tr>
+            <tr>
+              <td class="col-xs-6">
+                <strong>Telefono:</strong> {{ cliente.telefono }}</td>
+              <td class="col-xs-6">
+                <strong>Email:</strong> {{ cliente.email }}</td>
+            </tr>
+          </table>
+
+        </div>
+
+      </div>
     </div>
+
+    <div class="col-xs-3">
+      <ul class="nav nav-tabs tabs-right">
+
+        <li class="">
+          <a href="#datos-ordenes" data-toggle="tab">Ordenes de trabajo</a>
+        </li>
+
+        <li>
+          <a href="#datos-equipos" data-toggle="tab">Equipos</a>
+        </li>
+
+        <li class="">
+          <a href="#datos-personales" data-toggle="tab">Datos personales</a>
+        </li>
+      </ul>
+    </div>
+    {% if perms.persona.change_rol or perms.persona.delete_rol %}
+    <div class="clearfix"></div>
+    <hr>
+    <div class="pull-right">
+      {% if perms.persona.delete_rol %}
+      <a data-toggle="modal" data-target="#modal-confirmacion-delete" class="btn btn-danger">
+        <i class="fa fa-trash fa-lg"></i>&nbsp;&nbsp;Eliminar cliente</a>
+      {% endif %} {% if perms.persona.change_rol %}
+      <a href="{% url 'cliente:cliente_editar' cliente.id %}" class="btn btn-info">
+        <i class="fa fa-pencil fa-lg"></i>&nbsp;&nbsp;Editar cliente</a>{% endif %}
+    </div>
+    {% if perms.persona.delete_rol %}
+    <div id="modal-confirmacion-delete" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+              <span aria-hidden="true">×</span>
+            </button>
+            <h3>
+              <span class="text-warning">
+                <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;&nbsp;Confirmar eliminación</span>
+            </h3>
+          </div>
+          <div class="modal-body">
+            <p>¿Está seguro de que desea eliminar el cliente "{{ cliente.nombre }}"?</p>
+          </div>
+          <div class="modal-footer">
+            <form action="{% url 'cliente:cliente_eliminar' cliente.id %}" method="post">
+              {% csrf_token %}
+              <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
+              <button class="btn btn-danger" type="submit">Confirmar eliminar empleado</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}{% endif %} 
   </div>
+
   <div class="ln_solid"></div>
-  <a class="btn btn-default" href="{% url 'cliente:cliente_listar' %}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Volver al listado</a>
+
+  <a class="btn btn-default" href="{% url 'cliente:cliente_listar' %}">
+    <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Volver al listado</a>
 </div>
-{% endblock contenido %}
+{% endblock contenido %} {% block scripts %}
+<!-- Datatables -->
+<script src="{% static 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
+<script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
+<script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
+<script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
+
+<script>
+  var tabla_html = $('#datatable-ordenes-cliente');
+  tabla_html.DataTable({
+    responsive: true,
+    dom: "Bfrtip",
+    order: [[0, 'desc']],
+    buttons: [{
+      extend: "copy",
+      text: "Copiar tabla",
+      className: "btn-sm"
+    }, {
+      extend: "csv",
+      text: "Exportar tabla a CSV",
+      className: "btn-sm"
+    }, {
+      extend: "print",
+      text: "Imprimir tabla",
+      className: "btn-sm"
+    },],
+  });
+</script>
+<script>
+  $("#datatable-equipos-cliente").DataTable({
+    responsive: true,
+    dom: "Bfrtip",
+    buttons: [{
+      extend: "copy",
+      text: "Copiar tabla",
+      className: "btn-sm"
+    }, {
+      extend: "csv",
+      text: "Exportar tabla a CSV",
+      className: "btn-sm"
+    }, {
+      extend: "print",
+      text: "Imprimir tabla",
+      className: "btn-sm"
+    },],
+  });
+</script> {% endblock scripts %}

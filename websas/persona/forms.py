@@ -114,7 +114,7 @@ class EmpleadoForm(PersonaForm):
     def clean(self):
         if Persona.objects.filter(doc=self.cleaned_data['doc']).exists():
             persona = Persona.objects.get(doc=self.cleaned_data['doc'])
-            # tipo_rol = int(self.cleaned_data['rol'])
+            
             rol = get_rol_class(int(self.cleaned_data['rol']))
 
             if rol is None:
@@ -133,7 +133,10 @@ class EmpleadoForm(PersonaForm):
                 domicilio=self.cleaned_data['domicilio'],
                 telefono=self.cleaned_data['telefono'],
                 email=self.cleaned_data['email'])
-            persona.save()
+            try:
+                persona.save()
+            except Exception as e:
+                raise forms.ValidationError(str(e))
         else:
             persona = Persona.objects.get(doc=self.cleaned_data['doc'])
 
