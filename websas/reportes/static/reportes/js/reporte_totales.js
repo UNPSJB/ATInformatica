@@ -252,8 +252,9 @@ function inicializarGrafico() {
 
 
 $('.chart-input').on('change', function(){
+    alert("ASDAS")
     inicializarGrafico()
-  })
+})
 
 
 $("#daterangepicker").on("apply.daterangepicker", function (ev, picker) {

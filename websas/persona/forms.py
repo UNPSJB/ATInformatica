@@ -102,7 +102,7 @@ def get_roles_empleado():
 
 class EmpleadoForm(PersonaForm):
 
-    rol = forms.ChoiceField(choices=get_roles_empleado())
+    rol = forms.ChoiceField(choices=get_roles_empleado(), widget=forms.Select(attrs={ 'class': 'form-control' }))
 
     def clean(self):
         if Persona.objects.filter(doc=self.cleaned_data['doc']).exists():

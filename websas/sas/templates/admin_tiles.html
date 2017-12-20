@@ -40,7 +40,7 @@
                 <div class="count">&nbsp;</div>
                 {% if DBINFO.cant_clientes > 0 %}
                 <h3>Clientes</h3>
-                <p>Cantidad de clientes registrados.</p>
+                <p>Gestión de clientes</p>
                 {% else %}
                 <h3 style="color: red">Clientes</h3>
                 <p>
@@ -66,7 +66,7 @@
                     <div class="count">&nbsp;</div>
                     {% if DBINFO.cant_productos > 0 %}
                     <h3>Productos / Insumos</h3>
-                    <p>Cantidad de productos registrados.</p>
+                    <p>Gestión de productos</p>
                     {% else %}
                     <h3 style="color: red">Productos / Insumos</h3>
                     <p>
@@ -92,7 +92,7 @@
                         <div class="count">&nbsp;</div>
                         {% if DBINFO.cant_equipos > 0 %}
                         <h3>Equipos</h3>
-                        <p>Cantidad de equipos registrados.</p>
+                        <p>Gestión de equipos</p>
                         {% else %}
                         <h3 style="color: red">Equipos</h3>
                         <p>
@@ -144,17 +144,11 @@
               </div>
             </div>
 
-            <!-- <div id="reporte_pre" class="x_panel" style="display: none;">
-
-              <div class="x_content" style="display: none;">
-                    </div>
-            </div> -->
           </div>
           <!-- Acá termina el gráfico de la guita -->
           {% endif %} 
           
           {% if user.persona.is_jefe_taller %}
-          {% comment %} <h1>Acá va el gráfico de carga de trabajo por técnico</h1> {% endcomment %}
           <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel dashboard_graph">
 
@@ -173,6 +167,7 @@
                 <div class="col-md-4">
                   <h3>Opciones del reporte</h3>
                 </div>
+                <label class="control-label col-md-4 col-sm-6 col-xs-12" for="id_filtros">Filtros:</label>
                 <div class="col-md-3 col-md-offset-8">
                     <form class="">
                         <div class="item form-group">

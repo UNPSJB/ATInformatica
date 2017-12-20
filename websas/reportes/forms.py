@@ -10,7 +10,7 @@ class ReporteTotalOrdenesForm(forms.Form):
     CHOICES = (
         ("rubro", "Rubro"),
         ("tipo_servicio", "Tipo de servicio"),
-        # ("cliente", "Cliente"),
+        ("cliente", "Cliente"),
         ("tecnico", "Técnico"),
     )
     filtros = forms.ChoiceField(CHOICES, widget=forms.Select(attrs={

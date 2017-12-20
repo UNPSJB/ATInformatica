@@ -21,10 +21,10 @@ function init_grafico() {
                 x: '0',
                 y: '1',
                 dataset: "ordenes_total",
-                textoLeyenda: "Facturado en el año actual",
+                textoLeyenda: "Facturado en el año pasado",
                 opcionesAjax: {
-                    fecha_ini: fecha_ini.format("DD/MM/YYYY"),
-                    fecha_fin: fecha_fin.format("DD/MM/YYYY"),
+                    fecha_ini: fecha_ini_vieja.subtract(1, "year").format("DD/MM/YYYY"),
+                    fecha_fin: fecha_fin_vieja.subtract(1, "year").format("DD/MM/YYYY"),
                     filtro: $("#id_filtros").val(),
                     ajaxurl: $("form")[0].dataset["ajax_url"],
                 },
@@ -34,23 +34,25 @@ function init_grafico() {
                 x: '0',
                 y: '1',
                 dataset: "ordenes_total",
-                textoLeyenda: "Facturado en el año pasado",
+                textoLeyenda: "Facturado en el año actual",
                 opcionesAjax: {
-                    fecha_ini: fecha_ini_vieja.subtract(1, "year").format("DD/MM/YYYY"),
-                    fecha_fin: fecha_fin_vieja.subtract(1, "year").format("DD/MM/YYYY"),
+                    fecha_ini: fecha_ini.format("DD/MM/YYYY"),
+                    fecha_fin: fecha_fin.format("DD/MM/YYYY"),
                     filtro: $("#id_filtros").val(),
                     ajaxurl: $("form")[0].dataset["ajax_url"],
                 },
             },
         ],
-        opcionesGrafico: {}
+        opcionesGrafico: {
+            filtrar_en_cero: $('#check-filtrarencero').is(':checked'),
+        }
     });
 }
 $(document).on('ready', function () {
     return init_grafico()
 })
 
-$("form .chart-input").on("change", function () {
+$(".chart-input").on("change", function () {
     chart.CanvasJSChart().destroy()
     return init_grafico()
 })
