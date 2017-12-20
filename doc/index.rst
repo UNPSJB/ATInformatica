@@ -10,7 +10,7 @@ Si necesita ayuda adicional en alguna pantalla, busque el icono de ayuda en la e
 .. image:: imagenes/ayuda-contextual.png
     :align: center
 
-   .. note::
+.. note::
     Los menúes y capturas de pantalla presentados en estos tutoriales pueden variar levemente en las nuevas versiones.
 
 -----------
