@@ -18,21 +18,19 @@ class ReservaCreate(View):
 
     @method_decorator(permission_required('producto.add_reserva', login_url='orden:orden_listar'))
     def post(self, request, *args, **kwargs):
+        # import ipdb; ipdb.set_trace()
         form = ReservaForm(request.POST or None)
-        tarea = None
-        producto = None
 
         if form.is_valid():
-            tarea = Tarea.objects.get(pk=form.cleaned_data['tarea'])
-            producto = Producto.objects.get(pk=form.cleaned_data['producto'])
-            cantidad = form.cleaned_data['cantidad']
-        if tarea is None or producto is None:
-            response = JsonResponse({'error': 'no es posible realizar la operación'})
-            response.status_code = 403
-            return response
-        tarea.hacer("reservar_stock", producto=producto, cantidad=cantidad)
-        return JsonResponse({'data':'ok'})
 
+            form.save()
+            
+            return JsonResponse({'data':'ok'})
+        
+        response = JsonResponse({'error': 'no es posible realizar la operación'})
+        response.status_code = 403
+        return response
+        
 class ObservacionCreate(View):
 
     @method_decorator(permission_required('tarea.add_observacion', login_url='orden:orden_listar'))

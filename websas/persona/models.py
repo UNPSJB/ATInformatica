@@ -12,7 +12,7 @@ class Persona(SafeDeleteModel):
     nombre = models.CharField(max_length=50)
     apellido = models.CharField(max_length=50)
     tipo_doc = models.CharField(max_length=2, choices=TIPO_DOC, default='DU')
-    doc = models.CharField(max_length=20, unique = True)
+    doc = models.CharField(max_length=20)
     domicilio = models.TextField()
     email = models.EmailField()
     telefono = models.CharField(max_length=15)
@@ -22,6 +22,12 @@ class Persona(SafeDeleteModel):
 
     def get_nombre_completo(self):
         return "{} {}".format(self.nombre, self.apellido)
+
+
+    def save(self):
+        if Persona.objects.filter(doc=self.doc).filter(deleted__isnull=True).exists():
+            raise Exception("La persona ya se encuentra registrada")
+        super().save()
 
     def is_tecnico(self):
         return self.sos(Tecnico)
@@ -52,6 +58,14 @@ class Persona(SafeDeleteModel):
         if not self.sos(rol.__class__):
             rol.persona = self
             rol.save()
+
+    def eliminar_rol(self, rol):
+        
+        if self.sos(rol.__class__):
+            rol.delete()
+        
+        if len(self.roles_related()) == 0:
+            self.delete()
 
     def roles_related(self):
         """ Retorna la colección de roles asociados a una persona. """
@@ -115,11 +129,6 @@ class Rol(SafeDeleteModel):
         if self.pk is None:
             self.tipo = self.__class__.TIPO
         super(Rol, self).save(*args, **kwargs)
-
-    def eliminar(self):
-        """ Método para dar de baja una reserva (baja lógica) """
-        self.activo = False
-        self.save()
 
     def related(self):
         """ Retorna una instancia de una subclase de Rol """

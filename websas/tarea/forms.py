@@ -1,7 +1,8 @@
 from django import forms
 from .models import TipoTarea
-from producto.models import ReservaStock
-from tarea.models import TipoTarea
+from producto.models import ReservaStock, Producto
+from tarea.models import TipoTarea, Tarea
+
 class TipoTareaForm(forms.ModelForm):
 
     class Meta:
@@ -35,6 +36,25 @@ class ReservaForm(forms.Form):
     tarea = forms.IntegerField()
     producto = forms.IntegerField()
     cantidad = forms.IntegerField()
+
+    def clean(self):
+
+        if not Tarea.objects.filter(pk=self.cleaned_data['tarea']).exists():
+            raise forms.ValidationError("No existe la tarea")
+        
+        if not Producto.objects.filter(pk=self.cleaned_data['producto']).exists():
+            raise forms.ValidationError("No existe el producto")
+
+        if self.cleaned_data['cantidad'] <= 0:
+            raise forms.ValidationError("La cantidad es inválida")
+        
+    def save(self, commit=True):
+
+        tarea = Tarea.objects.get(pk=self.cleaned_data['tarea'])
+        producto = Producto.objects.get(pk=self.cleaned_data['producto'])
+        cantidad = self.cleaned_data['cantidad']
+        
+        tarea.hacer("reservar_stock", producto=producto, cantidad=cantidad)
 
 class ObservacionForm(forms.Form):
     tarea = forms.IntegerField()

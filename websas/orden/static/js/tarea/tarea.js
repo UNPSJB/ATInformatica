@@ -56,7 +56,7 @@ function aceptarTareas() {
                 location.reload();
             },
             error: function (data) {
-                modalError("Error en la operación", "El servidor no pudo procesar la solicitud", data.responseJSON.error);
+                modalError("Error en la operación", "No se pudo procesar la solicitud", data.responseJSON.error);
             }
         });
     }

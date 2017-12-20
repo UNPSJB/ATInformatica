@@ -2,13 +2,14 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core.urlresolvers import reverse_lazy
 from django.template import loader
+from sas.views import AjaxFormView
 from django.views.generic import CreateView, View, ListView, UpdateView, DeleteView, DetailView
 from django.contrib.contenttypes.models import ContentType
 from usuario.models import Usuario
 from persona.models import Rol
 from django.utils.decorators import method_decorator
 from persona.models import  Persona, Cliente
-from persona.forms import PersonaForm, EmpleadoForm, EmpleadoUpdateForm
+from persona.forms import PersonaForm, EmpleadoAgragarRolForm, EmpleadoForm, EmpleadoUpdateForm
 
 """""""""""""""""""""""""""""""""""""""
 Vistas de empleados
@@ -38,23 +39,59 @@ class EmpleadoDelete(DeleteView):
     template_name = 'persona/empleado_delete.html'
     success_url = reverse_lazy('empleado:empleado_listar')
 
-    # def post(self, request, *args, **kwargs):
-    #     # TODO: redefinir para eliminar el rol
-    #     pass
+    def post(self, request, *args, **kwargs):
+        persona = Persona.objects.get(pk=kwargs.get('pk'))
+        for rol in persona.roles_related():
+            persona.eliminar_rol(rol)
+        super().post(request, *args, **kwargs)
+        return HttpResponseRedirect(self.get_success_url())
+        
+
 
 class EmpleadoEliminarRol(View):
     
+
     def post(self, request, *args, **kwargs):
-        # import ipdb; ipdb.set_trace()
+
+        if not Persona.objects.filter(pk=request.POST['persona_id']).exists():
+            response = JsonResponse({'error':'No existe la persona'})
+            response.status_code = 403
+            return response
+
+        if not Rol.objects.filter(pk=request.POST['rol_id']).exists():
+            response = JsonResponse({'error':'No existe el rol'})
+            response.status_code = 403
+            return response
+
+
         persona = Persona.objects.get(pk=request.POST['persona_id'])
         rol = Rol.objects.get(pk=request.POST['rol_id'])
         persona.eliminar_rol(rol)
 
-        url = ''
+        url = reverse_lazy('empleado:empleado_ver', kwargs={'pk':persona.id})
+        
         # Si la persona se elimina, debe volver al listado
         if persona.deleted is not None:
             url = reverse_lazy('empleado:empleado_listar')
         return JsonResponse({'data':'todo ok','url':url})
+
+class EmpleadoAgregarRol(View):
+
+    def post(self, request, *args, **kwargs):
+
+        form = EmpleadoAgragarRolForm(request.POST or None)
+        # import ipdb; ipdb.set_trace()
+
+        if form.is_valid():
+
+            persona = form.save()
+
+            url = reverse_lazy('empleado:empleado_ver', kwargs={'pk':persona.id})
+            return JsonResponse({'data':'todo ok','url':url})
+
+        response = JsonResponse({'error':form.errors})
+        response.status_code = 403
+        return response
 
 class EmpleadoList(ListView):
     model = Persona
@@ -70,9 +107,13 @@ class EmpleadoDetail(DetailView):
     context_object_name = 'empleado'
     template_name = 'persona/empleado_detail.html'
     success_url = reverse_lazy('empleado:empleado_listar')
+    form_class = EmpleadoAgragarRolForm
 
     def get_context_data(self, **kwargs):
         contexto = super().get_context_data(**kwargs)
         self.persona = self.get_object()
         contexto['roles'] = self.persona.roles_related()
+        form = self.form_class
+        if form not in contexto:
+            contexto['form'] = form 
         return contexto 

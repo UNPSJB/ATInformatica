@@ -2,40 +2,104 @@
 <div class="row">
   <div class="x_panel">
     <div class="x_title">
-      <h2>Empleado
-        <small>gestión de gerentes</small>
+      <h2>Empleados
+        <small>gestión de empleados</small>
       </h2>
       <div class="clearfix"></div>
     </div>
     <div class="x_content">
-      <table width="100%">
-        <tr>
-          <td>
-            <h1>{{ empleado.apellido|upper }}, {{ empleado.nombre }}</h1>
-          </td>
-          <td>
-            <h2>DNI: </h2>{{ empleado.doc }}</td>
-        </tr>
-        <tr>
-          <td>
-            <h2>Domicilio: </h2>{{ empleado.domicilio }}</td>
-          <td>
-            <h2>Email: </h2>{{ empleado.email }}</td>
-        </tr>
-        {% if roles %}
-        <tr>
-          <td>
-            <h2>Roles</h2>
-            <ul class="list-group col-md-4 col-sm-4 col-xs-12">
-            {% for rol in roles %}
-            <li class="list-group-item"><span>{{ rol.ROLNAME }}<i id="data-rol" data-empleado-id="{{ empleado.id }}" data-rol-id="{{ rol.id }}" data-ajax-url="{% url 'empleado:empleado_eliminar_rol' %}" class="fa fa-trash fa-lg" onclick="eliminarRol()" style="margin-left:3em"></i></span></li> 
-            {% endfor %}
-            </ul>
-          </td>
-        </tr>
-        {% endif %}
-      </table>
+
+      <h1 style="margin-bottom:0.75em">{{ empleado.apellido|upper }}, {{ empleado.nombre }}</h1>
+      
+      
+      <div class="tab-content col-xs-9">
+
+        <!-- <div class="ln_solid"></div> -->
+        <!-- Panel datos empleado -->
+        <div class="tab-pane active" id="datos-roles">
+      
+          <div>
+          <!-- Roles -->
+            <div class="col-md-6">
+              <table class="table table-striped">
+                {% if roles %}
+                <tr><h2><strong>Roles</strong></h2></tr>
+                {% for rol in roles %}
+                <tr>
+                  <td>{{ rol.ROLNAME }}</td>
+                  <td><i id="data-rol" data-empleado-id="{{ empleado.id }}" data-ajax-url="{% url 'empleado:empleado_eliminar_rol' %}" class="fa fa-trash fa-lg" onclick="eliminarRol({{ rol.id }})" style="margin-left:3em"></i></td>
+                </tr>    
+                {% endfor %}
+                {% endif %}
+              </table>
+
+            </div>
+      
+            <!-- Agregar Rol -->
+            <div class="col-md-5 col-md-offset-1">
+              <h2><strong>Agregar rol</strong></h2>
+              <div class="form-horizontal form-label-left">
+                <div class="item form-group" style="margin-top:2em">
+                  
+                  <input id="input-id-persona" type="text" hidden value="{{ empleado.id }}">              
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    {{ form.rol }}
+                  </div>
+                  <button id="btn-agregar-rol" data-ajax-url="{% url 'empleado:empleado_agregar_rol' %}" class="btn btn-success" onclick="agregarRol()"><i class="fa fa-male fa-lg"></i>&nbsp;&nbsp;Agregar rol</button>
+                </div>
+              </div>
+              <span class="text-danger" style="margin-left:2em; margin-top:1em" hidden id="error-elem"><strong><i class="fa fa-warning fa-lg"></i>&nbsp;&nbsp;<span id="errormsg">Error</span>&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>                                  
+            </div>
+
+          <div class="clearfix"></div>
+          <!-- <div class="ln_solid"></div> -->
+
+            
+          </div>
+    
+      
+        </div>
+
+        <div class="tab-pane" id="datos-personales">
+          <!-- Datos Personales -->
+          <div class="col-md-12" style="margin-top:2em">
+              <table class="table table-striped" width="100%">
+                <tr>
+                  <td class="col-xs-6"><strong>DNI:</strong> {{ empleado.doc }}</td>
+                  <td class="col-xs-6"><strong>Domicilio:</strong> {{ empleado.domicilio }}</td>
+                </tr>
+                <tr>
+                  <td class="col-xs-6"><strong>Telefono:</strong> {{ empleado.telefono }}</td>
+                  <td class="col-xs-6"><strong>Email:</strong> {{ empleado.email }}</td>
+                </tr>
+                </table>
+            
+          </div> 
+
+        </div>
+
+      </div>
+
+      <div class="col-xs-3">
+        <ul class="nav nav-tabs tabs-right">
+          <li class="">
+            <a href="#datos-roles" data-toggle="tab">Principal</a>
+          </li>
+
+          <li class="">
+              <a href="#datos-personales" data-toggle="tab">Datos personales</a>
+            </li>
+
+        </ul>
+      </div>
+      
+
+
+
+
+
       {% if perms.persona.change_rol or perms.persona.delete_rol %}
+      <div class="clearfix"></div>
       <hr>
       <div class="pull-right">
         {% if perms.persona.delete_rol %}
@@ -83,7 +147,9 @@
 
 </div>
 {% endblock contenido %} {% block scripts %}
+
 <script src="/static/js/ajax_setup.js" ></script>
 <script src="/static/persona/js/crear_usuario.js"></script>
 <script src="/static/persona/js/eliminar-rol.js"></script>
+<script src="/static/persona/js/agregar-rol.js"></script>
 <script>'{{ csrf_token }}'</script> {% endblock scripts %}

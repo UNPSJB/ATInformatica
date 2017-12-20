@@ -119,3 +119,16 @@ class ClienteDetail(DetailView):
     context_object_name = 'cliente'
     template_name = 'persona/cliente_detail.html'
     success_url = reverse_lazy('cliente:cliente_ver')
+
+    def get_context_data(self, **kwargs):
+        contexto = super().get_context_data(**kwargs)
+        # import ipdb; ipdb.set_trace()
+        self.persona = self.get_object()
+        query_ordenes = self.persona.como(Cliente).ordenes.all()
+        equipos = []
+        for orden in query_ordenes:
+            if orden.equipo is not None and orden.equipo not in equipos:
+                equipos.append(orden.equipo)
+        contexto['ordenes'] = query_ordenes
+        contexto['equipos'] = equipos
+        return contexto

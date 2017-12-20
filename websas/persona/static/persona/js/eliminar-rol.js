@@ -1,8 +1,10 @@
-function eliminarRol(){
+function eliminarRol(rol_id){
     data = {
         'persona_id': $("#data-rol").attr("data-empleado-id"),
-        'rol_id': $("#data-rol").attr("data-rol-id"),
+        'rol_id': rol_id, 
     }
+
+    console.log(data)
 
     $.ajax({
         url: $("#data-rol").attr("data-ajax-url"),
@@ -10,7 +12,6 @@ function eliminarRol(){
         data: data,
         dataType: 'json',
         success: function (res) {
-            alert(res.url)
             if (res.url == '') {
                 location.reload()
             }
@@ -20,7 +21,7 @@ function eliminarRol(){
         },
         error: function (data) {
             console.log(data)
-            alert("Error")
+            
             
         }
     });
