@@ -39,6 +39,12 @@ class ProductoUpdate(UpdateView):
     form_class = ProductoUpdateForm
     success_url = reverse_lazy('producto:producto_listar')
 
+    def get(self, request, *args, **kwargs):
+        res = super().get(request, *args, **kwargs)
+        # import ipdb; ipdb.set_trace()
+        return super().get(request, *args, **kwargs)
+
+
     @method_decorator(permission_required('producto.change_producto', login_url='producto:producto_listar'))
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)

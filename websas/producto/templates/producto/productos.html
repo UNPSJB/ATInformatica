@@ -18,7 +18,8 @@
             <th data-priority=1>Nombre</th>
             <th data-priority=3>Descripción</th>
             <th data-priority=4>Marca</th>
-            <th data-priority=2 data-width="5%">Existencias</th>
+            <th data-priority=2 data-width="5%">Stock disponible</th>
+            <th data-priority=2 data-width="5%">Stock reservado</th>
             <th data-priority=1>Precio</th>
           </tr>
         </thead>
@@ -32,6 +33,7 @@
             <td>{{ producto.descripcion }}</td>
             <td>{{ producto.marca }}</td>
             <td>{{ producto.stock_disponible }}</td>
+            <td>{{ producto.stock_reservado }}</td>
             <td>{{ producto.precio }}</td>
           </tr>
           

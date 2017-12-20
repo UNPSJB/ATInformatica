@@ -52,7 +52,16 @@ class ProductoForm(forms.ModelForm):
 
 class ProductoUpdateForm(ProductoForm):
 
+    stock_disponible = forms.NumberInput()
+    stock_reservado = forms.NumberInput()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.stock_disponible = kwargs.get('instance').stock_disponible
+        self.stock_reservado = kwargs.get('instance').stock_reservado
+         
     class Meta(ProductoForm.Meta):
+        # fields = ProductoForm.Meta.fields + ('stock_disponible', 'stock_reservado')
         widgets = {
             'nombre': forms.TextInput(attrs={
                 'class':'form-control col-md-7 col-xs-12',
@@ -69,6 +78,16 @@ class ProductoUpdateForm(ProductoForm):
                 }),
             'stock': forms.NumberInput(attrs={
                 'class':'form-control col-md-7 col-xs-12',
+                }),
+            'stock_disponible': forms.NumberInput(attrs={
+                'class':'form-control col-md-7 col-xs-12',
+                'name':'stock_disponible',
+                'readonly':'True',
+                }),
+            'stock_reservado': forms.NumberInput(attrs={
+                'class':'form-control col-md-7 col-xs-12',
+                'name':'stock_reservado',
+                'readonly':'True',
                 }),
             'precio': forms.NumberInput(attrs={
                 'class':'form-control col-md-7 col-xs-12'
