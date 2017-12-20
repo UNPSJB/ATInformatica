@@ -1,0 +1,129 @@
+{% extends "principal.html" %} {% block contenido %}
+<div class="row">
+  <div class="x_panel">
+    <div class="x_title">
+      <h2>Equipos
+        <small>gestión de equipos</small>
+      </h2>
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+
+      <h1 style="margin-bottom:0.75em">Equipo Nro:{{ equipo.nro_serie|upper }}</h1>
+
+      <div class="tab-content col-xs-9">
+        
+        <div class="tab-pane active" id="datos-equipo">
+          <!-- Datos Personales -->
+          <div class="col-md-12" style="margin-top:2em">
+            <table class="table table-striped" width="100%">
+              <tr>
+                <td class="col-xs-6">
+                  <strong>Nro de serie:</strong> {{ equipo.nro_serie }}</td>
+                <td class="col-xs-6">
+                  <strong>Rubro:</strong> {{ equipo.rubro }}</td>
+              </tr>
+              <tr>
+                <td class="col-xs-6">
+                  <strong>Descripción:</strong> {{ equipo.descripcion }}</td>
+              </tr>
+            </table>
+
+          </div>
+
+        </div>
+
+        <div class="tab-pane" id="tareas-equipo" >
+          
+          <div class="table-responsive">
+              <table id="datatable-tareas-equipo" class="table table-striped tableclick table-hover table-bordered dt-responsive nowrap" cellSpacing=0 width=100%>
+                  <thead>
+                    <tr class="headings">
+                        <th class="column-title">Tarea</th>
+                        <th class="column-title">Tarifa</th>
+                        <th class="column-title">Costo repuestos</th>
+                        <th class="column-title">Total</th>
+                        <th class="column-title">Orden Nro</th>
+                        <th class="column-title">Cliente</th>
+                      </tr>
+                </thead>
+          
+                <tbody>
+                  {% if tareas %}
+                  {% for tarea in tareas %}
+                  <tr data-tableclick="{% url 'tarea:tarea_ver' tarea.id %}">
+                      <td class=" ">{{ tarea.nombre }}</td>
+                      <td class=" ">{{ tarea.precio }}</td>
+                      <td class="a-right a-right ">{{ tarea.costo_repuestos }}</td>
+                      <td class=" ">{{ tarea.subtotal }}</td>
+                      <td class=" ">{{ tarea.orden.id }}</td>
+                      <td class=" ">{{ tarea.orden.cliente.apellido }}, {{ tarea.orden.cliente.nombre }}</td>
+                    </tr>
+                  {% endfor %}
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+        </div>
+      </div>
+
+      <div class="col-xs-3">
+        <ul class="nav nav-tabs tabs-right">
+          <li class="">
+            <a href="#datos-equipo" data-toggle="tab">Principal</a>
+          </li>
+
+          <li class="">
+              <a href="#tareas-equipo" data-toggle="tab">Tareas realizadas</a>
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock contenido %} {% block scripts %}
+<!-- Datatables -->
+<script src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+<script src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+<script src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+<script src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+<script src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+<script src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+<script src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+<script src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+<script src="/static/vendors/jszip/dist/jszip.min.js"></script>
+<script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
+<script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+
+<script src="/static/js/ajax_setup.js"></script>
+<script src="/static/persona/js/crear_usuario.js"></script>
+<script src="/static/persona/js/eliminar-rol.js"></script>
+<script src="/static/persona/js/agregar-rol.js"></script>
+<script>
+  var tabla_html = $('#datatable-tareas-equipo');
+  tabla_html.DataTable({
+    responsive: true,
+    dom: "Bfrtip",
+    order: [[0, 'desc']],
+    buttons: [{
+      extend: "copy",
+      text: "Copiar tabla",
+      className: "btn-sm"
+    }, {
+      extend: "csv",
+      text: "Exportar tabla a CSV",
+      className: "btn-sm"
+    }, {
+      extend: "print",
+      text: "Imprimir tabla",
+      className: "btn-sm"
+    },],
+  });
+</script>
+<script>'{{ csrf_token }}'</script> {% endblock scripts %}

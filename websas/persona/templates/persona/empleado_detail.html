@@ -11,7 +11,6 @@
 
       <h1 style="margin-bottom:0.75em">{{ empleado.apellido|upper }}, {{ empleado.nombre }}</h1>
       
-      
       <div class="tab-content col-xs-9">
 
         <!-- <div class="ln_solid"></div> -->
@@ -78,6 +77,51 @@
 
         </div>
 
+        <div class="tab-pane" id="ordenes-trabajo">
+            <!-- Ordenes de trabajo -->
+            <table id="datatable-ordenes-tecnico" class="table table-striped tableclick table-hover table-bordered dt-responsive nowrap"cellSpacing=0 width=100%>
+            <thead>
+              <tr>
+                <th data-width="10%" data-priority=1>Fecha creación</th>
+                <th data-priority=1>Cliente</th>
+                <th>Descripción</th>
+                <th>Rubro</th>
+                <th>Tipo de servicio</th>
+                <th>Equipo</th>
+                <th data-width="10%" data-priority=2>Estado</th>
+                <th data-width="10%" data-priority=2>Fecha fin</th>
+              </tr>
+            </thead>
+  
+            <tbody>
+              {% if ordenes %} {% for orden in ordenes %}
+              <tr data-tableclick="{% url 'orden:orden_ver' orden.id %}">
+                <td class="celda_control">{{ orden.fecha_creacion }}</td>
+                <td>{{ orden.cliente.persona.apellido|upper }}, {{ orden.cliente.persona.nombre }}</td>
+                <td>{% autoescape off %}{{ orden.descripcion }}{% endautoescape %}</td>
+                <td>{{ orden.rubro.nombre }}</td>
+                <td>{{ orden.tipo_servicio.nombre }}</td>
+                <td>
+                  {% if orden.equipo %} {{ orden.equipo }} {% else %} - {% endif %}
+                </td>
+                <td align="center">
+                  {{ orden.condicion }}
+                </td>
+                <td>
+                  {% if orden.fecha_fin %} {{ orden.fecha_fin }} {% else %} - {% endif %}
+                </td>
+              </tr>
+  
+              {% endfor %} {% else %}
+  
+              <h1>No hay ordenes de trabajo registradas</h1>
+  
+              {% endif %}
+            </tbody>
+          </table>
+          </div>
+
+
       </div>
 
       <div class="col-xs-3">
@@ -88,15 +132,14 @@
 
           <li class="">
               <a href="#datos-personales" data-toggle="tab">Datos personales</a>
-            </li>
+          </li>
 
+          <li class="">
+              <a href="#ordenes-trabajo" data-toggle="tab">Ordenes de trabajo</a>
+          </li>
         </ul>
       </div>
       
-
-
-
-
 
       {% if perms.persona.change_rol or perms.persona.delete_rol %}
       <div class="clearfix"></div>
@@ -147,9 +190,46 @@
 
 </div>
 {% endblock contenido %} {% block scripts %}
+<!-- Datatables -->
+<script src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+<script src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+<script src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+<script src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+<script src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+<script src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+<script src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+<script src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+<script src="/static/vendors/jszip/dist/jszip.min.js"></script>
+<script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
+<script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
 
 <script src="/static/js/ajax_setup.js" ></script>
 <script src="/static/persona/js/crear_usuario.js"></script>
 <script src="/static/persona/js/eliminar-rol.js"></script>
 <script src="/static/persona/js/agregar-rol.js"></script>
+<script>
+    var tabla_html = $('#datatable-ordenes-tecnico');
+    tabla_html.DataTable({
+      responsive: true,
+      dom: "Bfrtip",
+      order: [[0, 'desc']],
+      buttons: [{
+        extend: "copy",
+        text: "Copiar tabla",
+        className: "btn-sm"
+      }, {
+        extend: "csv",
+        text: "Exportar tabla a CSV",
+        className: "btn-sm"
+      }, {
+        extend: "print",
+        text: "Imprimir tabla",
+        className: "btn-sm"
+      },],
+    });
+  </script>
 <script>'{{ csrf_token }}'</script> {% endblock scripts %}

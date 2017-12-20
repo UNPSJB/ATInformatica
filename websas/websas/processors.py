@@ -11,13 +11,23 @@ from usuario.models import Usuario
 AYUDA_URLS = {
     # URL origen : URL ayuda destino HTML
     'index': { 'template': 'ayuda/principal.html', 'titulo': 'Pantalla principal' },
+
+    'grupos': { 'template': 'ayuda/grupos.html', 'titulo': 'Control de Acceso' },
+
     'cliente_listar': { 'template': 'ayuda/clientes.html', 'titulo': 'Listado de clientes' },
+
     'orden_listar': { 'template': 'ayuda/ordenes.html', 'titulo': 'Listado de órdenes de trabajo' },
     'orden_crear': { 'template': 'ayuda/orden_nueva.html', 'titulo': 'Crear nueva orden de trabajo' },
+    'orden_ver': { 'template': 'ayuda/orden_ver.html', 'titulo': 'Detalles de orden de trabajo' },
+    'tarea_ver': { 'template': 'ayuda/tarea_ver.html', 'titulo': 'Detalles de la tarea' },
+
+    'equipo_crear': { 'template': 'ayuda/equipo_crear.html', 'titulo': 'Crear un nuevo equipo' },
     'equipo_listar': { 'template': 'ayuda/equipos.html', 'titulo': 'Listado de equipos' },
-    'producto_listar': { 'template': 'ayuda/productos.html', 'titulo': 'Listado de productos' },
+
+    'producto_listar': { 'template': 'ayuda/producto_listar.html', 'titulo': 'Listado de productos' },
     'rubro_listar': { 'template': 'ayuda/rubros.html', 'titulo': 'Listado de rubros' },
     'servicio_listar': { 'template': 'ayuda/servicios.html', 'titulo': 'Listado de tipos de servicio' },
+
     'reportes': { 'template': 'ayuda/reportes.html', 'titulo': 'Reportes' },
     'cantidad_ordenes': { 'template': 'ayuda/reportes.html', 'titulo': 'Reportes' },
     'productos': { 'template': 'ayuda/reportes.html', 'titulo': 'Reportes' },

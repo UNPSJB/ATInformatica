@@ -19,7 +19,9 @@
         <tbody>
           {% if object_list %}
           {% for tipo_servicio in object_list %}
-          <tr data-tableclick="{% url 'servicio:servicio_editar' tipo_servicio.id %}">
+          <tr {% if user.persona.is_gerente or user.is_superuser %}data-tableclick="{% url 'servicio:servicio_editar' tipo_servicio.id %}" {% else  %} data-tableclick="#" {% endif %}>
+          <!-- <tr data-tableclick="{% url 'servicio:servicio_editar' tipo_servicio.id %}"> -->
+                  
             <td>{{ tipo_servicio.nombre }}</td>
             <td>{{ tipo_servicio.descripcion }} </td>
           </tr>

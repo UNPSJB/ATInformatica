@@ -1,7 +1,7 @@
 <div class="menu_section">
   <h3>General</h3>
   <ul class="nav side-menu">
-    {% if user.is_superuser %}
+    {% if user.is_superuser or user.persona.is_gerente %}
     <li><a href="{% url 'usuario:grupos' %}"><i class="fa fa-cog"></i>Control de acceso</a></li>
     {% endif %}
     <li><a><i class="fa fa-bar-chart-o"></i> Órdenes de trabajo <span class="fa fa-chevron-down"></span></a>
@@ -22,7 +22,7 @@
     </li>
     <li><a><i class="fa fa-desktop"></i>Productos<span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
-        {% if perms.producto.add_producto %}
+        {% if perms.producto.add_producto and user.persona.is_gerente or user.persona.is_jefe_taller or user. %}
         <li><a href= "{% url 'producto:producto_crear' %}">Crear </a></li>
         {% endif %}
         <li><a href= "{% url 'producto:producto_listar' %}">Listados</a></li>
@@ -37,17 +37,21 @@
         <li><a href="{% url 'cliente:cliente_listar' %}">Listados</a></li>
       </ul>
     </li>
+    {% if user.persona.is_gerente or user.persona.is_jefe_taller or user.is_superuser %}
     <li><a><i class="fa fa-edit"></i>Empleados<span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
-        {% if perms.persona.add_rol %}
+        {% if perms.persona.add_rol and user.persona.is_gerente or user.is_superuser %}
         <li><a href="{% url 'empleado:empleado_crear' %}">Crear</a></li>
         {% endif %}
         <li><a href="{% url 'empleado:empleado_listar' %}">Listados</a></li>
       </ul>
     </li>
+    {% endif %}
+
+
     <li><a><i class="fa fa-wrench"></i>Tipos de Servicio<span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
-        {% if perms.servicio.add_tiposervicio %}
+        {% if perms.servicio.add_tiposervicio and user.persona.is_gerente or user.is_superuser %}
         <li><a href="{% url 'servicio:servicio_crear' %}">Crear </a></li>
         {% endif %}
         <li><a href="{% url 'servicio:servicio_listar' %}">Listados</a></li>
@@ -55,7 +59,7 @@
     </li>
     <li><a><i class="fa fa-clone"></i>Rubros<span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
-        {% if perms.rubro.add_rubro %}
+        {% if perms.rubro.add_rubro or user.persona.is_gerente %}
         <li><a href="{% url 'rubro:rubro_crear'%}">Crear </a></li>
         {% endif %}
         <li><a href="{% url 'rubro:rubro_listar'%}">Listados</a></li>          

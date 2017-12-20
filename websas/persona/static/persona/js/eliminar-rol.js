@@ -12,17 +12,16 @@ function eliminarRol(rol_id){
         data: data,
         dataType: 'json',
         success: function (res) {
-            if (res.url == '') {
-                location.reload()
-            }
-            else {
-                location.href = res.url
-            }
+            console.log(res.url)
+            // if (res.url == '') {
+            //     location.reload()
+            // }
+            // else {
+            //     location.href = res.url
+            // }
         },
         error: function (data) {
             console.log(data)
-            
-            
         }
     });
 }

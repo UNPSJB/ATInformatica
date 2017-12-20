@@ -179,6 +179,21 @@ class EquipoDelete(DeleteView):
     def post(self, request, *args, **kwargs):
         return super(self.__class__, self).post(request,*args, **kwargs)
 
+class EquipoDetail(DetailView):
+    model = Equipo
+    template_name = 'equipo/equipo_detail.html'
+    success_url = reverse_lazy('orden:equipo_listar')
+
+    def get_context_data(self, *args,**kwargs):
+        contexto = super().get_context_data(**kwargs)
+        self.equipo = self.get_object()
+        ordenes = self.equipo.ordenes.all()
+        tareas = []
+        for o in ordenes:
+            tareas += o.tareas_realizadas
+
+        contexto['tareas'] = tareas
+        return contexto   
 
 class EquipoCreatePopUp(EquipoCreate):
     template_name ='equipo/equipo_form_popup.html'

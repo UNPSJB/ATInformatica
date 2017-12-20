@@ -16,7 +16,7 @@
       <div class="clearfix"></div>
     </div>
     <div class="x_content">
-      {% if perms.servicio.add_tiposervicio or perms.servicio.change_tiposervicio %}
+      {% if perms.servicio.add_tiposervicio or perms.servicio.change_tiposervicio and user.persona.is_jefe_taller or user.persona.is_gerente or user.is_superuser %}
       <form id="am-servicio" method="POST" novalidate class="form-horizontal form-label-left">
         {% csrf_token %}
 
