@@ -37,14 +37,14 @@ class EmpleadoUpdate(UpdateView):
 class EmpleadoDelete(DeleteView):
     model = Persona
     template_name = 'persona/empleado_delete.html'
-    success_url = reverse_lazy('empleado:empleado_listar')
+    success_url = 'empleado:empleado_listar'
 
     def post(self, request, *args, **kwargs):
         persona = Persona.objects.get(pk=kwargs.get('pk'))
         for rol in persona.roles_related():
             persona.eliminar_rol(rol)
-        super().post(request, *args, **kwargs)
-        return HttpResponseRedirect(self.get_success_url())
+        persona.delete()
+        return HttpResponseRedirect(reverse_lazy(self.success_url))
         
 
 

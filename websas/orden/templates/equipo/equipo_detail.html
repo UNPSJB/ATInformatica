@@ -57,7 +57,7 @@
                       <td class="a-right a-right ">{{ tarea.costo_repuestos }}</td>
                       <td class=" ">{{ tarea.subtotal }}</td>
                       <td class=" ">{{ tarea.orden.id }}</td>
-                      <td class=" ">{{ tarea.orden.cliente }}</td>
+                      <td class=" ">{{ tarea.orden.cliente.apellido }}, {{ tarea.orden.cliente.nombre }}</td>
                     </tr>
                   {% endfor %}
                   {% endif %}
