@@ -6,7 +6,7 @@ from sas.views import AjaxFormView
 from django.views.generic import CreateView, View, ListView, UpdateView, DeleteView, DetailView
 from django.contrib.contenttypes.models import ContentType
 from usuario.models import Usuario
-from persona.models import Rol
+from persona.models import Rol, Tecnico
 from django.utils.decorators import method_decorator
 from persona.models import  Persona, Cliente
 from persona.forms import PersonaForm, EmpleadoAgragarRolForm, EmpleadoForm, EmpleadoUpdateForm
@@ -113,6 +113,7 @@ class EmpleadoDetail(DetailView):
         contexto = super().get_context_data(**kwargs)
         self.persona = self.get_object()
         contexto['roles'] = self.persona.roles_related()
+        contexto['ordenes'] = self.persona.como(Tecnico).ordenes.all()
         form = self.form_class
         if form not in contexto:
             contexto['form'] = form 
