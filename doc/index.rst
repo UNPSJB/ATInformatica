@@ -11,7 +11,7 @@ Si necesita ayuda adicional en alguna pantalla, busque el icono de ayuda en la e
     :align: center
 
 .. note::
-    Los menúes y capturas de pantalla presentados en estos tutoriales pueden variar levemente en las nuevas versiones.
+    Los menúes y capturas de pantalla presentados en estos tutoriales pueden variar ligeramente en las nuevas versiones.
 
 -----------
 

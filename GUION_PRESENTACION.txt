@@ -1,0 +1,40 @@
+1. Introducción - Límites y Alcances
+    a. Qué hace la organización - Organigrama (memes)
+    b. Procesos
+    c. Cuáles de los mencionados en b se implementan, cuáles no
+
+2. Funcionalidad - DC - en cada funcionalidad mostrar listado y reporte que le corresponda (si tuviera, o tuviese)
+    * Ingreso del sistema
+        a. Patrón Roles
+        b. Las pantallas son:
+            - Login
+            - Cliente (list edit view)
+            - Empleado (List edit view) - usuario (creación y cambio de contraseña)
+
+    * Rubro, Tipo de Servicios, Tarifas
+        a. Las pantallas a mostar son:
+            - Tarifado
+            - Creación de nuevos tipos de tarea
+
+    * Creación de la OT
+        a. Las pantallas a mostar son:
+            - Creación de la Orden
+        MOSTRAR:
+            - Diagrama de Clases correspondiente
+
+    * Tareas de la OT (tránsito) - lo de que si las tareas están todas en 0 (gauchada)
+        a. Patrón State
+        b. Gestión de Producto (abm y reserva)
+
+    * Reporte:
+        a. Técnico más finalizador
+        b. Incidencia de productos
+        c. Total facturado
+        d. Tarea más finalizada
+
+    * Quality
+
+PARA IMPRIMIR:
+    - DC
+    - DER
+    - DE
