@@ -153,6 +153,8 @@ function cancelar() {
     })
 }
 
+
+
 // Table
 $('table input').on('ifChecked', function() {
     checkState = '';
@@ -204,6 +206,10 @@ function countChecked() {
         $('.column-title').show();
         $('.bulk-actions').hide();
     }
+}
+
+function clearchecked() {
+    $('.bulk_action input').iCheck('unchecked');
 }
 
 
