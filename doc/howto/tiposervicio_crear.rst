@@ -15,7 +15,9 @@ Al hacer click en este item, aparecerá un formulario donde podrá ingresar los 
 - Para vaciar los campos del formulario, haga click en **Reiniciar**.
 - Para cancelar la creación del tipo de servicio, navegue a cualquier otro item de menú, o haga click en **Volver al listado** para ir a la lista de tipos de servicio.
 
-Al crear un nuevo tipo de servicio, se crearán automáticamente las tarifas para las tareas existentes en todos los rubros. Las mismas tendrán valor 0, y no podrán utilizarse en órdenes de trabajo.
+
+.. note::
+    Al crear un nuevo tipo de servicio, se crearán automáticamente las tarifas para las tareas existentes en todos los rubros. Tenga en cuenta que las mismas estarán en 0.
 
 .. seealso::
     Para más información sobre las tarifas de las tareas, vea :doc:`Cómo crear un nuevo rubro <rubro_crear>`, :doc:`Cómo crear y gestionar las tareas de un rubro <tipotarea_crud>` y :doc:`Cómo modificar las tarifas de las tareas de un rubro <tipotarea_tarifar>`.
