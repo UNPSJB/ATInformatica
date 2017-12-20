@@ -1,17 +1,19 @@
 ¡Bienvenido a la documentación de WebSAS!
 =========================================
 
-.. image:: imagenes/websas.png
+.. image:: /imagenes/AT-logo.jpg
     :align: center
 
+.. image:: /imagenes/AT-titulo.gif
+    :align: center
+
+
 Esta guía de usuario contiene información sobre cómo realizar tareas esenciales en el sistema.
+
 Si necesita ayuda adicional en alguna pantalla, busque el icono de ayuda en la esquina superior derecha del área principal.
 
 .. image:: imagenes/ayuda-contextual.png
     :align: center
-
-.. note::
-    Los menúes y capturas de pantalla presentados en estos tutoriales pueden variar ligeramente en las nuevas versiones.
 
 -----------
 
@@ -28,11 +30,11 @@ Si necesita ayuda adicional en alguna pantalla, busque el icono de ayuda en la e
     howto/tipotarea_tarifar
     howto/gestion_empleados
     howto/asignar_usuario
-    howto/gestionar_permisos
+    howto/gestion_permisos
     howto/gestion_productos
     howto/cliente_crear
     howto/cliente_crud
-    howto/equipo_crud
+    howto/equipo_crear
     howto/orden_nueva
     howto/tarea_crear
     howto/tarea_modificar_precio
