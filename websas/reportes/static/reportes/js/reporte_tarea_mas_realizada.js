@@ -168,7 +168,7 @@ function imprimir() {
                 tipo: 'hr',
             },
             {
-                tipo: 'grafico',
+                tipo: 'div',
                 selector: '#div-grafico-1',
                 ancho: true,
             },
