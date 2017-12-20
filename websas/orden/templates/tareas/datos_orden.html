@@ -4,7 +4,7 @@
     <label class="control-label col-md-2 col-sm-3 col-xs-12" for="cliente">Cliente:</label>
     <h4 name="cliente"><b>{{ orden.cliente.persona.apellido|upper }}</b>, {{ orden.cliente.persona.nombre }}</h4>
     <label class="control-label col-md-2 col-sm-3 col-xs-12" for="descripcion">Descripción:</label>
-    <br>
+    
     <h4 name="descripcion">
         <em>
             {% autoescape off %} {{ orden.descripcion|safe }} {% endautoescape %}
