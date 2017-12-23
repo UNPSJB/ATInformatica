@@ -22,7 +22,7 @@
     </li>
     <li><a><i class="fa fa-desktop"></i>Productos<span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
-        {% if perms.producto.add_producto and user.persona.is_gerente or user.persona.is_jefe_taller or user. %}
+        {% if perms.producto.add_producto and user.persona.is_gerente or user.persona.is_jefe_taller or user.is_superuser %}
         <li><a href= "{% url 'producto:producto_crear' %}">Crear </a></li>
         {% endif %}
         <li><a href= "{% url 'producto:producto_listar' %}">Listados</a></li>
@@ -59,12 +59,13 @@
     </li>
     <li><a><i class="fa fa-clone"></i>Rubros<span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
-        {% if perms.rubro.add_rubro or user.persona.is_gerente %}
+        {% if perms.rubro.add_rubro and user.persona.is_gerente or user.persona.is_jefe_taller or user.is_superuser %}
         <li><a href="{% url 'rubro:rubro_crear'%}">Crear </a></li>
         {% endif %}
         <li><a href="{% url 'rubro:rubro_listar'%}">Listados</a></li>          
       </ul>
     </li>
+    {% if user.persona.is_gerente or user.persona.is_jefe_taller or user.is_superuser %}
     <li><a><i class="fa fa-database"></i>Reportes<span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
         <li><a href="{% url 'reportes:reportes'%}">Total facturado</a></li>
@@ -74,7 +75,7 @@
         </li>
       </ul>
     </li>
-
+    {% endif %}
     
   </ul>
 </div>

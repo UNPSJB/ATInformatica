@@ -27,6 +27,7 @@
     <div class="x_content">
       <br />
       <!-- MOSTRAR LOS ERRORES DEL SERVIDOR -->
+      {% if user.persona.is_gerente or user.persona.is_jefe_taller or user.is_superuser %}
       {% if form.errors %}
       <div class="clearfix">
       {% for field in form %}
@@ -78,6 +79,7 @@
           </div>
         </div>
       </form>
+      {% endif %}
     </div>
   </div>
 </div>
